@@ -25,40 +25,46 @@ architecture Behavioral of MMU is
 type TArrPhyAddr is array(MMUSlots-1 downto 0) of TPhyAddr;
 type TArrAddr is array(MMUSlots-1 downto 0) of TAddr;
 
-signal a_phy    : TArrPhyAddr;
-signal a_vstart : TArrAddr;
-signal a_vend   : TArrAddr;
+shared variable a_phy    : TArrPhyAddr;
+shared variable a_vstart : TArrAddr;
+shared variable a_vend   : TArrAddr;
 
+signal s_updated : std_logic := '0';
+signal r_start : TAddr;
+signal r_phy   : TPhyAddr;
 begin
 
 	process (clk, reset)
-	variable r_start : TAddr;
-	variable r_phy   : TPhyAddr;
 	begin
 	
 		if reset = '1' then
-			a_phy <= (others => (others => '0'));
-			a_vstart <= (others => (others => '0'));
-			a_vend <= (0 => (others => '1'), others => (others => '0'));
-		elsif rising_edge(clk) then
-			phy_addr <= (others => '0');
+			a_phy := (others => (others => '0'));
+			a_vstart := (others => (others => '0'));
+			a_vend := (0 => (others => '1'), others => (others => '0'));
+			s_updated <= not s_updated;
+		elsif rising_edge(clk) and cfg_write = '1' then
 			for i in 0 to MMUSlots-1 loop
-				if cfg_write = '1' then
 					if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then
-						a_phy(i)    <= cfg_phy_addr;
-						a_vstart(i) <= virt_addr;
-						a_vend(i)   <= cfg_virt_end;
+						a_phy(i)    := cfg_phy_addr;
+						a_vstart(i) := virt_addr;
+						a_vend(i)   := cfg_virt_end;
 					end if; -- cfg_index
-				else -- cfg_write = '0'
-					if a_vstart(i) <= virt_addr and virt_addr <= a_vend(i) then
-						r_start := a_vstart(i);
-						r_phy   := a_phy(i);
-					end if;
-				end if; -- cfg_write
 			end loop;
-			phy_addr <= std_logic_vector(unsigned(r_phy) + unsigned(virt_addr) - unsigned(r_start));
+			s_updated <= not s_updated;
 		end if;
 	
 	end process;
+
+	process (virt_addr, s_updated)
+	begin
+		for i in 0 to MMUSlots-1 loop
+			if a_vstart(i) <= virt_addr and virt_addr <= a_vend(i) then
+				r_start <= a_vstart(i);
+				r_phy   <= a_phy(i);
+			end if;
+		end loop;
+	end process;
+
+	phy_addr <= std_logic_vector(unsigned(r_phy) + unsigned(virt_addr) - unsigned(r_start));
 
 end Behavioral;

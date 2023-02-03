@@ -71,9 +71,9 @@ begin
 		cfg_write    <= '0';
 		
 		-- read
-		virt_addr <= x"14FF"; wait for 1us;
-		virt_addr <= x"1500"; wait for 1us;
-		virt_addr <= x"1533"; wait for 1us;
+		virt_addr <= x"14FF"; wait for 200ns;
+		virt_addr <= x"1500"; wait for 200ns;
+		virt_addr <= x"1533"; wait for 200ns;
 		
 		-- reset
 		reset <= '1'; wait for 1us;

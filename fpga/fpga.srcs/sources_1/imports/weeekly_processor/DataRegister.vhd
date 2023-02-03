@@ -32,7 +32,7 @@ begin
 	
 		if reset = '1' then
 			procQ <= (others => '0');
-		elsif write = '1' and rising_edge(clk) then
+		elsif rising_edge(clk) and write = '1' then
 			procQ <= D;
 		end if;
 

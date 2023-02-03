@@ -27,7 +27,7 @@ begin
 	process(clk)
 	begin
 	
-		if en = '1' and rising_edge(clk) then
+		if rising_edge(clk) and en = '1' then
 			if wr = '1' then
 				a_ram(to_integer(unsigned(addr))    ) <= din(7 downto 0);
 				a_ram(to_integer(unsigned(addr)) + 1) <= din(15 downto 8);
