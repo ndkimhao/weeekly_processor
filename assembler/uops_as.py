@@ -10,11 +10,11 @@ import re
 
 REGS = (
     '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
-    'E', 'F', 'G', 'H', '1', '2', '0x00FF', '0xFF00',
+    'E', 'F', 'G', 'H', '2',
 )
 
 CMDS = (
-    ('', ('NULL', 'MOV', 'MMU')),
+    ('', ('NULL', 'MOV', 'CON', 'MMU')),
     ('MEM', ('LOAD', 'STORE')),
     ('ARG', ('GET', 'PUT')),
     ('ALU', ('ADD', 'SUB', 'AND', 'OP_COPY')),
@@ -22,7 +22,7 @@ CMDS = (
     ('JMP', ('ALWAYS', 'COND_COPY')),
 )
 
-REGS_MAP = {r: i for i, r in enumerate(REGS) if r != ''}
+REGS_MAP = {r: i for i, r in enumerate(REGS)}
 CMDS_MAP = {}
 for cmdid, (cmd, opts) in enumerate(CMDS):
     if cmd != '':
@@ -37,6 +37,8 @@ for cmdid, (cmd, opts) in enumerate(CMDS):
 
 out = []
 label_map = {}
+const_map = {}
+const_map_cnt = {}
 romlen = 0
 
 with open('uops.asm', 'r') as f:
@@ -54,6 +56,7 @@ for lineidx, s in enumerate(lines_proc):
             label_map[s[:-1]] = romlen
         continue
     ps = [s for s in re.split(' |,', s) if s != '']
+    # print(origs)
     fallthrough = False
     if ps[-1] == 'FALLTHROUGH':
         fallthrough = True
@@ -63,10 +66,25 @@ for lineidx, s in enumerate(lines_proc):
     cid = cmap[ps[-1]] if len(cmap) > 1 else cmap['']
     nargs = len(ps) - 1 - (1 if len(cmap) > 1 else 0)
 
+    if ps[0] == 'CON':  # load constant
+        nargs -= 1
+
     argstr = ''
     for i in range(nargs):
         aid = REGS_MAP[ps[1 + i]]
         argstr += f'{aid:04b}'
+
+    if ps[0] == 'CON':  # load constant
+        v = ps[-1]
+        if v.startswith('0x'):
+            v = int(v[2:], 16)
+        else:
+            v = int(v, 10)
+        if v not in const_map:
+            const_map[v] = max(list(const_map.values()) + [-1]) + 1
+        argstr += f'{const_map[v]:04b}'
+        const_map_cnt[v] = const_map_cnt.get(v, 0) + 1
+
     while len(argstr) < 8:
         argstr += '0000'
 
@@ -100,8 +118,8 @@ out = [
     f'type TArrUtopROM is array (0 to {romlen}-1) of TUop;',
     f'signal uops_rom : TArrUtopROM := ('
 ] + out + [
-    '); -- uops_rom ---------------------------------------------------',
-    ''
+    f'); -- uops_rom ---------------------------------------------------',
+    f''
 ]
 
 for lbl, idx in label_map.items():
@@ -112,7 +130,21 @@ out += [
     f'-- ##############################################################',
     f'-- ## END UOPS ROM',
     f'-- ##############################################################',
-    f'',
+    f'', f'', f'',
+]
+
+out += [
+    f'type TArrUopsConstsROM is array (0 to 16-1) of TData;',
+    f'signal uops_consts_rom : TArrUopsConstsROM := (',
+]
+const_map_r = {v: k for k, v in const_map.items()}
+for i in range(16):
+    v = const_map_r.get(i, 0)
+    notes = f'used {const_map_cnt[v]} times' if v in const_map_cnt else 'unused'
+    comma = ',' if i < 15 else ' '
+    out.append(f'\tx"{v:04X}"{comma} -- {notes}')
+out += [
+    f'); -- uops_consts_rom -------------------------------------------',
 ]
 
 with open('uops_rom.vhd', 'w') as f:
