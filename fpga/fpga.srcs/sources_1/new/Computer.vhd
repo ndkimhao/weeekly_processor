@@ -34,4 +34,12 @@ begin
 		cfg_write    => cfg_write   
 	);
 
+	fetcher: entity work.Fetcher port map (
+		clk => '0',
+		reset => '0',
+		pc  => (others => '0'),
+		din  => (others => '0'),
+		dvalid => '0'
+	);
+
 end Behavioral;

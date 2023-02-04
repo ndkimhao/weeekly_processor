@@ -12,7 +12,7 @@ entity DataRegister is
 
     port (
 		clk : in std_logic;
-		reset : in std_logic := '0';
+		reset : in std_logic;
 		write : in std_logic;
 		D : in std_logic_vector (N-1 downto 0);
 		Q : out std_logic_vector (N-1 downto 0)

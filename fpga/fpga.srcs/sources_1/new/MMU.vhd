@@ -29,7 +29,6 @@ shared variable a_phy    : TArrPhyAddr;
 shared variable a_vstart : TArrAddr;
 shared variable a_vend   : TArrAddr;
 
-signal s_updated : std_logic := '0';
 signal r_start : TAddr;
 signal r_phy   : TPhyAddr;
 begin
@@ -41,7 +40,6 @@ begin
 			a_phy := (others => (others => '0'));
 			a_vstart := (others => (others => '0'));
 			a_vend := (0 => (others => '1'), others => (others => '0'));
-			s_updated <= not s_updated;
 		elsif rising_edge(clk) and cfg_write = '1' then
 			for i in 0 to MMUSlots-1 loop
 					if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then
@@ -50,12 +48,11 @@ begin
 						a_vend(i)   := cfg_virt_end;
 					end if; -- cfg_index
 			end loop;
-			s_updated <= not s_updated;
 		end if;
 	
 	end process;
 
-	process (virt_addr, s_updated)
+	process (virt_addr, clk, reset)
 	begin
 		for i in 0 to MMUSlots-1 loop
 			if a_vstart(i) <= virt_addr and virt_addr <= a_vend(i) then
