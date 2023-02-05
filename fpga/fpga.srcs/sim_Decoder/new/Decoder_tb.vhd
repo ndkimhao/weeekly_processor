@@ -14,6 +14,7 @@ signal clk : std_logic;
 signal reset : std_logic;
 
 signal ready : std_logic;
+signal brk : std_logic;
 signal uop   : TUop;
 signal used_len : TInstBufferIdx;
 
@@ -27,6 +28,7 @@ begin
 		inst => (others => (others => '0')),
 		
 		ready => ready,
+		brk => brk,
 		uop => uop,
 		used_len => used_len
 	);

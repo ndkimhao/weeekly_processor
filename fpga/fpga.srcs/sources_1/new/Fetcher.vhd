@@ -10,14 +10,14 @@ entity Fetcher is
 		clk : in std_logic;
 		reset : in std_logic;
 
-		pc : in TAddr; -- current program counter
+		pc : in TAddr; -- program counter
 		dwant : out std_logic; -- want to read
 		daddr : out TAddr;
 		din   : in TData;
 		dvalid: in std_logic; -- din is valid
-		
-		ready : out std_logic; -- instruction is ready
-		inst  : out TInstBuffer
+
+		avail : out TInstBufferIdx;
+		inst_buffer : out TInstBuffer
 	);
 end Fetcher;
 
@@ -28,93 +28,95 @@ constant NArgsW : Integer := 2;
 constant OpW : Integer := 6;
 subtype TSize is unsigned(SizeW-1 downto 0); -- in multiples of 2
 
-signal a_inst : TInstBuffer;
-signal s_size, s_need : TSize;
+signal s_inst : TInstBuffer;
+signal s_old_pc : TAddr;
+
+signal s_allow_read : std_logic;
+signal s_want : std_logic;
 
 begin
 
 	process (clk, reset)
-	variable op : unsigned(OpW-1 downto 0);
-	variable size, need : TSize;
-	variable nargs : unsigned(NArgsW-1 downto 0);
-	begin
-	
+		variable diff_pc : unsigned(AddrWidth-1 downto 0);
+		variable new_avail, lookahead : TInstBufferIdx;
+		variable new_inst : TInstBuffer;
+	begin	
 		if reset = '1' then
-			size := to_unsigned(0, SizeW);
-			need := to_unsigned(MaxInstructionLen, SizeW);
-		elsif rising_edge(clk) then
-			size := s_size;
-			need := s_need;
-
-			if dwant and dvalid then
-				a_inst(to_integer(size & '0')) <= din(7 downto 0);
-				a_inst(to_integer(size & '1')) <= din(15 downto 8);
-				size := size + 2;
-			end if;
-
-			if size = 0 then
-				need := to_unsigned(2, SizeW); -- read 2 bytes first
-			else -- size > 0
-				op := unsigned(a_inst(0)(7 downto 2));
-				nargs := to_unsigned(0, NArgsW);
-
-				if op(4 downto 0) <= 13 then -- ALU with 2/3 args
-					if op(5) = '0' then
-						nargs := to_unsigned(2, NArgsW);
-					else
-						nargs := to_unsigned(3, NArgsW);
-					end if;
-				elsif op(4 downto 0) <= 18 then -- ALU with 1/2 args
-					if op(5) = '0' then
-						nargs := to_unsigned(1, NArgsW);
-					else
-						nargs := to_unsigned(2, NArgsW);
-					end if;
-				elsif op(4 downto 0) <= 25 then -- Misc
-					case op is
-						when to_unsigned(OP_GETF, OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_CMP , OpW) => nargs := to_unsigned(2, NArgsW);
-						when to_unsigned(OP_MMAP, OpW) => nargs := to_unsigned(3, NArgsW); -- idx,start,len
-						when to_unsigned(OP_JMP , OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_CALL, OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_MOV , OpW) => nargs := to_unsigned(2, NArgsW);
-						when to_unsigned(OP_BMOV, OpW) => nargs := to_unsigned(2, NArgsW);
-						when to_unsigned(OP_SETF, OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_ICMP, OpW) => nargs := to_unsigned(2, NArgsW);
-						when to_unsigned(OP_UMAP, OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_HALT, OpW) => nargs := to_unsigned(0, NArgsW);
-						when to_unsigned(OP_RET , OpW) => nargs := to_unsigned(0, NArgsW);
-						when to_unsigned(OP_PUSH, OpW) => nargs := to_unsigned(1, NArgsW);
-						when to_unsigned(OP_POP , OpW) => nargs := to_unsigned(1, NArgsW);
-						when others => null;
-					end case;
-				else -- if op(4 downto 0) <= 32 then -- Jmp
-					if op(5) = '0' then
-						nargs := to_unsigned(2, NArgsW);
-					else
-						nargs := to_unsigned(3, NArgsW);
-					end if;
-				end if;
-
-				need := ("00" & nargs) + to_unsigned(1, SizeW);
-			end if; -- size > 0
-
-			if size >= need then
-			
-			end if;
-
-		end if;
-	
-		s_size <= size;
-		s_need <= need;
-		ready <= '1' when size >= need else '0';
-		if size <= MaxInstructionLen-2 then -- don't read if there's only one empty slot left
-			dwant <= '1';
-			daddr <= std_logic_vector(unsigned(pc) + size);
-		else
 			dwant <= '0';
 			daddr <= (others => '0');
-		end if;
+			avail <= (others => '0');
+			s_old_pc <= (others => '0');
+			s_allow_read <= '0';
+			s_want <= '0';
+		elsif rising_edge(clk) then
+
+			new_avail := avail;
+			new_inst := inst_buffer;
+
+			diff_pc := unsigned(pc) - unsigned(s_old_pc);
+			if diff_pc < new_avail then -- avail <= 11, so diff_pc <= 10
+				case diff_pc is
+					when to_unsigned(1, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-1) := new_inst(1 to MaxInstructionLen);
+					when to_unsigned(2, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-2) := new_inst(2 to MaxInstructionLen);
+					when to_unsigned(3, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-3) := new_inst(3 to MaxInstructionLen);
+					when to_unsigned(4, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-4) := new_inst(4 to MaxInstructionLen);
+					when to_unsigned(5, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-5) := new_inst(5 to MaxInstructionLen);
+					when to_unsigned(6, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-6) := new_inst(6 to MaxInstructionLen);
+					when to_unsigned(7, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-7) := new_inst(7 to MaxInstructionLen);
+					when to_unsigned(8, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-8) := new_inst(8 to MaxInstructionLen);
+					when to_unsigned(9, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-9) := new_inst(9 to MaxInstructionLen);
+					when to_unsigned(10, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-10) := new_inst(10 to MaxInstructionLen);
+					when others =>
+						null;
+				end case;
+				new_avail := new_avail - diff_pc(3 downto 0);
+			else
+				new_avail := (others => '0');
+			end if;
+
+			s_old_pc <= pc;
+
+			if s_allow_read = '1' and diff_pc = 0 then -- allow read in previous cycle
+				new_inst(to_integer(new_avail)) := din(7 downto 0);
+				new_inst(to_integer(new_avail) + 1) := din(15 downto 8);
+				new_avail := new_avail + 2;
+			end if;
+
+			avail <= new_avail;
+			inst_buffer <= new_inst;
+			
+			if s_want = '1' and dvalid = '1' and diff_pc = 0 then
+				s_allow_read <= '1';
+				lookahead := to_unsigned(2, 4);
+			else
+				s_allow_read <= '0';
+				lookahead := to_unsigned(0, 4);
+			end if;
+			s_want <= dwant;
+
+			lookahead := new_avail + lookahead;
+			if lookahead < MaxInstructionLen then
+				dwant <= '1';
+				daddr <= std_logic_vector(unsigned(pc) + lookahead);
+			else
+				if dwant = '0' then
+					s_allow_read <= '0';
+				end if;
+				dwant <= '0';
+				daddr <= (others => '0');
+			end if;
+		end if; -- rising_edge(clk)
 	end process;
+
 
 end Behavioral;

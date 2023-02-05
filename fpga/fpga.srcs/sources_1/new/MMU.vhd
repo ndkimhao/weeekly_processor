@@ -39,7 +39,7 @@ begin
 		if reset = '1' then
 			a_phy := (others => (others => '0'));
 			a_vstart := (others => (others => '0'));
-			a_vend := (0 => (others => '1'), others => (others => '0'));
+			a_vend := (others => (others => '0'));
 		elsif rising_edge(clk) and cfg_write = '1' then
 			for i in 0 to MMUSlots-1 loop
 					if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then

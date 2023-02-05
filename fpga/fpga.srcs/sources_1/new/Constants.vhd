@@ -5,6 +5,9 @@ use ieee.numeric_std.all;
 
 package Constants is
 
+	-- ===========================================================================
+	-- || Consts
+	-- ===========================================================================
 	constant PhyAddrWidth : integer := 24;
 	constant AddrWidth : integer := 16;
 	constant DataWidth : integer := 16;
@@ -16,8 +19,82 @@ package Constants is
 
 	constant MaxInstructionLen : integer := 10; -- 10 bytes: 1 op + 3*3 args
 
-	constant UopLen : integer := 14;
+	constant UopLen : integer := 13;
+	constant UcodeHeadLen : integer := 3;
+	constant UcodeTailLen : integer := 2;
+	constant UcodeLen : integer := UcodeHeadLen + UcodeTailLen;
+	
+	constant ALUOpLen : integer := 5;
 
+	-- ===========================================================================
+	-- || Types
+	-- ===========================================================================
+	subtype TPhyAddr is std_logic_vector(PhyAddrWidth-1 downto 0);
+	subtype TAddr is std_logic_vector(AddrWidth-1 downto 0);
+	subtype TData is std_logic_vector(DataWidth-1 downto 0);
+	subtype TByte is std_logic_vector(7 downto 0);
+
+	subtype TInstBufferIdx is unsigned(4-1 downto 0);
+	type TInstBuffer is array(0 to MaxInstructionLen) of TByte; -- allow 1 extra byte at the end
+
+	subtype TUop is std_logic_vector(UopLen-1 downto 0);
+	subtype TUcode is std_logic_vector(UcodeLen-1 downto 0);
+	subtype TUcodeHead is std_logic_vector(UcodeHeadLen-1 downto 0);
+	subtype TUcodeTail is std_logic_vector(UcodeTailLen-1 downto 0);
+
+	-- ===========================================================================
+	-- || Uops
+	-- ===========================================================================
+	constant UOP_NOP : TUcodeTail := "00";
+	constant UOP_MOV : TUcodeTail := "01";
+	constant UOP_CON : TUcodeTail := "10";
+	constant UOP_MMU : TUcodeTail := "11";
+	constant UOP_MEM_HEAD : TUcodeHead := "001";
+	constant UOP_MEM_LOAD : TUcodeTail := "00";
+	constant UOP_MEM_STORE : TUcodeTail := "01";
+	constant UOP_ARG_HEAD : TUcodeHead := "010";
+	constant UOP_ARG_PUT : TUcodeTail := "00";
+	constant UOP_ARG_GET_0 : TUcodeTail := "01";
+	constant UOP_ARG_GET_1 : TUcodeTail := "10";
+	constant UOP_ARG_GET_2 : TUcodeTail := "11";
+	constant UOP_ALU_HEAD : TUcodeHead := "011";
+	constant UOP_ALU_ADD : TUcodeTail := "00";
+	constant UOP_ALU_SUB : TUcodeTail := "01";
+	constant UOP_ALU_AND : TUcodeTail := "10";
+	constant UOP_ALU_OP_COPY : TUcodeTail := "11";
+	constant UOP_CMP_HEAD : TUcodeHead := "100";
+	constant UOP_CMP_UNSIGNED : TUcodeTail := "00";
+	constant UOP_CMP_SIGNED : TUcodeTail := "01";
+	constant UOP_JMP_HEAD : TUcodeHead := "101";
+	constant UOP_JMP_ALWAYS : TUcodeTail := "00";
+	constant UOP_JMP_COND_COPY : TUcodeTail := "01";
+	constant UOP_BRK_HEAD : TUcodeHead := "111";
+
+	constant REG_0 : integer := 0;
+	constant REG_A : integer := 1;
+	constant REG_B : integer := 2;
+	constant REG_C : integer := 3;
+	constant REG_D : integer := 4;
+	constant REG_SP : integer := 5;
+	constant REG_PC : integer := 6;
+	constant REG_FL : integer := 7;
+	constant REG_E : integer := 8;
+	constant REG_F : integer := 9;
+	constant REG_G : integer := 10;
+	constant REG_H : integer := 11;
+	constant REG_2 : integer := 12;
+
+	constant FLAG_EQ : integer := 0;
+	constant FLAG_NE : integer := 1;
+	constant FLAG_LT : integer := 2;
+	constant FLAG_LE : integer := 3;
+	constant FLAG_GT : integer := 4;
+	constant FLAG_GE : integer := 5;
+	constant AluNumFLags : integer := 6;
+
+	-- ===========================================================================
+	-- || Instructions
+	-- ===========================================================================
 	constant OP_ADD    : integer := 0;
 	constant OP_SUB    : integer := 1;
 	constant OP_MUL    : integer := 2;
