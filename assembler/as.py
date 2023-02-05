@@ -192,7 +192,7 @@ out_lines += [
     f'',
     f'constant ROMSize : integer := {romlen};',
     f'type TArrROM is array (0 to ROMSize-1) of TByte;',
-    f'signal arr_rom : TArrROM := (',
+    f'constant arr_rom : TArrROM := (',
 ]
 countprinted = 0
 for romidx, bincode, origs in out:

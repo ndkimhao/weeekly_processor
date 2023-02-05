@@ -6,6 +6,7 @@
 #  4 - reg 2
 
 import re
+import fnmatch
 
 REGS = (
     '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
@@ -18,7 +19,7 @@ CMDS = (
     ('MEM', ('LOAD', 'STORE')),
     ('ARG', ('PUT', 'GET_0', 'GET_1', 'GET_2')),
     ('ALU', ('ADD', 'SUB', 'AND', 'OP_COPY')),
-    ('CMP', ('UNSIGNED', 'SIGNED')),
+    ('CMP', ('UNSIGNED', 'SIGNED', 'OP_COPY')),
     ('CMV', ('EQ', 'LT', 'LE', 'COND_COPY')),  # conditional move
     ('_', ()),
     ('BRK', ()),  # spacer between blocks
@@ -63,12 +64,25 @@ def out_cmd(bincode, origs, comma=','):
         out.append(f'\t{" ":21}-- {origs}')
 
 
-for lineidx, s in enumerate(lines_proc):
+gen_names = []
+gen_startline = 0
+
+lineidx = -1
+while lineidx+1 < len(lines_proc):
+    lineidx += 1
+    s = lines_proc[lineidx]
     origs = lines[lineidx].rstrip()
+
+    gen_curname = gen_names[0] if len(gen_names) > 0 else None
+
     if s == '' or s.endswith(':'):
         if s.endswith(':'):
+            lbl = s[:-1]
+            if gen_curname:
+                lbl = lbl.replace('$$', gen_curname)
+                origs = origs.replace('$$', gen_curname)
             out_cmd('1'*13 if not fallthrough else None, origs)
-            label_map[s[:-1]] = romlen
+            label_map[lbl] = romlen
         elif origs != '':
             out_cmd(None, origs)
         continue
@@ -79,11 +93,30 @@ for lineidx, s in enumerate(lines_proc):
         fallthrough = True
         ps.pop()
 
-    cmap = CMDS_MAP[ps[0].upper()]
+    ps[0] = ps[0].upper()
+    if ps[0] == '.GENERATE':
+        gen_names = ps[1:]
+        gen_startline = lineidx+1
+        continue
+    elif ps[0] == '.END_GENERATE':
+        if len(gen_names) > 0:
+            gen_names = gen_names[1:]
+        if len(gen_names) > 0:
+            lineidx = gen_startline-1
+        continue
+
+    if gen_curname:
+        pattern = ps[0][1:-1]
+        ps = ps[1:]
+        if not fnmatch.fnmatch(gen_curname, pattern.replace('-', '?')):
+            continue
+
+    ps[0] = ps[0].upper()
+    cmap = CMDS_MAP[ps[0]]
     cid = cmap[ps[-1]] if len(cmap) > 1 else cmap['']
     nargs = len(ps) - 1 - (1 if len(cmap) > 1 else 0)
 
-    if ps[0].upper() == 'CON':  # load constant
+    if ps[0] == 'CON':  # load constant
         nargs -= 1
 
     argstr = ''
@@ -92,7 +125,7 @@ for lineidx, s in enumerate(lines_proc):
         aid = REGS_MAP[ps[1 + i]]
         argstr += f'{aid:04b}'
 
-    if ps[0].upper() == 'CON':  # load constant
+    if ps[0] == 'CON':  # load constant
         v = ps[-1]
         if v.startswith('0x'):
             v = int(v[2:], 16)
@@ -117,7 +150,7 @@ out = [
     f'-- ##############################################################',
     f'',
     f'type TArrUtopROM is array (0 to {romlen}-1) of TUop;',
-    f'signal uops_rom : TArrUtopROM := ('
+    f'constant uops_rom : TArrUtopROM := ('
 ] + out + [
     f'); -- uops_rom ---------------------------------------------------',
     f''
@@ -137,7 +170,7 @@ out += [
 const_map_r = {v: k for k, v in const_map.items()}
 out += [
     f'type TArrUopsConstsROM is array (0 to {len(const_map_r)}-1) of TData;',
-    f'signal uops_consts_rom : TArrUopsConstsROM := (',
+    f'constant uops_consts_rom : TArrUopsConstsROM := (',
 ]
 for i in range(16):
     if i not in const_map_r:

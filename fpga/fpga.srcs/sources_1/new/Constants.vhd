@@ -20,6 +20,7 @@ package Constants is
 	constant InstructionIndexWidth : integer := 5;
 	constant MaxInstructionLen : integer := 16; -- 10 bytes: 1 op + 3*3 args
 
+	constant UopIndexWidth : integer := 9; -- uop rom
 	constant UopLen : integer := 13;
 	constant UcodeHeadLen : integer := 3;
 	constant UcodeTailLen : integer := 2;
@@ -42,6 +43,7 @@ package Constants is
 	subtype TUcode is std_logic_vector(UcodeLen-1 downto 0);
 	subtype TUcodeHead is std_logic_vector(UcodeHeadLen-1 downto 0);
 	subtype TUcodeTail is std_logic_vector(UcodeTailLen-1 downto 0);
+	subtype TUopIndex is unsigned(UopIndexWidth-1 downto 0);
 
 	-- ===========================================================================
 	-- || Uops
@@ -67,6 +69,7 @@ package Constants is
 	constant UOP_CMP_HEAD : TUcodeHead := "100";
 	constant UOP_CMP_UNSIGNED : TUcodeTail := "00";
 	constant UOP_CMP_SIGNED : TUcodeTail := "01";
+	constant UOP_CMP_OP_COPY : TUcodeTail := "10";
 	constant UOP_CMV_HEAD : TUcodeHead := "101";
 	constant UOP_CMV_EQ : TUcodeTail := "00";
 	constant UOP_CMV_LT : TUcodeTail := "01";

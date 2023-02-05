@@ -34,7 +34,7 @@ signal dec_hold : std_logic;
 signal dec_ready : std_logic;
 signal dec_done : std_logic;
 signal dec_uop : TUop;
-signal dec_uop_idx : unsigned(7 downto 0);
+signal dec_uop_idx : TUopIndex;
 signal dec_inst_len : TInstBufferIdx;
 signal dec_inst_nargs : unsigned(2-1 downto 0);
 signal dec_booted : std_logic;

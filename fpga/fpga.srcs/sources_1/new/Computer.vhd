@@ -8,7 +8,7 @@ use work.Types.all;
 entity Computer is
     port (
 		sysclk : in std_logic;
-		reset_n : in std_logic;
+		cpu_resetn : in std_logic;
 		
 		led : out std_logic_vector(8-1 downto 0)
 	);
@@ -31,10 +31,10 @@ begin
 
 	clock: clk_wiz_0 port map (
 		clk_in1 => sysclk,
-		resetn => reset_n,
+		resetn => cpu_resetn,
 		clk_out1 => cpu_clk);
 
-	cpu_reset <= not reset_n;
+	cpu_reset <= not cpu_resetn;
 
 	cpu: entity work.CPU port map (
 		clk => cpu_clk,

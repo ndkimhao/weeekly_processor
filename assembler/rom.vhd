@@ -4,7 +4,7 @@
 
 constant ROMSize : integer := 105;
 type TArrROM is array (0 to ROMSize-1) of TByte;
-signal arr_rom : TArrROM := (
+constant arr_rom : TArrROM := (
 	/*   0 */                                  -- .offset 0x8000
 	/*   0 */                                  --
 	/*   0 */                                  -- boot:

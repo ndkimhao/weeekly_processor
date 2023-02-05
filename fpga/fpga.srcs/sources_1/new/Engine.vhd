@@ -13,7 +13,7 @@ entity Engine is
 		uop_hold : out std_logic; -- pause uop decode
 		uop : in TUop;
 		uop_done : in std_logic; -- last uop of the current instruction
-		uop_idx : in unsigned(7 downto 0);
+		uop_idx : in TUopIndex;
 		inst_buffer : in TInstBuffer;
 		inst_len : in TInstBufferIdx;
 		inst_nargs : in unsigned(2-1 downto 0);
@@ -44,12 +44,12 @@ architecture Behavioral of Engine is
 
 
 type TArrUopsConstsROM is array (0 to 5-1) of TData;
-signal uops_consts_rom : TArrUopsConstsROM := (
-	x"0001", -- used 4 times
+constant uops_consts_rom : TArrUopsConstsROM := (
+	x"0001", -- used 1 times
 	x"FFFF", -- used 2 times
 	x"00FF", -- used 1 times
 	x"8000", -- used 2 times
-	x"00CA"  -- used 1 times
+	x"003F"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
 
 
@@ -69,12 +69,18 @@ signal uop_tail : std_logic_vector(UcodeTailLen-1 downto 0);
 signal alu_op : std_logic_vector(ALUOpLen-1 downto 0);
 signal alu_out : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
+signal alu_cmp_signed : std_logic;
 
 signal last_den, last_dwr : std_logic;
 
 signal last_inst_buffer : TInstBuffer;
+signal inst_opcode : TByte;
 
 begin
+
+	inst_opcode <=
+		inst_buffer(0) when uop_idx = 0 else
+		last_inst_buffer(0);
 
 	uop_head <= uop(12 downto 10);
 	uop_tail <= uop(9 downto 8);
@@ -97,14 +103,20 @@ begin
 		std_logic_vector(to_unsigned(OP_ADD, ALUOpLen)) when uop_tail = UOP_ALU_ADD else
 		std_logic_vector(to_unsigned(OP_SUB, ALUOpLen)) when uop_tail = UOP_ALU_SUB else
 		std_logic_vector(to_unsigned(OP_AND, ALUOpLen)) when uop_tail = UOP_ALU_AND else
-		last_inst_buffer(0)(6 downto 2); -- Notes: COPY might not work correctly if it's the first instruction
+		inst_opcode(6 downto 2); -- OP_COPY
+
+	alu_cmp_signed <=
+		'1' when uop_tail = UOP_CMP_SIGNED else
+		'0' when uop_tail = UOP_CMP_UNSIGNED else
+		inst_opcode(7); -- OP_COPY
+
 
 	alu : entity work.ALU port map (
 		a => r_dst,
 		b => r_src,
 		op => alu_op,
 		r => alu_out,
-		cmp_signed => uop_tail(0),
+		cmp_signed => alu_cmp_signed,
 		cmp => alu_cmp
 	);
 
@@ -163,6 +175,7 @@ begin
 								r_res := uops_consts_rom(to_integer(idx_src));
 							when UOP_MMU =>
 								mmu_cfg_wr <= '1';
+								uop_hold <= '1';
 							when others => 
 								null;
 						end case; -- uop_tail
