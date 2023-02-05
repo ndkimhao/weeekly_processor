@@ -71,6 +71,9 @@ signal alu_out : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
 signal alu_cmp_signed : std_logic;
 
+signal fl_selector : unsigned(ALUOpLen-1 downto 0);
+signal fl_bit : std_logic;
+
 signal last_den, last_dwr : std_logic;
 
 signal last_inst_buffer : TInstBuffer;
@@ -110,6 +113,20 @@ begin
 		'0' when uop_tail = UOP_CMP_UNSIGNED else
 		inst_opcode(7); -- OP_COPY
 
+	fl_selector <=
+		to_unsigned(OP_JEQ, ALUOpLen) when uop_tail = UOP_CMV_EQ else
+		to_unsigned(OP_JLT, ALUOpLen) when uop_tail = UOP_CMV_LT else
+		to_unsigned(OP_JLE, ALUOpLen) when uop_tail = UOP_CMV_LE else
+		unsigned(inst_opcode(6 downto 2)); -- OP_COPY
+
+	fl_bit <=
+		arr_regs(REGID_FL)(FLAGID_EQ) when fl_selector = OP_JEQ else
+		arr_regs(REGID_FL)(FLAGID_NE) when fl_selector = OP_JNE else
+		arr_regs(REGID_FL)(FLAGID_LT) when fl_selector = OP_JLT else
+		arr_regs(REGID_FL)(FLAGID_LE) when fl_selector = OP_JLE else
+		arr_regs(REGID_FL)(FLAGID_GT) when fl_selector = OP_JGT else
+		arr_regs(REGID_FL)(FLAGID_GE) when fl_selector = OP_JGE else
+		'0';
 
 	alu : entity work.ALU port map (
 		a => r_dst,
@@ -248,6 +265,12 @@ begin
 					when UOP_CMP_HEAD =>
 						r_write := '1';
 						r_res := 10x"0000" & alu_cmp;
+
+					when UOP_CMV_HEAD =>
+						if fl_bit = '1' then
+							r_write := '1';
+							r_res := r_src;
+						end if;
 
 					when others =>
 						null;

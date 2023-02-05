@@ -136,13 +136,15 @@ def assemble(final):
                 pa.append('0')
             ax = pa[0].split('*')
             if len(ax) == 1:
-                ax.append('0')
-            a, b, x = ax[0], pa[1], ax[1]
-            if a in map(str, MULT_MAP.keys()):
-                a, x = x, a
+                a, b, x = ax[0], pa[1], '1'
+            else:
+                a, b, x = ax[0], pa[1], ax[1]
+                if a in map(str, MULT_MAP.keys()) and (x != '0' and x in REGS_MAP):
+                    a, x = x, a
+
             #  a  b  x -> a*(2^x) + b
             # 00011100
-            if b == '0' and x == '0':
+            if b == '0' and x == '1':
                 if a in REGS_MAP:
                     bincode += f'{REGS_MAP[a]:03b}00000'
                 else:

@@ -23,7 +23,15 @@ hello:
     mov B, 0xFF
     mov B, 0xFFAA
     add D, A + 234, C*2 + D
-    call $function_a
+    # call $function_a
+
+    mov A, 100
+    mov B, 5
+loop_1:
+    sub B, 1
+    add A, 20
+    jne $loop_1, B, 0
+
     halt
 
 text_abc:
