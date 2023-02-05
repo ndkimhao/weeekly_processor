@@ -89,6 +89,9 @@ begin
 		m_addr <= x"100A"; m_din <= x"0B0A"; wait for 1us;
 		m_addr <= x"100C"; m_din <= x"0D0C"; wait for 1us;
 		m_addr <= x"100E"; m_din <= x"0F0E"; wait for 1us;
+		m_addr <= x"1010"; m_din <= x"A1A0"; wait for 1us;
+		m_addr <= x"1012"; m_din <= x"A3A2"; wait for 1us;
+		m_addr <= x"1014"; m_din <= x"A5A4"; wait for 1us;
 		
 		m_wr <= '0';
 		req_m_en <= '0';
@@ -112,7 +115,6 @@ begin
 		pc <= x"1000";
 		wait for 2us;
 		pc <= x"1006";
-		
 
 		wait for 10us;
 

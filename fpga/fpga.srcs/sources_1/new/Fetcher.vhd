@@ -30,9 +30,9 @@ subtype TSize is unsigned(SizeW-1 downto 0); -- in multiples of 2
 
 signal s_inst : TInstBuffer;
 signal s_old_pc : TAddr;
-
-signal s_allow_read : std_logic;
-signal s_want : std_logic;
+signal last_dwant : std_logic;
+signal last_dvalid : std_logic;
+signal last_diff_pc : std_logic;
 
 begin
 
@@ -46,15 +46,16 @@ begin
 			daddr <= (others => '0');
 			avail <= (others => '0');
 			s_old_pc <= (others => '0');
-			s_allow_read <= '0';
-			s_want <= '0';
+			
+			last_dwant <= '0';
+			last_dvalid <= '0';
+			last_diff_pc <= '0';
 		elsif rising_edge(clk) then
 
-			new_avail := avail;
 			new_inst := inst_buffer;
-
 			diff_pc := unsigned(pc) - unsigned(s_old_pc);
-			if diff_pc < new_avail then -- avail <= 11, so diff_pc <= 10
+			s_old_pc <= pc;
+			if diff_pc < avail then -- avail <= 11, so 0 <= diff_pc <= 10
 				case diff_pc is
 					when to_unsigned(1, AddrWidth) =>
 						new_inst(0 to MaxInstructionLen-1) := new_inst(1 to MaxInstructionLen);
@@ -79,42 +80,41 @@ begin
 					when others =>
 						null;
 				end case;
-				new_avail := new_avail - diff_pc(3 downto 0);
+				new_avail := avail - diff_pc(3 downto 0);
 			else
 				new_avail := (others => '0');
 			end if;
 
-			s_old_pc <= pc;
-
-			if s_allow_read = '1' and diff_pc = 0 then -- allow read in previous cycle
+			if last_dwant = '1' and last_dvalid = '1' and diff_pc = 0 and last_diff_pc = '0' then
 				new_inst(to_integer(new_avail)) := din(7 downto 0);
 				new_inst(to_integer(new_avail) + 1) := din(15 downto 8);
 				new_avail := new_avail + 2;
 			end if;
 
-			avail <= new_avail;
-			inst_buffer <= new_inst;
-			
-			if s_want = '1' and dvalid = '1' and diff_pc = 0 then
-				s_allow_read <= '1';
-				lookahead := to_unsigned(2, 4);
+			if dwant = '1' and dvalid = '1' and diff_pc = 0 then
+				lookahead := new_avail + 2;
 			else
-				s_allow_read <= '0';
-				lookahead := to_unsigned(0, 4);
+				lookahead := new_avail;
 			end if;
-			s_want <= dwant;
 
-			lookahead := new_avail + lookahead;
 			if lookahead < MaxInstructionLen then
 				dwant <= '1';
 				daddr <= std_logic_vector(unsigned(pc) + lookahead);
 			else
-				if dwant = '0' then
-					s_allow_read <= '0';
-				end if;
 				dwant <= '0';
 				daddr <= (others => '0');
 			end if;
+
+			last_dwant <= dwant;
+			last_dvalid <= dvalid;
+			if diff_pc = 0 then
+				last_diff_pc <= '0';
+			else
+				last_diff_pc <= '1';
+			end if;
+
+			avail <= new_avail;
+			inst_buffer <= new_inst;
 		end if; -- rising_edge(clk)
 	end process;
 

@@ -27,13 +27,17 @@ begin
 	process(clk)
 	begin
 	
-		if rising_edge(clk) and en = '1' then
-			if wr = '1' then
-				a_ram(to_integer(unsigned(addr))    ) <= din(7 downto 0);
-				a_ram(to_integer(unsigned(addr)) + 1) <= din(15 downto 8);
-				dout <= din;
+		if rising_edge(clk) then
+			if en = '1' then
+				if wr = '1' then
+					a_ram(to_integer(unsigned(addr))    ) <= din(7 downto 0);
+					a_ram(to_integer(unsigned(addr)) + 1) <= din(15 downto 8);
+					dout <= din;
+				else
+					dout <= a_ram(to_integer(unsigned(addr)) + 1) & a_ram(to_integer(unsigned(addr)));
+				end if;
 			else
-				dout <= a_ram(to_integer(unsigned(addr)) + 1) & a_ram(to_integer(unsigned(addr)));
+				dout <= (others => '0');
 			end if;
 		end if;
 	

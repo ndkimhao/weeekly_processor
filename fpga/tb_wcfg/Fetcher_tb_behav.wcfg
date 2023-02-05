@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="8377881000fs"></ZoomStartTime>
-      <ZoomEndTime time="30647881001fs"></ZoomEndTime>
-      <Cursor1Time time="15487881000fs"></Cursor1Time>
+      <ZoomStartTime time="38757759235fs"></ZoomStartTime>
+      <ZoomEndTime time="54648448153fs"></ZoomEndTime>
+      <Cursor1Time time="45506537000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="206"></NameColumnWidth>
-      <ValueColumnWidth column_width="103"></ValueColumnWidth>
+      <NameColumnWidth column_width="195"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="15" />
+   <WVObjectSize size="17" />
    <wvobject fp_name="/Fetcher_tb/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -59,14 +59,14 @@
    <wvobject fp_name="/Fetcher_tb/f_avail" type="array">
       <obj_property name="ElementShortName">f_avail[3:0]</obj_property>
       <obj_property name="ObjectShortName">f_avail[3:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/Fetcher_tb/r_addr" type="array">
       <obj_property name="ElementShortName">r_addr[23:0]</obj_property>
       <obj_property name="ObjectShortName">r_addr[23:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/Fetcher_tb/r_dout" type="array">
@@ -74,6 +74,10 @@
       <obj_property name="ObjectShortName">r_dout[15:0]</obj_property>
       <obj_property name="CustomSignalColor">#FF0000</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Fetcher_tb/r_en" type="logic">
+      <obj_property name="ElementShortName">r_en</obj_property>
+      <obj_property name="ObjectShortName">r_en</obj_property>
    </wvobject>
    <wvobject fp_name="/Fetcher_tb/fetcher/dvalid" type="logic">
       <obj_property name="ElementShortName">dvalid</obj_property>
@@ -84,14 +88,20 @@
    <wvobject fp_name="/Fetcher_tb/f_dwant" type="logic">
       <obj_property name="ElementShortName">f_dwant</obj_property>
       <obj_property name="ObjectShortName">f_dwant</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/Fetcher_tb/fetcher/s_want" type="logic">
-      <obj_property name="ElementShortName">s_want</obj_property>
-      <obj_property name="ObjectShortName">s_want</obj_property>
+   <wvobject fp_name="/Fetcher_tb/fetcher/last_dvalid" type="logic">
+      <obj_property name="ElementShortName">last_dvalid</obj_property>
+      <obj_property name="ObjectShortName">last_dvalid</obj_property>
    </wvobject>
-   <wvobject fp_name="/Fetcher_tb/fetcher/s_allow_read" type="logic">
-      <obj_property name="ElementShortName">s_allow_read</obj_property>
-      <obj_property name="ObjectShortName">s_allow_read</obj_property>
+   <wvobject fp_name="/Fetcher_tb/fetcher/last_dwant" type="logic">
+      <obj_property name="ElementShortName">last_dwant</obj_property>
+      <obj_property name="ObjectShortName">last_dwant</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Fetcher_tb/fetcher/last_diff_pc" type="logic">
+      <obj_property name="ElementShortName">last_diff_pc</obj_property>
+      <obj_property name="ObjectShortName">last_diff_pc</obj_property>
    </wvobject>
    <wvobject fp_name="/Fetcher_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
