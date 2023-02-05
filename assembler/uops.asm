@@ -41,7 +41,26 @@ reset:
     mov PC, 0
     con PC, 0xFFF0
 
+# ======================================
+# ALU ops
+alu2_dd:
+    con A,  1
+    mov B, 2
+    mov C, 2
+    mov D, 2
+    mov E, 2
+alu2_di:
+    con A,  1
+alu2_id:
+    con A,  1
 alu2_ii:
-    mov A,  0, !FALLTHROUGH
-alu2_ir:
+    con A,  1
+
+alu3_dd:
+    mov A,  0
+alu3_di:
+    mov A,  0
+alu3_id:
+    mov A,  0
+alu3_ii:
     mov A,  0

@@ -25,12 +25,11 @@ entity Decoder is
 end Decoder;
 
 architecture Behavioral of Decoder is
-
 -- ##############################################################
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUtopROM is array (0 to 29-1) of TUop;
+type TArrUtopROM is array (0 to 46-1) of TUop;
 signal uops_rom : TArrUtopROM := (
 	/* 000 */ 13x"0000", --     nop # dummy instruction at index 0 & 1
 	/* 001 */ 13x"0000", --     nop, !FALLTHROUGH
@@ -66,22 +65,44 @@ signal uops_rom : TArrUtopROM := (
 	                     --     # reset Fetcher
 	/* 023 */ 13x"0160", --     mov PC, 0
 	/* 024 */ 13x"0261", --     con PC, 0xFFF0
-	/* 025 */ 13x"1fff", -- alu2_ii:
-	/* 026 */ 13x"0110", --     mov A,  0, !FALLTHROUGH
-	                     -- alu2_ir:
-	/* 027 */ 13x"0110", --     mov A,  0
-	/* 028 */ 13x"1fff"  -- end_of_rom:
+	                     -- # ======================================
+	                     -- # ALU ops
+	/* 025 */ 13x"1fff", -- alu2_dd:
+	/* 026 */ 13x"0210", --     con A,  1
+	/* 027 */ 13x"012c", --     mov B, 2
+	/* 028 */ 13x"013c", --     mov C, 2
+	/* 029 */ 13x"014c", --     mov D, 2
+	/* 030 */ 13x"018c", --     mov E, 2
+	/* 031 */ 13x"1fff", -- alu2_di:
+	/* 032 */ 13x"0210", --     con A,  1
+	/* 033 */ 13x"1fff", -- alu2_id:
+	/* 034 */ 13x"0210", --     con A,  1
+	/* 035 */ 13x"1fff", -- alu2_ii:
+	/* 036 */ 13x"0210", --     con A,  1
+	/* 037 */ 13x"1fff", -- alu3_dd:
+	/* 038 */ 13x"0110", --     mov A,  0
+	/* 039 */ 13x"1fff", -- alu3_di:
+	/* 040 */ 13x"0110", --     mov A,  0
+	/* 041 */ 13x"1fff", -- alu3_id:
+	/* 042 */ 13x"0110", --     mov A,  0
+	/* 043 */ 13x"1fff", -- alu3_ii:
+	/* 044 */ 13x"0110", --     mov A,  0
+	/* 045 */ 13x"1fff"  -- end_of_rom:
 ); -- uops_rom ---------------------------------------------------
 
 constant uops_label_reset : integer := 2;
-constant uops_label_alu2_ii : integer := 25;
-constant uops_label_alu2_ir : integer := 27;
+constant uops_label_alu2_dd : integer := 26;
+constant uops_label_alu2_di : integer := 32;
+constant uops_label_alu2_id : integer := 34;
+constant uops_label_alu2_ii : integer := 36;
+constant uops_label_alu3_dd : integer := 38;
+constant uops_label_alu3_di : integer := 40;
+constant uops_label_alu3_id : integer := 42;
+constant uops_label_alu3_ii : integer := 44;
 
 -- ##############################################################
 -- ## END UOPS ROM
 -- ##############################################################
-
-
 
 constant InstIdxW : Integer := 4; -- 10 bytes, longest instruction len
 constant NArgsW : Integer := 2; -- max 3 arguments
@@ -96,7 +117,7 @@ begin
 	brk <= '1' when uops_rom(to_integer(s_idx) + 1) = 13x"1fff" else '0';
 
 	process(clk, reset)
-		variable next_idx : TIndex;
+		variable next_idx, op_prog : TIndex;
 		variable op : unsigned(OpW-1 downto 0); -- opcode portion, without args, from instruction stream
 	
 		variable need_a, need_b, need_c : unsigned(3-1 downto 0); -- each arg takes from 1 to 3 bytes
@@ -111,6 +132,7 @@ begin
 			booted <= '0';
 		elsif rising_edge(clk) and hold = '0' then
 			need := (others => '0');
+			op_prog := (others => '0');
 
 			if s_idx /= 0 and brk = '0' then
 				next_idx := s_idx + 1;
@@ -127,8 +149,22 @@ begin
 				if op(4 downto 0) <= 13 then -- ALU with 2/3 args
 					if op(5) = '0' then
 						nargs := to_unsigned(2, NArgsW);
+						case inst_in(0)(1 downto 0) is
+							when "00" => op_prog := to_unsigned(uops_label_alu2_dd, UopIdxW);
+							when "01" => op_prog := to_unsigned(uops_label_alu2_di, UopIdxW);
+							when "10" => op_prog := to_unsigned(uops_label_alu2_id, UopIdxW);
+							when "11" => op_prog := to_unsigned(uops_label_alu2_ii, UopIdxW);
+							when others => null;
+						end case;
 					else
 						nargs := to_unsigned(3, NArgsW);
+						case inst_in(0)(1 downto 0) is
+							when "00" => op_prog := to_unsigned(uops_label_alu3_dd, UopIdxW);
+							when "01" => op_prog := to_unsigned(uops_label_alu3_di, UopIdxW);
+							when "10" => op_prog := to_unsigned(uops_label_alu3_id, UopIdxW);
+							when "11" => op_prog := to_unsigned(uops_label_alu3_ii, UopIdxW);
+							when others => null;
+						end case;
 					end if;
 				elsif op(4 downto 0) <= 18 then -- ALU with 1/2 args
 					if op(5) = '0' then
@@ -180,10 +216,9 @@ begin
 
 					need := to_unsigned(1, InstIdxW) + need_a + need_b + need_c;
 
-					if need >= avail then
+					if next_idx = 0 and avail >= need then
 						-- can decode now
-						-- TODO
-						next_idx := (others => '0');
+						next_idx := op_prog;
 					end if;
 				end if;
 

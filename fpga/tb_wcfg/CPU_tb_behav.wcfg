@@ -12,15 +12,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="21141666666fs"></ZoomStartTime>
-      <ZoomEndTime time="43771666667fs"></ZoomEndTime>
-      <Cursor1Time time="40000000000fs"></Cursor1Time>
+      <ZoomStartTime time="23431760000fs"></ZoomStartTime>
+      <ZoomEndTime time="46121760001fs"></ZoomEndTime>
+      <Cursor1Time time="28011760000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="183"></NameColumnWidth>
+      <NameColumnWidth column_width="177"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="14" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -49,72 +49,50 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[1]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[1][15:0]</obj_property>
          <obj_property name="ObjectShortName">[1][15:0]</obj_property>
-         <obj_property name="label">A</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[2]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[2][15:0]</obj_property>
          <obj_property name="ObjectShortName">[2][15:0]</obj_property>
-         <obj_property name="label">B</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[3]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[3][15:0]</obj_property>
          <obj_property name="ObjectShortName">[3][15:0]</obj_property>
-         <obj_property name="label">C</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[4]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[4][15:0]</obj_property>
          <obj_property name="ObjectShortName">[4][15:0]</obj_property>
-         <obj_property name="label">D</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[5]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[5][15:0]</obj_property>
          <obj_property name="ObjectShortName">[5][15:0]</obj_property>
-         <obj_property name="label">SP</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[6]" type="array">
          <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[6][15:0]</obj_property>
          <obj_property name="ObjectShortName">[6][15:0]</obj_property>
          <obj_property name="label">PC</obj_property>
-         <obj_property name="CustomSignalColor">#FF0000</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[7]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[7][15:0]</obj_property>
          <obj_property name="ObjectShortName">[7][15:0]</obj_property>
-         <obj_property name="label">FL</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[8]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[8][15:0]</obj_property>
          <obj_property name="ObjectShortName">[8][15:0]</obj_property>
-         <obj_property name="label">E</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[9]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[9][15:0]</obj_property>
          <obj_property name="ObjectShortName">[9][15:0]</obj_property>
-         <obj_property name="label">F</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[10]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[10][15:0]</obj_property>
          <obj_property name="ObjectShortName">[10][15:0]</obj_property>
-         <obj_property name="label">G</obj_property>
       </wvobject>
       <wvobject fp_name="/CPU_tb/cpu/engine/a_regs[11]" type="array">
-         <obj_property name="DisplayName">label</obj_property>
          <obj_property name="ElementShortName">[11][15:0]</obj_property>
          <obj_property name="ObjectShortName">[11][15:0]</obj_property>
-         <obj_property name="label">H</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/en" type="logic">
@@ -145,6 +123,9 @@
    <wvobject fp_name="/CPU_tb/cpu/fet_buffer" type="array">
       <obj_property name="ElementShortName">fet_buffer[0:10][7:0]</obj_property>
       <obj_property name="ObjectShortName">fet_buffer[0:10][7:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/uop_done" type="logic">
+      <obj_property name="ElementShortName">uop_done</obj_property>
+      <obj_property name="ObjectShortName">uop_done</obj_property>
    </wvobject>
 </wave_config>

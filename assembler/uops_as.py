@@ -19,9 +19,9 @@ CMDS = (
     ('ARG', ('PUT', 'GET_0', 'GET_1', 'GET_2')),
     ('ALU', ('ADD', 'SUB', 'AND', 'OP_COPY')),
     ('CMP', ('UNSIGNED', 'SIGNED')),
-    ('JMP', ('ALWAYS', 'COND_COPY')),
+    ('CMV', ('EQ', 'LT', 'LE', 'COND_COPY')), # conditional move
     ('_', ()),
-    ('BRK', ()),
+    ('BRK', ()), # spacer between blocks
 )
 assert len(CMDS) == 8
 
@@ -67,8 +67,8 @@ for lineidx, s in enumerate(lines_proc):
     origs = lines[lineidx].rstrip()
     if s == '' or s.endswith(':'):
         if s.endswith(':'):
-            label_map[s[:-1]] = romlen
             out_cmd('1'*13 if not fallthrough else None, origs)
+            label_map[s[:-1]] = romlen
         elif origs != '':
             out_cmd(None, origs)
         continue

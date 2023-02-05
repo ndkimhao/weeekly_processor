@@ -29,7 +29,7 @@ signal fet_dvalid : std_logic;
 
 signal dec_hold : std_logic;
 signal dec_ready : std_logic;
-signal dec_break : std_logic;
+signal dec_done : std_logic;
 signal dec_uop : TUop;
 signal dec_inst_len : TInstBufferIdx;
 signal dec_booted : std_logic;
@@ -97,7 +97,7 @@ begin
 		inst_in => fet_buffer,
 
 		ready => dec_ready, -- uop is ready
-		brk => dec_break, -- last uop of the block
+		brk => dec_done, -- last uop of the block
 		uop => dec_uop,
 		used_len => dec_inst_len,
 		
@@ -110,6 +110,8 @@ begin
 		uop_ready => dec_ready,
 		uop_hold => dec_hold,
 		uop => dec_uop,
+		uop_done => dec_done,
+		inst_len => dec_inst_len,
 
 		den => eng_den,
 		dwr => eng_dwr,

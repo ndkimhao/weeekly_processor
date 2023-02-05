@@ -2,7 +2,7 @@
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUtopROM is array (0 to 29-1) of TUop;
+type TArrUtopROM is array (0 to 46-1) of TUop;
 signal uops_rom : TArrUtopROM := (
 	/* 000 */ 13x"0000", --     nop # dummy instruction at index 0 & 1
 	/* 001 */ 13x"0000", --     nop, !FALLTHROUGH
@@ -38,16 +38,40 @@ signal uops_rom : TArrUtopROM := (
 	                     --     # reset Fetcher
 	/* 023 */ 13x"0160", --     mov PC, 0
 	/* 024 */ 13x"0261", --     con PC, 0xFFF0
-	/* 025 */ 13x"1fff", -- alu2_ii:
-	/* 026 */ 13x"0110", --     mov A,  0, !FALLTHROUGH
-	                     -- alu2_ir:
-	/* 027 */ 13x"0110", --     mov A,  0
-	/* 028 */ 13x"1fff"  -- end_of_rom:
+	                     -- # ======================================
+	                     -- # ALU ops
+	/* 025 */ 13x"1fff", -- alu2_dd:
+	/* 026 */ 13x"0210", --     con A,  1
+	/* 027 */ 13x"012c", --     mov B, 2
+	/* 028 */ 13x"013c", --     mov C, 2
+	/* 029 */ 13x"014c", --     mov D, 2
+	/* 030 */ 13x"018c", --     mov E, 2
+	/* 031 */ 13x"1fff", -- alu2_di:
+	/* 032 */ 13x"0210", --     con A,  1
+	/* 033 */ 13x"1fff", -- alu2_id:
+	/* 034 */ 13x"0210", --     con A,  1
+	/* 035 */ 13x"1fff", -- alu2_ii:
+	/* 036 */ 13x"0210", --     con A,  1
+	/* 037 */ 13x"1fff", -- alu3_dd:
+	/* 038 */ 13x"0110", --     mov A,  0
+	/* 039 */ 13x"1fff", -- alu3_di:
+	/* 040 */ 13x"0110", --     mov A,  0
+	/* 041 */ 13x"1fff", -- alu3_id:
+	/* 042 */ 13x"0110", --     mov A,  0
+	/* 043 */ 13x"1fff", -- alu3_ii:
+	/* 044 */ 13x"0110", --     mov A,  0
+	/* 045 */ 13x"1fff"  -- end_of_rom:
 ); -- uops_rom ---------------------------------------------------
 
 constant uops_label_reset : integer := 2;
-constant uops_label_alu2_ii : integer := 25;
-constant uops_label_alu2_ir : integer := 27;
+constant uops_label_alu2_dd : integer := 26;
+constant uops_label_alu2_di : integer := 32;
+constant uops_label_alu2_id : integer := 34;
+constant uops_label_alu2_ii : integer := 36;
+constant uops_label_alu3_dd : integer := 38;
+constant uops_label_alu3_di : integer := 40;
+constant uops_label_alu3_id : integer := 42;
+constant uops_label_alu3_ii : integer := 44;
 
 -- ##############################################################
 -- ## END UOPS ROM
@@ -57,7 +81,7 @@ constant uops_label_alu2_ir : integer := 27;
 
 type TArrUopsConstsROM is array (0 to 2-1) of TData;
 signal uops_consts_rom : TArrUopsConstsROM := (
-	x"0001", -- used 1 times
+	x"0001", -- used 5 times
 	x"FFF0"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
 

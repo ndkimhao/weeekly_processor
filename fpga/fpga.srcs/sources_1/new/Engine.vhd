@@ -12,6 +12,8 @@ entity Engine is
 		uop_ready : in std_logic;
 		uop_hold : out std_logic; -- pause uop decode
 		uop : in TUop;
+		uop_done : in std_logic; -- last uop of the current instruction
+		inst_len : in TInstBufferIdx;
 
 		den : out std_logic;
 		dwr : out std_logic;
@@ -148,6 +150,11 @@ begin
 					end if;
 					a_regs(to_integer(r_idx)) <= r_res;
 				end if; -- r_write
+
+				if uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
+					a_regs(REGID_PC) <= 
+						std_logic_vector(unsigned(a_regs(REGID_PC)) + inst_len);
+				end if;
 
 			end if; -- uop_ready
 
