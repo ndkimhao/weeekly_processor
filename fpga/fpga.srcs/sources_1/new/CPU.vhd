@@ -8,7 +8,9 @@ use work.Types.all;
 entity CPU is
 	port (
 		clk : in std_logic;
-		reset : in std_logic
+		reset : in std_logic;
+		
+		led : out std_logic_vector(8-1 downto 0)
 	);
 end CPU;
 
@@ -141,5 +143,7 @@ begin
 	mem_din <= eng_dout; -- fetcher never writes
 
 	fet_dvalid <= mem_en and not eng_den;
+	
+	led <= reg_a(7 downto 0);
 
 end Behavioral;

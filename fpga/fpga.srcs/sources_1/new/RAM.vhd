@@ -18,23 +18,38 @@ end RAM;
 
 architecture Behavioral of RAM is
 
-type TArrRam is array (RAMSize-1 downto 0) of TByte;
+type TArrRam is array (RAMSize/2-1 downto 0) of TByte;
 
-signal a_ram : TArrRam := (others => (others => '0'));
+signal ram_a : TArrRam := (others => (others => '0'));
+signal ram_b : TArrRam := (others => (others => '0'));
+
+signal addr2 : unsigned(PhyAddrWidth-2 downto 0);
 
 begin
+
+	addr2 <= unsigned(addr(PhyAddrWidth-1 downto 1));
 
 	process(clk)
 	begin
 	
 		if rising_edge(clk) then
 			if en = '1' then
-				if wr = '1' then
-					a_ram(to_integer(unsigned(addr))    ) <= din(7 downto 0);
-					a_ram(to_integer(unsigned(addr)) + 1) <= din(15 downto 8);
-					dout <= din;
+				if addr(0) = '0' then
+					if wr = '1' then
+						ram_b(to_integer(addr2)) <= din(15 downto 8);
+						ram_a(to_integer(addr2)) <= din(7 downto 0);
+						dout <= din;
+					else
+						dout <= ram_b(to_integer(addr2)) & ram_a(to_integer(addr2));
+					end if;
 				else
-					dout <= a_ram(to_integer(unsigned(addr)) + 1) & a_ram(to_integer(unsigned(addr)));
+					if wr = '1' then
+						ram_a(to_integer(addr2)+1) <= din(15 downto 8);
+						ram_b(to_integer(addr2)) <= din(7 downto 0);
+						dout <= din;
+					else
+						dout <= ram_a(to_integer(addr2)+1) & ram_b(to_integer(addr2));
+					end if;
 				end if;
 			else
 				dout <= (others => '0');
