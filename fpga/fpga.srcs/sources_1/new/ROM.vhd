@@ -19,6 +19,8 @@ architecture Behavioral of ROM is
 constant ROMSize : integer := 6;
 type TArrROM is array(0 to ROMSize) of TByte;
 signal data_rom : TArrROM := (
+	x"00", x"00", x"00", -- ADD 0, 0
+	x"D8", -- HALT
 	others => x"00"
 );
 

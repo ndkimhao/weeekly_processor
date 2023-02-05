@@ -21,11 +21,13 @@ architecture Behavioral of MemoryController is
 signal a : unsigned(PhyAddrWidth-1 downto 0);
 signal en_ram, en_rom : std_logic;
 signal ram_out, rom_out : TData;
+signal rom_addr : TPhyAddr;
 
 begin
 	a <= unsigned(addr);
 	en_ram <= en when a < RAMSize else '0';
-	en_rom <= en when x"FE0000" <= a and a < x"FF0000" else '0';
+	en_rom <= en when x"FF0000" <= a and a < x"FF8000" else '0';
+	rom_addr <= x"00" & addr(15 downto 0);
 
 	ram : entity work.RAM port map (
 		clk => clk,
@@ -38,7 +40,7 @@ begin
 
 	rom : entity work.ROM port map (
 		clk => clk,
-		addr => addr,
+		addr => rom_addr,
 		dout => rom_out
 	);
 

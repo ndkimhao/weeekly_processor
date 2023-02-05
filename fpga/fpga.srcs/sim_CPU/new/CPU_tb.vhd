@@ -32,7 +32,7 @@ begin
 		reset <= '0'; wait for 1us;
 		
 		wait for 100us;
-		
+
 		wait for 1us;
 		std.env.finish;
 	end process;

@@ -28,6 +28,7 @@ signal fet_buffer : TInstBuffer;
 signal fet_dwant : std_logic;
 signal fet_daddr : TAddr;
 signal fet_dvalid : std_logic;
+signal fet_inst_pc : TAddr;
 
 signal dec_hold : std_logic;
 signal dec_ready : std_logic;
@@ -87,16 +88,23 @@ begin
 		dvalid => fet_dvalid, -- din is valid
 
 		avail => fet_avail,
-		inst_buffer => fet_buffer
+		inst_buffer => fet_buffer,
+		inst_pc => fet_inst_pc,
+
+		dec_done => dec_done,
+		dec_inst_len => dec_inst_len
 	);
-	
+
 	decoder : entity work.Decoder port map (
 		clk => clk,
 		reset => reset,
 
 		hold => dec_hold,
+		pc => reg_pc,
+
 		avail => fet_avail,
 		inst_in => fet_buffer,
+		inst_pc => fet_inst_pc,
 
 		ready => dec_ready, -- uop is ready
 		brk => dec_done, -- last uop of the block

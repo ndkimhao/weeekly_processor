@@ -16,21 +16,26 @@ reset:
 
     # --------------------
     # reset MMU
+    # phy=A:B, idx=E, start=F, end=G
     con H, 1
+    mov E, H
     mov F, 0
-    mov G, 0
-    alu G, H, SUB
-
-    mov E, 0
-    mmu # phy=A:B, idx=E, start=F, end=G
+    con G, 0xFFFF
+    mmu # idx=1, 0000-FFFF to 0000-FFFF
 
     mov G, 0
     alu E, H, ADD
     mmu # idx=1
 
+    con A, 0xFF # and B = 0
+    con F, 0x8000
+    con G, 0xFFFF
     alu E, H, ADD
     mmu # idx=2
 
+    mov A, 0
+    mov F, 0
+    mov G, 0
     alu E, H, ADD
     mmu # idx=3
 
@@ -39,12 +44,12 @@ reset:
     # --------------------
     # reset Fetcher
     mov PC, 0
-    con PC, 0xFFF0
+    con PC, 0x8000
 
 # ======================================
 # ALU ops
 alu2_dd:
-    con A,  1
+    con A,  0xCA
     mov B, 2
     mov C, 2
     mov D, 2
@@ -64,3 +69,8 @@ alu3_id:
     mov A,  0
 alu3_ii:
     mov A,  0
+
+# ======================================
+# Misc
+halt:
+    mov PC, PC

@@ -40,10 +40,13 @@ end Engine;
 architecture Behavioral of Engine is
 
 
-type TArrUopsConstsROM is array (0 to 2-1) of TData;
+type TArrUopsConstsROM is array (0 to 5-1) of TData;
 signal uops_consts_rom : TArrUopsConstsROM := (
-	x"0001", -- used 1 times
-	x"FFF0"  -- used 1 times
+	x"0001", -- used 4 times
+	x"FFFF", -- used 2 times
+	x"00FF", -- used 1 times
+	x"8000", -- used 2 times
+	x"00CA"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
 
 

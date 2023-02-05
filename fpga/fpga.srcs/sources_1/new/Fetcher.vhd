@@ -17,7 +17,11 @@ entity Fetcher is
 		dvalid: in std_logic; -- allow to read din in the next cycle
 
 		avail : out TInstBufferIdx;
-		inst_buffer : out TInstBuffer
+		inst_buffer : out TInstBuffer;
+		inst_pc : out TAddr;
+
+		dec_done : in std_logic;
+		dec_inst_len : in TInstBufferIdx
 	);
 end Fetcher;
 
@@ -39,6 +43,7 @@ begin
 		variable diff_pc : unsigned(AddrWidth-1 downto 0);
 		variable new_avail, lookahead : TInstBufferIdx;
 		variable new_inst : TInstBuffer;
+		variable virt_pc : TAddr;
 	begin	
 		if reset = '1' then
 			dwant <= '0';
@@ -50,10 +55,14 @@ begin
 			last_dvalid <= '0';
 			last_diff_pc <= '0';
 		elsif rising_edge(clk) then
+			virt_pc := pc;
+			if dec_done = '1' then
+				virt_pc := std_logic_vector(unsigned(virt_pc) + dec_inst_len);
+			end if;
 
 			new_inst := inst_buffer;
-			diff_pc := unsigned(pc) - unsigned(s_old_pc);
-			s_old_pc <= pc;
+			diff_pc := unsigned(virt_pc) - unsigned(s_old_pc);
+			s_old_pc <= virt_pc;
 			if diff_pc < avail then -- avail <= 11, so 0 <= diff_pc <= 10
 				case diff_pc is
 					when to_unsigned(1, AddrWidth) =>
@@ -98,7 +107,7 @@ begin
 
 			if lookahead < MaxInstructionLen then
 				dwant <= '1';
-				daddr <= std_logic_vector(unsigned(pc) + lookahead);
+				daddr <= std_logic_vector(unsigned(virt_pc) + lookahead);
 			else
 				dwant <= '0';
 				daddr <= (others => '0');
@@ -114,6 +123,7 @@ begin
 
 			avail <= new_avail;
 			inst_buffer <= new_inst;
+			inst_pc <= virt_pc;
 		end if; -- rising_edge(clk)
 	end process;
 
