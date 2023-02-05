@@ -20,6 +20,7 @@ architecture Behavioral of MemoryController is
 
 signal a : unsigned(PhyAddrWidth-1 downto 0);
 signal en_ram, en_rom : std_logic;
+signal last_en_ram, last_en_rom : std_logic;
 signal ram_out, rom_out : TData;
 signal rom_addr : TPhyAddr;
 
@@ -44,8 +45,16 @@ begin
 		dout => rom_out
 	);
 
-	dout <= ram_out when en_ram = '1' else
-			rom_out when en_rom = '1' else
+	dout <= ram_out when last_en_ram = '1' else
+			rom_out when last_en_rom = '1' else
 			(others => '0');
+
+	process(clk)
+	begin
+		if rising_edge(clk) then
+			last_en_ram <= en_ram;
+			last_en_rom <= en_rom;
+		end if;
+	end process;
 
 end Behavioral;

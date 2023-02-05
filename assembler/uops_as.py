@@ -9,7 +9,7 @@ import re
 
 REGS = (
     '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
-    'E', 'F', 'G', 'H', '2', '', '', ''
+    'X', 'Y', 'Z', 'K', '2', '', '', ''
 )
 assert len(REGS) == 16
 
@@ -19,9 +19,9 @@ CMDS = (
     ('ARG', ('PUT', 'GET_0', 'GET_1', 'GET_2')),
     ('ALU', ('ADD', 'SUB', 'AND', 'OP_COPY')),
     ('CMP', ('UNSIGNED', 'SIGNED')),
-    ('CMV', ('EQ', 'LT', 'LE', 'COND_COPY')), # conditional move
+    ('CMV', ('EQ', 'LT', 'LE', 'COND_COPY')),  # conditional move
     ('_', ()),
-    ('BRK', ()), # spacer between blocks
+    ('BRK', ()),  # spacer between blocks
 )
 assert len(CMDS) == 8
 
@@ -87,6 +87,7 @@ for lineidx, s in enumerate(lines_proc):
         nargs -= 1
 
     argstr = ''
+    aid = 0
     for i in range(nargs):
         aid = REGS_MAP[ps[1 + i]]
         argstr += f'{aid:04b}'
@@ -103,7 +104,7 @@ for lineidx, s in enumerate(lines_proc):
         const_map_cnt[v] = const_map_cnt.get(v, 0) + 1
 
     while len(argstr) < 8:
-        argstr += '0000'
+        argstr += f'{aid:04b}'  # repeat last register
 
     bincode = f'{cid:05b}{argstr}'
     out_cmd(bincode, origs)
@@ -123,7 +124,7 @@ out = [
 ]
 
 for lbl, idx in label_map.items():
-    out.append(f'constant uops_label_{lbl} : integer := {idx};')
+    out.append(f'constant label_{lbl} : integer := {idx};')
 
 out += [
     f'',

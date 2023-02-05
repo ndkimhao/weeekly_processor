@@ -29,6 +29,7 @@ lines = [re.sub(r'^(.*)#.*$', r'\1', s).strip() for s in lines_raw]
 
 # state
 romlen = 0
+offset = 0
 out = []
 label_map = {}
 
@@ -66,7 +67,7 @@ def assemble(final):
         if s == '' or s.endswith(':'):
             out_cmd('', origs)
             if s.endswith(':'):
-                label_map[s[:-1]] = romlen
+                label_map[s[:-1]] = romlen + offset
             continue
 
         bincode = ''
@@ -81,7 +82,7 @@ def assemble(final):
         cmd = ps[0].upper()
         if cmd.startswith('.'):
             cmd = cmd.lower()
-            assert cmd in ('.string', '.db', '.dw')
+            assert cmd in ('.string', '.db', '.dw', '.offset')
             if cmd == '.string':
                 shlexer = shlex.shlex(origs, posix=True)
                 stringparts = list(shlexer)[2:]
@@ -101,7 +102,9 @@ def assemble(final):
                         bincode += f'{ord(arg[1]):08b} '
                     else:
                         bincode += f'{parse_int(arg):08b} '
-            out_cmd(f'{bincode} {bintail}', origs)
+            elif cmd == '.offset':
+                offset = parse_int(pargs[0])
+            out_cmd(f'{bincode}', origs)
             continue
 
         nargs = len(pargs)
@@ -174,6 +177,7 @@ def assemble(final):
 
 assemble(False)  # collect labels
 romlen = 0
+offset = 0
 out = []
 assemble(True)
 

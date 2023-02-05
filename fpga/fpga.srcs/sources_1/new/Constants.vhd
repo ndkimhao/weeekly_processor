@@ -17,7 +17,8 @@ package Constants is
 
 	constant RAMSize : integer := 262144; -- 256KB
 
-	constant MaxInstructionLen : integer := 10; -- 10 bytes: 1 op + 3*3 args
+	constant InstructionIndexWidth : integer := 5;
+	constant MaxInstructionLen : integer := 16; -- 10 bytes: 1 op + 3*3 args
 
 	constant UopLen : integer := 13;
 	constant UcodeHeadLen : integer := 3;
@@ -34,7 +35,7 @@ package Constants is
 	subtype TData is std_logic_vector(DataWidth-1 downto 0);
 	subtype TByte is std_logic_vector(7 downto 0);
 
-	subtype TInstBufferIdx is unsigned(4-1 downto 0);
+	subtype TInstBufferIdx is unsigned(InstructionIndexWidth-1 downto 0);
 	type TInstBuffer is array(0 to MaxInstructionLen) of TByte; -- allow 1 extra byte at the end
 
 	subtype TUop is std_logic_vector(UopLen-1 downto 0);

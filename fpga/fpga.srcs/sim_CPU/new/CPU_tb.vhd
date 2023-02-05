@@ -31,7 +31,7 @@ begin
 		reset <= '1'; wait for 1us;
 		reset <= '0'; wait for 1us;
 		
-		wait for 100us;
+		wait for 10000us;
 
 		wait for 1us;
 		std.env.finish;

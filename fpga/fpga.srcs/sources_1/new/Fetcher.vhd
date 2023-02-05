@@ -27,11 +27,6 @@ end Fetcher;
 
 architecture Behavioral of Fetcher is
 
-constant SizeW : Integer := 4;
-constant NArgsW : Integer := 2;
-constant OpW : Integer := 6;
-subtype TSize is unsigned(SizeW-1 downto 0); -- in multiples of 2
-
 signal s_old_pc : TAddr;
 signal last_dwant : std_logic;
 signal last_dvalid : std_logic;
@@ -63,7 +58,7 @@ begin
 			new_inst := inst_buffer;
 			diff_pc := unsigned(virt_pc) - unsigned(s_old_pc);
 			s_old_pc <= virt_pc;
-			if diff_pc < avail then -- avail <= 11, so 0 <= diff_pc <= 10
+			if diff_pc < avail then -- avail <= 17, so 0 <= diff_pc <= 16
 				case diff_pc is
 					when to_unsigned(1, AddrWidth) =>
 						new_inst(0 to MaxInstructionLen-1) := new_inst(1 to MaxInstructionLen);
@@ -85,10 +80,22 @@ begin
 						new_inst(0 to MaxInstructionLen-9) := new_inst(9 to MaxInstructionLen);
 					when to_unsigned(10, AddrWidth) =>
 						new_inst(0 to MaxInstructionLen-10) := new_inst(10 to MaxInstructionLen);
+					when to_unsigned(11, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-11) := new_inst(11 to MaxInstructionLen);
+					when to_unsigned(12, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-12) := new_inst(12 to MaxInstructionLen);
+					when to_unsigned(13, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-13) := new_inst(13 to MaxInstructionLen);
+					when to_unsigned(14, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-14) := new_inst(14 to MaxInstructionLen);
+					when to_unsigned(15, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-15) := new_inst(15 to MaxInstructionLen);
+					when to_unsigned(16, AddrWidth) =>
+						new_inst(0 to MaxInstructionLen-16) := new_inst(16 to MaxInstructionLen);
 					when others =>
 						null;
 				end case;
-				new_avail := avail - diff_pc(3 downto 0);
+				new_avail := avail - diff_pc(4 downto 0);
 			else
 				new_avail := (others => '0');
 			end if;

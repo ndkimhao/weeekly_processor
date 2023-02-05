@@ -1,4 +1,11 @@
+.offset 0x8000
+
 boot:
+    mov [0xFA], 0x123
+    mov A, [0xFA]
+    add A, 0x321
+    mov C, 0x333
+    sub D, A, C
     jmp $hello
 
 function_a:
@@ -15,6 +22,7 @@ hello:
     mov B, 12345
     mov B, 0xFF
     mov B, 0xFFAA
+    add D, A + 234, C*2 + D
     call $function_a
     halt
 

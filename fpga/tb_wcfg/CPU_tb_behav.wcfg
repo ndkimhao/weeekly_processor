@@ -13,15 +13,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="23001660000fs"></ZoomStartTime>
-      <ZoomEndTime time="47574177840fs"></ZoomEndTime>
-      <Cursor1Time time="39365384000fs"></Cursor1Time>
+      <ZoomStartTime time="3555945000fs"></ZoomStartTime>
+      <ZoomEndTime time="18591876601fs"></ZoomEndTime>
+      <Cursor1Time time="44347572000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="165"></NameColumnWidth>
+      <NameColumnWidth column_width="123"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="16" />
+   <WVObjectSize size="30" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -43,13 +43,6 @@
       <obj_property name="ElementShortName">mmu_cfg_write</obj_property>
       <obj_property name="ObjectShortName">mmu_cfg_write</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/a_regs" type="array">
-      <obj_property name="ElementShortName">a_regs[1:11][15:0]</obj_property>
-      <obj_property name="ObjectShortName">a_regs[1:11][15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-   </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/fetcher/inst_pc" type="array">
       <obj_property name="ElementShortName">inst_pc[15:0]</obj_property>
       <obj_property name="ObjectShortName">inst_pc[15:0]</obj_property>
@@ -65,14 +58,20 @@
    <wvobject fp_name="/CPU_tb/cpu/mem/addr" type="array">
       <obj_property name="ElementShortName">addr[23:0]</obj_property>
       <obj_property name="ObjectShortName">addr[23:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/din" type="array">
       <obj_property name="ElementShortName">din[15:0]</obj_property>
       <obj_property name="ObjectShortName">din[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/dout" type="array">
       <obj_property name="ElementShortName">dout[15:0]</obj_property>
       <obj_property name="ObjectShortName">dout[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/fetcher/avail" type="array">
       <obj_property name="ElementShortName">avail[3:0]</obj_property>
@@ -87,9 +86,90 @@
       <obj_property name="ElementShortName">uop_done</obj_property>
       <obj_property name="ObjectShortName">uop_done</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/fetcher/inst_buffer" type="array">
-      <obj_property name="ElementShortName">inst_buffer[0:10][7:0]</obj_property>
-      <obj_property name="ObjectShortName">inst_buffer[0:10][7:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_a" type="array">
+      <obj_property name="ElementShortName">reg_a[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_a[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_b" type="array">
+      <obj_property name="ElementShortName">reg_b[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_b[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_c" type="array">
+      <obj_property name="ElementShortName">reg_c[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_c[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_d" type="array">
+      <obj_property name="ElementShortName">reg_d[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_d[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_sp" type="array">
+      <obj_property name="ElementShortName">reg_sp[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_sp[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_pc" type="array">
+      <obj_property name="ElementShortName">reg_pc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_pc[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/fetcher/inst_pc" type="array">
+      <obj_property name="ElementShortName">inst_pc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_pc[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_fl" type="array">
+      <obj_property name="ElementShortName">reg_fl[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_fl[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_e" type="array">
+      <obj_property name="ElementShortName">reg_e[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_e[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_f" type="array">
+      <obj_property name="ElementShortName">reg_f[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_f[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_g" type="array">
+      <obj_property name="ElementShortName">reg_g[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_g[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/reg_h" type="array">
+      <obj_property name="ElementShortName">reg_h[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_h[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/uop_hold" type="logic">
+      <obj_property name="ElementShortName">uop_hold</obj_property>
+      <obj_property name="ObjectShortName">uop_hold</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/uop_idx" type="array">
+      <obj_property name="ElementShortName">uop_idx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">uop_idx[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/last_den" type="logic">
+      <obj_property name="ElementShortName">last_den</obj_property>
+      <obj_property name="ObjectShortName">last_den</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/last_dwr" type="logic">
+      <obj_property name="ElementShortName">last_dwr</obj_property>
+      <obj_property name="ObjectShortName">last_dwr</obj_property>
    </wvobject>
 </wave_config>

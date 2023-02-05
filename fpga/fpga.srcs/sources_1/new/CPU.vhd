@@ -34,7 +34,9 @@ signal dec_hold : std_logic;
 signal dec_ready : std_logic;
 signal dec_done : std_logic;
 signal dec_uop : TUop;
+signal dec_uop_idx : unsigned(7 downto 0);
 signal dec_inst_len : TInstBufferIdx;
+signal dec_inst_nargs : unsigned(2-1 downto 0);
 signal dec_booted : std_logic;
 
 signal eng_den : std_logic;
@@ -105,10 +107,12 @@ begin
 		avail => fet_avail,
 		inst_in => fet_buffer,
 		inst_pc => fet_inst_pc,
+		inst_nargs => dec_inst_nargs,
 
 		ready => dec_ready, -- uop is ready
 		brk => dec_done, -- last uop of the block
 		uop => dec_uop,
+		uop_idx => dec_uop_idx,
 		used_len => dec_inst_len,
 		
 		booted => dec_booted
@@ -120,8 +124,11 @@ begin
 		uop_ready => dec_ready,
 		uop_hold => dec_hold,
 		uop => dec_uop,
+		uop_idx => dec_uop_idx,
 		uop_done => dec_done,
+		inst_buffer => fet_buffer,
 		inst_len => dec_inst_len,
+		inst_nargs => dec_inst_nargs,
 
 		den => eng_den,
 		dwr => eng_dwr,
