@@ -45,6 +45,7 @@ package Constants is
 	-- ===========================================================================
 	-- || Uops
 	-- ===========================================================================
+	constant UOP_MISC_HEAD : TUcodeHead := "000";
 	constant UOP_NOP : TUcodeTail := "00";
 	constant UOP_MOV : TUcodeTail := "01";
 	constant UOP_CON : TUcodeTail := "10";
@@ -65,9 +66,11 @@ package Constants is
 	constant UOP_CMP_HEAD : TUcodeHead := "100";
 	constant UOP_CMP_UNSIGNED : TUcodeTail := "00";
 	constant UOP_CMP_SIGNED : TUcodeTail := "01";
-	constant UOP_JMP_HEAD : TUcodeHead := "101";
-	constant UOP_JMP_ALWAYS : TUcodeTail := "00";
-	constant UOP_JMP_COND_COPY : TUcodeTail := "01";
+	constant UOP_CMV_HEAD : TUcodeHead := "101";
+	constant UOP_CMV_EQ : TUcodeTail := "00";
+	constant UOP_CMV_LT : TUcodeTail := "01";
+	constant UOP_CMV_LE : TUcodeTail := "10";
+	constant UOP_CMV_COND_COPY : TUcodeTail := "11";
 	constant UOP_BRK_HEAD : TUcodeHead := "111";
 
 	constant REGID_0 : integer := 0;

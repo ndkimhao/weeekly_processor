@@ -118,7 +118,7 @@ begin
 
 				r_write := '0';
 				case uop_head is
-					when "000" =>
+					when UOP_MISC_HEAD =>
 						case uop_tail is
 							when UOP_NOP => null;
 							when UOP_MOV =>
