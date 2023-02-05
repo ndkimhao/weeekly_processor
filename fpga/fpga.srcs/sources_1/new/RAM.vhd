@@ -24,10 +24,12 @@ signal ram_a : TArrRam := (others => (others => '0'));
 signal ram_b : TArrRam := (others => (others => '0'));
 
 signal addr2 : unsigned(PhyAddrWidth-2 downto 0);
+signal addr2plus1 : unsigned(PhyAddrWidth-2 downto 0);
 
 begin
 
 	addr2 <= unsigned(addr(PhyAddrWidth-1 downto 1));
+	addr2plus1 <= addr2 + 1;
 
 	process(clk)
 	begin
@@ -48,7 +50,7 @@ begin
 						ram_b(to_integer(addr2)) <= din(7 downto 0);
 						dout <= din;
 					else
-						dout <= ram_a(to_integer(addr2)+1) & ram_b(to_integer(addr2));
+						dout <= ram_a(to_integer(addr2plus1)) & ram_b(to_integer(addr2));
 					end if;
 				end if;
 			else
