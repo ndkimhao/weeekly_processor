@@ -18,7 +18,9 @@ entity Decoder is
 		ready : out std_logic; -- uop is ready
 		brk   : out std_logic; -- last uop of the block
 		uop   : out TUop;
-		used_len : out TInstBufferIdx
+		used_len : out TInstBufferIdx;
+
+		booted : out std_logic := '0' -- reset vector has been run
 	);
 end Decoder;
 
@@ -28,7 +30,7 @@ architecture Behavioral of Decoder is
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUtopROM is array (0 to 26-1) of TUop;
+type TArrUtopROM is array (0 to 29-1) of TUop;
 signal uops_rom : TArrUtopROM := (
 	/* 000 */ 13x"0000", --     nop # dummy instruction at index 0 & 1
 	/* 001 */ 13x"0000", --     nop, !FALLTHROUGH
@@ -42,11 +44,11 @@ signal uops_rom : TArrUtopROM := (
 	/* 004 */ 13x"0130", --     mov C,  0
 	/* 005 */ 13x"0140", --     mov D,  0
 	/* 006 */ 13x"0150", --     mov SP, 0
-	/* 007 */ 13x"0260", --     con PC, 0xFFF0
+	/* 007 */ 13x"0160", --     mov PC, 0
 	/* 008 */ 13x"0170", --     mov FL, 0
 	                     --     # --------------------
 	                     --     # reset MMU
-	/* 009 */ 13x"02b1", --     con H, 1
+	/* 009 */ 13x"02b0", --     con H, 1
 	/* 010 */ 13x"0190", --     mov F, 0
 	/* 011 */ 13x"01a0", --     mov G, 0
 	/* 012 */ 13x"0dab", --     alu G, H, SUB
@@ -59,16 +61,21 @@ signal uops_rom : TArrUtopROM := (
 	/* 019 */ 13x"0300", --     mmu # idx=2
 	/* 020 */ 13x"0c8b", --     alu E, H, ADD
 	/* 021 */ 13x"0300", --     mmu # idx=3
-	/* 022 */ 13x"1fff", -- alu2_ii:
-	/* 023 */ 13x"0110", --     mov A,  0, !FALLTHROUGH
+	/* 022 */ 13x"0000", --     nop # wait 1 cycle to write MMU config
+	                     --     # --------------------
+	                     --     # reset Fetcher
+	/* 023 */ 13x"0160", --     mov PC, 0
+	/* 024 */ 13x"0261", --     con PC, 0xFFF0
+	/* 025 */ 13x"1fff", -- alu2_ii:
+	/* 026 */ 13x"0110", --     mov A,  0, !FALLTHROUGH
 	                     -- alu2_ir:
-	/* 024 */ 13x"0110", --     mov A,  0
-	/* 025 */ 13x"1fff"  -- end_of_rom:
+	/* 027 */ 13x"0110", --     mov A,  0
+	/* 028 */ 13x"1fff"  -- end_of_rom:
 ); -- uops_rom ---------------------------------------------------
 
 constant uops_label_reset : integer := 2;
-constant uops_label_alu2_ii : integer := 22;
-constant uops_label_alu2_ir : integer := 24;
+constant uops_label_alu2_ii : integer := 25;
+constant uops_label_alu2_ir : integer := 27;
 
 -- ##############################################################
 -- ## END UOPS ROM
@@ -101,6 +108,7 @@ begin
 			s_idx <= to_unsigned(uops_label_reset, UopIdxW) - 1;
 			ready <= '0';
 			used_len <= (others => '0');
+			booted <= '0';
 		elsif rising_edge(clk) and hold = '0' then
 			need := (others => '0');
 
@@ -108,6 +116,7 @@ begin
 				next_idx := s_idx + 1;
 			else
 				next_idx := (others => '0');
+				booted <= '1';
 			end if;
 
 			-- BEGIN DECODE

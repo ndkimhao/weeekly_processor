@@ -32,6 +32,7 @@ signal dec_ready : std_logic;
 signal dec_break : std_logic;
 signal dec_uop : TUop;
 signal dec_inst_len : TInstBufferIdx;
+signal dec_booted : std_logic;
 
 signal eng_den : std_logic;
 signal eng_dwr : std_logic;
@@ -98,7 +99,9 @@ begin
 		ready => dec_ready, -- uop is ready
 		brk => dec_break, -- last uop of the block
 		uop => dec_uop,
-		used_len => dec_inst_len
+		used_len => dec_inst_len,
+		
+		booted => dec_booted
 	);
 
 	engine : entity work.Engine port map (
@@ -129,10 +132,12 @@ begin
 		reg_h => reg_h
 	);
 
-	fet_dvalid <= not eng_den;
-	mem_en <= eng_den or fet_dwant;
+	mem_en <= '0' when dec_booted = '0' else
+				(eng_den or fet_dwant);
 	mem_wr <= eng_dwr when eng_den = '1' else '0';
 	mem_addr <= eng_daddr when eng_den = '1' else fet_daddr;
 	mem_din <= eng_dout; -- fetcher never writes
+
+	fet_dvalid <= mem_en and not eng_den;
 
 end Behavioral;

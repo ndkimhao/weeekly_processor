@@ -11,7 +11,7 @@ reset:
     mov C,  0
     mov D,  0
     mov SP, 0
-    con PC, 0xFFF0
+    mov PC, 0
     mov FL, 0
 
     # --------------------
@@ -33,6 +33,13 @@ reset:
 
     alu E, H, ADD
     mmu # idx=3
+
+    nop # wait 1 cycle to write MMU config
+
+    # --------------------
+    # reset Fetcher
+    mov PC, 0
+    con PC, 0xFFF0
 
 alu2_ii:
     mov A,  0, !FALLTHROUGH

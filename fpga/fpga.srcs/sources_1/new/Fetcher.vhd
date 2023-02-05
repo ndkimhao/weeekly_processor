@@ -28,7 +28,6 @@ constant NArgsW : Integer := 2;
 constant OpW : Integer := 6;
 subtype TSize is unsigned(SizeW-1 downto 0); -- in multiples of 2
 
-signal s_inst : TInstBuffer;
 signal s_old_pc : TAddr;
 signal last_dwant : std_logic;
 signal last_dvalid : std_logic;
