@@ -59,42 +59,11 @@ begin
 			diff_pc := unsigned(virt_pc) - unsigned(s_old_pc);
 			s_old_pc <= virt_pc;
 			if diff_pc < avail then -- avail <= 17, so 0 <= diff_pc <= 16
-				case diff_pc is
-					when to_unsigned(1, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-1) := new_inst(1 to MaxInstructionLen);
-					when to_unsigned(2, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-2) := new_inst(2 to MaxInstructionLen);
-					when to_unsigned(3, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-3) := new_inst(3 to MaxInstructionLen);
-					when to_unsigned(4, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-4) := new_inst(4 to MaxInstructionLen);
-					when to_unsigned(5, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-5) := new_inst(5 to MaxInstructionLen);
-					when to_unsigned(6, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-6) := new_inst(6 to MaxInstructionLen);
-					when to_unsigned(7, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-7) := new_inst(7 to MaxInstructionLen);
-					when to_unsigned(8, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-8) := new_inst(8 to MaxInstructionLen);
-					when to_unsigned(9, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-9) := new_inst(9 to MaxInstructionLen);
-					when to_unsigned(10, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-10) := new_inst(10 to MaxInstructionLen);
-					when to_unsigned(11, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-11) := new_inst(11 to MaxInstructionLen);
-					when to_unsigned(12, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-12) := new_inst(12 to MaxInstructionLen);
-					when to_unsigned(13, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-13) := new_inst(13 to MaxInstructionLen);
-					when to_unsigned(14, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-14) := new_inst(14 to MaxInstructionLen);
-					when to_unsigned(15, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-15) := new_inst(15 to MaxInstructionLen);
-					when to_unsigned(16, AddrWidth) =>
-						new_inst(0 to MaxInstructionLen-16) := new_inst(16 to MaxInstructionLen);
-					when others =>
-						null;
-				end case;
+				for i in 0 to MaxInstructionLen-1 loop
+					if i + diff_pc <= MaxInstructionLen then
+						new_inst(i) := new_inst(i + to_integer(diff_pc));
+					end if;
+				end loop;
 				new_avail := avail - diff_pc(4 downto 0);
 			else
 				new_avail := (others => '0');
