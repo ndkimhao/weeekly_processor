@@ -50,13 +50,13 @@ begin
 		ua - 1 when o = OP_DEC else
 		x"0000";
 
-	cmp(FLAG_EQ) <= '1' when ua = ub else '0'; -- EQ
-	cmp(FLAG_NE) <= not cmp(FLAG_EQ); -- NE
-	cmp(FLAG_LT) <= '1' when (cmp_signed = '0' and ua < ub) or
+	cmp(FLAGID_EQ) <= '1' when ua = ub else '0'; -- EQ
+	cmp(FLAGID_NE) <= not cmp(FLAGID_EQ); -- NE
+	cmp(FLAGID_LT) <= '1' when (cmp_signed = '0' and ua < ub) or
 							 (cmp_signed = '1' and sa < sb)
 					else '0';
-	cmp(FLAG_LE) <= cmp(FLAG_EQ) or cmp(FLAG_LT);
-	cmp(FLAG_GT) <= not cmp(FLAG_LE);
-	cmp(FLAG_GE) <= not cmp(FLAG_LT);
+	cmp(FLAGID_LE) <= cmp(FLAGID_EQ) or cmp(FLAGID_LT);
+	cmp(FLAGID_GT) <= not cmp(FLAGID_LE);
+	cmp(FLAGID_GE) <= not cmp(FLAGID_LT);
 
 end Behavioral;

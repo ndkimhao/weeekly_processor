@@ -166,7 +166,7 @@ for cmd, opts in CMDS_MAP.items():
 out += [f'', f'',]
 for reg, rid in REGS_MAP.items():
     if reg != '':
-        out.append(f'constant REG_{reg} : integer := {rid};')
+        out.append(f'constant REGID_{reg} : integer := {rid};')
 
 
 with open('uops_rom.vhd', 'w') as f:

@@ -8,10 +8,30 @@ use work.Types.all;
 entity Engine is
 	port (
 		clk : in std_logic;
-		reset : in std_logic;
 
 		uop_ready : in std_logic;
-		uop : in TUop
+		uop_hold : out std_logic; -- pause uop decode
+		uop : in TUop;
+
+		den : out std_logic;
+		dwr : out std_logic;
+		daddr : out TAddr;
+		din : in TData;
+		dout : out TData;
+		
+		mmu_cfg_wr : out std_logic;
+		
+		reg_a : out TData;
+		reg_b : out TData;
+		reg_c : out TData;
+		reg_d : out TData;
+		reg_sp : out TData;
+		reg_pc : out TData;
+		reg_fl : out TData;
+		reg_e : out TData;
+		reg_f : out TData;
+		reg_g : out TData;
+		reg_h : out TData
 	);
 end Engine;
 
@@ -55,7 +75,7 @@ begin
 		x"0000";
 
 	r_src <=
-		x"0002" when idx_src = REG_2 else
+		x"0002" when idx_src = REGID_2 else
 		a_regs(to_integer(idx_src)) when 1 <= idx_src and idx_src <= 11 else
 		x"0000";
 
@@ -74,17 +94,24 @@ begin
 		cmp => alu_cmp
 	);
 
-	process(clk, reset)
+	process(clk)
 		variable r_write : std_logic;
 		variable r_res : TData;
 		variable r_idx : unsigned(4-1 downto 0);
 	begin
 
-		if reset = '1' then
-			a_regs <= (others => (others => '0'));
-		elsif rising_edge(clk) then
-		
+		if rising_edge(clk) then
+
+			den <= '0';
+			dwr <= '0';
+			daddr <= (others => '0');
+			dout <= (others => '0');
+			
+			uop_hold <= '0';
+			mmu_cfg_wr <= '0';
+
 			if uop_ready = '1' then
+
 				r_write := '0';
 				case uop_head is
 					when "000" =>
@@ -97,7 +124,7 @@ begin
 								r_write := '1';
 								r_res := uops_consts_rom(to_integer(idx_src));
 							when UOP_MMU =>
-								null; -- TODO
+								mmu_cfg_wr <= '1';
 							when others => 
 								null;
 						end case; -- "000" uop_tail
@@ -116,20 +143,31 @@ begin
 
 				if r_write = '1' then
 					if uop_head = UOP_CMP_HEAD then
-						r_idx := to_unsigned(REG_FL, 4);
+						r_idx := to_unsigned(REGID_FL, 4);
 					else 
 						r_idx := unsigned(uop(7 downto 4));
 					end if;
 					a_regs(to_integer(r_idx)) <= r_res;
 				end if; -- r_write
 
-			else -- uop_ready = '0'
-				-- TODO: reset signals
 			end if; -- uop_ready
 
 		end if; -- rising_edge(clk)
 
-	end process; -- process(clk, reset)
+	end process; -- process(clk)
 
+	-- export registers
+	reg_a <= a_regs(REGID_A);
+	reg_b <= a_regs(REGID_B);
+	reg_c <= a_regs(REGID_C);
+	reg_d <= a_regs(REGID_D);
+	reg_e <= a_regs(REGID_E);
+	reg_sp <= a_regs(REGID_SP);
+	reg_pc <= a_regs(REGID_PC);
+	reg_fl <= a_regs(REGID_FL);
+	reg_e <= a_regs(REGID_E);
+	reg_f <= a_regs(REGID_F);
+	reg_g <= a_regs(REGID_G);
+	reg_h <= a_regs(REGID_H);
 
 end Behavioral;

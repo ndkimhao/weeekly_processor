@@ -14,7 +14,7 @@ entity Fetcher is
 		dwant : out std_logic; -- want to read
 		daddr : out TAddr;
 		din   : in TData;
-		dvalid: in std_logic; -- din is valid
+		dvalid: in std_logic; -- allow to read din in the next cycle
 
 		avail : out TInstBufferIdx;
 		inst_buffer : out TInstBuffer

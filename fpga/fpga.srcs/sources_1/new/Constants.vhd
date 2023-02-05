@@ -15,7 +15,7 @@ package Constants is
 	constant MMUIdxWidth : integer := 2;
 	constant MMUSlots    : integer := 4;
 
-	constant RAMSize : integer := 1048576; -- 1MB
+	constant RAMSize : integer := 262144; -- 256KB
 
 	constant MaxInstructionLen : integer := 10; -- 10 bytes: 1 op + 3*3 args
 
@@ -70,26 +70,26 @@ package Constants is
 	constant UOP_JMP_COND_COPY : TUcodeTail := "01";
 	constant UOP_BRK_HEAD : TUcodeHead := "111";
 
-	constant REG_0 : integer := 0;
-	constant REG_A : integer := 1;
-	constant REG_B : integer := 2;
-	constant REG_C : integer := 3;
-	constant REG_D : integer := 4;
-	constant REG_SP : integer := 5;
-	constant REG_PC : integer := 6;
-	constant REG_FL : integer := 7;
-	constant REG_E : integer := 8;
-	constant REG_F : integer := 9;
-	constant REG_G : integer := 10;
-	constant REG_H : integer := 11;
-	constant REG_2 : integer := 12;
+	constant REGID_0 : integer := 0;
+	constant REGID_A : integer := 1;
+	constant REGID_B : integer := 2;
+	constant REGID_C : integer := 3;
+	constant REGID_D : integer := 4;
+	constant REGID_SP : integer := 5;
+	constant REGID_PC : integer := 6;
+	constant REGID_FL : integer := 7;
+	constant REGID_E : integer := 8;
+	constant REGID_F : integer := 9;
+	constant REGID_G : integer := 10;
+	constant REGID_H : integer := 11;
+	constant REGID_2 : integer := 12;
 
-	constant FLAG_EQ : integer := 0;
-	constant FLAG_NE : integer := 1;
-	constant FLAG_LT : integer := 2;
-	constant FLAG_LE : integer := 3;
-	constant FLAG_GT : integer := 4;
-	constant FLAG_GE : integer := 5;
+	constant FLAGID_EQ : integer := 0;
+	constant FLAGID_NE : integer := 1;
+	constant FLAGID_LT : integer := 2;
+	constant FLAGID_LE : integer := 3;
+	constant FLAGID_GT : integer := 4;
+	constant FLAGID_GE : integer := 5;
 	constant AluNumFLags : integer := 6;
 
 	-- ===========================================================================
