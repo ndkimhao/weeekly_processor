@@ -29,7 +29,7 @@ reset:
     mmu # idx=1
 
     con A, 0xFF # and B = 0
-    con Y, 0x8000
+    con Y, 0xD000
     con Z, 0xFFFF
     alu X, K, ADD
     mmu # idx=2
@@ -45,7 +45,7 @@ reset:
     # --------------------
     # reset Fetcher
     mov PC, 0
-    con PC, 0x8000
+    con PC, 0xD000
 
 # ======================================
 # ALU

@@ -5,7 +5,7 @@
 constant ROMSize : integer := 66;
 type TArrROM is array (0 to ROMSize-1) of TByte;
 constant arr_rom : TArrROM := (
-	/*   0 */                                  -- .offset 0x8000
+	/*   0 */                                  -- .offset 0xD000
 	/*   0 */                                  --
 	/*   0 */                                  -- boot:
 	/*   0 */ x"60",x"20",x"1c",x"fe",         --     mov A, 0xFE
@@ -23,13 +23,13 @@ constant arr_rom : TArrROM := (
 	/*  1a */ x"62",x"80",x"45",               --         mov [D], B+A
 	/*  1d */ x"00",x"40",x"1c",x"10",         --         add B, 16
 	/*  21 */ x"00",x"80",x"1c",x"02",         --         add D, 2
-	/*  25 */ x"f0",x"e0",x"40",x"e0",x"1a",x"80",x"80",x"02", --         jlt $loop_col, B, 640
+	/*  25 */ x"f0",x"e0",x"40",x"e0",x"1a",x"d0",x"80",x"02", --         jlt $loop_col, B, 640
 	/*  2d */                                  --
 	/*  2d */ x"00",x"60",x"1c",x"01",         --     add C, 1
-	/*  31 */ x"f0",x"e0",x"60",x"e0",x"17",x"80",x"e0",x"01", --     jlt $loop_row, C, 480
+	/*  31 */ x"f0",x"e0",x"60",x"e0",x"17",x"d0",x"e0",x"01", --     jlt $loop_row, C, 480
 	/*  39 */                                  --
 	/*  39 */ x"00",x"20",x"1c",x"01",         --     add A, 1
-	/*  3d */ x"58",x"e0",x"11",x"80",         --     jmp $loop_outer
+	/*  3d */ x"58",x"e0",x"11",x"d0",         --     jmp $loop_outer
 	/*  41 */                                  --
 	/*  41 */ x"d8"                            -- __end_of_rom: halt
 ); -- arr_rom -------------------------------------------

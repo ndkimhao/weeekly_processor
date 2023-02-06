@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 
 use work.Constants.all;
 use work.Types.all;
+use work.UopROM.all;
 
 entity Engine is
 	port (
@@ -41,18 +42,6 @@ entity Engine is
 end Engine;
 
 architecture Behavioral of Engine is
-
-
-type TArrUopsConstsROM is array (0 to 5-1) of TData;
-constant uops_consts_rom : TArrUopsConstsROM := (
-	x"0001", -- used 1 times
-	x"FFFF", -- used 6 times
-	x"00FF", -- used 1 times
-	x"8000", -- used 2 times
-	x"003F"  -- used 1 times
-); -- uops_consts_rom -------------------------------------------
-
-
 
 -- '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
 -- 'E', 'F', 'G', 'H', '2', '', '', ''

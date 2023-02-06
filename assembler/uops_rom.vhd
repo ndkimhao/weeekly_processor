@@ -31,7 +31,7 @@ constant uops_rom : TArrUtopROM := (
 	/* 016 */ 13x"0c8b", --     alu X, K, ADD
 	/* 017 */ 13x"0300", --     mmu # idx=1
 	/* 018 */ 13x"0212", --     con A, 0xFF # and B = 0
-	/* 019 */ 13x"0293", --     con Y, 0x8000
+	/* 019 */ 13x"0293", --     con Y, 0xD000
 	/* 020 */ 13x"02a1", --     con Z, 0xFFFF
 	/* 021 */ 13x"0c8b", --     alu X, K, ADD
 	/* 022 */ 13x"0300", --     mmu # idx=2
@@ -44,7 +44,7 @@ constant uops_rom : TArrUtopROM := (
 	                     --     # --------------------
 	                     --     # reset Fetcher
 	/* 029 */ 13x"0160", --     mov PC, 0
-	/* 030 */ 13x"0263", --     con PC, 0x8000
+	/* 030 */ 13x"0263", --     con PC, 0xD000
 	                     -- # ======================================
 	                     -- # ALU
 	/* 031 */ 13x"1fff", -- alu_1dx:
@@ -312,7 +312,7 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 	x"0001", -- used 1 times
 	x"FFFF", -- used 6 times
 	x"00FF", -- used 1 times
-	x"8000", -- used 2 times
+	x"D000", -- used 2 times
 	x"003F"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
 
