@@ -15,7 +15,7 @@ entity Engine is
 		uop : in TUop;
 		uop_done : in std_logic; -- last uop of the current instruction
 		uop_idx : in TUopIndex;
-		inst_buffer : in TInstBuffer;
+		inst_buffer : in TEngineInstBuffer;
 		inst_len : in TInstBufferIdx;
 		inst_nargs : in unsigned(2-1 downto 0);
 
@@ -50,7 +50,6 @@ signal arr_regs : TArrRegs;
 
 signal idx_dst, idx_src : unsigned(4-1 downto 0);
 signal r_dst, r_src : TData;
-signal mem_load_dst_idx : unsigned(4-1 downto 0) := (others => '0');
 
 signal uop_head : std_logic_vector(UcodeHeadLen-1 downto 0);
 signal uop_tail : std_logic_vector(UcodeTailLen-1 downto 0);
@@ -59,20 +58,20 @@ signal alu_op : std_logic_vector(ALUOpLen-1 downto 0);
 signal alu_out, alu_aux : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
 signal alu_cmp_signed : std_logic;
-signal alu_hold_counter : unsigned(5-1 downto 0);
 signal alu_start_op : std_logic;
 signal alu_div_done : std_logic;
 
 signal fl_selector : unsigned(ALUOpLen-1 downto 0);
 signal fl_bit : std_logic;
 
-signal last_den, last_dwr : std_logic;
-
-signal last_inst_buffer : TInstBuffer;
+signal last_inst_buffer : TEngineInstBuffer;
 signal inst_opcode : TByte;
 
 signal cached_uop : TUop;
 signal effective_uop : TUop;
+
+constant HoldCounterW : integer := 5;
+signal hold_counter : unsigned(HoldCounterW-1 downto 0);
 
 begin
 
@@ -80,7 +79,7 @@ begin
 		inst_buffer(0) when uop_idx = 0 else
 		last_inst_buffer(0);
 	
-	effective_uop <= cached_uop when alu_hold_counter /= 0 else uop;
+	effective_uop <= cached_uop when hold_counter /= 0 else uop;
 
 	uop_head <= effective_uop(12 downto 10);
 	uop_tail <= effective_uop(9 downto 8);
@@ -89,12 +88,10 @@ begin
 	idx_src <= unsigned(effective_uop(3 downto 0));
 	
 	r_dst <=
-		din when last_den = '1' and last_dwr = '0' and idx_dst = mem_load_dst_idx else
 		arr_regs(to_integer(idx_dst)) when 1 <= idx_dst and idx_dst <= 11 else
 		x"0000";
 
 	r_src <=
-		din when last_den = '1' and last_dwr = '0' and idx_src = mem_load_dst_idx else
 		x"0002" when idx_src = REGID_2 else
 		arr_regs(to_integer(idx_src)) when 1 <= idx_src and idx_src <= 11 else
 		x"0000";
@@ -151,12 +148,10 @@ begin
 		variable arg_b : TData;
 		variable arg_x : TData;
 
-		variable v_regs : TArrRegs;
-		variable v_inst : TInstBuffer;
+		variable v_inst : TEngineInstBuffer;
 	begin
 
 		if rising_edge(clk) then
-			v_regs := arr_regs;
 			if uop_idx = 0 then
 				v_inst := inst_buffer;
 			else
@@ -164,11 +159,9 @@ begin
 			end if;
 			last_inst_buffer <= v_inst;
 
-			if last_den = '1' and last_dwr = '0' then
-				v_regs(to_integer(mem_load_dst_idx)) := din;
+			if hold_counter = 0 then
+				cached_uop <= uop;
 			end if;
-			last_den <= den;
-			last_dwr <= dwr;
 
 			den <= '0';
 			dwr <= '0';
@@ -177,10 +170,10 @@ begin
 			
 			uop_hold <= '0';
 			mmu_cfg_wr <= '0';
-			alu_hold_counter <= (others => '0');
+			hold_counter <= (others => '0');
 			alu_start_op <= '0';
 
-			if uop_ready = '1' and (uop_hold = '0' or alu_hold_counter /= 0) then
+			if uop_ready = '1' and (uop_hold = '0' or hold_counter /= 0) then
 
 				r_write := '0';
 				case uop_head is
@@ -203,11 +196,21 @@ begin
 					when UOP_MEM_HEAD =>
 						case uop_tail is
 							when UOP_MEM_LOAD =>
-								den <= '1';
-								dwr <= '0';
-								daddr <= r_src;
-								mem_load_dst_idx <= idx_dst;
-								uop_hold <= '1';
+								if hold_counter = 0 then -- first cycle
+									den <= '1';
+									dwr <= '0';
+									daddr <= r_src;
+									uop_hold <= '1';
+									hold_counter <= to_unsigned(2, HoldCounterW);
+								else
+									if hold_counter = 1 then
+										r_write := '1';
+										r_res := din;
+									else
+										uop_hold <= '1';
+									end if;
+									hold_counter <= hold_counter - 1;
+								end if;
 							when UOP_MEM_STORE =>
 								den <= '1';
 								dwr <= '1';
@@ -246,14 +249,14 @@ begin
 							elsif arg_head(7 downto 5) = "000" then
 								arg_a := x"0000";
 							else
-								arg_a := v_regs(to_integer(unsigned(arg_head(7 downto 5))));
+								arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
 							end if;
 							if arg_head(4 downto 2) = "111" then
 								arg_b := x"00" & v_inst(to_integer(arg_tail));
 							elsif arg_head(4 downto 2) = "000" then
 								arg_b := x"0000";
 							else
-								arg_b := v_regs(to_integer(unsigned(arg_head(4 downto 2))));
+								arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
 							end if;
 							if arg_head(1 downto 0) /= "00" then
 								arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
@@ -267,23 +270,22 @@ begin
 						if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
 						   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
 
-							if alu_hold_counter = 0 then
-								cached_uop <= uop;
+							if hold_counter = 0 then
 								if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
-									alu_hold_counter <= to_unsigned(4, 5);
+									hold_counter <= to_unsigned(4, HoldCounterW);
 								else
-									alu_hold_counter <= to_unsigned(31, 5);
+									hold_counter <= to_unsigned(31, HoldCounterW);
 									alu_start_op <= '1';
 								end if;
 								uop_hold <= '1';
 							else
-								alu_hold_counter <= alu_hold_counter - 1;
-								if alu_hold_counter = 1 or alu_div_done = '1' then
+								hold_counter <= hold_counter - 1;
+								if hold_counter = 1 or alu_div_done = '1' then
 									uop_hold <= '0';
 									r_write := '1';
 									r_res := alu_out;
-									v_regs(REGID_D) := alu_aux;
-									alu_hold_counter <= (others => '0');
+									arr_regs(REGID_D) <= alu_aux;
+									hold_counter <= (others => '0');
 								else
 									uop_hold <= '1';
 								end if;
@@ -318,16 +320,15 @@ begin
 					else 
 						r_idx := idx_dst;
 					end if;
-					v_regs(to_integer(r_idx)) := r_res;
+					arr_regs(to_integer(r_idx)) <= r_res;
 				end if; -- r_write
 
 				if uop_hold = '0' and uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
-					v_regs(REGID_PC) :=	std_logic_vector(unsigned(v_regs(REGID_PC)) + inst_len);
+					arr_regs(REGID_PC) <= std_logic_vector(unsigned(arr_regs(REGID_PC)) + inst_len);
 				end if;
 
 			end if; -- uop_ready
 
-			arr_regs <= v_regs;
 		end if; -- rising_edge(clk)
 
 	end process; -- process(clk)

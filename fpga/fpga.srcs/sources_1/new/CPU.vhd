@@ -138,7 +138,7 @@ begin
 		uop => dec_uop,
 		uop_idx => dec_uop_idx,
 		uop_done => dec_done,
-		inst_buffer => fet_buffer,
+		inst_buffer => TEngineInstBuffer(fet_buffer(0 to EngineMaxInstructionLen-1)),
 		inst_len => dec_inst_len,
 		inst_nargs => dec_inst_nargs,
 
