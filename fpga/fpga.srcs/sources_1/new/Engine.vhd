@@ -284,9 +284,9 @@ begin
 									alu_hold_counter <= to_unsigned(4, 5);
 								else
 									alu_hold_counter <= to_unsigned(31, 5);
+									alu_start_op <= '1';
 								end if;
 								uop_hold <= '1';
-								alu_start_op <= '1';
 							else
 								alu_hold_counter <= alu_hold_counter - 1;
 								if alu_hold_counter = 1 or alu_div_done = '1' then
