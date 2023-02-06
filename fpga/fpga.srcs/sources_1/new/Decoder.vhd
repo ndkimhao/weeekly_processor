@@ -411,15 +411,9 @@ constant labels_call : ArrLabel2 := (
 
 -----------------------------------------------------------------------------------
 
-signal s_start_idx : TIndex := (others => '0');
 signal s_idx : TIndex := (others => '0');
 
 begin
-
-	uop <= uops_rom(to_integer(s_idx));
-	brk <= '1' when uops_rom(to_integer(s_idx) + 1) = 13x"1fff" else '0';
-
-	uop_idx <= s_idx - s_start_idx when s_idx /= 0 else (others => '0');
 
 	process(clk, reset)
 		variable next_idx, op_prog : TIndex;
@@ -432,11 +426,13 @@ begin
 	begin
 
 		if reset = '1' then
-			s_start_idx <= to_unsigned(label_reset, UopIdxW);
 			s_idx <= to_unsigned(label_reset, UopIdxW) - 1;
+			brk <= '0';
 			ready <= '0';
 			used_len <= (others => '0');
 			booted <= '0';
+			uop <= (others => '0');
+			uop_idx <= (others => '0');
 		elsif rising_edge(clk) and hold = '0' then
 			need := (others => '0');
 			op_prog := (others => '0');
@@ -526,15 +522,24 @@ begin
 			end if; -- avail /= 0
 			-- END DECODE
 
-			s_start_idx <= op_prog;
 			s_idx <= next_idx;
 			if next_idx /= 0 then
 				ready <= '1';
 				used_len <= need;
+				uop_idx <= next_idx - op_prog;
 			else
 				ready <= '0';
 				used_len <= (others => '0');
+				uop_idx <= (others => '0');
 			end if;
+			
+			uop <= uops_rom(to_integer(next_idx));
+			if uops_rom(to_integer(next_idx) + 1) = 13x"1fff" then
+				brk <= '1';
+			else
+				brk <= '0';
+			end if;
+
 		end if;
 
 	end process;
