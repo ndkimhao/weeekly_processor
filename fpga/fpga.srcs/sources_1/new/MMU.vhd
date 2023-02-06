@@ -44,13 +44,9 @@ begin
 
 		if rising_edge(clk) then
 			if cfg_write = '1' then
-				for i in 0 to MMUSlots-1 loop
-						if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then
-							a_phy(i)    := unsigned(cfg_phy_addr(PhyAddrWidth-1 downto PageW));
-							a_vstart(i) := unsigned(cfg_virt_start(AddrWidth-1 downto PageW));
-							a_vend(i)   := unsigned(cfg_virt_end(AddrWidth-1 downto PageW));
-						end if; -- cfg_index
-				end loop;
+				a_phy(to_integer(unsigned(cfg_index)))    := unsigned(cfg_phy_addr(PhyAddrWidth-1 downto PageW));
+				a_vstart(to_integer(unsigned(cfg_index))) := unsigned(cfg_virt_start(AddrWidth-1 downto PageW));
+				a_vend(to_integer(unsigned(cfg_index)))   := unsigned(cfg_virt_end(AddrWidth-1 downto PageW));
 			end if; -- cfg_write = '1'
 		end if;
 
