@@ -14,9 +14,9 @@ loop_row:
 
     loop_col:
         mov [D], B+A
-        add B, 16
+        add B, 1
         add D, 2
-        jlt $loop_col, B, 640
+        jlt $loop_col, B, 40
 
     add C, 1
     jlt $loop_row, C, 480
