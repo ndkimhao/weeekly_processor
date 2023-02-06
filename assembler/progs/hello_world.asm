@@ -1,4 +1,4 @@
-.offset 0x8000
+.offset 0xD000
 
 boot:
     mov A, 0x3C

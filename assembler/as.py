@@ -207,7 +207,7 @@ for romidx, bincode, origs in out:
         comma = ',' if countprinted < romlen else ' '
         hexline += f'x"{int(head, 2):02x}"{comma}'
 
-    out_lines.append(f'\t/* {romidx:3x} */ {hexline:32} -- {origs}'.rstrip())
+    out_lines.append(f'\t/* {romidx:3x} */ {hexline:48} -- {origs}'.rstrip())
 out_lines += [
     f'); -- arr_rom -------------------------------------------',
     f'',
@@ -217,4 +217,16 @@ out_lines += [
 ]
 
 with open('rom.vhd', 'w') as f:
+    f.write(
+        '''
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use work.Constants.all;
+use work.Types.all;
+
+package CodeROM is
+''')
     f.write('\n'.join(out_lines) + '\n')
+    f.write('\nend package;\n')

@@ -93,7 +93,7 @@ begin
 		unsigned(udiv(DataWidth-1 downto 0)) when o = OP_DIV else
 		unsigned(sdiv(DataWidth-1 downto 0)) when o = OP_IDIV else
 		ua srl to_integer(ub(3 downto 0)) when o = OP_SHR else
-		ua sra to_integer(ub(3 downto 0)) when o = OP_ISHR else
+		unsigned(sa sra to_integer(ub(3 downto 0))) when o = OP_ISHR else
 		ua sll to_integer(ub(3 downto 0)) when o = OP_SHL else
 		ua and ub when o = OP_AND else
 		ua or ub when o = OP_OR else
