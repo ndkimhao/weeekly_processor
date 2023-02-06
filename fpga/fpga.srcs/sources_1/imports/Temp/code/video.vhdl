@@ -14,7 +14,7 @@ entity video is
 		vga_clk : in  std_logic;
 		hdmi_clk1 : in  std_logic;
 		hdmi_clk2 : in  std_logic;
-		reset_n : in  std_logic;
+		reset : in  std_logic;
 		tmds : out  std_logic_vector (3 downto 0);
 		tmdsb : out  std_logic_vector (3 downto 0);
 
@@ -39,7 +39,7 @@ begin
 
 	vga: entity work.vga PORT MAP (
 		clk => vga_clk,
-		reset_n => reset_n,
+		reset => reset,
 		h_sync => h_sync,
 		v_sync => v_sync,
 		blank => blank,

@@ -8,7 +8,7 @@ use work.Types.all;
 entity vga is
 	port(	
 		clk: in  std_logic;
-		reset_n : in  std_logic;
+		reset : in  std_logic;
 		h_sync : out  std_logic;
 		v_sync : out  std_logic;
 		blank : out  std_logic;
@@ -64,9 +64,9 @@ signal pixel_data : std_logic;
 
 begin
 
-	process(clk, reset_n)
+	process(clk, reset)
 	begin
-		if reset_n = '0' then
+		if reset = '1' then
 			next_row <= (others => '0');
 			next_col <= (others => '0');
 			next_idx <= (others => '0');

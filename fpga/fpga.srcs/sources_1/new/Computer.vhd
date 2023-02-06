@@ -24,13 +24,13 @@ component clk_wiz_0
 		clk_out2 : out std_logic; -- vga 25mhz
 		clk_out3 : out std_logic; -- hdmi 125mhz
 		clk_out4 : out std_logic; -- hdmi 125mhz phased
-		resetn   : in  std_logic;
+		reset    : in  std_logic;
 		locked   : out std_logic;
 		clk_in1  : in  std_logic
 	);
 end component;
 
-signal cpu_clk, cpu_reset : std_logic;
+signal cpu_clk, reset : std_logic;
 signal vga_clk, hdmi_clk1, hdmi_clk2 : std_logic;
 
 signal vbuf_en : std_logic;
@@ -41,20 +41,21 @@ signal vbuf_dout : TData;
 
 begin
 
+	reset <= not cpu_resetn;
+
 	clock: clk_wiz_0 port map (
 		clk_in1 => sysclk,
-		resetn => cpu_resetn,
+		reset => reset,
 		clk_out1 => cpu_clk,
 		clk_out2 => vga_clk,
 		clk_out3 => hdmi_clk1,
 		clk_out4 => hdmi_clk2
 	);
 
-	cpu_reset <= not cpu_resetn;
 
 	cpu: entity work.CPU port map (
 		clk => cpu_clk,
-		reset => cpu_reset,
+		reset => reset,
 		led => led,
 
 		vbuf_en => vbuf_en,
@@ -68,7 +69,7 @@ begin
 		vga_clk => vga_clk,
 		hdmi_clk1 => hdmi_clk1,
 		hdmi_clk2 => hdmi_clk2,
-		reset_n => cpu_resetn,
+		reset => reset,
 		tmds => tmds,
 		tmdsb => tmdsb,
 

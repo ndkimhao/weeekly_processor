@@ -39,7 +39,7 @@ begin
 		vga_clk => clk,
 		hdmi_clk1 => '0',
 		hdmi_clk2 => '0',
-		reset_n => not reset,
+		reset => reset,
 		
 		buf_clk => clk,
 		buf_en   => vbuf_en,
