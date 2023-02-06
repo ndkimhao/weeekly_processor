@@ -1,13 +1,6 @@
 .offset 0x8000
 
 boot:
-    mov A, 0x1233
-    mov B, 0xF321
-    div C, B, A
-    idiv C, B, A
-    mul C, A, B
-    imul C, A, B
-    halt
     mov [0xFA], 0x123
     mov A, [0xFA]
     add A, 0x321
