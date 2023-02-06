@@ -33,7 +33,6 @@ begin
 		
 		wait for 10000us;
 
-		wait for 1us;
-		std.env.finish;
+		wait;
 	end process;
 end Behavioral;

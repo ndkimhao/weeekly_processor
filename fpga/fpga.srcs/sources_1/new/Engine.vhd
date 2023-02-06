@@ -33,10 +33,10 @@ entity Engine is
 		reg_sp : out TData;
 		reg_pc : out TData;
 		reg_fl : out TData;
-		reg_e : out TData;
-		reg_f : out TData;
-		reg_g : out TData;
-		reg_h : out TData
+		reg_x : out TData;
+		reg_y : out TData;
+		reg_z : out TData;
+		reg_k : out TData
 	);
 end Engine;
 
@@ -93,7 +93,7 @@ begin
 	
 	r_dst <=
 		din when last_den = '1' and last_dwr = '0' and idx_dst = mem_load_dst_idx else
-		arr_regs(to_integer(idx_dst)) when 1 <= idx_src and idx_src <= 11 else
+		arr_regs(to_integer(idx_dst)) when 1 <= idx_dst and idx_dst <= 11 else
 		x"0000";
 
 	r_src <=
@@ -252,7 +252,9 @@ begin
 							else
 								arg_b := v_regs(to_integer(unsigned(arg_head(4 downto 2))));
 							end if;
-							arg_a := arg_a sll to_integer(unsigned(arg_head(1 downto 0)));
+							if arg_head(1 downto 0) /= "00" then
+								arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
+							end if;
 
 							r_write := '1';
 							r_res := std_logic_vector(unsigned(arg_a) + unsigned(arg_b));
@@ -303,13 +305,12 @@ begin
 	reg_b <=  arr_regs(REGID_B);
 	reg_c <=  arr_regs(REGID_C);
 	reg_d <=  arr_regs(REGID_D);
-	reg_e <=  arr_regs(REGID_E);
 	reg_sp <= arr_regs(REGID_SP);
 	reg_pc <= arr_regs(REGID_PC);
 	reg_fl <= arr_regs(REGID_FL);
-	reg_e <=  arr_regs(REGID_E);
-	reg_f <=  arr_regs(REGID_F);
-	reg_g <=  arr_regs(REGID_G);
-	reg_h <=  arr_regs(REGID_H);
+	reg_x <=  arr_regs(REGID_X);
+	reg_y <=  arr_regs(REGID_Y);
+	reg_z <=  arr_regs(REGID_Z);
+	reg_k <=  arr_regs(REGID_K);
 
 end Behavioral;

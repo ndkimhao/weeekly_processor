@@ -31,7 +31,7 @@ end component;
 
 signal addr2 : unsigned(PhyAddrWidth-2 downto 0);
 signal addr2plus1 : unsigned(PhyAddrWidth-2 downto 0);
-signal aligned : std_logic;
+signal aligned, last_aligned : std_logic;
 
 signal din_a, dout_a : TByte;
 signal din_b, dout_b : TByte;
@@ -42,6 +42,13 @@ begin
 	addr2 <= unsigned(addr(PhyAddrWidth-1 downto 1));
 	addr2plus1 <= addr2 + 1;
 	aligned <= not addr(0);
+	
+	process(clk)
+	begin
+		if rising_edge(clk) then
+			last_aligned <= aligned;
+		end if;
+	end process;
 
 	din_a <= din(7 downto 0)  when aligned = '1' else din(15 downto 8);
 	din_b <= din(15 downto 8) when aligned = '1' else din(7 downto 0);
@@ -49,7 +56,7 @@ begin
 	addr_a <= addr2(16 downto 0) when aligned = '1' else addr2plus1(16 downto 0);
 	addr_b <= addr2(16 downto 0);
 
-	dout <= dout_b & dout_a when aligned = '1' else
+	dout <= dout_b & dout_a when last_aligned = '1' else
 			dout_a & dout_b;
 
 	blk_a : blk_mem_gen_0 PORT MAP (

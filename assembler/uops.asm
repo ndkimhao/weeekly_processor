@@ -148,7 +148,7 @@ push_$$:
     (-) arg X, GET_0
     (i) mem X, X, LOAD
     (-) alu SP, 2, SUB
-    (-) mem SP, PC, STORE
+    (-) mem SP, X, STORE
 .end_generate
 
 .generate d, i

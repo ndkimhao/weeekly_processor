@@ -237,12 +237,12 @@ constant uops_rom : TArrUtopROM := (
 	/* 178 */ 13x"1fff", -- push_d:
 	/* 179 */ 13x"0988", --     (-) arg X, GET_0
 	/* 180 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 181 */ 13x"0556", --     (-) mem SP, PC, STORE
+	/* 181 */ 13x"0558", --     (-) mem SP, X, STORE
 	/* 182 */ 13x"1fff", -- push_i:
 	/* 183 */ 13x"0988", --     (-) arg X, GET_0
 	/* 184 */ 13x"0488", --     (i) mem X, X, LOAD
 	/* 185 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 186 */ 13x"0556", --     (-) mem SP, PC, STORE
+	/* 186 */ 13x"0558", --     (-) mem SP, X, STORE
 	/* 187 */ 13x"1fff", -- pop_d:
 	/* 188 */ 13x"0495", --     (-) mem Y, SP, LOAD
 	/* 189 */ 13x"0c5c", --     (-) alu SP, 2, ADD

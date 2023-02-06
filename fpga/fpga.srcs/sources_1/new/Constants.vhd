@@ -85,10 +85,10 @@ package Constants is
 	constant REGID_SP : integer := 5;
 	constant REGID_PC : integer := 6;
 	constant REGID_FL : integer := 7;
-	constant REGID_E : integer := 8;
-	constant REGID_F : integer := 9;
-	constant REGID_G : integer := 10;
-	constant REGID_H : integer := 11;
+	constant REGID_X : integer := 8;
+	constant REGID_Y : integer := 9;
+	constant REGID_Z : integer := 10;
+	constant REGID_K : integer := 11;
 	constant REGID_2 : integer := 12;
 
 	constant FLAGID_EQ : integer := 0;

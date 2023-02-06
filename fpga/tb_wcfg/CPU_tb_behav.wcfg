@@ -13,15 +13,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="121000684991fs"></ZoomStartTime>
-      <ZoomEndTime time="136599863002fs"></ZoomEndTime>
-      <Cursor1Time time="134000000000fs"></Cursor1Time>
+      <ZoomStartTime time="40533325000fs"></ZoomStartTime>
+      <ZoomEndTime time="63303325001fs"></ZoomEndTime>
+      <Cursor1Time time="54463325000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="146"></NameColumnWidth>
-      <ValueColumnWidth column_width="119"></ValueColumnWidth>
+      <ValueColumnWidth column_width="113"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="31" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -54,6 +54,10 @@
    <wvobject fp_name="/CPU_tb/cpu/mem/wr" type="logic">
       <obj_property name="ElementShortName">wr</obj_property>
       <obj_property name="ObjectShortName">wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/eng_den" type="logic">
+      <obj_property name="ElementShortName">eng_den</obj_property>
+      <obj_property name="ObjectShortName">eng_den</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/addr" type="array">
       <obj_property name="ElementShortName">addr[23:0]</obj_property>
@@ -126,6 +130,30 @@
       <obj_property name="ElementShortName">inst_pc[15:0]</obj_property>
       <obj_property name="ObjectShortName">inst_pc[15:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/reg_x" type="array">
+      <obj_property name="ElementShortName">reg_x[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_x[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/reg_y" type="array">
+      <obj_property name="ElementShortName">reg_y[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_y[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/reg_z" type="array">
+      <obj_property name="ElementShortName">reg_z[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_z[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/reg_k" type="array">
+      <obj_property name="ElementShortName">reg_k[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_k[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/reg_fl" type="array">
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">reg_fl[15:0]</obj_property>
@@ -134,38 +162,6 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="label">fl</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/reg_e" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">reg_e[15:0]</obj_property>
-      <obj_property name="ObjectShortName">reg_e[15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="label">x</obj_property>
-   </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/reg_f" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">reg_f[15:0]</obj_property>
-      <obj_property name="ObjectShortName">reg_f[15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="label">y</obj_property>
-   </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/reg_g" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">reg_g[15:0]</obj_property>
-      <obj_property name="ObjectShortName">reg_g[15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="label">z</obj_property>
-   </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/reg_h" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">reg_h[15:0]</obj_property>
-      <obj_property name="ObjectShortName">reg_h[15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="label">k</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/uop_hold" type="logic">
       <obj_property name="ElementShortName">uop_hold</obj_property>

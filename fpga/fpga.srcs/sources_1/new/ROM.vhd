@@ -15,11 +15,12 @@ entity ROM is
 end ROM;
 
 architecture Behavioral of ROM is
+
 -- ##############################################################
 -- ## BEGIN ROM
 -- ##############################################################
 
-constant ROMSize : integer := 123;
+constant ROMSize : integer := 167;
 type TArrROM is array (0 to ROMSize-1) of TByte;
 constant arr_rom : TArrROM := (
 	/*   0 */                                  -- .offset 0x8000
@@ -37,7 +38,7 @@ constant arr_rom : TArrROM := (
 	/*  1f */ x"dc",                           --     ret
 	/*  20 */                                  --
 	/*  20 */                                  -- hello:
-	/*  20 */ x"60",x"60",x"e0",x"64",x"80",   --     mov C, $text_abc
+	/*  20 */ x"60",x"60",x"e0",x"90",x"80",   --     mov C, $text_abc
 	/*  25 */ x"60",x"20",x"e0",x"d2",x"04",   --     mov A, 1234     # comment asd
 	/*  2a */ x"60",x"40",x"3e",x"05",         --     mov B, 2*A + 5  # comment asd
 	/*  2e */ x"60",x"40",x"3e",x"05",         --     mov B, A*2 + 5  # comment asd
@@ -49,23 +50,40 @@ constant arr_rom : TArrROM := (
 	/*  48 */ x"80",x"80",x"3d",x"72",x"ea",   --     add D, A + 234, C*2 + D
 	/*  4d */                                  --     # call $function_a
 	/*  4d */                                  --
-	/*  4d */ x"60",x"20",x"1c",x"64",         --     mov A, 100
-	/*  51 */ x"60",x"40",x"1c",x"05",         --     mov B, 5
-	/*  55 */                                  -- loop_1:
-	/*  55 */ x"04",x"40",x"1c",x"01",         --     sub B, 1
-	/*  59 */ x"00",x"20",x"1c",x"14",         --     add A, 20
-	/*  5d */ x"ec",x"e0",x"40",x"00",x"55",x"80", --     jne $loop_1, B, 0
-	/*  63 */                                  --
-	/*  63 */ x"d8",                           --     halt
-	/*  64 */                                  --
-	/*  64 */                                  -- text_abc:
-	/*  64 */ x"48",x"65",x"6c",x"6c",x"6f",x"20",x"57",x"6f",x"72",x"6c",x"64",x"21",x"0a",x"00", --     .string "Hello World!\n" # null-terminated
-	/*  72 */                                  --
-	/*  72 */                                  -- data:
-	/*  72 */ x"d2",x"04",x"22",x"ff",         --     .dw 1234, 0xFF22
-	/*  76 */ x"01",x"03",x"05",x"61",         --     .db 1, 3, 0x5, 'a'
-	/*  7a */                                  --
-	/*  7a */ x"d8"                            -- __end_of_rom: halt
+	/*  4d */ x"60",x"a0",x"1c",x"ff",         --     mov SP, 0x00FF
+	/*  51 */                                  --
+	/*  51 */ x"60",x"20",x"1c",x"f0",         --     mov A, 0x00F0
+	/*  55 */ x"60",x"60",x"20",               --     mov C, A
+	/*  58 */ x"e0",x"60",                     --     push C
+	/*  5a */ x"e4",x"60",                     --     pop C
+	/*  5c */ x"60",x"20",x"7d",x"01",         --     mov A, C+1
+	/*  60 */ x"60",x"60",x"20",               --     mov C, A
+	/*  63 */                                  -- loop_outmost:
+	/*  63 */ x"e0",x"60",                     --     push C
+	/*  65 */                                  --
+	/*  65 */ x"60",x"80",x"00",               --     mov D, 0
+	/*  68 */                                  --     loop_outer:
+	/*  68 */ x"60",x"40",x"00",               --         mov B, 0
+	/*  6b */                                  --         loop_1:
+	/*  6b */ x"00",x"40",x"1c",x"01",         --             add B, 1
+	/*  6f */ x"ec",x"e0",x"40",x"e0",x"6b",x"80",x"ff",x"ff", --             jne $loop_1, B, 0xFFFF
+	/*  77 */ x"00",x"80",x"1c",x"01",         --         add D, 1
+	/*  7b */ x"ec",x"e0",x"80",x"1c",x"68",x"80",x"05", --         jne $loop_outer, D, 5
+	/*  82 */                                  --
+	/*  82 */ x"e4",x"60",                     --     pop C
+	/*  84 */ x"60",x"20",x"7d",x"01",         --     mov A, C+1
+	/*  88 */ x"60",x"60",x"20",               --     mov C, A
+	/*  8b */ x"58",x"e0",x"63",x"80",         --     jmp $loop_outmost
+	/*  8f */ x"d8",                           --     halt
+	/*  90 */                                  --
+	/*  90 */                                  -- text_abc:
+	/*  90 */ x"48",x"65",x"6c",x"6c",x"6f",x"20",x"57",x"6f",x"72",x"6c",x"64",x"21",x"0a",x"00", --     .string "Hello World!\n" # null-terminated
+	/*  9e */                                  --
+	/*  9e */                                  -- data:
+	/*  9e */ x"d2",x"04",x"22",x"ff",         --     .dw 1234, 0xFF22
+	/*  a2 */ x"01",x"03",x"05",x"61",         --     .db 1, 3, 0x5, 'a'
+	/*  a6 */                                  --
+	/*  a6 */ x"d8"                            -- __end_of_rom: halt
 ); -- arr_rom -------------------------------------------
 
 -- ##############################################################

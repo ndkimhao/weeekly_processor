@@ -25,13 +25,30 @@ hello:
     add D, A + 234, C*2 + D
     # call $function_a
 
-    mov A, 100
-    mov B, 5
-loop_1:
-    sub B, 1
-    add A, 20
-    jne $loop_1, B, 0
+    mov SP, 0x00FF
 
+    mov A, 0x00F0
+    mov C, A
+    push C
+    pop C
+    mov A, C+1
+    mov C, A
+loop_outmost:
+    push C
+
+    mov D, 0
+    loop_outer:
+        mov B, 0
+        loop_1:
+            add B, 1
+            jne $loop_1, B, 0xFFFF
+        add D, 1
+        jne $loop_outer, D, 5
+
+    pop C
+    mov A, C+1
+    mov C, A
+    jmp $loop_outmost
     halt
 
 text_abc:
