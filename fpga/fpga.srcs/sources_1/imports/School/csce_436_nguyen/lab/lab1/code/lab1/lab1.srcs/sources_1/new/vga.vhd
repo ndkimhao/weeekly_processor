@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.Constants.all;
+use work.Types.all;
+
 entity vga is
 	port(	
 		clk: in  std_logic;
@@ -11,35 +14,79 @@ entity vga is
 		blank : out  std_logic;
 		r: out std_logic_vector(7 downto 0);
 		g: out std_logic_vector(7 downto 0);
-		b: out std_logic_vector(7 downto 0)
+		b: out std_logic_vector(7 downto 0);
+		
+		buf_clk : in  std_logic;
+		buf_en : in std_logic;
+		buf_wr : in std_logic;
+		buf_addr : in TAddr;
+		buf_din : in TData;
+		buf_dout : out TData
 	);
 end vga;
 
 architecture structure of vga is
 
+
+component blk_mem_gen_video_buffer
+	port (
+		clka : in std_logic;
+		ena : in std_logic;
+		wea : in std_logic_vector(0 downto 0);
+		addra : in std_logic_vector(14 downto 0);
+		dina : in std_logic_vector(15 downto 0);
+		douta : out std_logic_vector(15 downto 0);
+		clkb : in std_logic;
+		enb : in std_logic;
+		web : in std_logic_vector(0 downto 0);
+		addrb : in std_logic_vector(14 downto 0);
+		dinb : in std_logic_vector(15 downto 0);
+		doutb : out std_logic_vector(15 downto 0)
+	);
+end component;
+
+
 signal h_blank, v_blank : std_logic;
 signal sr, sg, sb : std_logic_vector(7 downto 0);
-signal col, row: unsigned(9 downto 0);
+
+subtype TIndex is  unsigned(19-1 downto 0);
+
+signal row, col: unsigned(9 downto 0);
+signal idx: TIndex;
+
+signal next_row, next_col: unsigned(9 downto 0);
+signal next_idx: TIndex;
+
+signal maddr : std_logic_vector(14 downto 0);
+signal mdin : TData;
+
+signal pixel_data : std_logic;
 
 begin
 
-	process(clk)
+	process(clk, reset_n)
 	begin
 		if reset_n = '0' then
-				col <= (others => '0');
-				row <= (others => '0');
+			next_row <= (others => '0');
+			next_col <= (others => '0');
+			next_idx <= (others => '0');
 		elsif rising_edge(clk) then
-
-			if col < 799 then
-				col <= col + 1;
-			elsif row < 524 then
-				col <= (others => '0');
-				row <= row + 1;
+			if next_col < 799 then
+				next_col <= next_col + 1;
+				next_idx <= next_idx + 1;
+			elsif next_row < 524 then
+				next_col <= (others => '0');
+				next_row <= next_row + 1;
+				next_idx <= idx + 1;
 			else
-				col <= (others => '0');
-				row <= (others => '0');
+				next_col <= (others => '0');
+				next_row <= (others => '0');
+				next_idx <= (others => '0');
 			end if;
 
+			row <= next_row;
+			col <= next_col;
+			idx <= next_idx;
 		end if;
 	end process;
 
@@ -50,8 +97,28 @@ begin
 	v_blank <= '1' when row >= 480 else '0';
 	blank <= h_blank or v_blank;
 
-	r <= x"FF" when row < col else x"00";
-	g <= x"FF" when row > col else x"00";
-	b <= x"00";
+	r <= x"FF" when pixel_data = '1' else x"00";
+	g <= r;
+	b <= r;
 
+	-- memory
+	maddr <= std_logic_vector(next_idx(19-1 downto 4));
+
+	pixel_data <= mdin(to_integer(idx(3 downto 0)));
+
+	video_buffer : blk_mem_gen_video_buffer port map (
+		clka => clk,
+		ena => '1',
+		wea => "0",
+		addra => maddr,
+		dina => (others => '0'),
+		douta => mdin,
+
+		clkb => buf_clk,
+		enb => buf_en,
+		web => buf_wr & "",
+		addrb => buf_addr(14 downto 0),
+		dinb => buf_din,
+		doutb => buf_dout
+	);
 end structure;

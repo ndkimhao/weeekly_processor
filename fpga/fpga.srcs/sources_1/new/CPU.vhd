@@ -10,7 +10,13 @@ entity CPU is
 		clk : in std_logic;
 		reset : in std_logic;
 		
-		led : out std_logic_vector(8-1 downto 0)
+		led : out std_logic_vector(8-1 downto 0);
+
+		vbuf_en : out std_logic;
+		vbuf_wr : out std_logic;
+		vbuf_addr : out TAddr;
+		vbuf_dout : out TData;
+		vbuf_din : in TData
 	);
 end CPU;
 
@@ -64,7 +70,13 @@ begin
 		wr => mem_wr,
 		addr => mem_phy_addr,
 		din => mem_din,
-		dout => mem_dout
+		dout => mem_dout,
+
+		vbuf_en => vbuf_en,
+		vbuf_wr => vbuf_wr,
+		vbuf_addr => vbuf_addr,
+		vbuf_dout => vbuf_dout,
+		vbuf_din => vbuf_din
 	);
 
 	mmu : entity work.MMU port map (

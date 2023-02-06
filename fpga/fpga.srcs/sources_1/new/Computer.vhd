@@ -33,6 +33,12 @@ end component;
 signal cpu_clk, cpu_reset : std_logic;
 signal vga_clk, hdmi_clk1, hdmi_clk2 : std_logic;
 
+signal vbuf_en : std_logic;
+signal vbuf_wr : std_logic;
+signal vbuf_addr :  TAddr;
+signal vbuf_din : TData;
+signal vbuf_dout : TData;
+
 begin
 
 	clock: clk_wiz_0 port map (
@@ -49,7 +55,13 @@ begin
 	cpu: entity work.CPU port map (
 		clk => cpu_clk,
 		reset => cpu_reset,
-		led => led
+		led => led,
+
+		vbuf_en => vbuf_en,
+		vbuf_wr => vbuf_wr,
+		vbuf_addr => vbuf_addr,
+		vbuf_dout => vbuf_din,
+		vbuf_din => vbuf_dout
 	);
 
 	display: entity work.video port map ( 
@@ -58,7 +70,14 @@ begin
 		hdmi_clk2 => hdmi_clk2,
 		reset_n => cpu_resetn,
 		tmds => tmds,
-		tmdsb => tmdsb
+		tmdsb => tmdsb,
+
+		buf_clk  => cpu_clk,
+		buf_en   => vbuf_en,
+		buf_wr   => vbuf_wr,
+		buf_addr => vbuf_addr,
+		buf_din  => vbuf_din,
+		buf_dout => vbuf_dout
 	); 
 
 end Behavioral;

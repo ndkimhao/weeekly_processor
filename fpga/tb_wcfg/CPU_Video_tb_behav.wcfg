@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="CPU_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="CPU_tb" />
+            <top_module name="constants" />
+            <top_module name="glbl" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="12907090000fs"></ZoomStartTime>
+      <ZoomEndTime time="26207090001fs"></ZoomEndTime>
+      <Cursor1Time time="23340024000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="216"></NameColumnWidth>
+      <ValueColumnWidth column_width="149"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="7" />
+   <wvobject fp_name="/CPU_tb/display/vga/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/reset_n" type="logic">
+      <obj_property name="ElementShortName">reset_n</obj_property>
+      <obj_property name="ObjectShortName">reset_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/r" type="array">
+      <obj_property name="ElementShortName">r[7:0]</obj_property>
+      <obj_property name="ObjectShortName">r[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/maddr" type="array">
+      <obj_property name="ElementShortName">maddr[14:0]</obj_property>
+      <obj_property name="ObjectShortName">maddr[14:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/mdin" type="array">
+      <obj_property name="ElementShortName">mdin[15:0]</obj_property>
+      <obj_property name="ObjectShortName">mdin[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/row" type="array">
+      <obj_property name="ElementShortName">row[9:0]</obj_property>
+      <obj_property name="ObjectShortName">row[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/col" type="array">
+      <obj_property name="ElementShortName">col[9:0]</obj_property>
+      <obj_property name="ObjectShortName">col[9:0]</obj_property>
+   </wvobject>
+</wave_config>

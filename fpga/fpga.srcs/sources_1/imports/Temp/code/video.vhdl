@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.Constants.all;
+use work.Types.all;
+
 library unisim;
 use unisim.vcomponents.all;
 
@@ -13,7 +16,14 @@ entity video is
 		hdmi_clk2 : in  std_logic;
 		reset_n : in  std_logic;
 		tmds : out  std_logic_vector (3 downto 0);
-		tmdsb : out  std_logic_vector (3 downto 0)
+		tmdsb : out  std_logic_vector (3 downto 0);
+
+		buf_clk : in  std_logic;
+		buf_en : in std_logic;
+		buf_wr : in std_logic;
+		buf_addr : in TAddr;
+		buf_din : in TData;
+		buf_dout : out TData
 	);
 end video;
 
@@ -35,7 +45,14 @@ begin
 		blank => blank,
 		r => red,
 		g => green,
-		b => blue
+		b => blue,
+
+		buf_clk  => buf_clk,
+		buf_en   => buf_en,
+		buf_wr   => buf_wr,
+		buf_addr => buf_addr,
+		buf_din  => buf_din,
+		buf_dout => buf_dout
 	);
 
 
