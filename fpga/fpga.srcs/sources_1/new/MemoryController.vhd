@@ -43,7 +43,7 @@ begin
 	vbuf_addr <= addr(15 downto 0);
 
 	vbuf_wr <= wr;
-	vbuf_en <= en_rom;
+	vbuf_en <= en_vid;
 
 	ram : entity work.RAM port map (
 		clk => clk,
