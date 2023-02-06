@@ -13,15 +13,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="12907090000fs"></ZoomStartTime>
-      <ZoomEndTime time="26207090001fs"></ZoomEndTime>
-      <Cursor1Time time="23340024000fs"></Cursor1Time>
+      <ZoomStartTime time="635098223917fs"></ZoomStartTime>
+      <ZoomEndTime time="645972071282fs"></ZoomEndTime>
+      <Cursor1Time time="16940000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="216"></NameColumnWidth>
-      <ValueColumnWidth column_width="149"></ValueColumnWidth>
+      <ValueColumnWidth column_width="137"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="7" />
+   <WVObjectSize size="13" />
    <wvobject fp_name="/CPU_tb/display/vga/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -47,9 +47,51 @@
    <wvobject fp_name="/CPU_tb/display/vga/row" type="array">
       <obj_property name="ElementShortName">row[9:0]</obj_property>
       <obj_property name="ObjectShortName">row[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/display/vga/col" type="array">
       <obj_property name="ElementShortName">col[9:0]</obj_property>
       <obj_property name="ObjectShortName">col[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/idx" type="array">
+      <obj_property name="ElementShortName">idx[18:0]</obj_property>
+      <obj_property name="ObjectShortName">idx[18:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/next_row" type="array">
+      <obj_property name="ElementShortName">next_row[9:0]</obj_property>
+      <obj_property name="ObjectShortName">next_row[9:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/next_col" type="array">
+      <obj_property name="ElementShortName">next_col[9:0]</obj_property>
+      <obj_property name="ObjectShortName">next_col[9:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/next_idx" type="array">
+      <obj_property name="ElementShortName">next_idx[18:0]</obj_property>
+      <obj_property name="ObjectShortName">next_idx[18:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/h_blank" type="logic">
+      <obj_property name="ElementShortName">h_blank</obj_property>
+      <obj_property name="ObjectShortName">h_blank</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/display/vga/v_blank" type="logic">
+      <obj_property name="ElementShortName">v_blank</obj_property>
+      <obj_property name="ObjectShortName">v_blank</obj_property>
    </wvobject>
 </wave_config>

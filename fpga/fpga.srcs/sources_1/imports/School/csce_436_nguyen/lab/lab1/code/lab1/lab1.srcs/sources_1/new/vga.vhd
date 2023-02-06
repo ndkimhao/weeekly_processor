@@ -71,13 +71,14 @@ begin
 			next_col <= (others => '0');
 			next_idx <= (others => '0');
 		elsif rising_edge(clk) then
+			if next_col < 640 and next_row < 480 then
+				next_idx <= next_idx + 1;
+			end if;
 			if next_col < 799 then
 				next_col <= next_col + 1;
-				next_idx <= next_idx + 1;
 			elsif next_row < 524 then
 				next_col <= (others => '0');
 				next_row <= next_row + 1;
-				next_idx <= idx + 1;
 			else
 				next_col <= (others => '0');
 				next_row <= (others => '0');
