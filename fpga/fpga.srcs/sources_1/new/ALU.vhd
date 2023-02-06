@@ -136,25 +136,25 @@ begin
 		p => sprod
 	);
 	
-	unsigned_div : div_unsigned_16 port map (
-		aclk => clk,
-		s_axis_divisor_tvalid => start_op,
-		s_axis_divisor_tdata => b,
-		s_axis_dividend_tvalid => start_op,
-		s_axis_dividend_tdata => a,
-		m_axis_dout_tvalid => udiv_done,
-		m_axis_dout_tdata => udiv
-	);
+--	unsigned_div : div_unsigned_16 port map (
+--		aclk => clk,
+--		s_axis_divisor_tvalid => start_op,
+--		s_axis_divisor_tdata => b,
+--		s_axis_dividend_tvalid => start_op,
+--		s_axis_dividend_tdata => a,
+--		m_axis_dout_tvalid => udiv_done,
+--		m_axis_dout_tdata => udiv
+--	);
 
-	signed_div : div_signed_16 port map (
-		aclk => clk,
-		s_axis_divisor_tvalid => start_op,
-		s_axis_divisor_tdata => b,
-		s_axis_dividend_tvalid => start_op,
-		s_axis_dividend_tdata => a,
-		m_axis_dout_tvalid => sdiv_done,
-		m_axis_dout_tdata => sdiv
-	);
+--	signed_div : div_signed_16 port map (
+--		aclk => clk,
+--		s_axis_divisor_tvalid => start_op,
+--		s_axis_divisor_tdata => b,
+--		s_axis_dividend_tvalid => start_op,
+--		s_axis_dividend_tdata => a,
+--		m_axis_dout_tvalid => sdiv_done,
+--		m_axis_dout_tdata => sdiv
+--	);
 	
 	div_done <= 
 		udiv_done when o = OP_DIV else

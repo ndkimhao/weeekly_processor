@@ -23,7 +23,7 @@ component blk_mem_gen_0
 		clka : in std_logic;
 		ena : in std_logic;
 		wea : in std_logic_vector(0 downto 0);
-		addra : in std_logic_vector(16 downto 0);
+		addra : in std_logic_vector(15 downto 0);
 		dina : in std_logic_vector(7 downto 0);
 		douta : out std_logic_vector(7 downto 0)
 	);
@@ -35,7 +35,7 @@ signal aligned, last_aligned : std_logic;
 
 signal din_a, dout_a : TByte;
 signal din_b, dout_b : TByte;
-signal addr_a, addr_b : unsigned(16 downto 0);
+signal addr_a, addr_b : unsigned(15 downto 0);
 
 begin
 
@@ -53,8 +53,8 @@ begin
 	din_a <= din(7 downto 0)  when aligned = '1' else din(15 downto 8);
 	din_b <= din(15 downto 8) when aligned = '1' else din(7 downto 0);
 
-	addr_a <= addr2(16 downto 0) when aligned = '1' else addr2plus1(16 downto 0);
-	addr_b <= addr2(16 downto 0);
+	addr_a <= addr2(15 downto 0) when aligned = '1' else addr2plus1(15 downto 0);
+	addr_b <= addr2(15 downto 0);
 
 	dout <= dout_b & dout_a when last_aligned = '1' else
 			dout_a & dout_b;
