@@ -33,33 +33,51 @@ shared variable a_vend   : TArrAddr;
 
 signal r_start : unsigned(AddrWidth-4-1 downto 0);
 signal r_phy   : unsigned(PhyAddrWidth-4-1 downto 0);
+
+type TArrayInrage is array(MMUSlots-1 downto 0) of std_logic;
+signal s_inrange : TArrayInrage;
+
 begin
 
 	process (clk)
 	begin
 
-		if rising_edge(clk) and cfg_write = '1' then
-			for i in 0 to MMUSlots-1 loop
-					if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then
-						a_phy(i)    := unsigned(cfg_phy_addr(PhyAddrWidth-1 downto PageW));
-						a_vstart(i) := unsigned(cfg_virt_start(AddrWidth-1 downto PageW));
-						a_vend(i)   := unsigned(cfg_virt_end(AddrWidth-1 downto PageW));
-					end if; -- cfg_index
-			end loop;
+		if rising_edge(clk) then
+			if cfg_write = '1' then
+				for i in 0 to MMUSlots-1 loop
+						if cfg_index = std_logic_vector(to_unsigned(i, MMUIdxWidth)) then
+							a_phy(i)    := unsigned(cfg_phy_addr(PhyAddrWidth-1 downto PageW));
+							a_vstart(i) := unsigned(cfg_virt_start(AddrWidth-1 downto PageW));
+							a_vend(i)   := unsigned(cfg_virt_end(AddrWidth-1 downto PageW));
+						end if; -- cfg_index
+				end loop;
+			end if; -- cfg_write = '1'
 		end if;
 
 	end process;
 
-	process (virt_addr, clk)
-	begin
-		for i in 0 to MMUSlots-1 loop
-			if a_vstart(i) <= unsigned(virt_addr(AddrWidth-1 downto PageW)) and 
-							  unsigned(virt_addr(AddrWidth-1 downto PageW)) <= a_vend(i) then
-				r_start <= a_vstart(i);
-				r_phy   <= a_phy(i);
-			end if;
-		end loop;
-	end process;
+	-- concurrent
+
+	gen_s_inrange : for i in 0 to MMUSlots-1 generate
+		s_inrange(i) <= '1' when a_vstart(i) <= unsigned(virt_addr(AddrWidth-1 downto PageW)) and 
+							  	 a_vend(i)   >= unsigned(virt_addr(AddrWidth-1 downto PageW))
+						else '0';
+	end generate gen_s_inrange;
+
+
+	r_start <= 
+		a_vstart(3) when s_inrange(3) = '1' else		
+		a_vstart(2) when s_inrange(2) = '1' else		
+		a_vstart(1) when s_inrange(1) = '1' else		
+		a_vstart(0) when s_inrange(0) = '1' else
+		(others => '0');
+
+	r_phy <= 
+		a_phy(3) when s_inrange(3) = '1' else		
+		a_phy(2) when s_inrange(2) = '1' else		
+		a_phy(1) when s_inrange(1) = '1' else		
+		a_phy(0) when s_inrange(0) = '1' else
+		(others => '0');
 
 	phy_addr <= std_logic_vector(r_phy + unsigned(virt_addr(AddrWidth-1 downto PageW)) - r_start)
 					& virt_addr(PageW-1 downto 0);
