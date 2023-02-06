@@ -13,15 +13,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="40533325000fs"></ZoomStartTime>
-      <ZoomEndTime time="63303325001fs"></ZoomEndTime>
-      <Cursor1Time time="54463325000fs"></Cursor1Time>
+      <ZoomStartTime time="43462500000fs"></ZoomStartTime>
+      <ZoomEndTime time="54907500001fs"></ZoomEndTime>
+      <Cursor1Time time="53000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="146"></NameColumnWidth>
-      <ValueColumnWidth column_width="113"></ValueColumnWidth>
+      <ValueColumnWidth column_width="101"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="31" />
+   <WVObjectSize size="34" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -167,16 +167,36 @@
       <obj_property name="ElementShortName">uop_hold</obj_property>
       <obj_property name="ObjectShortName">uop_hold</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/uop_idx" type="array">
-      <obj_property name="ElementShortName">uop_idx[8:0]</obj_property>
-      <obj_property name="ObjectShortName">uop_idx[8:0]</obj_property>
+   <wvobject fp_name="/CPU_tb/cpu/engine/alu/a" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">a[15:0]</obj_property>
+      <obj_property name="ObjectShortName">a[15:0]</obj_property>
+      <obj_property name="label">ALU a</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/last_den" type="logic">
-      <obj_property name="ElementShortName">last_den</obj_property>
-      <obj_property name="ObjectShortName">last_den</obj_property>
+   <wvobject fp_name="/CPU_tb/cpu/engine/alu/b" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">b[15:0]</obj_property>
+      <obj_property name="ObjectShortName">b[15:0]</obj_property>
+      <obj_property name="label">ALU b</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/engine/last_dwr" type="logic">
-      <obj_property name="ElementShortName">last_dwr</obj_property>
-      <obj_property name="ObjectShortName">last_dwr</obj_property>
+   <wvobject fp_name="/CPU_tb/cpu/engine/alu/r" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">r[15:0]</obj_property>
+      <obj_property name="ObjectShortName">r[15:0]</obj_property>
+      <obj_property name="label">ALU res</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/alu_aux" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">alu_aux[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_aux[15:0]</obj_property>
+      <obj_property name="label">ALU aux</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/effective_uop" type="array">
+      <obj_property name="ElementShortName">effective_uop[12:0]</obj_property>
+      <obj_property name="ObjectShortName">effective_uop[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/alu_hold_counter" type="array">
+      <obj_property name="ElementShortName">alu_hold_counter[4:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_hold_counter[4:0]</obj_property>
    </wvobject>
 </wave_config>

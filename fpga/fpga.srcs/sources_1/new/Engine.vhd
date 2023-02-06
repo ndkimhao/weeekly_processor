@@ -67,9 +67,10 @@ signal uop_head : std_logic_vector(UcodeHeadLen-1 downto 0);
 signal uop_tail : std_logic_vector(UcodeTailLen-1 downto 0);
 
 signal alu_op : std_logic_vector(ALUOpLen-1 downto 0);
-signal alu_out : TData;
+signal alu_out, alu_aux : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
 signal alu_cmp_signed : std_logic;
+signal alu_hold_counter : unsigned(5-1 downto 0);
 
 signal fl_selector : unsigned(ALUOpLen-1 downto 0);
 signal fl_bit : std_logic;
@@ -79,17 +80,22 @@ signal last_den, last_dwr : std_logic;
 signal last_inst_buffer : TInstBuffer;
 signal inst_opcode : TByte;
 
+signal cached_uop : TUop;
+signal effective_uop : TUop;
+
 begin
 
 	inst_opcode <=
 		inst_buffer(0) when uop_idx = 0 else
 		last_inst_buffer(0);
+	
+	effective_uop <= cached_uop when alu_hold_counter /= 0 else uop;
 
-	uop_head <= uop(12 downto 10);
-	uop_tail <= uop(9 downto 8);
+	uop_head <= effective_uop(12 downto 10);
+	uop_tail <= effective_uop(9 downto 8);
 
-	idx_dst <= unsigned(uop(7 downto 4));
-	idx_src <= unsigned(uop(3 downto 0));
+	idx_dst <= unsigned(effective_uop(7 downto 4));
+	idx_src <= unsigned(effective_uop(3 downto 0));
 	
 	r_dst <=
 		din when last_den = '1' and last_dwr = '0' and idx_dst = mem_load_dst_idx else
@@ -129,10 +135,12 @@ begin
 		'0';
 
 	alu : entity work.ALU port map (
+		clk => clk,
 		a => r_dst,
 		b => r_src,
 		op => alu_op,
 		r => alu_out,
+		aux => alu_aux,
 		cmp_signed => alu_cmp_signed,
 		cmp => alu_cmp
 	);
@@ -176,8 +184,9 @@ begin
 			
 			uop_hold <= '0';
 			mmu_cfg_wr <= '0';
+			alu_hold_counter <= (others => '0');
 
-			if uop_ready = '1' and uop_hold = '0' then
+			if uop_ready = '1' and (uop_hold = '0' or alu_hold_counter /= 0) then
 
 				r_write := '0';
 				case uop_head is
@@ -261,8 +270,30 @@ begin
 						end if;
 
 					when UOP_ALU_HEAD =>
-						r_write := '1';
-						r_res := alu_out;
+						if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
+
+							if alu_hold_counter = 0 then
+								cached_uop <= uop;
+								alu_hold_counter <= to_unsigned(4, 5);
+								uop_hold <= '1';
+							else
+								if alu_hold_counter = 1 then
+									uop_hold <= '0';
+									r_write := '1';
+									r_res := alu_out;
+									v_regs(REGID_D) := alu_aux;
+								else
+									uop_hold <= '1';
+								end if;
+								alu_hold_counter <= alu_hold_counter - 1;
+							end if;
+						
+						else -- normal ALU ops
+						
+							r_write := '1';
+							r_res := alu_out;
+						
+						end if;
 
 					when UOP_CMP_HEAD =>
 						r_write := '1';
@@ -284,12 +315,12 @@ begin
 					elsif uop_head = UOP_ARG_HEAD and uop_tail = UOP_ARG_PUT then
 						r_idx := "0" & unsigned(v_inst(1)(7 downto 5)); -- first arg of instruction
 					else 
-						r_idx := unsigned(uop(7 downto 4));
+						r_idx := idx_dst;
 					end if;
 					v_regs(to_integer(r_idx)) := r_res;
 				end if; -- r_write
 
-				if uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
+				if uop_hold = '0' and uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
 					v_regs(REGID_PC) :=	std_logic_vector(unsigned(v_regs(REGID_PC)) + inst_len);
 				end if;
 

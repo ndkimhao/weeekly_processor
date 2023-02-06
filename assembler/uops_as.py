@@ -8,6 +8,7 @@
 import re
 import fnmatch
 
+# MUL/DIV always place result to X:Y
 REGS = (
     '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
     'X', 'Y', 'Z', 'K', '2', '', '', ''

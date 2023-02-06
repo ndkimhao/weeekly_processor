@@ -7,10 +7,13 @@ use work.Types.all;
 
 entity ALU is
 	port (
+		clk : in std_logic;
+
 		a : in TData;
 		b : in TData;
 		op : in std_logic_vector(ALUOpLen-1 downto 0);
 		r : out TData;
+		aux : out TData;
 		cmp_signed : in std_logic;
 		-- GE GT LE LT NE EQ
 		cmp : out std_logic_vector(AluNumFLags-1 downto 0)
@@ -19,9 +22,31 @@ end ALU;
 
 architecture Behavioral of ALU is
 
+
+component mult_signed_16
+	port (
+		clk : in std_logic;
+		a : in std_logic_vector(15 downto 0);
+		b : in std_logic_vector(15 downto 0);
+		p : out std_logic_vector(31 downto 0)
+	);
+end component;
+
+component mult_unsigned_16
+	port (
+		clk : in std_logic;
+		a : in std_logic_vector(15 downto 0);
+		b : in std_logic_vector(15 downto 0);
+		p : out std_logic_vector(31 downto 0)
+	);
+end component;
+
 signal ua, ub, ur: unsigned(DataWidth-1 downto 0);
 signal sa, sb: signed(DataWidth-1 downto 0);
 signal o : unsigned(ALUOpLen-1 downto 0);
+
+signal uprod : std_logic_vector(DataWidth*2-1 downto 0);
+signal sprod : std_logic_vector(DataWidth*2-1 downto 0);
 
 begin
 
@@ -36,6 +61,8 @@ begin
 		-- 2 args
 		ua + ub when o = OP_ADD else
 		ua - ub when o = OP_SUB else
+		unsigned(uprod(DataWidth-1 downto 0)) when o = OP_MUL else
+		unsigned(sprod(DataWidth-1 downto 0)) when o = OP_IMUL else
 		ua srl to_integer(ub(3 downto 0)) when o = OP_SHR else
 		ua sra to_integer(ub(3 downto 0)) when o = OP_ISHR else
 		ua sll to_integer(ub(3 downto 0)) when o = OP_SHL else
@@ -50,6 +77,11 @@ begin
 		ua - 1 when o = OP_DEC else
 		x"0000";
 
+	aux <=
+		uprod(DataWidth*2-1 downto DataWidth) when o = OP_MUL else
+		sprod(DataWidth*2-1 downto DataWidth) when o = OP_IMUL else
+		x"0000";
+
 	cmp(FLAGID_EQ) <= '1' when ua = ub else '0'; -- EQ
 	cmp(FLAGID_NE) <= not cmp(FLAGID_EQ); -- NE
 	cmp(FLAGID_LT) <= '1' when (cmp_signed = '0' and ua < ub) or
@@ -58,5 +90,20 @@ begin
 	cmp(FLAGID_LE) <= cmp(FLAGID_EQ) or cmp(FLAGID_LT);
 	cmp(FLAGID_GT) <= not cmp(FLAGID_LE);
 	cmp(FLAGID_GE) <= not cmp(FLAGID_LT);
+
+	--------------------
+	-- Multiplier
+	unsigned_mult : mult_unsigned_16 port map (
+		clk => clk,
+		a => a,
+		b => b,
+		p => uprod
+	);
+	signed_mult : mult_signed_16 port map (
+		clk => clk,
+		a => a,
+		b => b,
+		p => sprod
+	);
 
 end Behavioral;
