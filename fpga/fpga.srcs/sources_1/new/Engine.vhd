@@ -46,7 +46,7 @@ architecture Behavioral of Engine is
 type TArrUopsConstsROM is array (0 to 5-1) of TData;
 constant uops_consts_rom : TArrUopsConstsROM := (
 	x"0001", -- used 1 times
-	x"FFFF", -- used 2 times
+	x"FFFF", -- used 6 times
 	x"00FF", -- used 1 times
 	x"8000", -- used 2 times
 	x"003F"  -- used 1 times

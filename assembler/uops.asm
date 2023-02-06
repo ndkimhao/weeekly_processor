@@ -23,6 +23,7 @@ reset:
     con Z, 0xFFFF
     mmu # idx=1, 0000-FFFF to 0000-FFFF
 
+    con Y, 0xFFFF
     mov Z, 0
     alu X, K, ADD
     mmu # idx=1
@@ -34,7 +35,7 @@ reset:
     mmu # idx=2
 
     mov A, 0
-    mov Y, 0
+    con Y, 0xFFFF
     mov Z, 0
     alu X, K, ADD
     mmu # idx=3
@@ -174,7 +175,7 @@ mmap_$$: # start, end, slot_idx / Y, Z, X
 umap_$$:
     (-) arg, X, GET_0
     (i) mem, X, X, LOAD
-    (-) mov Y, 0
+    (-) con Y, 0xFFFF
     (-) mov Z, 0
     (-) mmu
 .end_generate
