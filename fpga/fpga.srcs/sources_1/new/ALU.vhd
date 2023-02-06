@@ -16,7 +16,10 @@ entity ALU is
 		aux : out TData;
 		cmp_signed : in std_logic;
 		-- GE GT LE LT NE EQ
-		cmp : out std_logic_vector(AluNumFLags-1 downto 0)
+		cmp : out std_logic_vector(AluNumFLags-1 downto 0);
+		
+		start_op : in std_logic;
+		div_done : out std_logic := '0'
 	);
 end ALU;
 
@@ -41,12 +44,36 @@ component mult_unsigned_16
 	);
 end component;
 
+component div_signed_16
+	port (
+		aclk : in std_logic;
+		s_axis_divisor_tvalid : in std_logic;
+		s_axis_divisor_tdata : in std_logic_vector(15 downto 0);
+		s_axis_dividend_tvalid : in std_logic;
+		s_axis_dividend_tdata : in std_logic_vector(15 downto 0);
+		m_axis_dout_tvalid : out std_logic;
+		m_axis_dout_tdata : out std_logic_vector(31 downto 0)
+	);
+end component;
+
+component div_unsigned_16
+	port (
+		aclk : in std_logic;
+		s_axis_divisor_tvalid : in std_logic;
+		s_axis_divisor_tdata : in std_logic_vector(15 downto 0);
+		s_axis_dividend_tvalid : in std_logic;
+		s_axis_dividend_tdata : in std_logic_vector(15 downto 0);
+		m_axis_dout_tvalid : out std_logic;
+		m_axis_dout_tdata : out std_logic_vector(31 downto 0)
+	);
+end component;
+
 signal ua, ub, ur: unsigned(DataWidth-1 downto 0);
 signal sa, sb: signed(DataWidth-1 downto 0);
 signal o : unsigned(ALUOpLen-1 downto 0);
 
-signal uprod : std_logic_vector(DataWidth*2-1 downto 0);
-signal sprod : std_logic_vector(DataWidth*2-1 downto 0);
+signal uprod, sprod, udiv, sdiv : std_logic_vector(DataWidth*2-1 downto 0);
+signal udiv_done, sdiv_done : std_logic;
 
 begin
 
@@ -63,6 +90,8 @@ begin
 		ua - ub when o = OP_SUB else
 		unsigned(uprod(DataWidth-1 downto 0)) when o = OP_MUL else
 		unsigned(sprod(DataWidth-1 downto 0)) when o = OP_IMUL else
+		unsigned(udiv(DataWidth-1 downto 0)) when o = OP_DIV else
+		unsigned(sdiv(DataWidth-1 downto 0)) when o = OP_IDIV else
 		ua srl to_integer(ub(3 downto 0)) when o = OP_SHR else
 		ua sra to_integer(ub(3 downto 0)) when o = OP_ISHR else
 		ua sll to_integer(ub(3 downto 0)) when o = OP_SHL else
@@ -80,6 +109,8 @@ begin
 	aux <=
 		uprod(DataWidth*2-1 downto DataWidth) when o = OP_MUL else
 		sprod(DataWidth*2-1 downto DataWidth) when o = OP_IMUL else
+		udiv(DataWidth*2-1 downto DataWidth) when o = OP_DIV else
+		sdiv(DataWidth*2-1 downto DataWidth) when o = OP_IDIV else
 		x"0000";
 
 	cmp(FLAGID_EQ) <= '1' when ua = ub else '0'; -- EQ
@@ -91,19 +122,43 @@ begin
 	cmp(FLAGID_GT) <= not cmp(FLAGID_LE);
 	cmp(FLAGID_GE) <= not cmp(FLAGID_LT);
 
-	--------------------
-	-- Multiplier
 	unsigned_mult : mult_unsigned_16 port map (
 		clk => clk,
 		a => a,
 		b => b,
 		p => uprod
 	);
+
 	signed_mult : mult_signed_16 port map (
 		clk => clk,
 		a => a,
 		b => b,
 		p => sprod
 	);
+	
+	unsigned_div : div_unsigned_16 port map (
+		aclk => clk,
+		s_axis_divisor_tvalid => start_op,
+		s_axis_divisor_tdata => b,
+		s_axis_dividend_tvalid => start_op,
+		s_axis_dividend_tdata => a,
+		m_axis_dout_tvalid => udiv_done,
+		m_axis_dout_tdata => udiv
+	);
+
+	signed_div : div_signed_16 port map (
+		aclk => clk,
+		s_axis_divisor_tvalid => start_op,
+		s_axis_divisor_tdata => b,
+		s_axis_dividend_tvalid => start_op,
+		s_axis_dividend_tdata => a,
+		m_axis_dout_tvalid => sdiv_done,
+		m_axis_dout_tdata => sdiv
+	);
+	
+	div_done <= 
+		udiv_done when o = OP_DIV else
+		sdiv_done when o = OP_IDIV else
+		'0';
 
 end Behavioral;

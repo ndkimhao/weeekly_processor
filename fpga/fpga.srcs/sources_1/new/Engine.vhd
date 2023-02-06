@@ -71,6 +71,8 @@ signal alu_out, alu_aux : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
 signal alu_cmp_signed : std_logic;
 signal alu_hold_counter : unsigned(5-1 downto 0);
+signal alu_start_op : std_logic;
+signal alu_div_done : std_logic;
 
 signal fl_selector : unsigned(ALUOpLen-1 downto 0);
 signal fl_bit : std_logic;
@@ -142,7 +144,9 @@ begin
 		r => alu_out,
 		aux => alu_aux,
 		cmp_signed => alu_cmp_signed,
-		cmp => alu_cmp
+		cmp => alu_cmp,
+		start_op => alu_start_op,
+		div_done => alu_div_done
 	);
 
 	process(clk)
@@ -185,6 +189,7 @@ begin
 			uop_hold <= '0';
 			mmu_cfg_wr <= '0';
 			alu_hold_counter <= (others => '0');
+			alu_start_op <= '0';
 
 			if uop_ready = '1' and (uop_hold = '0' or alu_hold_counter /= 0) then
 
@@ -270,22 +275,29 @@ begin
 						end if;
 
 					when UOP_ALU_HEAD =>
-						if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
+						if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
+						   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
 
 							if alu_hold_counter = 0 then
 								cached_uop <= uop;
-								alu_hold_counter <= to_unsigned(4, 5);
+								if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
+									alu_hold_counter <= to_unsigned(4, 5);
+								else
+									alu_hold_counter <= to_unsigned(31, 5);
+								end if;
 								uop_hold <= '1';
+								alu_start_op <= '1';
 							else
-								if alu_hold_counter = 1 then
+								alu_hold_counter <= alu_hold_counter - 1;
+								if alu_hold_counter = 1 or alu_div_done = '1' then
 									uop_hold <= '0';
 									r_write := '1';
 									r_res := alu_out;
 									v_regs(REGID_D) := alu_aux;
+									alu_hold_counter <= (others => '0');
 								else
 									uop_hold <= '1';
 								end if;
-								alu_hold_counter <= alu_hold_counter - 1;
 							end if;
 						
 						else -- normal ALU ops

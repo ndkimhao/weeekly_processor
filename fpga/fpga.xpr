@@ -34,7 +34,7 @@
     <Option Name="DSAVendor" Val="xilinx"/>
     <Option Name="DSABoardId" Val="nexys_video"/>
     <Option Name="DSANumComputeUnits" Val="60"/>
-    <Option Name="WTXSimLaunchSim" Val="406"/>
+    <Option Name="WTXSimLaunchSim" Val="416"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -319,7 +319,6 @@
     <FileSet Name="div_unsigned_16" Type="BlockSrcs" RelSrcDir="$PSRCDIR/div_unsigned_16">
       <File Path="$PSRCDIR/sources_1/ip/div_unsigned_16/div_unsigned_16.xci">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -333,7 +332,6 @@
     <FileSet Name="div_signed_16" Type="BlockSrcs" RelSrcDir="$PSRCDIR/div_signed_16">
       <File Path="$PSRCDIR/sources_1/ip/div_signed_16/div_signed_16.xci">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>

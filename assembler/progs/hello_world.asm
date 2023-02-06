@@ -3,6 +3,8 @@
 boot:
     mov A, 0x1233
     mov B, 0xF321
+    div C, B, A
+    idiv C, B, A
     mul C, A, B
     imul C, A, B
     halt
