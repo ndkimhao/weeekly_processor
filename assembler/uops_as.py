@@ -154,22 +154,15 @@ out = [
     f'constant uops_rom : TArrUtopROM := ('
 ] + out + [
     f'); -- uops_rom ---------------------------------------------------',
-    f''
+    f'', f'', f''
 ]
 
 for lbl, idx in label_map.items():
     out.append(f'constant label_{lbl} : integer := {idx};')
 
-out += [
-    f'',
-    f'-- ##############################################################',
-    f'-- ## END UOPS ROM',
-    f'-- ##############################################################',
-    f'', f'', f'',
-]
-
 const_map_r = {v: k for k, v in const_map.items()}
 out += [
+    f'', f'',
     f'type TArrUopsConstsROM is array (0 to {len(const_map_r)}-1) of TData;',
     f'constant uops_consts_rom : TArrUopsConstsROM := (',
 ]
@@ -183,25 +176,33 @@ out += [
     f'); -- uops_consts_rom -------------------------------------------',
 ]
 
-out += [f'', f'',]
-CMDS_MAP_HEAD_ID = {cmd: i for i, (cmd, _) in enumerate(CMDS)}
-for cmd, opts in CMDS_MAP.items():
-    if cmd == '_':
-        continue
-    if len(opts) == 1:
-        out.append(f'constant UOP_{cmd} : TUcodeTail := "{opts[""] % 4:02b}";')
-    else:
-        out.append(
-            f'constant UOP_{cmd}_HEAD : TUcodeHead := "{CMDS_MAP_HEAD_ID[cmd]:03b}";')
-        for opt, oid in opts.items():
-            out.append(
-                f'constant UOP_{cmd}_{opt} : TUcodeTail := "{oid % 4:02b}";')
+out += [
+    f'',
+    f'-- ##############################################################',
+    f'-- ## END UOPS ROM',
+    f'-- ##############################################################',
+    f'', f'', f'',
+]
+
+# out += [f'', f'',]
+# CMDS_MAP_HEAD_ID = {cmd: i for i, (cmd, _) in enumerate(CMDS)}
+# for cmd, opts in CMDS_MAP.items():
+#     if cmd == '_':
+#         continue
+#     if len(opts) == 1:
+#         out.append(f'constant UOP_{cmd} : TUcodeTail := "{opts[""] % 4:02b}";')
+#     else:
+#         out.append(
+#             f'constant UOP_{cmd}_HEAD : TUcodeHead := "{CMDS_MAP_HEAD_ID[cmd]:03b}";')
+#         for opt, oid in opts.items():
+#             out.append(
+#                 f'constant UOP_{cmd}_{opt} : TUcodeTail := "{oid % 4:02b}";')
 
 
-out += [f'', f'',]
-for reg, rid in REGS_MAP.items():
-    if reg != '':
-        out.append(f'constant REGID_{reg} : integer := {rid};')
+# out += [f'', f'',]
+# for reg, rid in REGS_MAP.items():
+#     if reg != '':
+#         out.append(f'constant REGID_{reg} : integer := {rid};')
 
 
 with open('uops_rom.vhd', 'w') as f:

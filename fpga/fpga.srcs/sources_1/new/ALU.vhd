@@ -99,11 +99,11 @@ begin
 		ua or ub when o = OP_OR else
 		ua xor ub when o = OP_XOR else
 		-- 1 arg
-		unsigned(-sa) when o = OP_NEG else
-		not ua when o = OP_NOT else
-		x"0001" when o = OP_BOOL and ua /= x"0000" else -- else 0 by default
-		ua + 1 when o = OP_INC else
-		ua - 1 when o = OP_DEC else
+		unsigned(-sb) when o = OP_NEG else
+		not ub when o = OP_NOT else
+		x"0001" when o = OP_BOOL and ub /= x"0000" else -- else 0 by default
+		ub + 1 when o = OP_INC else
+		ub - 1 when o = OP_DEC else
 		x"0000";
 
 	aux <=

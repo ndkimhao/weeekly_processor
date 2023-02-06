@@ -216,7 +216,7 @@ out_lines += [
     f'-- ##############################################################',
 ]
 
-with open('rom.vhd', 'w') as f:
+with open('code_rom.vhd', 'w') as f:
     f.write(
         '''
 library ieee;

@@ -49,18 +49,14 @@ reset:
 
 # ======================================
 # ALU
-.generate 1dx, 1ix, 2dd, 2di, 2id, 2ii, 3dd, 3di, 3id, 3ii
+.generate 2dd, 2di, 2id, 2ii, 3dd, 3di, 3id, 3ii
 alu_$$:
-    ([12]i-) arg K, GET_0
-    ([12]i-) mem X, K, LOAD
-    ([12]d-) arg X, GET_0
+    (2i-) arg K, GET_0
+    (2i-) mem X, K, LOAD
+    (2d-) arg X, GET_0
 
-    (1--) alu X, 0, OP_COPY
-    (1d-) arg X, PUT
-    (1i-) mem K, X, STORE
-
-    ([23]--) arg Y, GET_1
-    ([23]-i) mem Y, Y, LOAD
+    (---) arg Y, GET_1
+    (--i) mem Y, Y, LOAD
 
     (2--) alu X, Y, OP_COPY
     (2d-) arg X, PUT
@@ -70,6 +66,21 @@ alu_$$:
     (3--) alu Y, Z, OP_COPY
     (3d-) arg Y, PUT
     (3i-) mem K, Y, STORE
+.end_generate
+
+.generate 1dx, 1ix, 2dd, 2di, 2id, 2ii
+alu_single_$$:
+    (-i-) arg K, GET_0
+    (1i-) mem X, K, LOAD
+    (1d-) arg X, GET_0
+
+    (2--) arg Y, GET_1
+    (2-i) mem Y, Y, LOAD
+
+    (1--) alu X, X, OP_COPY
+    (2--) alu X, Y, OP_COPY
+    (-d-) arg X, PUT
+    (-i-) mem K, X, STORE
 .end_generate
 
 # ======================================

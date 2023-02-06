@@ -64,31 +64,33 @@ signal pixel_data : std_logic;
 
 begin
 
-	process(clk, reset)
+	process(clk)
 	begin
-		if reset = '1' then
-			next_row <= (others => '0');
-			next_col <= (others => '0');
-			next_idx <= (others => '0');
-		elsif rising_edge(clk) then
-			if next_col < 640 and next_row < 480 then
-				next_idx <= next_idx + 1;
-			end if;
-			if next_col < 799 then
-				next_col <= next_col + 1;
-			elsif next_row < 524 then
-				next_col <= (others => '0');
-				next_row <= next_row + 1;
-			else
-				next_col <= (others => '0');
+		if rising_edge(clk) then
+			if reset = '1' then
 				next_row <= (others => '0');
+				next_col <= (others => '0');
 				next_idx <= (others => '0');
+			else
+				if next_col < 640 and next_row < 480 then
+					next_idx <= next_idx + 1;
+				end if;
+				if next_col < 799 then
+					next_col <= next_col + 1;
+				elsif next_row < 524 then
+					next_col <= (others => '0');
+					next_row <= next_row + 1;
+				else
+					next_col <= (others => '0');
+					next_row <= (others => '0');
+					next_idx <= (others => '0');
+				end if;
+	
+				row <= next_row;
+				col <= next_col;
+				idx <= next_idx;
 			end if;
-
-			row <= next_row;
-			col <= next_col;
-			idx <= next_idx;
-		end if;
+		end if; -- rising_edge(clk)
 	end process;
 
 	h_sync <= '0' when col >= 656 and col < 752 else '1';
