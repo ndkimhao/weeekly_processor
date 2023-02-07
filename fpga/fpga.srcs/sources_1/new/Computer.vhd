@@ -74,7 +74,7 @@ begin
 		vga_clk => vga_clk,
 		hdmi_clk1 => hdmi_clk1,
 		hdmi_clk2 => hdmi_clk2,
-		reset => syn_reset,
+		reset => reset,
 		tmds => tmds,
 		tmdsb => tmdsb,
 
