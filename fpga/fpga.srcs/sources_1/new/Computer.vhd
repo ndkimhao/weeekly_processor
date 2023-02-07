@@ -39,6 +39,10 @@ signal vbuf_addr :  TAddr;
 signal vbuf_din : TData;
 signal vbuf_dout : TData;
 
+signal clock_locked : std_logic;
+signal syn_reset : std_logic := '0';
+signal done_syn_reset : std_logic := '0';
+
 begin
 
 	reset <= not cpu_resetn;
@@ -46,6 +50,7 @@ begin
 	clock: clk_wiz_0 port map (
 		clk_in1 => sysclk,
 		reset => reset,
+		locked => clock_locked,
 		clk_out1 => cpu_clk,
 		clk_out2 => vga_clk,
 		clk_out3 => hdmi_clk1,
@@ -55,7 +60,7 @@ begin
 
 	cpu: entity work.CPU port map (
 		clk => cpu_clk,
-		reset => reset,
+		reset => syn_reset,
 		led => led,
 
 		vbuf_en => vbuf_en,
@@ -69,7 +74,7 @@ begin
 		vga_clk => vga_clk,
 		hdmi_clk1 => hdmi_clk1,
 		hdmi_clk2 => hdmi_clk2,
-		reset => reset,
+		reset => syn_reset,
 		tmds => tmds,
 		tmdsb => tmdsb,
 
@@ -79,6 +84,20 @@ begin
 		buf_addr => vbuf_addr,
 		buf_din  => vbuf_din,
 		buf_dout => vbuf_dout
-	); 
+	);
+	
+	process(cpu_clk, reset)
+	begin
+		if reset = '1' then
+			done_syn_reset <= '0';
+		elsif rising_edge(cpu_clk) then
+			if done_syn_reset = '0' and clock_locked = '1' then
+				syn_reset <= '1';
+				done_syn_reset <= '1';
+			else
+				syn_reset <= '0';
+			end if;
+		end if;
+	end process;
 
 end Behavioral;
