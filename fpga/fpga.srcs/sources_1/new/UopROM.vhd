@@ -336,6 +336,6 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 -- ##############################################################
 
 
-
+attribute ram_style of uops_rom : constant is "distributed";
 
 end package;

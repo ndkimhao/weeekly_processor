@@ -105,7 +105,12 @@ constant labels_call : ArrLabel2 := (
 
 signal s_idx : TIndex := (others => '0');
 
+signal s_uop : TUop;
+attribute ram_style of s_uop : signal is "registers";
+
 begin
+
+	uop <= s_uop;
 
 	process(clk)
 		variable next_idx, op_prog : TIndex;
@@ -124,7 +129,7 @@ begin
 				ready <= '0';
 				used_len <= (others => '0');
 				booted <= '0';
-				uop <= (others => '0');
+				s_uop <= (others => '0');
 				uop_idx <= (others => '0');
 			elsif hold = '0' then
 				need := (others => '0');
@@ -225,8 +230,8 @@ begin
 					used_len <= (others => '0');
 					uop_idx <= (others => '0');
 				end if;
-				
-				uop <= uops_rom(to_integer(next_idx));
+
+				s_uop <= uops_rom(to_integer(next_idx));
 				if uops_rom(to_integer(next_idx) + 1) = 13x"1fff" then
 					brk <= '1';
 				else

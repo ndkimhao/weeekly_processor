@@ -6,6 +6,7 @@ use work.Constants.ALL;
 
 package Types is
 
+attribute ram_style : string;
 
 end Types;
 
