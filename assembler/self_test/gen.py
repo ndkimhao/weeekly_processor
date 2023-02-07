@@ -29,16 +29,6 @@ def gen_section(label, indent=1, comment=''):
     gen_cmd(f'{label}:', indent=indent-1, comment=comment)
 
 
-current_test_index = 0
-
-
-def gen_store_test_index(next=True):
-    global current_test_index
-    if next:
-        current_test_index += 1
-    gen_cmd(f'mov A, 0x{current_test_index:04x}', comment=f'test_{current_test_index}')
-
-
 def as_signed(a):
     if a >= 0x8000:
         return -1 - (0xFFFF - a)
@@ -57,8 +47,21 @@ def calc_ishr(x, y):
 
 
 def append_snippet(p):
+    out_lines.extend(['', f'# BEGIN {p}'])
     with open(f'snippets/{p}', 'r') as f:
         out_lines.extend(s.rstrip() for s in f.readlines())
+    out_lines.extend([f'# END {p}', ''])
+
+
+UNIQUE_LABELS = {}
+
+
+def get_unique_label(name):
+    curid = UNIQUE_LABELS.get(name, 0)
+    curid += 1
+    ret = f'_L_{name}_{curid}'
+    UNIQUE_LABELS[name] = curid
+    return ret
 
 #########################################################################
 
@@ -72,7 +75,6 @@ def gen_test_alu2_op(t, op, a, b, expected, expected_aux=None):
     else:
         gen_cmd(f'mov B, 0x{a:04x}')
         gen_cmd(f'{op} B, 0x{b:04x}')
-    gen_store_test_index()
     gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     if expected_aux is not None:
         gen_cmd(f'jne D, 0x{expected_aux:04x}, $fail')
@@ -85,7 +87,6 @@ def gen_test_alu1_op(t, op, a, expected):
     else:
         gen_cmd(f'mov B, 0x{a:04x}')
         gen_cmd(f'{op} B')
-    gen_store_test_index()
     gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     gen_cmd('')
 
@@ -117,18 +118,76 @@ def gen_test_alu2(t, a, b):
 ALU_TESTCASES = [
     (True, 0xD230, 0xA012), (True, 0x00AD, 0xDA37), (False, 0xF0AD, 0x2A3F), (False, 0, 0xDEAD)
 ]
+gen_section('alu_test')
 for t, a, b in ALU_TESTCASES:
     gen_cmd('', comment=f't={t}, a={a:04x}, b={b:04x}')
     gen_test_alu2(t, a, b)
 
+
+#########################################################################
+
+def gen_test_jmp(a, b, signed=False, separate_cmp=False):
+    if signed:
+        assert separate_cmp
+
+    def gen_lbl(): return get_unique_label('test_jmp')
+    if signed:
+        va, vb = as_signed(a), as_signed(b)
+    else:
+        va, vb = a, b
+    if separate_cmp:
+        cmp_cmd = 'cmp' if not signed else 'icmp'
+        gen_cmd(f'{cmp_cmd} 0x{a:04x}, 0x{b:04x}')
+
+        def gen_fn(cmd, is_true):
+            if is_true:
+                lbl = gen_lbl()
+                gen_cmd(f'{cmd} ${lbl}')
+                gen_cmd(f'jmp $fail')
+                gen_section(lbl)
+            else:
+                gen_cmd(f'{cmd} $fail')
+    else:  # separate_cmp = False
+        def gen_fn(cmd, is_true):
+            if is_true:
+                lbl = gen_lbl()
+                gen_cmd(f'{cmd} 0x{a:04x}, 0x{b:04x}, ${lbl}')
+                gen_cmd(f'jmp $fail')
+                gen_section(lbl)
+            else:
+                gen_cmd(f'{cmd} 0x{a:04x}, 0x{b:04x}, $fail')
+
+    gen_fn('jeq', va == vb)
+    gen_fn('jne', va != vb)
+    gen_fn('jlt', va < vb)
+    gen_fn('jle', va <= vb)
+    gen_fn('jgt', va > vb)
+    gen_fn('jge', va >= vb)
+
+
+for (a, b) in ((0xFFAB, 0x2B), (0x2B, 0xFFAB), (0xFFAB, 0xFFAB)):
+    gen_test_jmp(a, b)
+    gen_test_jmp(a, b, separate_cmp=True)
+    gen_test_jmp(a, b, signed=True, separate_cmp=True)
+
+
+gen_section('jmp_test')
 #########################################################################
 
 append_snippet('test_call_ret.asm')
+
+append_snippet('test_mem_access.asm')
+
+append_snippet('test_cmp.asm')
 
 #########################################################################
 
 gen_section('end_of_test')
 gen_cmd('jmp $success')
+
+append_snippet('drive_led.asm')
+
+#########################################################################
 
 with open('self_test.asm', 'w') as f:
     f.write('\n'.join(s.rstrip() for s in out_lines) + '\n')

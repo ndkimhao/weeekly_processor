@@ -16,7 +16,7 @@ test_call_ret:
     jne D, 0x4597, $fail
     jne SP, 0x1000, $fail
 
-    jmp $success
+    jmp $test_call_ret_end
 
 fn_recursive:
     sub A, 1
@@ -42,3 +42,5 @@ fn_test_target:
     jne SP, 0x0ffe, $fail
     ret
     jmp $fail
+
+test_call_ret_end:

@@ -104,6 +104,13 @@ jmp_i:
     mem X, X, LOAD
     mov PC, X
 
+.generate i, d
+jmp_cond_$$:
+    (-) arg X, GET_0
+    (i) mem X, X, LOAD
+    (-) cmv PC, X, COND_COPY
+.end_generate
+
 .generate dd, di, id, ii
 jmp_3$$:
     (--) arg X, GET_0
@@ -112,7 +119,7 @@ jmp_3$$:
     (-i) mem Y, Y, LOAD
     (--) arg Z, GET_2
 
-    (--) cmp X, Y, OP_COPY
+    (--) cmp X, Y, UNSIGNED
     (--) cmv PC, Z, COND_COPY
 .end_generate
 
@@ -171,21 +178,14 @@ pop_$$:
     (i) mem X, Y, STORE
 .end_generate
 
-.generate dd, di, id, ii
-mmap_$$: # start, end, slot_idx / Y, Z, X
-    (--) arg, Y, GET_0
-    (i-) mem, Y, Y, LOAD
-    (--) arg, Z, GET_1
-    (i-) mem, Z, Z, LOAD
-    (--) arg X, GET_2
-    (--) mmu
-.end_generate
+mmap: # start, end, slot_idx / Y, Z, X
+    arg, Y, GET_0
+    arg, Z, GET_1
+    arg, X, GET_2
+    mmu
 
-.generate d, i
-umap_$$:
-    (-) arg, X, GET_0
-    (i) mem, X, X, LOAD
-    (-) con Y, 0xFFFF
-    (-) mov Z, 0
-    (-) mmu
-.end_generate
+umap:
+    arg, X, GET_0
+    con Y, 0xFFFF
+    mov Z, 0
+    mmu

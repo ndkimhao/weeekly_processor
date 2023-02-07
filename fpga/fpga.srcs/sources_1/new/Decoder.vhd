@@ -74,16 +74,6 @@ constant labels_cmp : ArrLabel4 := (
 	to_unsigned(label_cmp_id, UopIdxW),
 	to_unsigned(label_cmp_ii, UopIdxW)
 );
-constant labels_mmap : ArrLabel4 := (
-	to_unsigned(label_mmap_dd, UopIdxW),
-	to_unsigned(label_mmap_di, UopIdxW),
-	to_unsigned(label_mmap_id, UopIdxW),
-	to_unsigned(label_mmap_ii, UopIdxW)
-);
-constant labels_umap : ArrLabel2 := (
-	to_unsigned(label_umap_d, UopIdxW),
-	to_unsigned(label_umap_i, UopIdxW)
-);
 constant labels_push : ArrLabel2 := (
 	to_unsigned(label_push_d, UopIdxW),
 	to_unsigned(label_push_i, UopIdxW)
@@ -95,6 +85,10 @@ constant labels_pop : ArrLabel2 := (
 constant labels_jmp : ArrLabel2 := (
 	to_unsigned(label_jmp_d, UopIdxW),
 	to_unsigned(label_jmp_i, UopIdxW)
+);
+constant labels_jmp_cond : ArrLabel2 := (
+	to_unsigned(label_jmp_cond_d, UopIdxW),
+	to_unsigned(label_jmp_cond_i, UopIdxW)
 );
 constant labels_jmp_3 : ArrLabel4 := (
 	to_unsigned(label_jmp_3dd, UopIdxW),
@@ -168,14 +162,14 @@ begin
 						case op is
 							when to_unsigned(OP_GETF, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := to_unsigned(label_getf, UopIdxW);
 							when to_unsigned(OP_CMP , OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_cmp(to_integer(indirect_specs));
-							when to_unsigned(OP_MMAP, OpW) => nargs := to_unsigned(3, NArgsW); op_prog := labels_mmap(to_integer(indirect_specs));
+							when to_unsigned(OP_MMAP, OpW) => nargs := to_unsigned(3, NArgsW); op_prog := to_unsigned(label_mmap, UopIdxW);
 							when to_unsigned(OP_JMP , OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_jmp(to_integer(indirect_specs(1 downto 1)));
 							when to_unsigned(OP_CALL, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_call(to_integer(indirect_specs(1 downto 1)));
 							when to_unsigned(OP_MOV , OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_mov(to_integer(indirect_specs));
 							when to_unsigned(OP_BMOV, OpW) => nargs := to_unsigned(2, NArgsW); -- TODO
 							when to_unsigned(OP_SETF, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := to_unsigned(label_setf, UopIdxW);
 							when to_unsigned(OP_ICMP, OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_cmp(to_integer(indirect_specs));
-							when to_unsigned(OP_UMAP, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_umap(to_integer(indirect_specs(1 downto 1)));
+							when to_unsigned(OP_UMAP, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := to_unsigned(label_umap, UopIdxW);
 							when to_unsigned(OP_HALT, OpW) => nargs := to_unsigned(0, NArgsW); op_prog := to_unsigned(label_halt, UopIdxW);
 							when to_unsigned(OP_RET , OpW) => nargs := to_unsigned(0, NArgsW); op_prog := to_unsigned(label_ret, UopIdxW);
 							when to_unsigned(OP_PUSH, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_push(to_integer(indirect_specs(1 downto 1)));
@@ -184,8 +178,8 @@ begin
 						end case;
 					else -- if op(4 downto 0) <= 32 then -- Jmp
 						if op(5) = '0' then
-							nargs := to_unsigned(0, NArgsW);
-							op_prog := labels_jmp(to_integer(indirect_specs(1 downto 1)));
+							nargs := to_unsigned(1, NArgsW);
+							op_prog := labels_jmp_cond(to_integer(indirect_specs(1 downto 1)));
 						else
 							nargs := to_unsigned(3, NArgsW);
 							op_prog := labels_jmp_3(to_integer(indirect_specs));

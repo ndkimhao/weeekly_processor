@@ -51,8 +51,13 @@ def out_cmd(bincode, origs):
 
 def parse_int(s: str):
     s = s.lower().replace('_', '')
+    if s.startswith('\''):
+        assert len(s) == 3 and s.endswith('\'')
+        return ord(s[1])
     if s.startswith('0x'):
         return int(s[2:], 16)
+    if s.startswith('0b'):
+        return int(s[2:], 2)
     if len(s) > 1 and s.startswith('0'):
         return int(s[1:], 8)
     if s.startswith('0b'):

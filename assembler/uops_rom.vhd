@@ -2,7 +2,7 @@
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUtopROM is array (0 to 253-1) of TUop;
+type TArrUtopROM is array (0 to 235-1) of TUop;
 constant uops_rom : TArrUtopROM := (
 	/* 000 */ 13x"0000", --     nop # dummy instruction at index 0 & 1
 	/* 001 */ 13x"0000", --     nop, !FALLTHROUGH
@@ -152,131 +152,113 @@ constant uops_rom : TArrUtopROM := (
 	/* 129 */ 13x"0988", --     arg X, GET_0
 	/* 130 */ 13x"0488", --     mem X, X, LOAD
 	/* 131 */ 13x"0168", --     mov PC, X
-	/* 132 */ 13x"1fff", -- jmp_3dd:
-	/* 133 */ 13x"0988", --     (--) arg X, GET_0
-	/* 134 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 135 */ 13x"0baa", --     (--) arg Z, GET_2
-	/* 136 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 137 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
-	/* 138 */ 13x"1fff", -- jmp_3di:
-	/* 139 */ 13x"0988", --     (--) arg X, GET_0
-	/* 140 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 141 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 132 */ 13x"1fff", -- jmp_cond_i:
+	/* 133 */ 13x"0988", --     (-) arg X, GET_0
+	/* 134 */ 13x"0488", --     (i) mem X, X, LOAD
+	/* 135 */ 13x"1768", --     (-) cmv PC, X, COND_COPY
+	/* 136 */ 13x"1fff", -- jmp_cond_d:
+	/* 137 */ 13x"0988", --     (-) arg X, GET_0
+	/* 138 */ 13x"1768", --     (-) cmv PC, X, COND_COPY
+	/* 139 */ 13x"1fff", -- jmp_3dd:
+	/* 140 */ 13x"0988", --     (--) arg X, GET_0
+	/* 141 */ 13x"0a99", --     (--) arg Y, GET_1
 	/* 142 */ 13x"0baa", --     (--) arg Z, GET_2
-	/* 143 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
+	/* 143 */ 13x"1089", --     (--) cmp X, Y, UNSIGNED
 	/* 144 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
-	/* 145 */ 13x"1fff", -- jmp_3id:
+	/* 145 */ 13x"1fff", -- jmp_3di:
 	/* 146 */ 13x"0988", --     (--) arg X, GET_0
-	/* 147 */ 13x"0488", --     (i-) mem X, X, LOAD
-	/* 148 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 147 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 148 */ 13x"0499", --     (-i) mem Y, Y, LOAD
 	/* 149 */ 13x"0baa", --     (--) arg Z, GET_2
-	/* 150 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
+	/* 150 */ 13x"1089", --     (--) cmp X, Y, UNSIGNED
 	/* 151 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
-	/* 152 */ 13x"1fff", -- jmp_3ii:
+	/* 152 */ 13x"1fff", -- jmp_3id:
 	/* 153 */ 13x"0988", --     (--) arg X, GET_0
 	/* 154 */ 13x"0488", --     (i-) mem X, X, LOAD
 	/* 155 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 156 */ 13x"0499", --     (-i) mem Y, Y, LOAD
-	/* 157 */ 13x"0baa", --     (--) arg Z, GET_2
-	/* 158 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 159 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
+	/* 156 */ 13x"0baa", --     (--) arg Z, GET_2
+	/* 157 */ 13x"1089", --     (--) cmp X, Y, UNSIGNED
+	/* 158 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
+	/* 159 */ 13x"1fff", -- jmp_3ii:
+	/* 160 */ 13x"0988", --     (--) arg X, GET_0
+	/* 161 */ 13x"0488", --     (i-) mem X, X, LOAD
+	/* 162 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 163 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 164 */ 13x"0baa", --     (--) arg Z, GET_2
+	/* 165 */ 13x"1089", --     (--) cmp X, Y, UNSIGNED
+	/* 166 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
 	                     -- # ======================================
 	                     -- # MOV
-	/* 160 */ 13x"1fff", -- mov_dd:
-	/* 161 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 162 */ 13x"0899", --     (d-) arg Y, PUT
-	/* 163 */ 13x"1fff", -- mov_di:
-	/* 164 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 165 */ 13x"0499", --     (-i) mem Y, Y, LOAD
-	/* 166 */ 13x"0899", --     (d-) arg Y, PUT
-	/* 167 */ 13x"1fff", -- mov_id:
+	/* 167 */ 13x"1fff", -- mov_dd:
 	/* 168 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 169 */ 13x"0988", --     (i-) arg X, GET_0
-	/* 170 */ 13x"0589", --     (i-) mem X, Y, STORE
-	/* 171 */ 13x"1fff", -- mov_ii:
-	/* 172 */ 13x"0a99", --     (--) arg Y, GET_1
-	/* 173 */ 13x"0499", --     (-i) mem Y, Y, LOAD
-	/* 174 */ 13x"0988", --     (i-) arg X, GET_0
-	/* 175 */ 13x"0589", --     (i-) mem X, Y, STORE
+	/* 169 */ 13x"0899", --     (d-) arg Y, PUT
+	/* 170 */ 13x"1fff", -- mov_di:
+	/* 171 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 172 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 173 */ 13x"0899", --     (d-) arg Y, PUT
+	/* 174 */ 13x"1fff", -- mov_id:
+	/* 175 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 176 */ 13x"0988", --     (i-) arg X, GET_0
+	/* 177 */ 13x"0589", --     (i-) mem X, Y, STORE
+	/* 178 */ 13x"1fff", -- mov_ii:
+	/* 179 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 180 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 181 */ 13x"0988", --     (i-) arg X, GET_0
+	/* 182 */ 13x"0589", --     (i-) mem X, Y, STORE
 	                     -- # ======================================
 	                     -- # Others
-	/* 176 */ 13x"1fff", -- halt:
-	/* 177 */ 13x"0166", --     mov PC, PC
-	/* 178 */ 13x"1fff", -- getf:
-	/* 179 */ 13x"0877", --     arg FL, PUT
-	/* 180 */ 13x"1fff", -- setf:
-	/* 181 */ 13x"0977", --     arg FL, GET_0
-	/* 182 */ 13x"0284", --     con X, 0x3F # 6 bits
-	/* 183 */ 13x"0e78", --     alu FL, X, AND
-	/* 184 */ 13x"1fff", -- call_d:
-	/* 185 */ 13x"0988", --     (-) arg X, GET_0
-	/* 186 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 187 */ 13x"055d", --     (-) mem SP, NPC, STORE
-	/* 188 */ 13x"0168", --     (-) mov PC, X
-	/* 189 */ 13x"1fff", -- call_i:
-	/* 190 */ 13x"0988", --     (-) arg X, GET_0
-	/* 191 */ 13x"0488", --     (i) mem X, X, LOAD
-	/* 192 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 193 */ 13x"055d", --     (-) mem SP, NPC, STORE
-	/* 194 */ 13x"0168", --     (-) mov PC, X
-	/* 195 */ 13x"1fff", -- ret:
-	/* 196 */ 13x"0485", --     mem X, SP, LOAD
-	/* 197 */ 13x"0c5c", --     alu SP, 2, ADD
-	/* 198 */ 13x"0168", --     mov PC, X
-	/* 199 */ 13x"1fff", -- push_d:
-	/* 200 */ 13x"0988", --     (-) arg X, GET_0
-	/* 201 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 202 */ 13x"0558", --     (-) mem SP, X, STORE
-	/* 203 */ 13x"1fff", -- push_i:
-	/* 204 */ 13x"0988", --     (-) arg X, GET_0
-	/* 205 */ 13x"0488", --     (i) mem X, X, LOAD
-	/* 206 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 207 */ 13x"0558", --     (-) mem SP, X, STORE
-	/* 208 */ 13x"1fff", -- pop_d:
-	/* 209 */ 13x"0495", --     (-) mem Y, SP, LOAD
-	/* 210 */ 13x"0c5c", --     (-) alu SP, 2, ADD
-	/* 211 */ 13x"0899", --     (d) arg Y, PUT
-	/* 212 */ 13x"1fff", -- pop_i:
-	/* 213 */ 13x"0495", --     (-) mem Y, SP, LOAD
-	/* 214 */ 13x"0c5c", --     (-) alu SP, 2, ADD
-	/* 215 */ 13x"0988", --     (i) arg X, GET_0
-	/* 216 */ 13x"0589", --     (i) mem X, Y, STORE
-	/* 217 */ 13x"1fff", -- mmap_dd: # start, end, slot_idx / Y, Z, X
-	/* 218 */ 13x"0999", --     (--) arg, Y, GET_0
-	/* 219 */ 13x"0aaa", --     (--) arg, Z, GET_1
-	/* 220 */ 13x"0b88", --     (--) arg X, GET_2
-	/* 221 */ 13x"0300", --     (--) mmu
-	/* 222 */ 13x"1fff", -- mmap_di: # start, end, slot_idx / Y, Z, X
-	/* 223 */ 13x"0999", --     (--) arg, Y, GET_0
-	/* 224 */ 13x"0aaa", --     (--) arg, Z, GET_1
-	/* 225 */ 13x"0b88", --     (--) arg X, GET_2
-	/* 226 */ 13x"0300", --     (--) mmu
-	/* 227 */ 13x"1fff", -- mmap_id: # start, end, slot_idx / Y, Z, X
-	/* 228 */ 13x"0999", --     (--) arg, Y, GET_0
-	/* 229 */ 13x"0499", --     (i-) mem, Y, Y, LOAD
-	/* 230 */ 13x"0aaa", --     (--) arg, Z, GET_1
-	/* 231 */ 13x"04aa", --     (i-) mem, Z, Z, LOAD
-	/* 232 */ 13x"0b88", --     (--) arg X, GET_2
-	/* 233 */ 13x"0300", --     (--) mmu
-	/* 234 */ 13x"1fff", -- mmap_ii: # start, end, slot_idx / Y, Z, X
-	/* 235 */ 13x"0999", --     (--) arg, Y, GET_0
-	/* 236 */ 13x"0499", --     (i-) mem, Y, Y, LOAD
-	/* 237 */ 13x"0aaa", --     (--) arg, Z, GET_1
-	/* 238 */ 13x"04aa", --     (i-) mem, Z, Z, LOAD
-	/* 239 */ 13x"0b88", --     (--) arg X, GET_2
-	/* 240 */ 13x"0300", --     (--) mmu
-	/* 241 */ 13x"1fff", -- umap_d:
-	/* 242 */ 13x"0988", --     (-) arg, X, GET_0
-	/* 243 */ 13x"0291", --     (-) con Y, 0xFFFF
-	/* 244 */ 13x"01a0", --     (-) mov Z, 0
-	/* 245 */ 13x"0300", --     (-) mmu
-	/* 246 */ 13x"1fff", -- umap_i:
-	/* 247 */ 13x"0988", --     (-) arg, X, GET_0
-	/* 248 */ 13x"0488", --     (i) mem, X, X, LOAD
-	/* 249 */ 13x"0291", --     (-) con Y, 0xFFFF
-	/* 250 */ 13x"01a0", --     (-) mov Z, 0
-	/* 251 */ 13x"0300", --     (-) mmu
-	/* 252 */ 13x"1fff"  -- end_of_rom:
+	/* 183 */ 13x"1fff", -- halt:
+	/* 184 */ 13x"0166", --     mov PC, PC
+	/* 185 */ 13x"1fff", -- getf:
+	/* 186 */ 13x"0877", --     arg FL, PUT
+	/* 187 */ 13x"1fff", -- setf:
+	/* 188 */ 13x"0977", --     arg FL, GET_0
+	/* 189 */ 13x"0284", --     con X, 0x3F # 6 bits
+	/* 190 */ 13x"0e78", --     alu FL, X, AND
+	/* 191 */ 13x"1fff", -- call_d:
+	/* 192 */ 13x"0988", --     (-) arg X, GET_0
+	/* 193 */ 13x"0d5c", --     (-) alu SP, 2, SUB
+	/* 194 */ 13x"055d", --     (-) mem SP, NPC, STORE
+	/* 195 */ 13x"0168", --     (-) mov PC, X
+	/* 196 */ 13x"1fff", -- call_i:
+	/* 197 */ 13x"0988", --     (-) arg X, GET_0
+	/* 198 */ 13x"0488", --     (i) mem X, X, LOAD
+	/* 199 */ 13x"0d5c", --     (-) alu SP, 2, SUB
+	/* 200 */ 13x"055d", --     (-) mem SP, NPC, STORE
+	/* 201 */ 13x"0168", --     (-) mov PC, X
+	/* 202 */ 13x"1fff", -- ret:
+	/* 203 */ 13x"0485", --     mem X, SP, LOAD
+	/* 204 */ 13x"0c5c", --     alu SP, 2, ADD
+	/* 205 */ 13x"0168", --     mov PC, X
+	/* 206 */ 13x"1fff", -- push_d:
+	/* 207 */ 13x"0988", --     (-) arg X, GET_0
+	/* 208 */ 13x"0d5c", --     (-) alu SP, 2, SUB
+	/* 209 */ 13x"0558", --     (-) mem SP, X, STORE
+	/* 210 */ 13x"1fff", -- push_i:
+	/* 211 */ 13x"0988", --     (-) arg X, GET_0
+	/* 212 */ 13x"0488", --     (i) mem X, X, LOAD
+	/* 213 */ 13x"0d5c", --     (-) alu SP, 2, SUB
+	/* 214 */ 13x"0558", --     (-) mem SP, X, STORE
+	/* 215 */ 13x"1fff", -- pop_d:
+	/* 216 */ 13x"0495", --     (-) mem Y, SP, LOAD
+	/* 217 */ 13x"0c5c", --     (-) alu SP, 2, ADD
+	/* 218 */ 13x"0899", --     (d) arg Y, PUT
+	/* 219 */ 13x"1fff", -- pop_i:
+	/* 220 */ 13x"0495", --     (-) mem Y, SP, LOAD
+	/* 221 */ 13x"0c5c", --     (-) alu SP, 2, ADD
+	/* 222 */ 13x"0988", --     (i) arg X, GET_0
+	/* 223 */ 13x"0589", --     (i) mem X, Y, STORE
+	/* 224 */ 13x"1fff", -- mmap: # start, end, slot_idx / Y, Z, X
+	/* 225 */ 13x"0999", --     arg, Y, GET_0
+	/* 226 */ 13x"0aaa", --     arg, Z, GET_1
+	/* 227 */ 13x"0b88", --     arg, X, GET_2
+	/* 228 */ 13x"0300", --     mmu
+	/* 229 */ 13x"1fff", -- umap:
+	/* 230 */ 13x"0988", --     arg, X, GET_0
+	/* 231 */ 13x"0291", --     con Y, 0xFFFF
+	/* 232 */ 13x"01a0", --     mov Z, 0
+	/* 233 */ 13x"0300", --     mmu
+	/* 234 */ 13x"1fff"  -- end_of_rom:
 ); -- uops_rom ---------------------------------------------------
 
 
@@ -302,36 +284,34 @@ constant label_cmp_id : integer := 116;
 constant label_cmp_ii : integer := 121;
 constant label_jmp_d : integer := 127;
 constant label_jmp_i : integer := 129;
-constant label_jmp_3dd : integer := 133;
-constant label_jmp_3di : integer := 139;
-constant label_jmp_3id : integer := 146;
-constant label_jmp_3ii : integer := 153;
-constant label_mov_dd : integer := 161;
-constant label_mov_di : integer := 164;
-constant label_mov_id : integer := 168;
-constant label_mov_ii : integer := 172;
-constant label_halt : integer := 177;
-constant label_getf : integer := 179;
-constant label_setf : integer := 181;
-constant label_call_d : integer := 185;
-constant label_call_i : integer := 190;
-constant label_ret : integer := 196;
-constant label_push_d : integer := 200;
-constant label_push_i : integer := 204;
-constant label_pop_d : integer := 209;
-constant label_pop_i : integer := 213;
-constant label_mmap_dd : integer := 218;
-constant label_mmap_di : integer := 223;
-constant label_mmap_id : integer := 228;
-constant label_mmap_ii : integer := 235;
-constant label_umap_d : integer := 242;
-constant label_umap_i : integer := 247;
+constant label_jmp_cond_i : integer := 133;
+constant label_jmp_cond_d : integer := 137;
+constant label_jmp_3dd : integer := 140;
+constant label_jmp_3di : integer := 146;
+constant label_jmp_3id : integer := 153;
+constant label_jmp_3ii : integer := 160;
+constant label_mov_dd : integer := 168;
+constant label_mov_di : integer := 171;
+constant label_mov_id : integer := 175;
+constant label_mov_ii : integer := 179;
+constant label_halt : integer := 184;
+constant label_getf : integer := 186;
+constant label_setf : integer := 188;
+constant label_call_d : integer := 192;
+constant label_call_i : integer := 197;
+constant label_ret : integer := 203;
+constant label_push_d : integer := 207;
+constant label_push_i : integer := 211;
+constant label_pop_d : integer := 216;
+constant label_pop_i : integer := 220;
+constant label_mmap : integer := 225;
+constant label_umap : integer := 230;
 
 
 type TArrUopsConstsROM is array (0 to 5-1) of TData;
 constant uops_consts_rom : TArrUopsConstsROM := (
 	x"0001", -- used 1 times
-	x"FFFF", -- used 6 times
+	x"FFFF", -- used 5 times
 	x"00FF", -- used 1 times
 	x"D000", -- used 2 times
 	x"003F"  -- used 1 times
