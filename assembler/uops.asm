@@ -106,15 +106,14 @@ jmp_i:
 
 .generate dd, di, id, ii
 jmp_3$$:
-    (--) arg K, GET_0
-    (i-) mem K, K, LOAD
-
-    (--) arg X, GET_1
+    (--) arg X, GET_0
     (i-) mem X, X, LOAD
-    (--) arg Y, GET_2
-    (--) cmp X, Y, OP_COPY
+    (--) arg Y, GET_1
+    (-i) mem Y, Y, LOAD
+    (--) arg Z, GET_2
 
-    (--) cmv PC, K, COND_COPY
+    (--) cmp X, Y, OP_COPY
+    (--) cmv PC, Z, COND_COPY
 .end_generate
 
 # ======================================
@@ -146,7 +145,7 @@ call_$$:
     (-) arg X, GET_0
     (i) mem X, X, LOAD
     (-) alu SP, 2, SUB
-    (-) mem SP, PC, STORE
+    (-) mem SP, NPC, STORE
     (-) mov PC, X
 .end_generate
 

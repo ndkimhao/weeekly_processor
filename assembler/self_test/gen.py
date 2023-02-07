@@ -4,11 +4,12 @@ out_lines = []
 out_lines += [
     f'.offset 0xD000',
     f'.boot:',
-    f'    jmp $start_test',
-    f'    halt',
+    f'    mov A, 0xFFFA',
+    f'    jne A, 0x00FA, $start_test',
     f'fail:',
-    f'    # A register contains failed test',
+    f'    # register A contains failed test',
     f'    halt',
+    f'    jmp $fail',
     f'success:',
     f'    mov A, 0xAB',
     f'    mov B, 0xCD',
@@ -54,6 +55,11 @@ def calc_ishr(x, y):
         x = x | ((0xFFFF >> ny) << ny)
     return x
 
+
+def append_snippet(p):
+    with open(f'snippets/{p}', 'r') as f:
+        out_lines.extend(s.rstrip() for s in f.readlines())
+
 #########################################################################
 
 
@@ -67,9 +73,9 @@ def gen_test_alu2_op(t, op, a, b, expected, expected_aux=None):
         gen_cmd(f'mov B, 0x{a:04x}')
         gen_cmd(f'{op} B, 0x{b:04x}')
     gen_store_test_index()
-    gen_cmd(f'jne $fail, B, 0x{expected:04x}')
+    gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     if expected_aux is not None:
-        gen_cmd(f'jne $fail, D, 0x{expected_aux:04x}')
+        gen_cmd(f'jne D, 0x{expected_aux:04x}, $fail')
     gen_cmd('')
 
 
@@ -80,7 +86,7 @@ def gen_test_alu1_op(t, op, a, expected):
         gen_cmd(f'mov B, 0x{a:04x}')
         gen_cmd(f'{op} B')
     gen_store_test_index()
-    gen_cmd(f'jne $fail, B, 0x{expected:04x}')
+    gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     gen_cmd('')
 
 
@@ -116,6 +122,11 @@ for t, a, b in ALU_TESTCASES:
     gen_test_alu2(t, a, b)
 
 #########################################################################
+
+append_snippet('test_call_ret.asm')
+
+#########################################################################
+
 gen_section('end_of_test:')
 gen_cmd('jmp $success')
 

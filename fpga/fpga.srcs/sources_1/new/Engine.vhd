@@ -44,7 +44,8 @@ end Engine;
 architecture Behavioral of Engine is
 
 -- '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
--- 'E', 'F', 'G', 'H', '2', '', '', ''
+-- 'E', 'F', 'G', 'H', '2', 'NPC', '', ''
+--   NPC is the next program counter
 type TArrRegs is array(1 to 11) of TData;
 signal arr_regs : TArrRegs;
 
@@ -66,6 +67,7 @@ signal fl_bit : std_logic;
 
 signal last_inst_buffer : TEngineInstBuffer;
 signal inst_opcode : TByte;
+signal next_pc : TData;
 
 signal cached_uop : TUop;
 signal effective_uop : TUop;
@@ -74,6 +76,8 @@ constant HoldCounterW : integer := 5;
 signal hold_counter : unsigned(HoldCounterW-1 downto 0);
 
 begin
+
+	next_pc <= std_logic_vector(unsigned(arr_regs(REGID_PC)) + inst_len);
 
 	inst_opcode <=
 		inst_buffer(0) when uop_idx = 0 else
@@ -94,6 +98,7 @@ begin
 	r_src <=
 		x"0002" when idx_src = REGID_2 else
 		arr_regs(to_integer(idx_src)) when 1 <= idx_src and idx_src <= 11 else
+		next_pc when idx_src = REGID_NPC else
 		x"0000";
 
 	alu_op <= 
@@ -324,7 +329,7 @@ begin
 				end if; -- r_write
 
 				if uop_hold = '0' and uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
-					arr_regs(REGID_PC) <= std_logic_vector(unsigned(arr_regs(REGID_PC)) + inst_len);
+					arr_regs(REGID_PC) <= next_pc;
 				end if;
 
 			end if; -- uop_ready

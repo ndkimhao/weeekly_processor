@@ -164,33 +164,33 @@ constant uops_rom : TArrUtopROM := (
 	/* 130 */ 13x"0488", --     mem X, X, LOAD
 	/* 131 */ 13x"0168", --     mov PC, X
 	/* 132 */ 13x"1fff", -- jmp_3dd:
-	/* 133 */ 13x"09bb", --     (--) arg K, GET_0
-	/* 134 */ 13x"0a88", --     (--) arg X, GET_1
-	/* 135 */ 13x"0b99", --     (--) arg Y, GET_2
+	/* 133 */ 13x"0988", --     (--) arg X, GET_0
+	/* 134 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 135 */ 13x"0baa", --     (--) arg Z, GET_2
 	/* 136 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 137 */ 13x"176b", --     (--) cmv PC, K, COND_COPY
+	/* 137 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
 	/* 138 */ 13x"1fff", -- jmp_3di:
-	/* 139 */ 13x"09bb", --     (--) arg K, GET_0
-	/* 140 */ 13x"0a88", --     (--) arg X, GET_1
-	/* 141 */ 13x"0b99", --     (--) arg Y, GET_2
-	/* 142 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 143 */ 13x"176b", --     (--) cmv PC, K, COND_COPY
-	/* 144 */ 13x"1fff", -- jmp_3id:
-	/* 145 */ 13x"09bb", --     (--) arg K, GET_0
-	/* 146 */ 13x"04bb", --     (i-) mem K, K, LOAD
-	/* 147 */ 13x"0a88", --     (--) arg X, GET_1
-	/* 148 */ 13x"0488", --     (i-) mem X, X, LOAD
-	/* 149 */ 13x"0b99", --     (--) arg Y, GET_2
+	/* 139 */ 13x"0988", --     (--) arg X, GET_0
+	/* 140 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 141 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 142 */ 13x"0baa", --     (--) arg Z, GET_2
+	/* 143 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
+	/* 144 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
+	/* 145 */ 13x"1fff", -- jmp_3id:
+	/* 146 */ 13x"0988", --     (--) arg X, GET_0
+	/* 147 */ 13x"0488", --     (i-) mem X, X, LOAD
+	/* 148 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 149 */ 13x"0baa", --     (--) arg Z, GET_2
 	/* 150 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 151 */ 13x"176b", --     (--) cmv PC, K, COND_COPY
+	/* 151 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
 	/* 152 */ 13x"1fff", -- jmp_3ii:
-	/* 153 */ 13x"09bb", --     (--) arg K, GET_0
-	/* 154 */ 13x"04bb", --     (i-) mem K, K, LOAD
-	/* 155 */ 13x"0a88", --     (--) arg X, GET_1
-	/* 156 */ 13x"0488", --     (i-) mem X, X, LOAD
-	/* 157 */ 13x"0b99", --     (--) arg Y, GET_2
+	/* 153 */ 13x"0988", --     (--) arg X, GET_0
+	/* 154 */ 13x"0488", --     (i-) mem X, X, LOAD
+	/* 155 */ 13x"0a99", --     (--) arg Y, GET_1
+	/* 156 */ 13x"0499", --     (-i) mem Y, Y, LOAD
+	/* 157 */ 13x"0baa", --     (--) arg Z, GET_2
 	/* 158 */ 13x"1289", --     (--) cmp X, Y, OP_COPY
-	/* 159 */ 13x"176b", --     (--) cmv PC, K, COND_COPY
+	/* 159 */ 13x"176a", --     (--) cmv PC, Z, COND_COPY
 	                     -- # ======================================
 	                     -- # MOV
 	/* 160 */ 13x"1fff", -- mov_dd:
@@ -222,13 +222,13 @@ constant uops_rom : TArrUtopROM := (
 	/* 184 */ 13x"1fff", -- call_d:
 	/* 185 */ 13x"0988", --     (-) arg X, GET_0
 	/* 186 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 187 */ 13x"0556", --     (-) mem SP, PC, STORE
+	/* 187 */ 13x"055d", --     (-) mem SP, NPC, STORE
 	/* 188 */ 13x"0168", --     (-) mov PC, X
 	/* 189 */ 13x"1fff", -- call_i:
 	/* 190 */ 13x"0988", --     (-) arg X, GET_0
 	/* 191 */ 13x"0488", --     (i) mem X, X, LOAD
 	/* 192 */ 13x"0d5c", --     (-) alu SP, 2, SUB
-	/* 193 */ 13x"0556", --     (-) mem SP, PC, STORE
+	/* 193 */ 13x"055d", --     (-) mem SP, NPC, STORE
 	/* 194 */ 13x"0168", --     (-) mov PC, X
 	/* 195 */ 13x"1fff", -- ret:
 	/* 196 */ 13x"0485", --     mem X, SP, LOAD
@@ -315,7 +315,7 @@ constant label_jmp_d : integer := 127;
 constant label_jmp_i : integer := 129;
 constant label_jmp_3dd : integer := 133;
 constant label_jmp_3di : integer := 139;
-constant label_jmp_3id : integer := 145;
+constant label_jmp_3id : integer := 146;
 constant label_jmp_3ii : integer := 153;
 constant label_mov_dd : integer := 161;
 constant label_mov_di : integer := 164;
@@ -351,6 +351,7 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 -- ##############################################################
 -- ## END UOPS ROM
 -- ##############################################################
+
 
 
 

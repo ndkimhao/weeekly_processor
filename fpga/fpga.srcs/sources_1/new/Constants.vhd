@@ -92,6 +92,7 @@ package Constants is
 	constant REGID_Z : integer := 10;
 	constant REGID_K : integer := 11;
 	constant REGID_2 : integer := 12;
+	constant REGID_NPC : integer := 13;
 
 	constant FLAGID_EQ : integer := 0;
 	constant FLAGID_NE : integer := 1;

@@ -111,6 +111,9 @@ def assemble(final):
         assert (cmd, nargs) in CMDS_MAP, (lineidx, origs)
         opcode = CMDS_MAP[(cmd, nargs)]
 
+        if cmd.upper().startswith('J') and nargs == 3:
+            assert not pargs[0].strip().startswith('$'), 'condition jmp: put target address at the end'
+
         arg1_indirect = nargs >= 1 and pargs[0].startswith('[')
         arg2_indirect = nargs >= 2 and pargs[1].startswith('[')
 
