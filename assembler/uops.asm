@@ -51,7 +51,7 @@ reset:
 # ALU
 .generate 2dd, 2di, 2id, 2ii, 3dd, 3di, 3id, 3ii
 alu_$$:
-    (2i-) arg K, GET_0
+    (-i-) arg K, GET_0
     (2i-) mem X, K, LOAD
     (2d-) arg X, GET_0
 
