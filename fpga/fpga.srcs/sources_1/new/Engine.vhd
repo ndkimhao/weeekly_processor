@@ -9,6 +9,7 @@ use work.UopROM.all;
 entity Engine is
 	port (
 		clk : in std_logic;
+		reset : in std_logic;
 
 		uop_ready : in std_logic;
 		uop_hold : out std_logic; -- pause uop decode
@@ -157,182 +158,196 @@ begin
 	begin
 
 		if rising_edge(clk) then
-			if uop_idx = 0 then
-				v_inst := inst_buffer;
+			if reset = '1' then
+				den <= '0';
+				dwr <= '0';
+				daddr <= (others => '0');
+				dout <= (others => '0');
+				
+				uop_hold <= '0';
+				mmu_cfg_wr <= '0';
+				hold_counter <= (others => '0');
+				alu_start_op <= '0';
 			else
-				v_inst := last_inst_buffer;
-			end if;
-			last_inst_buffer <= v_inst;
-
-			if hold_counter = 0 then
-				cached_uop <= uop;
-			end if;
-
-			den <= '0';
-			dwr <= '0';
-			daddr <= (others => '0');
-			dout <= (others => '0');
-			
-			uop_hold <= '0';
-			mmu_cfg_wr <= '0';
-			hold_counter <= (others => '0');
-			alu_start_op <= '0';
-
-			if uop_ready = '1' and (uop_hold = '0' or hold_counter /= 0) then
-
-				r_write := '0';
-				case uop_head is
-					when UOP_MISC_HEAD =>
-						case uop_tail is
-							when UOP_NOP => null;
-							when UOP_MOV =>
+		
+				if uop_idx = 0 then
+					v_inst := inst_buffer;
+				else
+					v_inst := last_inst_buffer;
+				end if;
+				last_inst_buffer <= v_inst;
+	
+				if hold_counter = 0 then
+					cached_uop <= uop;
+				end if;
+	
+				den <= '0';
+				dwr <= '0';
+				daddr <= (others => '0');
+				dout <= (others => '0');
+				
+				uop_hold <= '0';
+				mmu_cfg_wr <= '0';
+				hold_counter <= (others => '0');
+				alu_start_op <= '0';
+	
+				if uop_ready = '1' and (uop_hold = '0' or hold_counter /= 0) then
+	
+					r_write := '0';
+					case uop_head is
+						when UOP_MISC_HEAD =>
+							case uop_tail is
+								when UOP_NOP => null;
+								when UOP_MOV =>
+									r_write := '1';
+									r_res := r_src;
+								when UOP_CON =>
+									r_write := '1';
+									r_res := uops_consts_rom(to_integer(idx_src));
+								when UOP_MMU =>
+									mmu_cfg_wr <= '1';
+									uop_hold <= '1';
+								when others => 
+									null;
+							end case; -- uop_tail
+	
+						when UOP_MEM_HEAD =>
+							case uop_tail is
+								when UOP_MEM_LOAD =>
+									if hold_counter = 0 then -- first cycle
+										den <= '1';
+										dwr <= '0';
+										daddr <= r_src;
+										uop_hold <= '1';
+										hold_counter <= to_unsigned(2, HoldCounterW);
+									else
+										if hold_counter = 1 then
+											r_write := '1';
+											r_res := din;
+										else
+											uop_hold <= '1';
+										end if;
+										hold_counter <= hold_counter - 1;
+									end if;
+								when UOP_MEM_STORE =>
+									den <= '1';
+									dwr <= '1';
+									daddr <= r_dst;
+									dout <= r_src;
+								when others => 
+									null;
+							end case; -- uop_tail
+	
+						when UOP_ARG_HEAD =>
+							if uop_tail = UOP_ARG_PUT then
 								r_write := '1';
 								r_res := r_src;
-							when UOP_CON =>
-								r_write := '1';
-								r_res := uops_consts_rom(to_integer(idx_src));
-							when UOP_MMU =>
-								mmu_cfg_wr <= '1';
-								uop_hold <= '1';
-							when others => 
-								null;
-						end case; -- uop_tail
-
-					when UOP_MEM_HEAD =>
-						case uop_tail is
-							when UOP_MEM_LOAD =>
-								if hold_counter = 0 then -- first cycle
-									den <= '1';
-									dwr <= '0';
-									daddr <= r_src;
-									uop_hold <= '1';
-									hold_counter <= to_unsigned(2, HoldCounterW);
+							else
+								for i in 0 to 1 loop
+									if v_inst(i+1)(7 downto 5) = "111" then
+										arg_tails(i) := to_unsigned(2, InstructionIndexWidth);
+									elsif v_inst(i+1)(4 downto 2) = "111" then
+										arg_tails(i) := to_unsigned(1, InstructionIndexWidth);
+									else
+										arg_tails(i) := to_unsigned(0, InstructionIndexWidth);
+									end if;
+								end loop;
+	
+								arg_tail := ("000" & inst_nargs) + 1;
+								if uop_tail = UOP_ARG_GET_1 or uop_tail = UOP_ARG_GET_2 then
+									arg_tail := arg_tail + arg_tails(0);
+								end if;
+								if uop_tail = UOP_ARG_GET_2 then
+									arg_tail := arg_tail + arg_tails(1);
+								end if;
+	
+								arg_head := v_inst(to_integer(unsigned(uop_tail)));
+								if arg_head(7 downto 5) = "111" then
+									arg_a := v_inst(to_integer(arg_tail)+1) & v_inst(to_integer(arg_tail));
+								elsif arg_head(7 downto 5) = "000" then
+									arg_a := x"0000";
 								else
-									if hold_counter = 1 then
+									arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
+								end if;
+								if arg_head(4 downto 2) = "111" then
+									arg_b := x"00" & v_inst(to_integer(arg_tail));
+								elsif arg_head(4 downto 2) = "000" then
+									arg_b := x"0000";
+								else
+									arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
+								end if;
+								if arg_head(1 downto 0) /= "00" then
+									arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
+								end if;
+	
+								r_write := '1';
+								r_res := std_logic_vector(unsigned(arg_a) + unsigned(arg_b));
+							end if;
+	
+						when UOP_ALU_HEAD =>
+							if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
+							   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
+	
+								if hold_counter = 0 then
+									if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
+										hold_counter <= to_unsigned(4, HoldCounterW);
+									else
+										hold_counter <= to_unsigned(31, HoldCounterW);
+										alu_start_op <= '1';
+									end if;
+									uop_hold <= '1';
+								else
+									hold_counter <= hold_counter - 1;
+									if hold_counter = 1 or alu_div_done = '1' then
+										uop_hold <= '0';
 										r_write := '1';
-										r_res := din;
+										r_res := alu_out;
+										arr_regs(REGID_D) <= alu_aux;
+										hold_counter <= (others => '0');
 									else
 										uop_hold <= '1';
 									end if;
-									hold_counter <= hold_counter - 1;
 								end if;
-							when UOP_MEM_STORE =>
-								den <= '1';
-								dwr <= '1';
-								daddr <= r_dst;
-								dout <= r_src;
-							when others => 
-								null;
-						end case; -- uop_tail
-
-					when UOP_ARG_HEAD =>
-						if uop_tail = UOP_ARG_PUT then
+							
+							else -- normal ALU ops
+							
+								r_write := '1';
+								r_res := alu_out;
+							
+							end if;
+	
+						when UOP_CMP_HEAD =>
 							r_write := '1';
-							r_res := r_src;
-						else
-							for i in 0 to 1 loop
-								if v_inst(i+1)(7 downto 5) = "111" then
-									arg_tails(i) := to_unsigned(2, InstructionIndexWidth);
-								elsif v_inst(i+1)(4 downto 2) = "111" then
-									arg_tails(i) := to_unsigned(1, InstructionIndexWidth);
-								else
-									arg_tails(i) := to_unsigned(0, InstructionIndexWidth);
-								end if;
-							end loop;
-
-							arg_tail := ("000" & inst_nargs) + 1;
-							if uop_tail = UOP_ARG_GET_1 or uop_tail = UOP_ARG_GET_2 then
-								arg_tail := arg_tail + arg_tails(0);
+							r_res := 10x"0000" & alu_cmp;
+	
+						when UOP_CMV_HEAD =>
+							if fl_bit = '1' then
+								r_write := '1';
+								r_res := r_src;
 							end if;
-							if uop_tail = UOP_ARG_GET_2 then
-								arg_tail := arg_tail + arg_tails(1);
-							end if;
-
-							arg_head := v_inst(to_integer(unsigned(uop_tail)));
-							if arg_head(7 downto 5) = "111" then
-								arg_a := v_inst(to_integer(arg_tail)+1) & v_inst(to_integer(arg_tail));
-							elsif arg_head(7 downto 5) = "000" then
-								arg_a := x"0000";
-							else
-								arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
-							end if;
-							if arg_head(4 downto 2) = "111" then
-								arg_b := x"00" & v_inst(to_integer(arg_tail));
-							elsif arg_head(4 downto 2) = "000" then
-								arg_b := x"0000";
-							else
-								arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
-							end if;
-							if arg_head(1 downto 0) /= "00" then
-								arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
-							end if;
-
-							r_write := '1';
-							r_res := std_logic_vector(unsigned(arg_a) + unsigned(arg_b));
+	
+						when others =>
+							null;
+					end case; -- uop_head
+	
+					if r_write = '1' then
+						if uop_head = UOP_CMP_HEAD then
+							r_idx := to_unsigned(REGID_FL, 4);
+						elsif uop_head = UOP_ARG_HEAD and uop_tail = UOP_ARG_PUT then
+							r_idx := "0" & unsigned(v_inst(1)(7 downto 5)); -- first arg of instruction
+						else 
+							r_idx := idx_dst;
 						end if;
-
-					when UOP_ALU_HEAD =>
-						if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
-						   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
-
-							if hold_counter = 0 then
-								if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
-									hold_counter <= to_unsigned(4, HoldCounterW);
-								else
-									hold_counter <= to_unsigned(31, HoldCounterW);
-									alu_start_op <= '1';
-								end if;
-								uop_hold <= '1';
-							else
-								hold_counter <= hold_counter - 1;
-								if hold_counter = 1 or alu_div_done = '1' then
-									uop_hold <= '0';
-									r_write := '1';
-									r_res := alu_out;
-									arr_regs(REGID_D) <= alu_aux;
-									hold_counter <= (others => '0');
-								else
-									uop_hold <= '1';
-								end if;
-							end if;
-						
-						else -- normal ALU ops
-						
-							r_write := '1';
-							r_res := alu_out;
-						
-						end if;
-
-					when UOP_CMP_HEAD =>
-						r_write := '1';
-						r_res := 10x"0000" & alu_cmp;
-
-					when UOP_CMV_HEAD =>
-						if fl_bit = '1' then
-							r_write := '1';
-							r_res := r_src;
-						end if;
-
-					when others =>
-						null;
-				end case; -- uop_head
-
-				if r_write = '1' then
-					if uop_head = UOP_CMP_HEAD then
-						r_idx := to_unsigned(REGID_FL, 4);
-					elsif uop_head = UOP_ARG_HEAD and uop_tail = UOP_ARG_PUT then
-						r_idx := "0" & unsigned(v_inst(1)(7 downto 5)); -- first arg of instruction
-					else 
-						r_idx := idx_dst;
+						arr_regs(to_integer(r_idx)) <= r_res;
+					end if; -- r_write
+	
+					if uop_hold = '0' and uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
+						arr_regs(REGID_PC) <= next_pc;
 					end if;
-					arr_regs(to_integer(r_idx)) <= r_res;
-				end if; -- r_write
-
-				if uop_hold = '0' and uop_done = '1' and not (r_write = '1' and r_idx = REGID_PC) then
-					arr_regs(REGID_PC) <= next_pc;
-				end if;
-
-			end if; -- uop_ready
+	
+				end if; -- uop_ready
+		
+			end if; -- reset = '1'
 
 		end if; -- rising_edge(clk)
 

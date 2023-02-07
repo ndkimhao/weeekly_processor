@@ -298,6 +298,9 @@ start_test:
 test_call_ret:
 
     mov SP, 0x1000
+    call $fn_test_target
+    jne SP, 0x1000, $fail
+
     mov A, 10
     mov B, 0
     mov C, 0
@@ -308,6 +311,7 @@ test_call_ret:
     jne B, 0xcf3f, $fail
     jne C, 0x002d, $fail
     jne D, 0x4597, $fail
+    jne SP, 0x1000, $fail
 
     jmp $success
 
@@ -331,5 +335,9 @@ fn_process_c:
     ret
     jmp $fail
 
+fn_test_target:
+    jne SP, 0x0ffe, $fail
+    ret
+    jmp $fail
 end_of_test::
     jmp $success

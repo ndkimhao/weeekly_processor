@@ -132,6 +132,7 @@ begin
 
 	engine : entity work.Engine port map (
 		clk => clk,
+		reset => reset,
 
 		uop_ready => dec_ready,
 		uop_hold => dec_hold,

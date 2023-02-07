@@ -127,7 +127,7 @@ append_snippet('test_call_ret.asm')
 
 #########################################################################
 
-gen_section('end_of_test:')
+gen_section('end_of_test')
 gen_cmd('jmp $success')
 
 with open('self_test.asm', 'w') as f:

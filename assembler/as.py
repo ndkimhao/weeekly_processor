@@ -63,7 +63,7 @@ def parse_int(s: str):
 def assemble(final):
     for lineidx, s in enumerate(lines):
         origs = lines_raw[lineidx].rstrip()
-        print(origs)
+        # print(origs)
         if s == '' or s.endswith(':'):
             out_cmd('', origs)
             if s.endswith(':'):
