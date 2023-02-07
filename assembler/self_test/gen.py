@@ -165,13 +165,13 @@ def gen_test_jmp(a, b, signed=False, separate_cmp=False):
     gen_fn('jge', va >= vb)
 
 
+gen_section('jmp_test')
 for (a, b) in ((0xFFAB, 0x2B), (0x2B, 0xFFAB), (0xFFAB, 0xFFAB)):
     gen_test_jmp(a, b)
     gen_test_jmp(a, b, separate_cmp=True)
     gen_test_jmp(a, b, signed=True, separate_cmp=True)
 
 
-gen_section('jmp_test')
 #########################################################################
 
 append_snippet('test_call_ret.asm')

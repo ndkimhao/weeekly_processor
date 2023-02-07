@@ -252,6 +252,7 @@ constant arr_rom : TArrROM := (
 	/* 3e5 */ x"48",x"40",                                     --     dec B
 	/* 3e7 */ x"ec",x"40",x"e0",x"e0",x"ff",x"ff",x"0c",x"d0", --     jne B, 0xffff, $fail
 	/* 3ef */                                                  --
+	/* 3ef */                                                  -- jmp_test:
 	/* 3ef */ x"e8",x"e0",x"1c",x"e0",x"ab",x"ff",x"2b",x"0c",x"d0", --     jeq 0xffab, 0x002b, $fail
 	/* 3f8 */ x"ec",x"e0",x"1c",x"e0",x"ab",x"ff",x"2b",x"05",x"d4", --     jne 0xffab, 0x002b, $_L_test_jmp_1
 	/* 401 */ x"58",x"e0",x"0c",x"d0",                         --     jmp $fail
@@ -366,7 +367,6 @@ constant arr_rom : TArrROM := (
 	/* 5b1 */ x"7c",x"e0",x"b9",x"d5",                         --     jge $_L_test_jmp_27
 	/* 5b5 */ x"58",x"e0",x"0c",x"d0",                         --     jmp $fail
 	/* 5b9 */                                                  -- _L_test_jmp_27:
-	/* 5b9 */                                                  -- jmp_test:
 	/* 5b9 */                                                  --
 	/* 5b9 */                                                  -- # BEGIN test_call_ret.asm
 	/* 5b9 */                                                  -- test_call_ret:

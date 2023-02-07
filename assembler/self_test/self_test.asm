@@ -236,6 +236,7 @@ alu_test:
     dec B
     jne B, 0xffff, $fail
 
+jmp_test:
     jeq 0xffab, 0x002b, $fail
     jne 0xffab, 0x002b, $_L_test_jmp_1
     jmp $fail
@@ -350,7 +351,6 @@ _L_test_jmp_26:
     jge $_L_test_jmp_27
     jmp $fail
 _L_test_jmp_27:
-jmp_test:
 
 # BEGIN test_call_ret.asm
 test_call_ret:
