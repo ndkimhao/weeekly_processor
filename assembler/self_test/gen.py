@@ -1,22 +1,7 @@
+import itertools
+import random
+
 out_lines = []
-
-
-out_lines += [
-    f'.offset 0xD000',
-    f'.boot:',
-    f'    mov A, 0xFFFA',
-    f'    jne A, 0x00FA, $start_test',
-    f'fail:',
-    f'    # register A contains failed test',
-    f'    halt',
-    f'    jmp $fail',
-    f'success:',
-    f'    mov A, 0xAB',
-    f'    mov B, 0xCD',
-    f'    mov C, 0xEF',
-    f'    mov D, 0x55',
-    f'    halt',
-]
 
 
 def gen_cmd(s, indent=1, comment=''):
@@ -65,6 +50,7 @@ def get_unique_label(name):
 
 #########################################################################
 
+append_snippet('preamble.asm')
 
 gen_section('start_test')
 
@@ -174,6 +160,72 @@ for (a, b) in ((0xFFAB, 0x2B), (0x2B, 0xFFAB), (0xFFAB, 0xFFAB)):
 
 #########################################################################
 
+def gen_test_get_arg_impl(nargs, x=None, y=None, z=None):
+    if nargs == 1:
+        gen_cmd(f'push {x[0]}')
+        gen_cmd(f'pop D')
+        gen_cmd(f'jne D, 0x{x[1]:04x}, $fail')
+        return
+    if x[1] < 0x6000:
+        if nargs == 2:
+            gen_cmd(f'mov [{x[0]}], {y[0]}')
+            gen_cmd(f'jne [0x{x[1]:04x}], 0x{y[1]:04x}, $fail')
+            return
+        if nargs == 3:
+            gen_cmd(f'xor [{x[0]}], {y[0]}, {z[0]}')
+            gen_cmd(f'jne [0x{x[1]:04x}], 0x{y[1]^z[1]:04x}, $fail')
+            return
+    else:
+        return
+    assert False
+
+
+def gen_test_get_arg():
+    gen_section('test_uop_get_arg')
+    gen_cmd('mov SP, 0x7000')
+    A = 0x00AA
+    B = 0x00BB
+    gen_cmd(f'mov A, 0x{A:04x}')
+    gen_cmd(f'mov B, 0x{B:04x}')
+
+    VALUES = [
+        ('A', A),  # 1 byte
+        ('A*2', A*2),  # 1 byte
+        ('A*4 + -10', A*4 - 10),  # 2 bytes
+        ('0xFADE + A', (0xFADE + A) & 0xFFFF),  # 3 bytes
+        ('A*4 + B', (A*4 + B) & 0xFFFF),  # 2 bytes
+        ('-123', -123 & 0xFFFF),  # 2 bytes
+        ('12345', 12345),  # 3 bytes
+    ]
+    list3 = list(itertools.product(VALUES, VALUES, VALUES))
+    list2 = list(itertools.product(VALUES, VALUES))
+    list1 = list(VALUES.copy())
+    random.Random(3006).shuffle(list3)
+    random.Random(3006).shuffle(list2)
+    random.Random(3006).shuffle(list1)
+    for a1, a2, a3 in list3:
+        gen_test_get_arg_impl(3, a1, a2, a3)
+    for a1, a2 in list2:
+        gen_test_get_arg_impl(2, a1, a2)
+    for a1 in list1:
+        gen_test_get_arg_impl(1, a1)
+
+    lbl = get_unique_label('test_uop_get_arg')
+    lbl_okay = get_unique_label('test_uop_get_arg')
+    gen_cmd(f'call ${lbl}')
+    gen_cmd(f'jne C, 0xADFE, $fail')
+    gen_cmd(f'jmp ${lbl_okay}')
+    gen_section(lbl)
+    gen_cmd(f'mov C, 0xADFE')
+    gen_cmd(f'ret')
+    gen_cmd(f'jmp $fail')
+    gen_section(lbl_okay)
+
+
+gen_test_get_arg()
+
+#########################################################################
+
 append_snippet('test_call_ret.asm')
 
 append_snippet('test_mem_access.asm')
@@ -183,9 +235,12 @@ append_snippet('test_cmp.asm')
 #########################################################################
 
 gen_section('end_of_test')
+gen_cmd('mov A, 0xDEAD')
+gen_cmd('mov B, 0xBEEF')
+gen_cmd('mul C, A, B')
 gen_cmd('jmp $success')
 
-append_snippet('drive_led.asm')
+# append_snippet('drive_led.asm')
 
 #########################################################################
 

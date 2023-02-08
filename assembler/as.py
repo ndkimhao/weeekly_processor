@@ -166,21 +166,26 @@ def assemble(final):
                         bincode += f'11100000 '
                         bintail += f'{a % 256:08b} '
                         bintail += f'{a // 256:08b} '
-            else:
-                assert a in REGS_MAP, (lineidx, origs)
+            elif a in REGS_MAP:
                 bincode += f'{REGS_MAP[a]:03b}'
                 if b in REGS_MAP:
                     bincode += f'{REGS_MAP[b]:03b}'
                 else:
                     # b is constant
                     b = parse_int(b)
-                    assert b < 256, (lineidx, origs)
+                    assert -128 <= b < 128, (lineidx, origs)
                     bincode += f'111'
-                    bintail += f'{b:08b}'
+                    bintail += f'{b & 0xFF:08b}'
                 x = parse_int(x)
                 assert x in MULT_MAP, (lineidx, origs)
                 bincode += f'{MULT_MAP[x]:02b}'
-
+            else:
+                assert b in REGS_MAP, (lineidx, origs)
+                a = parse_int(a)
+                assert 0 <= a and a < (2**16), (lineidx, origs)
+                bincode += f'111{REGS_MAP[b]:03b}00 '
+                bintail += f'{a % 256:08b} '
+                bintail += f'{a // 256:08b} '
         ####
         out_cmd(f'{bincode} {bintail}', origs)
 
