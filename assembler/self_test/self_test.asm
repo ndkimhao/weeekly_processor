@@ -1171,6 +1171,51 @@ test_uop_mov_ii:
     mov [100], [100+A]
     jne [100], 0xFDFA, $fail
 
+test_uop_bmov_dd:
+    bmov A, 0xAFDE
+    jne A, 0xDE, $fail
+    bmov A, 0xFA
+    jne A, 0xFA, $fail
+
+test_uop_bmov_di:
+    mov [100], 0xFFDA
+    bmov A, [100]
+    jne A, 0xDA, $fail
+
+test_uop_bmov_id:
+    mov [100], 0xABCD
+    mov [102], 0x1234
+    mov [104], 0x5678
+    bmov [102], 0xDF
+    jne [100], 0xABCD, $fail
+    jne [102], 0x12DF, $fail
+    jne [104], 0x5678, $fail
+    bmov [103], 0xB8
+    jne [100], 0xABCD, $fail
+    jne [102], 0xB8DF, $fail
+    jne [104], 0x5678, $fail
+
+test_uop_bmov_ii:
+    mov [300], 0xDF
+    mov [302], 0xB8
+
+    mov [200], 0xABCD
+    mov [202], 0x1234
+    mov [204], 0x5678
+    bmov [202], [300]
+    jne [200], 0xABCD, $fail
+    jne [202], 0x12DF, $fail
+    jne [204], 0x5678, $fail
+    jne [300], 0xDF, $fail
+    jne [302], 0xB8, $fail
+    bmov [203], [302]
+    jne [200], 0xABCD, $fail
+    jne [202], 0xB8DF, $fail
+    jne [204], 0x5678, $fail
+    jne [300], 0xDF, $fail
+    jne [302], 0xB8, $fail
+
+
 test_uop_halt:
     # Can't test!
 

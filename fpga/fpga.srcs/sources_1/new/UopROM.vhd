@@ -7,14 +7,11 @@ use work.Types.all;
 
 
 package UopROM is
-
-
-
 -- ##############################################################
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUopROM is array (0 to 195-1) of std_logic_vector(1+UopLen-1 downto 0);
+type TArrUopROM is array (0 to 223-1) of std_logic_vector(1+UopLen-1 downto 0);
 constant uops_rom : TArrUopROM := (
 	/*   0 */ 14x"0000", --     nop # dummy instruction at index 0 & 1
 	/*   1 */ 14x"0000", --     nop, !FALLTHROUGH
@@ -215,65 +212,97 @@ constant uops_rom : TArrUopROM := (
 	/* 147 */ 14x"0499", --     (-i) mem Y, Y, LOAD
 	/* 148 */ 14x"0988", --     (i-) arg X, GET_0
 	/* 149 */ 14x"2589", --     (i-) mem X, Y, STORE
+	/*     */            -- bmov_dd:
+	/* 150 */ 14x"0a99", --     (--) arg Y, GET_1
+	/* 151 */ 14x"02a2", --     (--) con Z, 0x00FF
+	/* 152 */ 14x"0e9a", --     (--) alu Y, Z, AND
+	/* 153 */ 14x"2899", --     (d-) arg Y, PUT
+	/*     */            -- bmov_di:
+	/* 154 */ 14x"0a99", --     (--) arg Y, GET_1
+	/* 155 */ 14x"0499", --     (-i) mem Y, Y, LOAD
+	/* 156 */ 14x"02a2", --     (--) con Z, 0x00FF
+	/* 157 */ 14x"0e9a", --     (--) alu Y, Z, AND
+	/* 158 */ 14x"2899", --     (d-) arg Y, PUT
+	/*     */            -- bmov_id:
+	/* 159 */ 14x"0a99", --     (--) arg Y, GET_1
+	/* 160 */ 14x"02a2", --     (--) con Z, 0x00FF
+	/* 161 */ 14x"0e9a", --     (--) alu Y, Z, AND
+	/* 162 */ 14x"09bb", --     (i-) arg K, GET_0
+	/* 163 */ 14x"048b", --     (i-) mem X, K, LOAD
+	/* 164 */ 14x"02a4", --     (i-) con Z, 0xFF00
+	/* 165 */ 14x"0e8a", --     (i-) alu X, Z, AND
+	/* 166 */ 14x"0c89", --     (i-) alu X, Y, ADD
+	/* 167 */ 14x"25b8", --     (i-) mem K, X, STORE
+	/*     */            -- bmov_ii:
+	/* 168 */ 14x"0a99", --     (--) arg Y, GET_1
+	/* 169 */ 14x"0499", --     (-i) mem Y, Y, LOAD
+	/* 170 */ 14x"02a2", --     (--) con Z, 0x00FF
+	/* 171 */ 14x"0e9a", --     (--) alu Y, Z, AND
+	/* 172 */ 14x"09bb", --     (i-) arg K, GET_0
+	/* 173 */ 14x"048b", --     (i-) mem X, K, LOAD
+	/* 174 */ 14x"02a4", --     (i-) con Z, 0xFF00
+	/* 175 */ 14x"0e8a", --     (i-) alu X, Z, AND
+	/* 176 */ 14x"0c89", --     (i-) alu X, Y, ADD
+	/* 177 */ 14x"25b8", --     (i-) mem K, X, STORE
 	/*     */            -- # ======================================
 	/*     */            -- # Others
 	/*     */            -- halt:
-	/* 150 */ 14x"2166", --     mov PC, PC
+	/* 178 */ 14x"2166", --     mov PC, PC
 	/*     */            -- getf:
-	/* 151 */ 14x"2877", --     arg FL, PUT
+	/* 179 */ 14x"2877", --     arg FL, PUT
 	/*     */            -- setf:
-	/* 152 */ 14x"0977", --     arg FL, GET_0
-	/* 153 */ 14x"0284", --     con X, 0x3F # 6 bits
-	/* 154 */ 14x"2e78", --     alu FL, X, AND
+	/* 180 */ 14x"0977", --     arg FL, GET_0
+	/* 181 */ 14x"0285", --     con X, 0x3F # 6 bits
+	/* 182 */ 14x"2e78", --     alu FL, X, AND
 	/*     */            -- call_d:
-	/* 155 */ 14x"0988", --     (-) arg X, GET_0
-	/* 156 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 157 */ 14x"055d", --     (-) mem SP, NPC, STORE
-	/* 158 */ 14x"2168", --     (-) mov PC, X
+	/* 183 */ 14x"0988", --     (-) arg X, GET_0
+	/* 184 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 185 */ 14x"055d", --     (-) mem SP, NPC, STORE
+	/* 186 */ 14x"2168", --     (-) mov PC, X
 	/*     */            -- call_i:
-	/* 159 */ 14x"0988", --     (-) arg X, GET_0
-	/* 160 */ 14x"0488", --     (i) mem X, X, LOAD
-	/* 161 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 162 */ 14x"055d", --     (-) mem SP, NPC, STORE
-	/* 163 */ 14x"2168", --     (-) mov PC, X
+	/* 187 */ 14x"0988", --     (-) arg X, GET_0
+	/* 188 */ 14x"0488", --     (i) mem X, X, LOAD
+	/* 189 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 190 */ 14x"055d", --     (-) mem SP, NPC, STORE
+	/* 191 */ 14x"2168", --     (-) mov PC, X
 	/*     */            -- ret:
-	/* 164 */ 14x"0485", --     mem X, SP, LOAD
-	/* 165 */ 14x"0c5c", --     alu SP, 2, ADD
-	/* 166 */ 14x"2168", --     mov PC, X
+	/* 192 */ 14x"0485", --     mem X, SP, LOAD
+	/* 193 */ 14x"0c5c", --     alu SP, 2, ADD
+	/* 194 */ 14x"2168", --     mov PC, X
 	/*     */            -- push_d:
-	/* 167 */ 14x"0988", --     (-) arg X, GET_0
-	/* 168 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 169 */ 14x"2558", --     (-) mem SP, X, STORE
+	/* 195 */ 14x"0988", --     (-) arg X, GET_0
+	/* 196 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 197 */ 14x"2558", --     (-) mem SP, X, STORE
 	/*     */            -- push_i:
-	/* 170 */ 14x"0988", --     (-) arg X, GET_0
-	/* 171 */ 14x"0488", --     (i) mem X, X, LOAD
-	/* 172 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 173 */ 14x"2558", --     (-) mem SP, X, STORE
+	/* 198 */ 14x"0988", --     (-) arg X, GET_0
+	/* 199 */ 14x"0488", --     (i) mem X, X, LOAD
+	/* 200 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 201 */ 14x"2558", --     (-) mem SP, X, STORE
 	/*     */            -- pop_d:
-	/* 174 */ 14x"0495", --     (-) mem Y, SP, LOAD
-	/* 175 */ 14x"0c5c", --     (-) alu SP, 2, ADD
-	/* 176 */ 14x"2899", --     (d) arg Y, PUT
+	/* 202 */ 14x"0495", --     (-) mem Y, SP, LOAD
+	/* 203 */ 14x"0c5c", --     (-) alu SP, 2, ADD
+	/* 204 */ 14x"2899", --     (d) arg Y, PUT
 	/*     */            -- pop_i:
-	/* 177 */ 14x"0495", --     (-) mem Y, SP, LOAD
-	/* 178 */ 14x"0c5c", --     (-) alu SP, 2, ADD
-	/* 179 */ 14x"0988", --     (i) arg X, GET_0
-	/* 180 */ 14x"2589", --     (i) mem X, Y, STORE
+	/* 205 */ 14x"0495", --     (-) mem Y, SP, LOAD
+	/* 206 */ 14x"0c5c", --     (-) alu SP, 2, ADD
+	/* 207 */ 14x"0988", --     (i) arg X, GET_0
+	/* 208 */ 14x"2589", --     (i) mem X, Y, STORE
 	/*     */            -- mmap: # start, end, slot_idx / Y, Z, X
-	/* 181 */ 14x"0999", --     arg, Y, GET_0
-	/* 182 */ 14x"0aaa", --     arg, Z, GET_1
-	/* 183 */ 14x"0b88", --     arg, X, GET_2
-	/* 184 */ 14x"0300", --     mmu
-	/* 185 */ 14x"01bd", --     mov K, NPC
-	/* 186 */ 14x"0160", --     mov PC, 0 # reset Fetcher
-	/* 187 */ 14x"216b", --     mov PC, K
+	/* 209 */ 14x"0999", --     arg, Y, GET_0
+	/* 210 */ 14x"0aaa", --     arg, Z, GET_1
+	/* 211 */ 14x"0b88", --     arg, X, GET_2
+	/* 212 */ 14x"0300", --     mmu
+	/* 213 */ 14x"01bd", --     mov K, NPC
+	/* 214 */ 14x"0160", --     mov PC, 0 # reset Fetcher
+	/* 215 */ 14x"216b", --     mov PC, K
 	/*     */            -- umap:
-	/* 188 */ 14x"0988", --     arg, X, GET_0
-	/* 189 */ 14x"0290", --     con Y, 0xFFFF
-	/* 190 */ 14x"01a0", --     mov Z, 0
-	/* 191 */ 14x"0300", --     mmu
-	/* 192 */ 14x"01bd", --     mov K, NPC
-	/* 193 */ 14x"0160", --     mov PC, 0 # reset Fetcher
-	/* 194 */ 14x"216b"  --     mov PC, K
+	/* 216 */ 14x"0988", --     arg, X, GET_0
+	/* 217 */ 14x"0290", --     con Y, 0xFFFF
+	/* 218 */ 14x"01a0", --     mov Z, 0
+	/* 219 */ 14x"0300", --     mmu
+	/* 220 */ 14x"01bd", --     mov K, NPC
+	/* 221 */ 14x"0160", --     mov PC, 0 # reset Fetcher
+	/* 222 */ 14x"216b"  --     mov PC, K
 	/*     */            -- end_of_uop_rom:
 ); -- uops_rom ---------------------------------------------------
 
@@ -310,27 +339,32 @@ constant label_mov_dd : integer := 138;
 constant label_mov_di : integer := 140;
 constant label_mov_id : integer := 143;
 constant label_mov_ii : integer := 146;
-constant label_halt : integer := 150;
-constant label_getf : integer := 151;
-constant label_setf : integer := 152;
-constant label_call_d : integer := 155;
-constant label_call_i : integer := 159;
-constant label_ret : integer := 164;
-constant label_push_d : integer := 167;
-constant label_push_i : integer := 170;
-constant label_pop_d : integer := 174;
-constant label_pop_i : integer := 177;
-constant label_mmap : integer := 181;
-constant label_umap : integer := 188;
-constant label_end_of_uop_rom : integer := 195;
+constant label_bmov_dd : integer := 150;
+constant label_bmov_di : integer := 154;
+constant label_bmov_id : integer := 159;
+constant label_bmov_ii : integer := 168;
+constant label_halt : integer := 178;
+constant label_getf : integer := 179;
+constant label_setf : integer := 180;
+constant label_call_d : integer := 183;
+constant label_call_i : integer := 187;
+constant label_ret : integer := 192;
+constant label_push_d : integer := 195;
+constant label_push_i : integer := 198;
+constant label_pop_d : integer := 202;
+constant label_pop_i : integer := 205;
+constant label_mmap : integer := 209;
+constant label_umap : integer := 216;
+constant label_end_of_uop_rom : integer := 223;
 
 
-type TArrUopsConstsROM is array (0 to 5-1) of TData;
+type TArrUopsConstsROM is array (0 to 6-1) of TData;
 constant uops_consts_rom : TArrUopsConstsROM := (
 	x"FFFF", -- used 3 times
 	x"0001", -- used 1 times
-	x"00FF", -- used 1 times
+	x"00FF", -- used 5 times
 	x"D000", -- used 2 times
+	x"FF00", -- used 2 times
 	x"003F"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
 
@@ -342,7 +376,92 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 
 
 -----------------------------------------------------------------
+-- Label Map
+-----------------------------------------------------------------
 
 attribute ram_style of uops_rom : constant is "distributed";
 
+
+constant InstIdxW : Integer := InstructionIndexWidth;
+constant NArgsW : Integer := 2; -- max 3 arguments
+constant UopIdxW : integer := UopIndexWidth;
+constant OpW : Integer := 6;
+subtype TIndex is unsigned(UopIdxW-1 downto 0);
+
+
+type ArrLabel2 is array(0 to 2-1) of TIndex;
+type ArrLabel4 is array(0 to 4-1) of TIndex;
+type ArrLabel8 is array(0 to 8-1) of TIndex;
+type ArrLabel16 is array(0 to 16-1) of TIndex;
+
+
+constant labels_mov : ArrLabel4 := (
+	to_unsigned(label_mov_dd, UopIdxW),
+	to_unsigned(label_mov_di, UopIdxW),
+	to_unsigned(label_mov_id, UopIdxW),
+	to_unsigned(label_mov_ii, UopIdxW)
+);
+constant labels_bmov : ArrLabel4 := (
+	to_unsigned(label_bmov_dd, UopIdxW),
+	to_unsigned(label_bmov_di, UopIdxW),
+	to_unsigned(label_bmov_id, UopIdxW),
+	to_unsigned(label_bmov_ii, UopIdxW)
+);
+constant labels_alu_single1 : ArrLabel2 := (
+	to_unsigned(label_alu_single_1dx, UopIdxW),
+	to_unsigned(label_alu_single_1ix, UopIdxW)
+);
+constant labels_alu_single2 : ArrLabel4 := (
+	to_unsigned(label_alu_single_2dd, UopIdxW),
+	to_unsigned(label_alu_single_2di, UopIdxW),
+	to_unsigned(label_alu_single_2id, UopIdxW),
+	to_unsigned(label_alu_single_2ii, UopIdxW)
+);
+constant labels_alu23 : ArrLabel8 := (
+	to_unsigned(label_alu_2dd, UopIdxW),
+	to_unsigned(label_alu_2di, UopIdxW),
+	to_unsigned(label_alu_2id, UopIdxW),
+	to_unsigned(label_alu_2ii, UopIdxW),
+	to_unsigned(label_alu_3dd, UopIdxW),
+	to_unsigned(label_alu_3di, UopIdxW),
+	to_unsigned(label_alu_3id, UopIdxW),
+	to_unsigned(label_alu_3ii, UopIdxW)
+);
+constant labels_cmp : ArrLabel4 := (
+	to_unsigned(label_cmp_dd, UopIdxW),
+	to_unsigned(label_cmp_di, UopIdxW),
+	to_unsigned(label_cmp_id, UopIdxW),
+	to_unsigned(label_cmp_ii, UopIdxW)
+);
+constant labels_push : ArrLabel2 := (
+	to_unsigned(label_push_d, UopIdxW),
+	to_unsigned(label_push_i, UopIdxW)
+);
+constant labels_pop : ArrLabel2 := (
+	to_unsigned(label_pop_d, UopIdxW),
+	to_unsigned(label_pop_i, UopIdxW)
+);
+constant labels_jmp : ArrLabel2 := (
+	to_unsigned(label_jmp_d, UopIdxW),
+	to_unsigned(label_jmp_i, UopIdxW)
+);
+constant labels_jmp_cond : ArrLabel2 := (
+	to_unsigned(label_jmp_cond_d, UopIdxW),
+	to_unsigned(label_jmp_cond_i, UopIdxW)
+);
+constant labels_jmp_3 : ArrLabel4 := (
+	to_unsigned(label_jmp_3dd, UopIdxW),
+	to_unsigned(label_jmp_3di, UopIdxW),
+	to_unsigned(label_jmp_3id, UopIdxW),
+	to_unsigned(label_jmp_3ii, UopIdxW)
+);
+constant labels_call : ArrLabel2 := (
+	to_unsigned(label_call_d, UopIdxW),
+	to_unsigned(label_call_i, UopIdxW)
+);
+
+
+-----------------------------------------------------------------
+-- End Label Map
+-----------------------------------------------------------------
 end package;

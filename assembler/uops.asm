@@ -129,6 +129,21 @@ mov_$$:
     (i-) mem X, Y, STORE
 .end_generate
 
+.generate dd, di, id, ii
+bmov_$$:
+    (--) arg Y, GET_1
+    (-i) mem Y, Y, LOAD
+    (--) con Z, 0x00FF
+    (--) alu Y, Z, AND
+    (d-) arg Y, PUT
+    (i-) arg K, GET_0
+    (i-) mem X, K, LOAD
+    (i-) con Z, 0xFF00
+    (i-) alu X, Z, AND
+    (i-) alu X, Y, ADD
+    (i-) mem K, X, STORE
+.end_generate
+
 # ======================================
 # Others
 halt:

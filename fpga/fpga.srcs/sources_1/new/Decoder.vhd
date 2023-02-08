@@ -31,80 +31,7 @@ end Decoder;
 
 architecture Behavioral of Decoder is
 
-constant InstIdxW : Integer := InstructionIndexWidth;
-constant NArgsW : Integer := 2; -- max 3 arguments
-constant UopIdxW : integer := UopIndexWidth;
-constant OpW : Integer := 6;
-subtype TIndex is unsigned(UopIdxW-1 downto 0);
-
-type ArrLabel2 is array(0 to 2-1) of TIndex;
-type ArrLabel4 is array(0 to 4-1) of TIndex;
-type ArrLabel8 is array(0 to 8-1) of TIndex;
-type ArrLabel16 is array(0 to 16-1) of TIndex;
-
-constant labels_mov : ArrLabel4 := (
-	to_unsigned(label_mov_dd, UopIdxW),
-	to_unsigned(label_mov_di, UopIdxW),
-	to_unsigned(label_mov_id, UopIdxW),
-	to_unsigned(label_mov_ii, UopIdxW)
-);
-constant labels_alu_single1 : ArrLabel2 := (
-	to_unsigned(label_alu_single_1dx, UopIdxW),
-	to_unsigned(label_alu_single_1ix, UopIdxW)
-);
-constant labels_alu_single2 : ArrLabel4 := (
-	to_unsigned(label_alu_single_2dd, UopIdxW),
-	to_unsigned(label_alu_single_2di, UopIdxW),
-	to_unsigned(label_alu_single_2id, UopIdxW),
-	to_unsigned(label_alu_single_2ii, UopIdxW)
-);
-constant labels_alu23 : ArrLabel8 := (
-	to_unsigned(label_alu_2dd, UopIdxW),
-	to_unsigned(label_alu_2di, UopIdxW),
-	to_unsigned(label_alu_2id, UopIdxW),
-	to_unsigned(label_alu_2ii, UopIdxW),
-	to_unsigned(label_alu_3dd, UopIdxW),
-	to_unsigned(label_alu_3di, UopIdxW),
-	to_unsigned(label_alu_3id, UopIdxW),
-	to_unsigned(label_alu_3ii, UopIdxW)
-);
-constant labels_cmp : ArrLabel4 := (
-	to_unsigned(label_cmp_dd, UopIdxW),
-	to_unsigned(label_cmp_di, UopIdxW),
-	to_unsigned(label_cmp_id, UopIdxW),
-	to_unsigned(label_cmp_ii, UopIdxW)
-);
-constant labels_push : ArrLabel2 := (
-	to_unsigned(label_push_d, UopIdxW),
-	to_unsigned(label_push_i, UopIdxW)
-);
-constant labels_pop : ArrLabel2 := (
-	to_unsigned(label_pop_d, UopIdxW),
-	to_unsigned(label_pop_i, UopIdxW)
-);
-constant labels_jmp : ArrLabel2 := (
-	to_unsigned(label_jmp_d, UopIdxW),
-	to_unsigned(label_jmp_i, UopIdxW)
-);
-constant labels_jmp_cond : ArrLabel2 := (
-	to_unsigned(label_jmp_cond_d, UopIdxW),
-	to_unsigned(label_jmp_cond_i, UopIdxW)
-);
-constant labels_jmp_3 : ArrLabel4 := (
-	to_unsigned(label_jmp_3dd, UopIdxW),
-	to_unsigned(label_jmp_3di, UopIdxW),
-	to_unsigned(label_jmp_3id, UopIdxW),
-	to_unsigned(label_jmp_3ii, UopIdxW)
-);
-constant labels_call : ArrLabel2 := (
-	to_unsigned(label_call_d, UopIdxW),
-	to_unsigned(label_call_i, UopIdxW)
-);
-
------------------------------------------------------------------------------------
-
 signal s_idx : TIndex := (others => '0');
-
 signal s_uop : TUop;
 attribute ram_style of s_uop : signal is "registers";
 
@@ -172,7 +99,7 @@ begin
 							when to_unsigned(OP_JMP , OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_jmp(to_integer(indirect_specs(1 downto 1)));
 							when to_unsigned(OP_CALL, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := labels_call(to_integer(indirect_specs(1 downto 1)));
 							when to_unsigned(OP_MOV , OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_mov(to_integer(indirect_specs));
-							when to_unsigned(OP_BMOV, OpW) => nargs := to_unsigned(2, NArgsW); -- TODO
+							when to_unsigned(OP_BMOV, OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_bmov(to_integer(indirect_specs));
 							when to_unsigned(OP_SETF, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := to_unsigned(label_setf, UopIdxW);
 							when to_unsigned(OP_ICMP, OpW) => nargs := to_unsigned(2, NArgsW); op_prog := labels_cmp(to_integer(indirect_specs));
 							when to_unsigned(OP_UMAP, OpW) => nargs := to_unsigned(1, NArgsW); op_prog := to_unsigned(label_umap, UopIdxW);
