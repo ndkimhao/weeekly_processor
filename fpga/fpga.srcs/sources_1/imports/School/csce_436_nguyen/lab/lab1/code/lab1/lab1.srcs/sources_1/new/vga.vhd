@@ -120,7 +120,7 @@ begin
 		clkb => buf_clk,
 		enb => buf_en,
 		web => buf_wr & "",
-		addrb => buf_addr(14 downto 0),
+		addrb => buf_addr(15 downto 1),
 		dinb => buf_din,
 		doutb => buf_dout
 	);
