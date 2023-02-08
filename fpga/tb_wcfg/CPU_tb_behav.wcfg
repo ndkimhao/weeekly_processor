@@ -15,13 +15,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1,942.978042 us"></ZoomStartTime>
-      <ZoomEndTime time="2,041.129918 us"></ZoomEndTime>
-      <Cursor1Time time="1,961.611632 us"></Cursor1Time>
+      <ZoomStartTime time="7,192.782516 us"></ZoomStartTime>
+      <ZoomEndTime time="7,214.702517 us"></ZoomEndTime>
+      <Cursor1Time time="7,198.512516 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="216"></NameColumnWidth>
-      <ValueColumnWidth column_width="134"></ValueColumnWidth>
+      <ValueColumnWidth column_width="128"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="29" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
@@ -52,16 +52,22 @@
    <wvobject fp_name="/CPU_tb/cpu/mem/en" type="logic">
       <obj_property name="ElementShortName">en</obj_property>
       <obj_property name="ObjectShortName">en</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/wr" type="logic">
       <obj_property name="ElementShortName">wr</obj_property>
       <obj_property name="ObjectShortName">wr</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/eng_den" type="logic">
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="ElementShortName">eng_den</obj_property>
       <obj_property name="ObjectShortName">eng_den</obj_property>
       <obj_property name="label">Engine Mem En</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/mem/addr" type="array">
       <obj_property name="DisplayName">label</obj_property>

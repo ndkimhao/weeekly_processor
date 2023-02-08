@@ -11,7 +11,7 @@ package CodeROM is
 -- ## BEGIN ROM
 -- ##############################################################
 
-constant ROMSize : integer := 7204;
+constant ROMSize : integer := 7890;
 type TArrROM is array (0 to ROMSize-1) of TByte;
 constant arr_rom : TArrROM := (
 	/*      */                                                  --
@@ -1131,92 +1131,221 @@ constant arr_rom : TArrROM := (
 	/* ea5e */ x"ec",x"20",x"e0",x"e0",x"5e",x"ea",x"0d",x"d0", --     jne A, $_L_test_uop_jmp_cond_d_okay, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_jmp_3dd:
+	/* ea66 */ x"60",x"20",x"1c",x"7b",                         --     mov A, 123
+	/* ea6a */ x"ec",x"20",x"1c",x"e0",x"7b",x"0d",x"d0",       --     jne A, 123, $fail
+	/* ea71 */ x"e8",x"20",x"1c",x"e0",x"7b",x"7c",x"ea",       --     jeq A, 123, $_test_uop_jmp_3dd_okay
+	/* ea78 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/*      */                                                  --     _test_uop_jmp_3dd_okay:
+	/* ea7c */ x"ec",x"20",x"1c",x"e0",x"7b",x"0d",x"d0",       --     jne A, 123, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_jmp_3di:
+	/* ea83 */ x"60",x"20",x"1c",x"7b",                         --     mov A, 123
+	/* ea87 */ x"62",x"1c",x"e0",x"64",x"41",x"01",             --     mov [100], 321
+	/* ea8d */ x"e9",x"20",x"1c",x"e0",x"64",x"0d",x"d0",       --     jeq A, [100], $fail
+	/* ea94 */ x"ed",x"20",x"1c",x"e0",x"64",x"9f",x"ea",       --     jne A, [100], $test_uop_jmp_3di_okay
+	/* ea9b */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/*      */                                                  --     test_uop_jmp_3di_okay:
+	/* ea9f */ x"ec",x"20",x"1c",x"e0",x"7b",x"0d",x"d0",       --     jne A, 123, $fail
+	/* eaa6 */ x"ee",x"1c",x"e0",x"e0",x"64",x"41",x"01",x"0d",x"d0", --     jne [100], 321, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_jmp_3id:
+	/* eaaf */ x"60",x"20",x"1c",x"7b",                         --     mov A, 123
+	/* eab3 */ x"62",x"1c",x"e0",x"64",x"41",x"01",             --     mov [100], 321
+	/* eab9 */ x"ea",x"1c",x"20",x"e0",x"64",x"0d",x"d0",       --     jeq [100], A, $fail
+	/* eac0 */ x"ee",x"1c",x"20",x"e0",x"64",x"cb",x"ea",       --     jne [100], A, $_test_uop_jmp_3id_okay
+	/* eac7 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/*      */                                                  --     _test_uop_jmp_3id_okay:
+	/* eacb */ x"ec",x"20",x"1c",x"e0",x"7b",x"0d",x"d0",       --     jne A, 123, $fail
+	/* ead2 */ x"ee",x"1c",x"e0",x"e0",x"64",x"41",x"01",x"0d",x"d0", --     jne [100], 321, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_jmp_3ii:
+	/* eadb */ x"62",x"e0",x"1c",x"c8",x"00",x"7b",             --     mov [200], 123
+	/* eae1 */ x"62",x"1c",x"e0",x"64",x"41",x"01",             --     mov [100], 321
+	/* eae7 */ x"eb",x"1c",x"e0",x"e0",x"64",x"c8",x"00",x"0d",x"d0", --     jeq [100], [200], $fail
+	/* eaf0 */ x"ef",x"1c",x"e0",x"e0",x"64",x"c8",x"00",x"fd",x"ea", --     jne [100], [200], $_test_uop_jmp_3ii_okay
+	/* eaf9 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/*      */                                                  --     _test_uop_jmp_3ii_okay:
+	/* eafd */ x"ee",x"e0",x"1c",x"e0",x"c8",x"00",x"7b",x"0d",x"d0", --     jne [200], 123, $fail
+	/* eb06 */ x"ee",x"1c",x"e0",x"e0",x"64",x"41",x"01",x"0d",x"d0", --     jne [100], 321, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_mov_dd:
+	/* eb0f */ x"60",x"20",x"1c",x"7b",                         --     mov A, 123
+	/* eb13 */ x"ec",x"20",x"1c",x"e0",x"7b",x"0d",x"d0",       --     jne A, 123, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_mov_di:
+	/* eb1a */ x"62",x"1c",x"e0",x"64",x"da",x"ff",             --     mov [100], 0xFFDA
+	/* eb20 */ x"61",x"20",x"1c",x"64",                         --     mov A, [100]
+	/* eb24 */ x"ec",x"20",x"e0",x"e0",x"da",x"ff",x"0d",x"d0", --     jne A, 0xFFDA, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_mov_id:
+	/* eb2c */ x"62",x"1c",x"e0",x"64",x"ff",x"ff",             --     mov [100], 0xFFFF
+	/* eb32 */ x"ee",x"1c",x"e0",x"e0",x"64",x"ff",x"ff",x"0d",x"d0", --     jne [100], 0xFFFF, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_mov_ii:
+	/* eb3b */ x"60",x"20",x"1c",x"14",                         --     mov A, 20
+	/* eb3f */ x"62",x"1c",x"e0",x"78",x"fa",x"fd",             --     mov [120], 0xFDFA
+	/* eb45 */ x"63",x"1c",x"e4",x"64",x"64",x"00",             --     mov [100], [100+A]
+	/* eb4b */ x"ee",x"1c",x"e0",x"e0",x"64",x"fa",x"fd",x"0d",x"d0", --     jne [100], 0xFDFA, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_halt:
+	/*      */                                                  --     # Can't test!
 	/*      */                                                  --
-	/*      */                                                  -- test_uop_getf:
+	/*      */                                                  -- test_uop_getf: # getf does not support indirection
+	/* eb54 */ x"50",x"1c",x"1c",x"7b",x"2d",                   --     cmp 123, 45
+	/* eb59 */ x"4c",x"20",                                     --     getf A
+	/* eb5b */ x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       --     jne A, 0b110010, $fail
 	/*      */                                                  --
-	/*      */                                                  -- test_uop_setf:
+	/*      */                                                  -- test_uop_setf: # setf does not support indirection
+	/* eb62 */ x"cc",x"e0",x"ff",x"ff",                         --     setf 0xFFFF
+	/* eb66 */ x"4c",x"20",                                     --     getf A
+	/* eb68 */ x"ec",x"20",x"1c",x"e0",x"3f",x"0d",x"d0",       --     jne A, 0x3F, $fail # masked only 6 bits
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_call_d:
+	/* eb6f */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* eb74 */ x"60",x"40",x"e0",x"8f",x"eb",                   --     mov B, $_L_test_uop_call_d_fn
+	/* eb79 */ x"5c",x"40",                                     --     call B
+	/* eb7b */ x"ec",x"40",x"e0",x"e0",x"8f",x"eb",x"0d",x"d0", --     jne B, $_L_test_uop_call_d_fn, $fail
+	/* eb83 */ x"ec",x"20",x"e0",x"e0",x"fa",x"34",x"0d",x"d0", --     jne A, 0x34FA, $fail
+	/* eb8b */ x"58",x"e0",x"95",x"eb",                         --     jmp $_L_test_uop_call_d_okay
+	/*      */                                                  --     _L_test_uop_call_d_fn:
+	/* eb8f */ x"60",x"20",x"e0",x"fa",x"34",                   --     mov A, 0x34FA
+	/* eb94 */ x"dc",                                           --     ret
+	/*      */                                                  --     _L_test_uop_call_d_okay:
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_call_i:
+	/* eb95 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* eb9a */ x"60",x"40",x"1c",x"64",                         --     mov B, 100
+	/* eb9e */ x"62",x"40",x"e0",x"b9",x"eb",                   --     mov [B], $_L_test_uop_call_i_fn
+	/* eba3 */ x"5e",x"40",                                     --     call [B]
+	/* eba5 */ x"ee",x"40",x"e0",x"e0",x"b9",x"eb",x"0d",x"d0", --     jne [B], $_L_test_uop_call_i_fn, $fail
+	/* ebad */ x"ec",x"20",x"e0",x"e0",x"d4",x"aa",x"0d",x"d0", --     jne A, 0xAAD4, $fail
+	/* ebb5 */ x"58",x"e0",x"bf",x"eb",                         --     jmp $_L_test_uop_call_i_okay
+	/*      */                                                  --     _L_test_uop_call_i_fn:
+	/* ebb9 */ x"60",x"20",x"e0",x"d4",x"aa",                   --     mov A, 0xAAD4
+	/* ebbe */ x"dc",                                           --     ret
+	/*      */                                                  --     _L_test_uop_call_i_okay:
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_ret:
+	/*      */                                                  --     # already tested above
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_push_d:
+	/* ebbf */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* ebc4 */ x"60",x"40",x"1c",x"64",                         --     mov B, 100
+	/* ebc8 */ x"e0",x"40",                                     --     push B
+	/* ebca */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
+	/* ebd2 */ x"ee",x"e0",x"1c",x"e0",x"fe",x"0f",x"64",x"0d",x"d0", --     jne [0xFFE], 100, $fail
+	/* ebdb */ x"e4",x"60",                                     --     pop C
+	/* ebdd */ x"ec",x"60",x"1c",x"e0",x"64",x"0d",x"d0",       --     jne C, 100, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_push_i:
+	/* ebe4 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* ebe9 */ x"60",x"40",x"1c",x"64",                         --     mov B, 100
+	/* ebed */ x"62",x"40",x"e0",x"90",x"01",                   --     mov [B], 400
+	/* ebf2 */ x"e2",x"40",                                     --     push [B]
+	/* ebf4 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
+	/* ebfc */ x"ee",x"e0",x"e0",x"e0",x"fe",x"0f",x"90",x"01",x"0d",x"d0", --     jne [0xFFE], 400, $fail
+	/* ec06 */ x"e4",x"60",                                     --     pop C
+	/* ec08 */ x"ec",x"60",x"e0",x"e0",x"90",x"01",x"0d",x"d0", --     jne C, 400, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_pop_d:
+	/* ec10 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* ec15 */ x"e0",x"e0",x"da",x"fa",                         --     push 0xFADA
+	/* ec19 */ x"e4",x"20",                                     --     pop A
+	/* ec1b */ x"ec",x"20",x"e0",x"e0",x"da",x"fa",x"0d",x"d0", --     jne A, 0xFADA, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_pop_i:
+	/* ec23 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* ec28 */ x"e0",x"e0",x"da",x"f2",                         --     push 0xF2DA
+	/* ec2c */ x"e6",x"1c",x"64",                               --     pop [100]
+	/* ec2f */ x"ee",x"1c",x"e0",x"e0",x"64",x"da",x"f2",x"0d",x"d0", --     jne [100], 0xF2DA, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_mmap:
+	/*      */                                                  --     # mmap/umap does not support indirection
+	/* ec38 */ x"62",x"e0",x"e0",x"00",x"30",x"00",x"ff",       --     mov [0x3000], 0xFF00
+	/* ec3f */ x"62",x"e0",x"e0",x"00",x"31",x"01",x"ff",       --     mov [0x3100], 0xFF01
+	/* ec46 */ x"62",x"e0",x"e0",x"00",x"32",x"02",x"ff",       --     mov [0x3200], 0xFF02
+	/*      */                                                  --
+	/* ec4d */ x"62",x"e0",x"e0",x"00",x"40",x"00",x"dd",       --     mov [0x4000], 0xDD00
+	/* ec54 */ x"62",x"e0",x"e0",x"00",x"41",x"01",x"dd",       --     mov [0x4100], 0xDD01
+	/* ec5b */ x"62",x"e0",x"e0",x"00",x"42",x"02",x"dd",       --     mov [0x4200], 0xDD02
+	/*      */                                                  --
+	/* ec62 */ x"62",x"e0",x"e0",x"00",x"50",x"00",x"ee",       --     mov [0x5000], 0xEE00
+	/* ec69 */ x"62",x"e0",x"e0",x"00",x"51",x"01",x"ee",       --     mov [0x5100], 0xEE01
+	/* ec70 */ x"62",x"e0",x"e0",x"00",x"52",x"02",x"ee",       --     mov [0x5200], 0xEE02
+	/*      */                                                  --
+	/* ec77 */ x"60",x"20",x"00",                               --     mov A, 0
+	/* ec7a */ x"60",x"40",x"e0",x"00",x"41",                   --     mov B, 0x4100
+	/* ec7f */ x"54",x"e0",x"e0",x"1c",x"00",x"31",x"ff",x"32",x"01", --     mmap  0x3100, 0x32FF, 1 # start, end, idx
+	/* ec88 */ x"ee",x"e0",x"e0",x"e0",x"00",x"31",x"01",x"dd",x"0d",x"d0", --     jne [0x3100], 0xDD01, $fail
+	/* ec92 */ x"ee",x"e0",x"e0",x"e0",x"00",x"32",x"02",x"dd",x"0d",x"d0", --     jne [0x3200], 0xDD02, $fail
+	/* ec9c */ x"ee",x"e0",x"e0",x"e0",x"00",x"30",x"00",x"ff",x"0d",x"d0", --     jne [0x3000], 0xFF00, $fail
+	/*      */                                                  --
+	/* eca6 */ x"60",x"40",x"e0",x"00",x"51",                   --     mov B, 0x5100
+	/* ecab */ x"54",x"e0",x"e0",x"1c",x"00",x"32",x"ff",x"32",x"02", --     mmap  0x3200, 0x32FF, 2 # higher priority
+	/* ecb4 */ x"ee",x"e0",x"e0",x"e0",x"00",x"32",x"01",x"ee",x"0d",x"d0", --     jne [0x3200], 0xEE01, $fail
+	/* ecbe */ x"ee",x"e0",x"e0",x"e0",x"00",x"30",x"00",x"ff",x"0d",x"d0", --     jne [0x3000], 0xFF00, $fail
+	/* ecc8 */ x"ee",x"e0",x"e0",x"e0",x"00",x"31",x"01",x"dd",x"0d",x"d0", --     jne [0x3100], 0xDD01, $fail
+	/*      */                                                  --
+	/* ecd2 */ x"d4",x"1c",x"01",                               --     umap 1
+	/* ecd5 */ x"ee",x"e0",x"e0",x"e0",x"00",x"31",x"01",x"ff",x"0d",x"d0", --     jne [0x3100], 0xFF01, $fail
+	/* ecdf */ x"ee",x"e0",x"e0",x"e0",x"00",x"32",x"01",x"ee",x"0d",x"d0", --     jne [0x3200], 0xEE01, $fail
+	/* ece9 */ x"ee",x"e0",x"e0",x"e0",x"00",x"30",x"00",x"ff",x"0d",x"d0", --     jne [0x3000], 0xFF00, $fail
+	/*      */                                                  --
+	/* ecf3 */ x"d4",x"1c",x"02",                               --     umap 2
+	/* ecf6 */ x"ee",x"e0",x"e0",x"e0",x"00",x"30",x"00",x"ff",x"0d",x"d0", --     jne [0x3000], 0xFF00, $fail
+	/* ed00 */ x"ee",x"e0",x"e0",x"e0",x"00",x"31",x"01",x"ff",x"0d",x"d0", --     jne [0x3100], 0xFF01, $fail
+	/* ed0a */ x"ee",x"e0",x"e0",x"e0",x"00",x"32",x"02",x"ff",x"0d",x"d0", --     jne [0x3200], 0xFF02, $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_uop_umap:
+	/*      */                                                  --     # done above
 	/*      */                                                  -- # END test_uop_rom.asm
 	/*      */                                                  --
 	/*      */                                                  --
 	/*      */                                                  -- # BEGIN test_call_ret.asm
 	/*      */                                                  -- test_call_ret:
 	/*      */                                                  --
-	/* ea66 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
-	/* ea6b */ x"5c",x"e0",x"e2",x"ea",                         --     call $fn_test_target
-	/* ea6f */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
+	/* ed14 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* ed19 */ x"5c",x"e0",x"90",x"ed",                         --     call $fn_test_target
+	/* ed1d */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
 	/*      */                                                  --
-	/* ea77 */ x"60",x"20",x"1c",x"0a",                         --     mov A, 10
-	/* ea7b */ x"60",x"40",x"00",                               --     mov B, 0
-	/* ea7e */ x"60",x"60",x"00",                               --     mov C, 0
-	/* ea81 */ x"60",x"80",x"00",                               --     mov D, 0
-	/* ea84 */ x"5c",x"e0",x"b1",x"ea",                         --     call $fn_recursive
+	/* ed25 */ x"60",x"20",x"1c",x"0a",                         --     mov A, 10
+	/* ed29 */ x"60",x"40",x"00",                               --     mov B, 0
+	/* ed2c */ x"60",x"60",x"00",                               --     mov C, 0
+	/* ed2f */ x"60",x"80",x"00",                               --     mov D, 0
+	/* ed32 */ x"5c",x"e0",x"5f",x"ed",                         --     call $fn_recursive
 	/*      */                                                  --
-	/* ea88 */ x"ec",x"20",x"00",x"e0",x"0d",x"d0",             --     jne A, 0, $fail
-	/* ea8e */ x"ec",x"40",x"e0",x"e0",x"3f",x"cf",x"0d",x"d0", --     jne B, 0xcf3f, $fail
-	/* ea96 */ x"ec",x"60",x"1c",x"e0",x"2d",x"0d",x"d0",       --     jne C, 0x002d, $fail
-	/* ea9d */ x"ec",x"80",x"e0",x"e0",x"97",x"45",x"0d",x"d0", --     jne D, 0x4597, $fail
-	/* eaa5 */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
+	/* ed36 */ x"ec",x"20",x"00",x"e0",x"0d",x"d0",             --     jne A, 0, $fail
+	/* ed3c */ x"ec",x"40",x"e0",x"e0",x"3f",x"cf",x"0d",x"d0", --     jne B, 0xcf3f, $fail
+	/* ed44 */ x"ec",x"60",x"1c",x"e0",x"2d",x"0d",x"d0",       --     jne C, 0x002d, $fail
+	/* ed4b */ x"ec",x"80",x"e0",x"e0",x"97",x"45",x"0d",x"d0", --     jne D, 0x4597, $fail
+	/* ed53 */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
 	/*      */                                                  --
-	/* eaad */ x"58",x"e0",x"ef",x"ea",                         --     jmp $test_call_ret_end
+	/* ed5b */ x"58",x"e0",x"9d",x"ed",                         --     jmp $test_call_ret_end
 	/*      */                                                  --
 	/*      */                                                  -- fn_recursive:
-	/* eab1 */ x"04",x"20",x"1c",x"01",                         --     sub A, 1
-	/* eab5 */ x"5c",x"e0",x"da",x"ea",                         --     call $fn_process_c
-	/* eab9 */ x"e8",x"20",x"00",x"e0",x"d5",x"ea",             --     jeq A, 0, $fn_recursive_end
-	/* eabf */ x"5c",x"e0",x"b1",x"ea",                         --     call $fn_recursive
-	/* eac3 */ x"00",x"80",x"60",                               --     add D, C
-	/* eac6 */ x"08",x"80",x"1c",x"03",                         --     mul D, 3
-	/* eaca */ x"00",x"40",x"80",                               --     add B, D
-	/* eacd */ x"e0",x"80",                                     --     push D
-	/* eacf */ x"08",x"40",x"1c",x"05",                         --     mul B, 5
-	/* ead3 */ x"e4",x"80",                                     --     pop D
+	/* ed5f */ x"04",x"20",x"1c",x"01",                         --     sub A, 1
+	/* ed63 */ x"5c",x"e0",x"88",x"ed",                         --     call $fn_process_c
+	/* ed67 */ x"e8",x"20",x"00",x"e0",x"83",x"ed",             --     jeq A, 0, $fn_recursive_end
+	/* ed6d */ x"5c",x"e0",x"5f",x"ed",                         --     call $fn_recursive
+	/* ed71 */ x"00",x"80",x"60",                               --     add D, C
+	/* ed74 */ x"08",x"80",x"1c",x"03",                         --     mul D, 3
+	/* ed78 */ x"00",x"40",x"80",                               --     add B, D
+	/* ed7b */ x"e0",x"80",                                     --     push D
+	/* ed7d */ x"08",x"40",x"1c",x"05",                         --     mul B, 5
+	/* ed81 */ x"e4",x"80",                                     --     pop D
 	/*      */                                                  -- fn_recursive_end:
-	/* ead5 */ x"dc",                                           --     ret
-	/* ead6 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/* ed83 */ x"dc",                                           --     ret
+	/* ed84 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
 	/*      */                                                  --
 	/*      */                                                  -- fn_process_c:
-	/* eada */ x"00",x"60",x"20",                               --     add C, A
-	/* eadd */ x"dc",                                           --     ret
-	/* eade */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/* ed88 */ x"00",x"60",x"20",                               --     add C, A
+	/* ed8b */ x"dc",                                           --     ret
+	/* ed8c */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
 	/*      */                                                  --
 	/*      */                                                  -- fn_test_target:
-	/* eae2 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0x0ffe, $fail
-	/* eaea */ x"dc",                                           --     ret
-	/* eaeb */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/* ed90 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0x0ffe, $fail
+	/* ed98 */ x"dc",                                           --     ret
+	/* ed99 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
 	/*      */                                                  --
 	/*      */                                                  -- test_call_ret_end:
 	/*      */                                                  -- # END test_call_ret.asm
@@ -1224,92 +1353,92 @@ constant arr_rom : TArrROM := (
 	/*      */                                                  --
 	/*      */                                                  -- # BEGIN test_mem_access.asm
 	/*      */                                                  -- test_mem_access:
-	/* eaef */ x"62",x"e0",x"e0",x"00",x"01",x"ed",x"ff",       --     mov [0x100], 0xFFED
-	/* eaf6 */ x"ee",x"e0",x"e0",x"e0",x"00",x"01",x"aa",x"00",x"04",x"eb", --     jne [0x100], 0x00AA, $test_mem_access_check_jmp
-	/* eb00 */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
+	/* ed9d */ x"62",x"e0",x"e0",x"00",x"01",x"ed",x"ff",       --     mov [0x100], 0xFFED
+	/* eda4 */ x"ee",x"e0",x"e0",x"e0",x"00",x"01",x"aa",x"00",x"b2",x"ed", --     jne [0x100], 0x00AA, $test_mem_access_check_jmp
+	/* edae */ x"58",x"e0",x"0d",x"d0",                         --     jmp $fail
 	/*      */                                                  -- test_mem_access_check_jmp:
 	/*      */                                                  --
-	/* eb04 */ x"62",x"e0",x"00",x"00",x"10",                   --     mov [0x1000], 0
-	/* eb09 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
-	/* eb0e */ x"ee",x"a0",x"00",x"e0",x"0d",x"d0",             --     jne [SP], 0, $fail
-	/* eb14 */ x"e0",x"00",                                     --     push 0
-	/* eb16 */ x"e0",x"00",                                     --     push 0
-	/* eb18 */ x"e0",x"00",                                     --     push 0
-	/* eb1a */ x"e4",x"20",                                     --     pop A
-	/* eb1c */ x"e4",x"20",                                     --     pop A
-	/* eb1e */ x"e4",x"20",                                     --     pop A
-	/* eb20 */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
-	/* eb28 */ x"ec",x"20",x"00",x"e0",x"0d",x"d0",             --     jne A, 0, $fail
+	/* edb2 */ x"62",x"e0",x"00",x"00",x"10",                   --     mov [0x1000], 0
+	/* edb7 */ x"60",x"a0",x"e0",x"00",x"10",                   --     mov SP, 0x1000
+	/* edbc */ x"ee",x"a0",x"00",x"e0",x"0d",x"d0",             --     jne [SP], 0, $fail
+	/* edc2 */ x"e0",x"00",                                     --     push 0
+	/* edc4 */ x"e0",x"00",                                     --     push 0
+	/* edc6 */ x"e0",x"00",                                     --     push 0
+	/* edc8 */ x"e4",x"20",                                     --     pop A
+	/* edca */ x"e4",x"20",                                     --     pop A
+	/* edcc */ x"e4",x"20",                                     --     pop A
+	/* edce */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
+	/* edd6 */ x"ec",x"20",x"00",x"e0",x"0d",x"d0",             --     jne A, 0, $fail
 	/*      */                                                  --
-	/* eb2e */ x"e0",x"e0",x"02",x"01",                         --     push 0x0102
-	/* eb32 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
-	/* eb3a */ x"e0",x"e0",x"04",x"03",                         --     push 0x0304
-	/* eb3e */ x"ec",x"a0",x"e0",x"e0",x"fc",x"0f",x"0d",x"d0", --     jne SP, 0xFFC, $fail
+	/* eddc */ x"e0",x"e0",x"02",x"01",                         --     push 0x0102
+	/* ede0 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
+	/* ede8 */ x"e0",x"e0",x"04",x"03",                         --     push 0x0304
+	/* edec */ x"ec",x"a0",x"e0",x"e0",x"fc",x"0f",x"0d",x"d0", --     jne SP, 0xFFC, $fail
 	/*      */                                                  --
-	/* eb46 */ x"ee",x"e0",x"e0",x"e0",x"fe",x"0f",x"02",x"01",x"0d",x"d0", --     jne [0xFFE], 0x0102, $fail
-	/* eb50 */ x"ee",x"e0",x"e0",x"e0",x"fc",x"0f",x"04",x"03",x"0d",x"d0", --     jne [0xFFC], 0x0304, $fail
+	/* edf4 */ x"ee",x"e0",x"e0",x"e0",x"fe",x"0f",x"02",x"01",x"0d",x"d0", --     jne [0xFFE], 0x0102, $fail
+	/* edfe */ x"ee",x"e0",x"e0",x"e0",x"fc",x"0f",x"04",x"03",x"0d",x"d0", --     jne [0xFFC], 0x0304, $fail
 	/*      */                                                  --
 	/*      */                                                  --     # unaligned
-	/* eb5a */ x"ee",x"e0",x"e0",x"e0",x"fb",x"0f",x"00",x"04",x"0d",x"d0", --     jne [0xFFB], 0x0400, $fail
-	/* eb64 */ x"ee",x"e0",x"e0",x"e0",x"fd",x"0f",x"03",x"02",x"0d",x"d0", --     jne [0xFFD], 0x0203, $fail
-	/* eb6e */ x"ee",x"e0",x"1c",x"e0",x"ff",x"0f",x"01",x"0d",x"d0", --     jne [0xFFF], 0x0001, $fail
+	/* ee08 */ x"ee",x"e0",x"e0",x"e0",x"fb",x"0f",x"00",x"04",x"0d",x"d0", --     jne [0xFFB], 0x0400, $fail
+	/* ee12 */ x"ee",x"e0",x"e0",x"e0",x"fd",x"0f",x"03",x"02",x"0d",x"d0", --     jne [0xFFD], 0x0203, $fail
+	/* ee1c */ x"ee",x"e0",x"1c",x"e0",x"ff",x"0f",x"01",x"0d",x"d0", --     jne [0xFFF], 0x0001, $fail
 	/*      */                                                  --
-	/* eb77 */ x"e4",x"20",                                     --     pop A
-	/* eb79 */ x"ec",x"20",x"e0",x"e0",x"04",x"03",x"0d",x"d0", --     jne A, 0x0304, $fail
-	/* eb81 */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
-	/* eb89 */ x"e4",x"20",                                     --     pop A
-	/* eb8b */ x"ec",x"20",x"e0",x"e0",x"02",x"01",x"0d",x"d0", --     jne A, 0x0102, $fail
-	/* eb93 */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
+	/* ee25 */ x"e4",x"20",                                     --     pop A
+	/* ee27 */ x"ec",x"20",x"e0",x"e0",x"04",x"03",x"0d",x"d0", --     jne A, 0x0304, $fail
+	/* ee2f */ x"ec",x"a0",x"e0",x"e0",x"fe",x"0f",x"0d",x"d0", --     jne SP, 0xFFE, $fail
+	/* ee37 */ x"e4",x"20",                                     --     pop A
+	/* ee39 */ x"ec",x"20",x"e0",x"e0",x"02",x"01",x"0d",x"d0", --     jne A, 0x0102, $fail
+	/* ee41 */ x"ec",x"a0",x"e0",x"e0",x"00",x"10",x"0d",x"d0", --     jne SP, 0x1000, $fail
 	/*      */                                                  --
 	/*      */                                                  -- # END test_mem_access.asm
 	/*      */                                                  --
 	/*      */                                                  --
 	/*      */                                                  -- # BEGIN test_cmp.asm
 	/*      */                                                  -- test_cmp:
-	/* eb9b */ x"cc",x"e0",x"ff",x"ff",                         --     setf 0xFFFF
-	/* eb9f */ x"4c",x"20",                                     --     getf A
-	/* eba1 */ x"ec",x"20",x"1c",x"e0",x"3f",x"0d",x"d0",       --     jne A, 0x3F, $fail
+	/* ee49 */ x"cc",x"e0",x"ff",x"ff",                         --     setf 0xFFFF
+	/* ee4d */ x"4c",x"20",                                     --     getf A
+	/* ee4f */ x"ec",x"20",x"1c",x"e0",x"3f",x"0d",x"d0",       --     jne A, 0x3F, $fail
 	/*      */                                                  --
-	/* eba8 */ x"cc",x"e0",x"ab",x"ab",                         --     setf 0xABAB
-	/* ebac */ x"4c",x"20",                                     --     getf A
-	/* ebae */ x"ec",x"20",x"1c",x"e0",x"2b",x"0d",x"d0",       --     jne A, 0x2B, $fail
+	/* ee56 */ x"cc",x"e0",x"ab",x"ab",                         --     setf 0xABAB
+	/* ee5a */ x"4c",x"20",                                     --     getf A
+	/* ee5c */ x"ec",x"20",x"1c",x"e0",x"2b",x"0d",x"d0",       --     jne A, 0x2B, $fail
 	/*      */                                                  --
 	/*      */                                                  --     # unsigned
-	/* ebb5 */ x"50",x"e0",x"1c",x"ab",x"ff",x"2b",             --     cmp 0xFFAB, 0x2B
-	/* ebbb */ x"4c",x"20",                                     --     getf A
+	/* ee63 */ x"50",x"e0",x"1c",x"ab",x"ff",x"2b",             --     cmp 0xFFAB, 0x2B
+	/* ee69 */ x"4c",x"20",                                     --     getf A
 	/*      */                                                  --     # GE GT LE LT NE EQ
-	/* ebbd */ x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       --     jne A, 0b110010, $fail
+	/* ee6b */ x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       --     jne A, 0b110010, $fail
 	/*      */                                                  --
-	/* ebc4 */ x"50",x"1c",x"e0",x"2b",x"ab",x"ff",             --     cmp 0x2B, 0xFFAB
-	/* ebca */ x"4c",x"20",                                     --     getf A
-	/* ebcc */ x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       --     jne A, 0b001110, $fail
+	/* ee72 */ x"50",x"1c",x"e0",x"2b",x"ab",x"ff",             --     cmp 0x2B, 0xFFAB
+	/* ee78 */ x"4c",x"20",                                     --     getf A
+	/* ee7a */ x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       --     jne A, 0b001110, $fail
 	/*      */                                                  --
-	/* ebd3 */ x"50",x"e0",x"e0",x"ab",x"ff",x"ab",x"ff",       --     cmp 0xFFAB, 0xFFAB
-	/* ebda */ x"4c",x"20",                                     --     getf A
-	/* ebdc */ x"ec",x"20",x"1c",x"e0",x"29",x"0d",x"d0",       --     jne A, 0b101001, $fail
+	/* ee81 */ x"50",x"e0",x"e0",x"ab",x"ff",x"ab",x"ff",       --     cmp 0xFFAB, 0xFFAB
+	/* ee88 */ x"4c",x"20",                                     --     getf A
+	/* ee8a */ x"ec",x"20",x"1c",x"e0",x"29",x"0d",x"d0",       --     jne A, 0b101001, $fail
 	/*      */                                                  --
 	/*      */                                                  --     # signed
-	/* ebe3 */ x"d0",x"e0",x"1c",x"ab",x"ff",x"2b",             --     icmp 0xFFAB, 0x2B
-	/* ebe9 */ x"4c",x"20",                                     --     getf A
+	/* ee91 */ x"d0",x"e0",x"1c",x"ab",x"ff",x"2b",             --     icmp 0xFFAB, 0x2B
+	/* ee97 */ x"4c",x"20",                                     --     getf A
 	/*      */                                                  --     # GE GT LE LT NE EQ
-	/* ebeb */ x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       --     jne A, 0b001110, $fail
+	/* ee99 */ x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       --     jne A, 0b001110, $fail
 	/*      */                                                  --
-	/* ebf2 */ x"d0",x"1c",x"e0",x"2b",x"ab",x"ff",             --     icmp 0x2B, 0xFFAB
-	/* ebf8 */ x"4c",x"20",                                     --     getf A
-	/* ebfa */ x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       --     jne A, 0b110010, $fail
+	/* eea0 */ x"d0",x"1c",x"e0",x"2b",x"ab",x"ff",             --     icmp 0x2B, 0xFFAB
+	/* eea6 */ x"4c",x"20",                                     --     getf A
+	/* eea8 */ x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       --     jne A, 0b110010, $fail
 	/*      */                                                  --
-	/* ec01 */ x"d0",x"e0",x"e0",x"ab",x"ff",x"ab",x"ff",       --     icmp 0xFFAB, 0xFFAB
-	/* ec08 */ x"4c",x"20",                                     --     getf A
-	/* ec0a */ x"ec",x"20",x"1c",x"e0",x"29",x"0d",x"d0",       --     jne A, 0b101001, $fail
+	/* eeaf */ x"d0",x"e0",x"e0",x"ab",x"ff",x"ab",x"ff",       --     icmp 0xFFAB, 0xFFAB
+	/* eeb6 */ x"4c",x"20",                                     --     getf A
+	/* eeb8 */ x"ec",x"20",x"1c",x"e0",x"29",x"0d",x"d0",       --     jne A, 0b101001, $fail
 	/*      */                                                  -- # END test_cmp.asm
 	/*      */                                                  --
 	/*      */                                                  -- end_of_test:
-	/* ec11 */ x"60",x"20",x"e0",x"ad",x"de",                   --     mov A, 0xDEAD
-	/* ec16 */ x"60",x"40",x"e0",x"ef",x"be",                   --     mov B, 0xBEEF
-	/* ec1b */ x"88",x"60",x"20",x"40",                         --     mul C, A, B
-	/* ec1f */ x"58",x"e0",x"12",x"d0",                         --     jmp $success
+	/* eebf */ x"60",x"20",x"e0",x"ad",x"de",                   --     mov A, 0xDEAD
+	/* eec4 */ x"60",x"40",x"e0",x"ef",x"be",                   --     mov B, 0xBEEF
+	/* eec9 */ x"88",x"60",x"20",x"40",                         --     mul C, A, B
+	/* eecd */ x"58",x"e0",x"12",x"d0",                         --     jmp $success
 	/*      */                                                  --
-	/* ec23 */ x"d8"                                            -- __end_of_rom: halt
+	/* eed1 */ x"d8"                                            -- __end_of_rom: halt
 ); -- arr_rom -------------------------------------------
 
 -- ##############################################################

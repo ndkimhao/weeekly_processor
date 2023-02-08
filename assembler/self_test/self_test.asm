@@ -1115,44 +1115,173 @@ test_uop_jmp_cond_d:
     jne A, $_L_test_uop_jmp_cond_d_okay, $fail
 
 test_uop_jmp_3dd:
+    mov A, 123
+    jne A, 123, $fail
+    jeq A, 123, $_test_uop_jmp_3dd_okay
+    jmp $fail
+    _test_uop_jmp_3dd_okay:
+    jne A, 123, $fail
 
 test_uop_jmp_3di:
+    mov A, 123
+    mov [100], 321
+    jeq A, [100], $fail
+    jne A, [100], $test_uop_jmp_3di_okay
+    jmp $fail
+    test_uop_jmp_3di_okay:
+    jne A, 123, $fail
+    jne [100], 321, $fail
 
 test_uop_jmp_3id:
+    mov A, 123
+    mov [100], 321
+    jeq [100], A, $fail
+    jne [100], A, $_test_uop_jmp_3id_okay
+    jmp $fail
+    _test_uop_jmp_3id_okay:
+    jne A, 123, $fail
+    jne [100], 321, $fail
 
 test_uop_jmp_3ii:
+    mov [200], 123
+    mov [100], 321
+    jeq [100], [200], $fail
+    jne [100], [200], $_test_uop_jmp_3ii_okay
+    jmp $fail
+    _test_uop_jmp_3ii_okay:
+    jne [200], 123, $fail
+    jne [100], 321, $fail
 
 test_uop_mov_dd:
+    mov A, 123
+    jne A, 123, $fail
 
 test_uop_mov_di:
+    mov [100], 0xFFDA
+    mov A, [100]
+    jne A, 0xFFDA, $fail
 
 test_uop_mov_id:
+    mov [100], 0xFFFF
+    jne [100], 0xFFFF, $fail
 
 test_uop_mov_ii:
+    mov A, 20
+    mov [120], 0xFDFA
+    mov [100], [100+A]
+    jne [100], 0xFDFA, $fail
 
 test_uop_halt:
+    # Can't test!
 
-test_uop_getf:
+test_uop_getf: # getf does not support indirection
+    cmp 123, 45
+    getf A
+    jne A, 0b110010, $fail
 
-test_uop_setf:
+test_uop_setf: # setf does not support indirection
+    setf 0xFFFF
+    getf A
+    jne A, 0x3F, $fail # masked only 6 bits
 
 test_uop_call_d:
+    mov SP, 0x1000
+    mov B, $_L_test_uop_call_d_fn
+    call B
+    jne B, $_L_test_uop_call_d_fn, $fail
+    jne A, 0x34FA, $fail
+    jmp $_L_test_uop_call_d_okay
+    _L_test_uop_call_d_fn:
+    mov A, 0x34FA
+    ret
+    _L_test_uop_call_d_okay:
 
 test_uop_call_i:
+    mov SP, 0x1000
+    mov B, 100
+    mov [B], $_L_test_uop_call_i_fn
+    call [B]
+    jne [B], $_L_test_uop_call_i_fn, $fail
+    jne A, 0xAAD4, $fail
+    jmp $_L_test_uop_call_i_okay
+    _L_test_uop_call_i_fn:
+    mov A, 0xAAD4
+    ret
+    _L_test_uop_call_i_okay:
 
 test_uop_ret:
+    # already tested above
 
 test_uop_push_d:
+    mov SP, 0x1000
+    mov B, 100
+    push B
+    jne SP, 0xFFE, $fail
+    jne [0xFFE], 100, $fail
+    pop C
+    jne C, 100, $fail
 
 test_uop_push_i:
+    mov SP, 0x1000
+    mov B, 100
+    mov [B], 400
+    push [B]
+    jne SP, 0xFFE, $fail
+    jne [0xFFE], 400, $fail
+    pop C
+    jne C, 400, $fail
 
 test_uop_pop_d:
+    mov SP, 0x1000
+    push 0xFADA
+    pop A
+    jne A, 0xFADA, $fail
 
 test_uop_pop_i:
+    mov SP, 0x1000
+    push 0xF2DA
+    pop [100]
+    jne [100], 0xF2DA, $fail
 
 test_uop_mmap:
+    # mmap/umap does not support indirection
+    mov [0x3000], 0xFF00
+    mov [0x3100], 0xFF01
+    mov [0x3200], 0xFF02
+
+    mov [0x4000], 0xDD00
+    mov [0x4100], 0xDD01
+    mov [0x4200], 0xDD02
+
+    mov [0x5000], 0xEE00
+    mov [0x5100], 0xEE01
+    mov [0x5200], 0xEE02
+
+    mov A, 0
+    mov B, 0x4100
+    mmap  0x3100, 0x32FF, 1 # start, end, idx
+    jne [0x3100], 0xDD01, $fail
+    jne [0x3200], 0xDD02, $fail
+    jne [0x3000], 0xFF00, $fail
+
+    mov B, 0x5100
+    mmap  0x3200, 0x32FF, 2 # higher priority
+    jne [0x3200], 0xEE01, $fail
+    jne [0x3000], 0xFF00, $fail
+    jne [0x3100], 0xDD01, $fail
+
+    umap 1
+    jne [0x3100], 0xFF01, $fail
+    jne [0x3200], 0xEE01, $fail
+    jne [0x3000], 0xFF00, $fail
+
+    umap 2
+    jne [0x3000], 0xFF00, $fail
+    jne [0x3100], 0xFF01, $fail
+    jne [0x3200], 0xFF02, $fail
 
 test_uop_umap:
+    # done above
 # END test_uop_rom.asm
 
 

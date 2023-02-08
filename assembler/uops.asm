@@ -178,7 +178,7 @@ mmap: # start, end, slot_idx / Y, Z, X
     arg, Z, GET_1
     arg, X, GET_2
     mmu
-    mov K, PC
+    mov K, NPC
     mov PC, 0 # reset Fetcher
     mov PC, K
 
@@ -187,7 +187,7 @@ umap:
     con Y, 0xFFFF
     mov Z, 0
     mmu
-    mov K, PC
+    mov K, NPC
     mov PC, 0 # reset Fetcher
     mov PC, K
 

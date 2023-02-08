@@ -251,7 +251,7 @@ constant uops_rom : TArrUopROM := (
 	/* 182 */ 14x"0aaa", --     arg, Z, GET_1
 	/* 183 */ 14x"0b88", --     arg, X, GET_2
 	/* 184 */ 14x"0300", --     mmu
-	/* 185 */ 14x"01b6", --     mov K, PC
+	/* 185 */ 14x"01bd", --     mov K, NPC
 	/* 186 */ 14x"0160", --     mov PC, 0 # reset Fetcher
 	/* 187 */ 14x"216b", --     mov PC, K
 	/*     */            -- umap:
@@ -259,7 +259,7 @@ constant uops_rom : TArrUopROM := (
 	/* 189 */ 14x"0290", --     con Y, 0xFFFF
 	/* 190 */ 14x"01a0", --     mov Z, 0
 	/* 191 */ 14x"0300", --     mmu
-	/* 192 */ 14x"01b6", --     mov K, PC
+	/* 192 */ 14x"01bd", --     mov K, NPC
 	/* 193 */ 14x"0160", --     mov PC, 0 # reset Fetcher
 	/* 194 */ 14x"216b"  --     mov PC, K
 	/*     */            -- end_of_uop_rom:
