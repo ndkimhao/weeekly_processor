@@ -214,8 +214,8 @@ for romidx, bincode, origs in out:
         countprinted += 1
         comma = ',' if countprinted < romlen else ' '
         hexline += f'x"{int(head, 2):02x}"{comma}'
-
-    out_lines.append(f'\t/* {romidx:3x} */ {hexline:48} -- {origs}'.rstrip())
+    romidxstr = f'{romidx:3x}' if hexline != '' else ''
+    out_lines.append(f'\t/* {romidxstr:>3} */ {hexline:48} -- {origs}'.rstrip())
 out_lines += [
     f'); -- arr_rom -------------------------------------------',
     f'',

@@ -214,6 +214,8 @@ begin
 						when UOP_MEM_HEAD =>
 							case uop_tail is
 								when UOP_MEM_LOAD =>
+									r_write := '1';
+									r_res := din;
 									if hold_counter = 0 then -- first cycle
 										den <= '1';
 										dwr <= '0';
@@ -221,10 +223,7 @@ begin
 										uop_hold <= '1';
 										hold_counter <= to_unsigned(2, HoldCounterW);
 									else
-										if hold_counter = 1 then
-											r_write := '1';
-											r_res := din;
-										else
+										if hold_counter /= 1 then
 											uop_hold <= '1';
 										end if;
 										hold_counter <= hold_counter - 1;
@@ -285,6 +284,8 @@ begin
 							end if;
 	
 						when UOP_ALU_HEAD =>
+							r_write := '1';
+							r_res := alu_out;
 							if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
 							   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
 	
@@ -300,21 +301,14 @@ begin
 									hold_counter <= hold_counter - 1;
 									if hold_counter = 1 or alu_div_done = '1' then
 										uop_hold <= '0';
-										r_write := '1';
-										r_res := alu_out;
 										arr_regs(REGID_D) <= alu_aux;
 										hold_counter <= (others => '0');
 									else
 										uop_hold <= '1';
 									end if;
-								end if;
-							
-							else -- normal ALU ops
-							
-								r_write := '1';
-								r_res := alu_out;
-							
-							end if;
+								end if; -- if hold_counter
+
+							end if; -- if OP_MUL or OP_DIV
 	
 						when UOP_CMP_HEAD =>
 							r_write := '1';

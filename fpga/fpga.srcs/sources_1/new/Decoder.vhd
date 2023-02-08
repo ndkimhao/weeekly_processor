@@ -115,6 +115,7 @@ begin
 	process(clk)
 		variable next_idx, op_prog : TIndex;
 		variable op : unsigned(OpW-1 downto 0); -- opcode portion, without args, from instruction stream
+		variable next_fetched_uop : std_logic_vector(1+UopLen-1 downto 0); -- with fin bit
 	
 		variable need_a, need_b, need_c : unsigned(3-1 downto 0); -- each arg takes from 1 to 3 bytes
 		variable need : unsigned(InstIdxW-1 downto 0);
@@ -231,13 +232,10 @@ begin
 					uop_idx <= (others => '0');
 				end if;
 
-				s_uop <= uops_rom(to_integer(next_idx));
-				if uops_rom(to_integer(next_idx) + 1) = 13x"1fff" then
-					brk <= '1';
-				else
-					brk <= '0';
-				end if;
-			
+				next_fetched_uop := uops_rom(to_integer(next_idx));
+				s_uop <= next_fetched_uop(UopLen-1 downto 0);
+				brk <= next_fetched_uop(1+UopLen-1);
+
 			end if; -- hold == '0'
 
 		end if; -- rising_edge(clk)
