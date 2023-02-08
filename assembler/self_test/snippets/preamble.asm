@@ -10,14 +10,16 @@ success:
     jne A, 0xDEAD, $fail  # check cookie
     jne B, 0xBEEF, $fail
     jne C, 0x4983, $fail
-    jne D, 0xA614, $fail
+    jne H, 0xA614, $fail
+    mov D, H
     # okay!
     add A, 0xACAB
     add B, 0x41CC
     mul A, D
     xor A, 0xF24A
     xor C, 0x494F
-    xor D, 0x5A30
+    xor H, 0x5A30
+    mov D, H
     # A = 0x00aa
     # B = 0x00bb
     # C = 0x00cc

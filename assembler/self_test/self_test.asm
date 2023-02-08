@@ -12,14 +12,16 @@ success:
     jne A, 0xDEAD, $fail  # check cookie
     jne B, 0xBEEF, $fail
     jne C, 0x4983, $fail
-    jne D, 0xA614, $fail
+    jne H, 0xA614, $fail
+    mov D, H
     # okay!
     add A, 0xACAB
     add B, 0x41CC
     mul A, D
     xor A, 0xF24A
     xor C, 0x494F
-    xor D, 0x5A30
+    xor H, 0x5A30
+    mov D, H
     # A = 0x00aa
     # B = 0x00bb
     # C = 0x00cc
@@ -38,11 +40,11 @@ alu_test:
 
     mul B, 0xd230, 0xa012
     jne B, 0xc760, $fail
-    jne D, 0x836c, $fail
+    jne H, 0x836c, $fail
 
     imul B, 0xd230, 0xa012
     jne B, 0xc760, $fail
-    jne D, 0x112a, $fail
+    jne H, 0x112a, $fail
 
     shr B, 0xd230, 0xa012
     jne B, 0x348c, $fail
@@ -86,11 +88,11 @@ alu_test:
 
     mul B, 0x00ad, 0xda37
     jne B, 0x772b, $fail
-    jne D, 0x0093, $fail
+    jne H, 0x0093, $fail
 
     imul B, 0x00ad, 0xda37
     jne B, 0x772b, $fail
-    jne D, 0xffe6, $fail
+    jne H, 0xffe6, $fail
 
     shr B, 0x00ad, 0xda37
     jne B, 0x0001, $fail
@@ -137,12 +139,12 @@ alu_test:
     mov B, 0xf0ad
     mul B, 0x2a3f
     jne B, 0x9c93, $fail
-    jne D, 0x27b7, $fail
+    jne H, 0x27b7, $fail
 
     mov B, 0xf0ad
     imul B, 0x2a3f
     jne B, 0x9c93, $fail
-    jne D, 0xfd78, $fail
+    jne H, 0xfd78, $fail
 
     mov B, 0xf0ad
     shr B, 0x2a3f
@@ -200,12 +202,12 @@ alu_test:
     mov B, 0x0000
     mul B, 0xdead
     jne B, 0x0000, $fail
-    jne D, 0x0000, $fail
+    jne H, 0x0000, $fail
 
     mov B, 0x0000
     imul B, 0xdead
     jne B, 0x0000, $fail
-    jne D, 0x0000, $fail
+    jne H, 0x0000, $fail
 
     mov B, 0x0000
     shr B, 0xdead
@@ -370,587 +372,895 @@ test_uop_get_arg:
     mov SP, 0x7000
     mov A, 0x00aa
     mov B, 0x00bb
-    xor [A], A*4 + -10, A*2
-    jne [0x00aa], 0x03ca, $fail
-    xor [A*2], A*4 + -10, -123
-    jne [0x0154], 0xfd1b, $fail
-    xor [12345], A*4 + -10, A*2
-    jne [0x3039], 0x03ca, $fail
-    xor [A*4 + -10], 12345, A*4 + B
-    jne [0x029e], 0x335a, $fail
-    xor [12345], A*4 + B, 0xFADE + A
-    jne [0x3039], 0xf8eb, $fail
-    xor [A*4 + B], A*4 + -10, A
-    jne [0x0363], 0x0234, $fail
-    xor [A*2], 12345, A*2
-    jne [0x0154], 0x316d, $fail
-    xor [12345], A*4 + -10, A
-    jne [0x3039], 0x0234, $fail
-    xor [A*4 + -10], 0xFADE + A, A*2
-    jne [0x029e], 0xfadc, $fail
-    xor [12345], 0xFADE + A, 0xFADE + A
-    jne [0x3039], 0x0000, $fail
-    xor [A*4 + -10], A, 0xFADE + A
-    jne [0x029e], 0xfb22, $fail
-    xor [A*2], A*4 + B, A
-    jne [0x0154], 0x03c9, $fail
-    xor [A*2], A*4 + -10, A*2
-    jne [0x0154], 0x03ca, $fail
-    xor [A*4 + B], A*4 + B, A
-    jne [0x0363], 0x03c9, $fail
-    xor [A*4 + -10], -123, A
-    jne [0x029e], 0xff2f, $fail
-    xor [A*2], -123, A*2
-    jne [0x0154], 0xfed1, $fail
-    xor [12345], A, A*4 + -10
-    jne [0x3039], 0x0234, $fail
-    xor [A*4 + B], 0xFADE + A, 0xFADE + A
-    jne [0x0363], 0x0000, $fail
-    xor [12345], -123, A*2
-    jne [0x3039], 0xfed1, $fail
-    xor [A*4 + B], A*2, A*4 + B
-    jne [0x0363], 0x0237, $fail
-    xor [A*2], 0xFADE + A, 0xFADE + A
-    jne [0x0154], 0x0000, $fail
-    xor [A], A, A
+    mov G, 0x0155
+    xor [12345], -123, G
+    jne [0x3039], 0xfed0, $fail
+    and [A*4 + -10], G, A*2
+    jne [0x029e], 0x0154, $fail
+    sub [A*2], 0xFADE + A, A*4 + -10
+    jne [0x0154], 0xf8ea, $fail
+    ishr [12345], A, A*2
+    jne [0x3039], 0x000a, $fail
+    shl [G], A*4 + B, A*4 + -10
+    jne [0x0155], 0xc000, $fail
+    or [G], -123, G
+    jne [0x0155], 0xffd5, $fail
+    mul [A*4 + B], -123, A
+    jne [0x0363], 0xae52, $fail
+    ishr [12345], 12345, A*4 + B
+    jne [0x3039], 0x0607, $fail
+    shr [A*2], 0xFADE + A, A*2
+    jne [0x0154], 0x0fb8, $fail
+    add [A*2], G, G
+    jne [0x0154], 0x02aa, $fail
+    ishr [G], 0xFADE + A, A
+    jne [0x0155], 0xfffe, $fail
+    add [12345], 0xFADE + A, A*4 + B
+    jne [0x3039], 0xfeeb, $fail
+    ishr [A], A, A
     jne [0x00aa], 0x0000, $fail
-    xor [A*2], A*4 + B, A*4 + B
+    add [G], A*4 + B, A
+    jne [0x0155], 0x040d, $fail
+    xor [G], G, G
+    jne [0x0155], 0x0000, $fail
+    shl [A*2], G, A*2
+    jne [0x0154], 0x1550, $fail
+    ishr [G], 12345, A*2
+    jne [0x0155], 0x0303, $fail
+    and [A*2], A*4 + B, 0xFADE + A
+    jne [0x0154], 0x0300, $fail
+    add [A], A*4 + -10, A*4 + -10
+    jne [0x00aa], 0x053c, $fail
+    or [12345], A*2, -123
+    jne [0x3039], 0xffd5, $fail
+    add [12345], G, G
+    jne [0x3039], 0x02aa, $fail
+    and [G], 12345, 0xFADE + A
+    jne [0x0155], 0x3008, $fail
+    imul [12345], A*4 + B, A*4 + -10
+    jne [0x3039], 0xdd1a, $fail
+    or [A*2], 12345, A
+    jne [0x0154], 0x30bb, $fail
+    imul [A*2], A*4 + -10, A*2
+    jne [0x0154], 0x79d8, $fail
+    add [A*4 + -10], -123, A*4 + B
+    jne [0x029e], 0x02e8, $fail
+    sub [G], 0xFADE + A, A*2
+    jne [0x0155], 0xfa34, $fail
+    or [A*4 + B], 0xFADE + A, A*2
+    jne [0x0363], 0xfbdc, $fail
+    and [A*2], A*2, A
     jne [0x0154], 0x0000, $fail
-    xor [A], 12345, 12345
+    sub [A*4 + B], A*4 + B, G
+    jne [0x0363], 0x020e, $fail
+    add [A*4 + -10], A*4 + -10, A
+    jne [0x029e], 0x0348, $fail
+    sub [A*2], 12345, 12345
+    jne [0x0154], 0x0000, $fail
+    shr [A], -123, G
+    jne [0x00aa], 0x07fc, $fail
+    shl [A*4 + B], -123, A*4 + B
+    jne [0x0363], 0xfc28, $fail
+    or [A*4 + B], A, A
+    jne [0x0363], 0x00aa, $fail
+    sub [A], A, -123
+    jne [0x00aa], 0x0125, $fail
+    ishr [A*4 + -10], 0xFADE + A, A*2
+    jne [0x029e], 0xffb8, $fail
+    sub [A], 12345, 12345
     jne [0x00aa], 0x0000, $fail
-    xor [12345], -123, 12345
-    jne [0x3039], 0xcfbc, $fail
-    xor [A], 0xFADE + A, A*2
-    jne [0x00aa], 0xfadc, $fail
-    xor [12345], A, A*4 + B
-    jne [0x3039], 0x03c9, $fail
-    xor [A], 12345, A*2
-    jne [0x00aa], 0x316d, $fail
-    xor [A*2], A*4 + B, -123
-    jne [0x0154], 0xfce6, $fail
-    xor [12345], A, -123
-    jne [0x3039], 0xff2f, $fail
-    xor [A*4 + B], 0xFADE + A, 12345
-    jne [0x0363], 0xcbb1, $fail
-    xor [A*4 + B], A*2, 12345
-    jne [0x0363], 0x316d, $fail
-    xor [A*4 + -10], A*4 + B, A
-    jne [0x029e], 0x03c9, $fail
-    xor [A*2], 0xFADE + A, -123
-    jne [0x0154], 0x040d, $fail
-    xor [12345], A*2, -123
-    jne [0x3039], 0xfed1, $fail
-    xor [A], 12345, A*4 + B
-    jne [0x00aa], 0x335a, $fail
-    xor [A*2], -123, 12345
-    jne [0x0154], 0xcfbc, $fail
-    xor [A], A, A*2
-    jne [0x00aa], 0x01fe, $fail
-    xor [A*4 + B], A*4 + -10, 12345
-    jne [0x0363], 0x32a7, $fail
-    xor [A*4 + B], 12345, A
-    jne [0x0363], 0x3093, $fail
-    xor [A*4 + -10], 0xFADE + A, 0xFADE + A
-    jne [0x029e], 0x0000, $fail
-    xor [A*2], A*4 + B, 0xFADE + A
-    jne [0x0154], 0xf8eb, $fail
-    xor [A*2], A*2, A
-    jne [0x0154], 0x01fe, $fail
-    xor [A*2], 12345, A*4 + -10
-    jne [0x0154], 0x32a7, $fail
-    xor [A*2], 12345, -123
-    jne [0x0154], 0xcfbc, $fail
-    xor [A*4 + -10], A*4 + B, A*2
-    jne [0x029e], 0x0237, $fail
-    xor [A*2], A, A
-    jne [0x0154], 0x0000, $fail
-    xor [12345], 12345, A*4 + B
-    jne [0x3039], 0x335a, $fail
-    xor [A*2], A*4 + -10, A
-    jne [0x0154], 0x0234, $fail
-    xor [A], A*4 + -10, A*4 + B
-    jne [0x00aa], 0x01fd, $fail
-    xor [12345], A*4 + B, A
-    jne [0x3039], 0x03c9, $fail
-    xor [A*4 + B], 0xFADE + A, A
-    jne [0x0363], 0xfb22, $fail
-    xor [A*4 + B], 0xFADE + A, -123
-    jne [0x0363], 0x040d, $fail
-    xor [A*4 + -10], A*4 + -10, 0xFADE + A
-    jne [0x029e], 0xf916, $fail
-    xor [A*4 + -10], A, 12345
-    jne [0x029e], 0x3093, $fail
-    xor [A], A, -123
-    jne [0x00aa], 0xff2f, $fail
-    xor [A], -123, 0xFADE + A
-    jne [0x00aa], 0x040d, $fail
-    xor [A*2], A, A*4 + -10
-    jne [0x0154], 0x0234, $fail
-    xor [A*4 + B], A, A*4 + -10
-    jne [0x0363], 0x0234, $fail
-    xor [A*4 + B], -123, A*2
-    jne [0x0363], 0xfed1, $fail
-    xor [A], -123, A
-    jne [0x00aa], 0xff2f, $fail
-    xor [A*2], A, A*4 + B
-    jne [0x0154], 0x03c9, $fail
-    xor [A*4 + B], -123, A
-    jne [0x0363], 0xff2f, $fail
-    xor [12345], A, A
-    jne [0x3039], 0x0000, $fail
-    xor [A], A*2, A*4 + B
-    jne [0x00aa], 0x0237, $fail
-    xor [A*2], 0xFADE + A, A*4 + -10
-    jne [0x0154], 0xf916, $fail
-    xor [12345], 12345, -123
-    jne [0x3039], 0xcfbc, $fail
-    xor [12345], A*4 + B, A*2
-    jne [0x3039], 0x0237, $fail
-    xor [A], -123, -123
-    jne [0x00aa], 0x0000, $fail
-    xor [A*4 + B], A*4 + -10, A*4 + -10
-    jne [0x0363], 0x0000, $fail
-    xor [A*2], A*4 + B, A*2
-    jne [0x0154], 0x0237, $fail
-    xor [A], -123, 12345
-    jne [0x00aa], 0xcfbc, $fail
-    xor [12345], A*4 + B, 12345
-    jne [0x3039], 0x335a, $fail
-    xor [A], 0xFADE + A, A*4 + -10
-    jne [0x00aa], 0xf916, $fail
-    xor [A*2], A*4 + -10, A*4 + -10
-    jne [0x0154], 0x0000, $fail
-    xor [A*4 + B], -123, -123
-    jne [0x0363], 0x0000, $fail
-    xor [A*4 + B], A*4 + -10, A*2
-    jne [0x0363], 0x03ca, $fail
-    xor [A], 0xFADE + A, 12345
-    jne [0x00aa], 0xcbb1, $fail
-    xor [A*4 + -10], A, A*2
-    jne [0x029e], 0x01fe, $fail
-    xor [A*4 + -10], A*4 + -10, -123
-    jne [0x029e], 0xfd1b, $fail
-    xor [A], A*2, -123
-    jne [0x00aa], 0xfed1, $fail
-    xor [A*4 + -10], A*4 + -10, 12345
-    jne [0x029e], 0x32a7, $fail
-    xor [A], 12345, 0xFADE + A
-    jne [0x00aa], 0xcbb1, $fail
-    xor [A*4 + -10], A, A
-    jne [0x029e], 0x0000, $fail
-    xor [A*4 + -10], A, A*4 + B
-    jne [0x029e], 0x03c9, $fail
-    xor [A*4 + -10], A*4 + -10, A*2
-    jne [0x029e], 0x03ca, $fail
-    xor [12345], 12345, A
-    jne [0x3039], 0x3093, $fail
-    xor [A], A, A*4 + B
-    jne [0x00aa], 0x03c9, $fail
-    xor [A*4 + B], A*2, A*4 + -10
-    jne [0x0363], 0x03ca, $fail
-    xor [A], A*4 + -10, 0xFADE + A
-    jne [0x00aa], 0xf916, $fail
-    xor [A], 0xFADE + A, -123
-    jne [0x00aa], 0x040d, $fail
-    xor [A*4 + B], 12345, 0xFADE + A
-    jne [0x0363], 0xcbb1, $fail
-    xor [A*2], -123, -123
-    jne [0x0154], 0x0000, $fail
-    xor [A*4 + -10], A*4 + -10, A
-    jne [0x029e], 0x0234, $fail
-    xor [A*4 + B], 12345, -123
-    jne [0x0363], 0xcfbc, $fail
-    xor [12345], -123, A*4 + -10
-    jne [0x3039], 0xfd1b, $fail
-    xor [12345], A*2, A
-    jne [0x3039], 0x01fe, $fail
-    xor [A*2], 0xFADE + A, 12345
-    jne [0x0154], 0xcbb1, $fail
-    xor [A*4 + -10], A*2, 12345
-    jne [0x029e], 0x316d, $fail
-    xor [12345], 12345, A*4 + -10
-    jne [0x3039], 0x32a7, $fail
-    xor [A*4 + B], A, A
-    jne [0x0363], 0x0000, $fail
-    xor [A*4 + -10], -123, 0xFADE + A
-    jne [0x029e], 0x040d, $fail
-    xor [A], -123, A*4 + -10
-    jne [0x00aa], 0xfd1b, $fail
-    xor [A], A*4 + B, A*4 + B
-    jne [0x00aa], 0x0000, $fail
-    xor [12345], A*2, 12345
-    jne [0x3039], 0x316d, $fail
-    xor [A*4 + -10], -123, 12345
-    jne [0x029e], 0xcfbc, $fail
-    xor [A], A*4 + B, A
-    jne [0x00aa], 0x03c9, $fail
-    xor [12345], 0xFADE + A, A*2
-    jne [0x3039], 0xfadc, $fail
-    xor [A*4 + B], 0xFADE + A, A*4 + -10
-    jne [0x0363], 0xf916, $fail
-    xor [A*4 + -10], A, -123
-    jne [0x029e], 0xff2f, $fail
-    xor [A*4 + B], -123, A*4 + B
-    jne [0x0363], 0xfce6, $fail
-    xor [A*4 + -10], -123, -123
-    jne [0x029e], 0x0000, $fail
-    xor [A*4 + B], A*4 + -10, A*4 + B
-    jne [0x0363], 0x01fd, $fail
-    xor [A*4 + -10], 12345, A*2
-    jne [0x029e], 0x316d, $fail
-    xor [12345], A*4 + -10, 12345
-    jne [0x3039], 0x32a7, $fail
-    xor [A], A*4 + B, A*2
-    jne [0x00aa], 0x0237, $fail
-    xor [12345], A*2, A*4 + B
-    jne [0x3039], 0x0237, $fail
-    xor [A*2], 12345, A
-    jne [0x0154], 0x3093, $fail
-    xor [A*2], A, 12345
-    jne [0x0154], 0x3093, $fail
-    xor [A*4 + -10], A*2, A*4 + -10
-    jne [0x029e], 0x03ca, $fail
-    xor [A*4 + B], -123, 0xFADE + A
-    jne [0x0363], 0x040d, $fail
-    xor [A], A*4 + -10, A
-    jne [0x00aa], 0x0234, $fail
-    xor [12345], A*4 + B, A*4 + -10
-    jne [0x3039], 0x01fd, $fail
-    xor [A*4 + -10], 12345, -123
-    jne [0x029e], 0xcfbc, $fail
-    xor [A*2], -123, A*4 + -10
-    jne [0x0154], 0xfd1b, $fail
-    xor [A], A*2, A*2
-    jne [0x00aa], 0x0000, $fail
-    xor [A], A*2, A
-    jne [0x00aa], 0x01fe, $fail
-    xor [A], 0xFADE + A, A
-    jne [0x00aa], 0xfb22, $fail
-    xor [A], 12345, -123
-    jne [0x00aa], 0xcfbc, $fail
-    xor [12345], A*2, A*4 + -10
-    jne [0x3039], 0x03ca, $fail
-    xor [A*4 + B], A, A*4 + B
-    jne [0x0363], 0x03c9, $fail
-    xor [A*4 + -10], 0xFADE + A, 12345
-    jne [0x029e], 0xcbb1, $fail
-    xor [A*4 + -10], 12345, A*4 + -10
-    jne [0x029e], 0x32a7, $fail
-    xor [12345], A*4 + B, A*4 + B
-    jne [0x3039], 0x0000, $fail
-    xor [A], 12345, A
-    jne [0x00aa], 0x3093, $fail
-    xor [A*4 + -10], A*2, 0xFADE + A
-    jne [0x029e], 0xfadc, $fail
-    xor [A*4 + -10], A*4 + B, A*4 + B
-    jne [0x029e], 0x0000, $fail
-    xor [A*4 + -10], A*2, A*2
-    jne [0x029e], 0x0000, $fail
-    xor [A*2], A*2, A*2
-    jne [0x0154], 0x0000, $fail
-    xor [A], A, 12345
-    jne [0x00aa], 0x3093, $fail
-    xor [A*4 + -10], 0xFADE + A, A*4 + -10
-    jne [0x029e], 0xf916, $fail
-    xor [A*4 + -10], -123, A*2
-    jne [0x029e], 0xfed1, $fail
-    xor [12345], 0xFADE + A, A*4 + -10
-    jne [0x3039], 0xf916, $fail
-    xor [A], A*2, 12345
-    jne [0x00aa], 0x316d, $fail
-    xor [A*2], 0xFADE + A, A*2
-    jne [0x0154], 0xfadc, $fail
-    xor [A*2], A*2, 0xFADE + A
-    jne [0x0154], 0xfadc, $fail
-    xor [12345], A*2, 0xFADE + A
-    jne [0x3039], 0xfadc, $fail
-    xor [12345], A*4 + -10, 0xFADE + A
-    jne [0x3039], 0xf916, $fail
-    xor [A], A*4 + B, 12345
-    jne [0x00aa], 0x335a, $fail
-    xor [A*2], A*4 + B, 12345
-    jne [0x0154], 0x335a, $fail
-    xor [A*4 + B], A, 12345
-    jne [0x0363], 0x3093, $fail
-    xor [A*2], -123, 0xFADE + A
-    jne [0x0154], 0x040d, $fail
-    xor [A], A*4 + -10, A*4 + -10
-    jne [0x00aa], 0x0000, $fail
-    xor [A*4 + B], 12345, A*4 + B
-    jne [0x0363], 0x335a, $fail
-    xor [A*4 + -10], -123, A*4 + B
-    jne [0x029e], 0xfce6, $fail
-    xor [A*2], A*2, A*4 + -10
-    jne [0x0154], 0x03ca, $fail
-    xor [A*4 + -10], 0xFADE + A, -123
-    jne [0x029e], 0x040d, $fail
-    xor [12345], A, A*2
-    jne [0x3039], 0x01fe, $fail
-    xor [A*4 + B], 0xFADE + A, A*4 + B
-    jne [0x0363], 0xf8eb, $fail
-    xor [A*2], 0xFADE + A, A*4 + B
-    jne [0x0154], 0xf8eb, $fail
-    xor [A*4 + -10], A*4 + B, A*4 + -10
-    jne [0x029e], 0x01fd, $fail
-    xor [12345], -123, A*4 + B
-    jne [0x3039], 0xfce6, $fail
-    xor [A*4 + -10], A, A*4 + -10
-    jne [0x029e], 0x0234, $fail
-    xor [A*4 + B], -123, A*4 + -10
-    jne [0x0363], 0xfd1b, $fail
-    xor [A*4 + -10], -123, A*4 + -10
-    jne [0x029e], 0xfd1b, $fail
-    xor [12345], A, 0xFADE + A
-    jne [0x3039], 0xfb22, $fail
-    xor [12345], -123, A
-    jne [0x3039], 0xff2f, $fail
-    xor [A*4 + B], A*4 + B, A*4 + -10
-    jne [0x0363], 0x01fd, $fail
-    xor [A*4 + B], A, A*2
-    jne [0x0363], 0x01fe, $fail
-    xor [A*4 + -10], A*2, A*4 + B
-    jne [0x029e], 0x0237, $fail
-    xor [A*4 + -10], 12345, 12345
-    jne [0x029e], 0x0000, $fail
-    xor [A*4 + B], A*4 + B, 0xFADE + A
-    jne [0x0363], 0xf8eb, $fail
-    xor [A*2], A*4 + -10, A*4 + B
-    jne [0x0154], 0x01fd, $fail
-    xor [A*4 + -10], A*2, -123
-    jne [0x029e], 0xfed1, $fail
-    xor [12345], A, 12345
-    jne [0x3039], 0x3093, $fail
-    xor [A], 0xFADE + A, A*4 + B
-    jne [0x00aa], 0xf8eb, $fail
-    xor [A*2], A, 0xFADE + A
-    jne [0x0154], 0xfb22, $fail
-    xor [12345], 12345, 0xFADE + A
-    jne [0x3039], 0xcbb1, $fail
-    xor [A*4 + -10], 12345, A
-    jne [0x029e], 0x3093, $fail
-    xor [A], 12345, A*4 + -10
-    jne [0x00aa], 0x32a7, $fail
-    xor [12345], 0xFADE + A, 12345
-    jne [0x3039], 0xcbb1, $fail
-    xor [A*4 + -10], 0xFADE + A, A
-    jne [0x029e], 0xfb22, $fail
-    xor [A*2], A, -123
-    jne [0x0154], 0xff2f, $fail
-    xor [A*4 + B], A*4 + B, 12345
-    jne [0x0363], 0x335a, $fail
-    xor [A], A*2, 0xFADE + A
-    jne [0x00aa], 0xfadc, $fail
-    xor [A*2], 12345, 12345
-    jne [0x0154], 0x0000, $fail
-    xor [12345], 0xFADE + A, -123
-    jne [0x3039], 0x040d, $fail
-    xor [A*4 + B], A*4 + -10, 0xFADE + A
-    jne [0x0363], 0xf916, $fail
-    xor [A*2], A*4 + -10, 12345
-    jne [0x0154], 0x32a7, $fail
-    xor [A*4 + B], A*4 + B, A*4 + B
-    jne [0x0363], 0x0000, $fail
-    xor [A*4 + B], 12345, A*2
-    jne [0x0363], 0x316d, $fail
-    xor [12345], -123, -123
-    jne [0x3039], 0x0000, $fail
-    xor [12345], A*4 + B, -123
-    jne [0x3039], 0xfce6, $fail
-    xor [A], A*4 + -10, 12345
-    jne [0x00aa], 0x32a7, $fail
-    xor [A*4 + -10], A*4 + -10, A*4 + B
-    jne [0x029e], 0x01fd, $fail
-    xor [A], A, A*4 + -10
-    jne [0x00aa], 0x0234, $fail
-    xor [A*4 + B], 0xFADE + A, A*2
-    jne [0x0363], 0xfadc, $fail
-    xor [A], A*4 + B, A*4 + -10
-    jne [0x00aa], 0x01fd, $fail
-    xor [A*2], A*4 + B, A*4 + -10
-    jne [0x0154], 0x01fd, $fail
-    xor [A*4 + B], A*4 + -10, -123
-    jne [0x0363], 0xfd1b, $fail
-    xor [A*4 + -10], A*2, A
-    jne [0x029e], 0x01fe, $fail
-    xor [12345], A*2, A*2
-    jne [0x3039], 0x0000, $fail
-    xor [A*4 + B], A, -123
-    jne [0x0363], 0xff2f, $fail
-    xor [A*4 + -10], A*4 + B, 0xFADE + A
-    jne [0x029e], 0xf8eb, $fail
-    xor [A*2], 12345, 0xFADE + A
-    jne [0x0154], 0xcbb1, $fail
-    xor [12345], A*4 + -10, A*4 + -10
-    jne [0x3039], 0x0000, $fail
-    xor [A*4 + B], A*2, 0xFADE + A
-    jne [0x0363], 0xfadc, $fail
-    xor [A*4 + B], A*2, -123
-    jne [0x0363], 0xfed1, $fail
-    xor [A], A*4 + -10, -123
-    jne [0x00aa], 0xfd1b, $fail
+    add [G], 12345, 12345
+    jne [0x0155], 0x6072, $fail
+    shr [A*4 + B], 0xFADE + A, 0xFADE + A
+    jne [0x0363], 0x00fb, $fail
+    imul [A], A, G
+    jne [0x00aa], 0xe272, $fail
+    shr [A*2], 0xFADE + A, A*4 + B
+    jne [0x0154], 0x1f71, $fail
+    shr [A*4 + B], A*4 + B, -123
+    jne [0x0363], 0x001b, $fail
+    shr [A], A*2, A*4 + B
+    jne [0x00aa], 0x002a, $fail
+    and [12345], A*4 + B, A
+    jne [0x3039], 0x0022, $fail
+    shr [12345], 12345, 12345
+    jne [0x3039], 0x0018, $fail
+    mul [A], G, A*4 + -10
+    jne [0x00aa], 0x7c76, $fail
+    add [A*4 + B], 12345, A*4 + B
+    jne [0x0363], 0x339c, $fail
+    imul [G], A*4 + -10, A*4 + B
+    jne [0x0155], 0xdd1a, $fail
+    shl [A], A*2, 12345
+    jne [0x00aa], 0xa800, $fail
+    add [A*2], G, A
+    jne [0x0154], 0x01ff, $fail
+    add [A*4 + B], A*4 + B, A*2
+    jne [0x0363], 0x04b7, $fail
+    shr [A], G, 0xFADE + A
+    jne [0x00aa], 0x0001, $fail
+    add [G], -123, A
+    jne [0x0155], 0x002f, $fail
+    imul [A*4 + -10], G, 12345
+    jne [0x029e], 0x3bed, $fail
+    mul [G], 0xFADE + A, A*4 + B
+    jne [0x0155], 0xdd98, $fail
+    shr [G], G, A
+    jne [0x0155], 0x0000, $fail
+    or [A*2], A, A
+    jne [0x0154], 0x00aa, $fail
+    or [A*4 + -10], -123, A*2
+    jne [0x029e], 0xffd5, $fail
+    mul [A*4 + B], -123, -123
+    jne [0x0363], 0x3b19, $fail
+    mul [12345], 0xFADE + A, A*2
+    jne [0x3039], 0x10a0, $fail
+    sub [G], A, A*4 + -10
+    jne [0x0155], 0xfe0c, $fail
+    shl [A], A*4 + B, A*2
+    jne [0x00aa], 0x3630, $fail
     xor [A*2], -123, A*4 + B
     jne [0x0154], 0xfce6, $fail
-    xor [A*4 + B], A, 0xFADE + A
-    jne [0x0363], 0xfb22, $fail
-    xor [A], -123, A*2
-    jne [0x00aa], 0xfed1, $fail
-    xor [A*2], 12345, A*4 + B
-    jne [0x0154], 0x335a, $fail
-    xor [A], A*4 + B, -123
-    jne [0x00aa], 0xfce6, $fail
-    xor [A], -123, A*4 + B
-    jne [0x00aa], 0xfce6, $fail
-    xor [A*2], -123, A
-    jne [0x0154], 0xff2f, $fail
-    xor [A*4 + B], 12345, 12345
-    jne [0x0363], 0x0000, $fail
-    xor [A*2], A*2, 12345
-    jne [0x0154], 0x316d, $fail
-    xor [A*4 + -10], A*4 + B, -123
-    jne [0x029e], 0xfce6, $fail
-    xor [A*4 + B], A*2, A*2
-    jne [0x0363], 0x0000, $fail
-    xor [A*2], 0xFADE + A, A
-    jne [0x0154], 0xfb22, $fail
-    xor [A*4 + -10], A*4 + B, 12345
-    jne [0x029e], 0x335a, $fail
-    xor [12345], -123, 0xFADE + A
-    jne [0x3039], 0x040d, $fail
-    xor [A], A, 0xFADE + A
-    jne [0x00aa], 0xfb22, $fail
-    xor [A*4 + -10], 0xFADE + A, A*4 + B
-    jne [0x029e], 0xf8eb, $fail
-    xor [A*2], A*2, -123
-    jne [0x0154], 0xfed1, $fail
-    xor [A*4 + B], A*4 + B, A*2
-    jne [0x0363], 0x0237, $fail
-    xor [12345], 12345, 12345
-    jne [0x3039], 0x0000, $fail
-    xor [A*4 + B], A*4 + B, -123
-    jne [0x0363], 0xfce6, $fail
-    xor [A], A*2, A*4 + -10
-    jne [0x00aa], 0x03ca, $fail
-    xor [A], 0xFADE + A, 0xFADE + A
-    jne [0x00aa], 0x0000, $fail
-    xor [12345], 0xFADE + A, A*4 + B
-    jne [0x3039], 0xf8eb, $fail
-    xor [A*2], A*4 + -10, 0xFADE + A
-    jne [0x0154], 0xf916, $fail
-    xor [12345], 0xFADE + A, A
-    jne [0x3039], 0xfb22, $fail
-    xor [A*4 + -10], 12345, 0xFADE + A
+    sub [A*4 + B], A*4 + -10, -123
+    jne [0x0363], 0x0319, $fail
+    sub [12345], 12345, 0xFADE + A
+    jne [0x3039], 0x34b1, $fail
+    and [G], A*4 + B, 0xFADE + A
+    jne [0x0155], 0x0300, $fail
+    shl [A], A*4 + -10, G
+    jne [0x00aa], 0x53c0, $fail
+    ishr [G], G, 0xFADE + A
+    jne [0x0155], 0x0001, $fail
+    and [A*2], 12345, A*4 + B
+    jne [0x0154], 0x0021, $fail
+    ishr [A*2], A*2, -123
+    jne [0x0154], 0x000a, $fail
+    xor [G], A*2, 12345
+    jne [0x0155], 0x316d, $fail
+    sub [A*4 + B], A*4 + -10, A*4 + B
+    jne [0x0363], 0xff3b, $fail
+    or [12345], G, -123
+    jne [0x3039], 0xffd5, $fail
+    shl [A*4 + B], A*4 + -10, A
+    jne [0x0363], 0x7800, $fail
+    sub [12345], A*2, A
+    jne [0x3039], 0x00aa, $fail
+    xor [12345], A*4 + B, A*2
+    jne [0x3039], 0x0237, $fail
+    and [A*4 + B], 12345, -123
+    jne [0x0363], 0x3001, $fail
+    imul [G], A*4 + B, 12345
+    jne [0x0155], 0x510b, $fail
+    or [A*4 + B], A, G
+    jne [0x0363], 0x01ff, $fail
+    ishr [A*4 + -10], 12345, A
+    jne [0x029e], 0x000c, $fail
+    shl [12345], 0xFADE + A, 0xFADE + A
+    jne [0x3039], 0x8800, $fail
+    shl [A], 12345, G
+    jne [0x00aa], 0x0720, $fail
+    xor [G], A*4 + -10, A*2
+    jne [0x0155], 0x03ca, $fail
+    or [A*4 + B], G, -123
+    jne [0x0363], 0xffd5, $fail
+    sub [A*4 + -10], -123, 12345
+    jne [0x029e], 0xcf4c, $fail
+    shl [A*2], A*2, A*2
+    jne [0x0154], 0x1540, $fail
+    sub [12345], 0xFADE + A, 12345
+    jne [0x3039], 0xcb4f, $fail
+    shr [A*2], 12345, -123
+    jne [0x0154], 0x0181, $fail
+    ishr [12345], 0xFADE + A, A
+    jne [0x3039], 0xfffe, $fail
+    xor [A*4 + -10], 0xFADE + A, 12345
     jne [0x029e], 0xcbb1, $fail
-    xor [A*4 + B], A*2, A
-    jne [0x0363], 0x01fe, $fail
-    xor [A*4 + B], -123, 12345
-    jne [0x0363], 0xcfbc, $fail
-    xor [A], A*4 + B, 0xFADE + A
-    jne [0x00aa], 0xf8eb, $fail
-    xor [12345], A*4 + -10, -123
-    jne [0x3039], 0xfd1b, $fail
+    sub [A*4 + -10], A*2, A*4 + -10
+    jne [0x029e], 0xfeb6, $fail
+    imul [G], -123, A*4 + -10
+    jne [0x0155], 0xbe16, $fail
+    shl [A], A*4 + B, A*4 + B
+    jne [0x00aa], 0x1b18, $fail
+    xor [12345], A*2, A*4 + B
+    jne [0x3039], 0x0237, $fail
+    add [A*2], A*2, 12345
+    jne [0x0154], 0x318d, $fail
+    and [A*2], A*4 + B, A
+    jne [0x0154], 0x0022, $fail
+    shl [A], A*4 + B, 0xFADE + A
+    jne [0x00aa], 0x6300, $fail
+    and [A*4 + B], G, A
+    jne [0x0363], 0x0000, $fail
+    xor [G], A*2, -123
+    jne [0x0155], 0xfed1, $fail
+    and [12345], G, A*2
+    jne [0x3039], 0x0154, $fail
+    or [A*4 + -10], 12345, A*4 + B
+    jne [0x029e], 0x337b, $fail
+    xor [G], 0xFADE + A, A*4 + -10
+    jne [0x0155], 0xf916, $fail
+    imul [A*4 + B], A*2, A*4 + B
+    jne [0x0363], 0x7f7c, $fail
+    ishr [G], A*2, G
+    jne [0x0155], 0x000a, $fail
+    mul [A*2], -123, -123
+    jne [0x0154], 0x3b19, $fail
+    imul [A*4 + B], 0xFADE + A, A
+    jne [0x0363], 0x0850, $fail
+    shr [A*4 + -10], A*4 + -10, A*4 + -10
+    jne [0x029e], 0x0000, $fail
+    mul [A], -123, 0xFADE + A
+    jne [0x00aa], 0x25a8, $fail
+    ishr [A*4 + -10], A, A*2
+    jne [0x029e], 0x000a, $fail
+    or [A*4 + -10], A, A
+    jne [0x029e], 0x00aa, $fail
+    add [12345], G, 12345
+    jne [0x3039], 0x318e, $fail
+    imul [A*4 + -10], 12345, A*4 + -10
+    jne [0x029e], 0x352e, $fail
+    ishr [G], G, A*2
+    jne [0x0155], 0x0015, $fail
+    imul [A], 0xFADE + A, A*4 + -10
+    jne [0x00aa], 0x4df0, $fail
+    ishr [G], A, G
+    jne [0x0155], 0x0005, $fail
+    add [A*4 + B], 12345, A*4 + -10
+    jne [0x0363], 0x32d7, $fail
+    and [A*4 + -10], A*4 + B, 0xFADE + A
+    jne [0x029e], 0x0300, $fail
+    imul [A], -123, A*4 + B
+    jne [0x00aa], 0x5f6f, $fail
+    shr [G], A*4 + -10, 0xFADE + A
+    jne [0x0155], 0x0002, $fail
+    or [A*4 + B], 12345, A
+    jne [0x0363], 0x30bb, $fail
+    xor [A*4 + B], 12345, G
+    jne [0x0363], 0x316c, $fail
+    imul [A], A, 12345
+    jne [0x00aa], 0x05da, $fail
+    or [A*2], A*4 + B, A*4 + -10
+    jne [0x0154], 0x03ff, $fail
+    shl [G], 0xFADE + A, 12345
+    jne [0x0155], 0x1000, $fail
+    ishr [A*4 + B], 0xFADE + A, A*4 + B
+    jne [0x0363], 0xff71, $fail
+    shl [A*4 + -10], 0xFADE + A, -123
+    jne [0x029e], 0x7100, $fail
+    shr [A*4 + -10], 0xFADE + A, A
+    jne [0x029e], 0x003e, $fail
+    mul [A*4 + -10], A, A*4 + B
+    jne [0x029e], 0x3fbe, $fail
+    or [A*2], A*4 + -10, A*4 + B
+    jne [0x0154], 0x03ff, $fail
+    imul [A*4 + -10], A*2, -123
+    jne [0x029e], 0x5ca4, $fail
+    shl [12345], A*4 + -10, A*2
+    jne [0x3039], 0x29e0, $fail
+    shl [A*2], 0xFADE + A, 0xFADE + A
+    jne [0x0154], 0x8800, $fail
+    add [G], A*2, A*2
+    jne [0x0155], 0x02a8, $fail
+    and [A*2], 0xFADE + A, G
+    jne [0x0154], 0x0100, $fail
+    and [A*4 + -10], 12345, 12345
+    jne [0x029e], 0x3039, $fail
+    shl [A*4 + -10], A, -123
+    jne [0x029e], 0x1540, $fail
+    and [A*4 + B], A*4 + -10, 0xFADE + A
+    jne [0x0363], 0x0288, $fail
+    add [G], -123, -123
+    jne [0x0155], 0xff0a, $fail
+    mul [A], A, 0xFADE + A
+    jne [0x00aa], 0x0850, $fail
+    or [A*2], A*4 + B, G
+    jne [0x0154], 0x0377, $fail
+    sub [G], 0xFADE + A, 0xFADE + A
+    jne [0x0155], 0x0000, $fail
+    shr [A*4 + B], G, 0xFADE + A
+    jne [0x0363], 0x0001, $fail
+    sub [A*2], -123, G
+    jne [0x0154], 0xfe30, $fail
+    shl [A*4 + -10], A*2, G
+    jne [0x029e], 0x2a80, $fail
+    shl [A], -123, A*4 + -10
+    jne [0x00aa], 0x4000, $fail
+    mul [A*4 + -10], A*4 + B, A*2
+    jne [0x029e], 0x7f7c, $fail
+    shr [A], A*4 + B, G
+    jne [0x00aa], 0x001b, $fail
+    add [A], A*4 + B, 12345
+    jne [0x00aa], 0x339c, $fail
+    xor [G], 12345, -123
+    jne [0x0155], 0xcfbc, $fail
+    sub [A], 0xFADE + A, A*4 + B
+    jne [0x00aa], 0xf825, $fail
+    ishr [A*4 + B], A*2, G
+    jne [0x0363], 0x000a, $fail
+    or [A*2], G, 0xFADE + A
+    jne [0x0154], 0xfbdd, $fail
+    mul [12345], 0xFADE + A, G
+    jne [0x3039], 0x0c28, $fail
+    imul [A*4 + B], A*4 + B, 0xFADE + A
+    jne [0x0363], 0xdd98, $fail
+    and [12345], A, G
+    jne [0x3039], 0x0000, $fail
+    imul [G], G, A*4 + B
+    jne [0x0155], 0x82df, $fail
+    imul [A*4 + -10], A*2, A*2
+    jne [0x029e], 0xc390, $fail
+    or [G], 0xFADE + A, -123
+    jne [0x0155], 0xff8d, $fail
+    imul [A*4 + B], A, A*4 + -10
+    jne [0x0363], 0xbcec, $fail
+    shr [A*4 + B], A*4 + -10, 12345
+    jne [0x0363], 0x0001, $fail
+    xor [A*4 + B], A*2, 12345
+    jne [0x0363], 0x316d, $fail
+    shr [12345], A*4 + -10, 12345
+    jne [0x3039], 0x0001, $fail
+    shr [A*2], -123, A*4 + -10
+    jne [0x0154], 0x0003, $fail
+    or [A*2], A, A*2
+    jne [0x0154], 0x01fe, $fail
+    shr [G], A*4 + B, A*2
+    jne [0x0155], 0x0036, $fail
     xor [12345], A*4 + -10, A*4 + B
     jne [0x3039], 0x01fd, $fail
-    xor [12345], 12345, A*2
-    jne [0x3039], 0x316d, $fail
-    xor [A*2], A, A*2
-    jne [0x0154], 0x01fe, $fail
-    xor [A*4 + B], 12345, A*4 + -10
-    jne [0x0363], 0x32a7, $fail
-    xor [A*4 + -10], A*4 + -10, A*4 + -10
+    mul [A*4 + -10], 0xFADE + A, A*4 + -10
+    jne [0x029e], 0x4df0, $fail
+    imul [A*4 + B], A*2, A*4 + -10
+    jne [0x0363], 0x79d8, $fail
+    shr [12345], 0xFADE + A, A*4 + -10
+    jne [0x3039], 0x0003, $fail
+    add [A*4 + -10], A, G
+    jne [0x029e], 0x01ff, $fail
+    shr [A*4 + B], 0xFADE + A, 12345
+    jne [0x0363], 0x007d, $fail
+    shr [A*4 + -10], -123, -123
+    jne [0x029e], 0x07fc, $fail
+    imul [A], -123, 12345
+    jne [0x00aa], 0xd49d, $fail
+    shl [A*4 + B], A*4 + -10, A*2
+    jne [0x0363], 0x29e0, $fail
+    xor [A*2], 12345, G
+    jne [0x0154], 0x316c, $fail
+    xor [12345], A*4 + -10, A*4 + -10
+    jne [0x3039], 0x0000, $fail
+    xor [A], A*2, -123
+    jne [0x00aa], 0xfed1, $fail
+    xor [A*2], A*2, G
+    jne [0x0154], 0x0001, $fail
+    mul [G], 12345, A
+    jne [0x0155], 0x05da, $fail
+    xor [A*2], 12345, A*2
+    jne [0x0154], 0x316d, $fail
+    mul [A*2], A*4 + B, 12345
+    jne [0x0154], 0x510b, $fail
+    and [A*4 + -10], 12345, -123
+    jne [0x029e], 0x3001, $fail
+    shl [G], A*2, A
+    jne [0x0155], 0x5000, $fail
+    and [A], 0xFADE + A, A
+    jne [0x00aa], 0x0088, $fail
+    shl [A*2], A*4 + -10, 0xFADE + A
+    jne [0x0154], 0x9e00, $fail
+    xor [12345], 12345, -123
+    jne [0x3039], 0xcfbc, $fail
+    mul [A*4 + -10], A*4 + -10, -123
+    jne [0x029e], 0xbe16, $fail
+    sub [G], A*2, A*4 + -10
+    jne [0x0155], 0xfeb6, $fail
+    sub [A*4 + -10], A*4 + B, G
+    jne [0x029e], 0x020e, $fail
+    xor [A*4 + -10], -123, G
+    jne [0x029e], 0xfed0, $fail
+    sub [A], A*4 + B, -123
+    jne [0x00aa], 0x03de, $fail
+    sub [A], A*2, G
+    jne [0x00aa], 0xffff, $fail
+    sub [A*4 + B], A, 0xFADE + A
+    jne [0x0363], 0x0522, $fail
+    shl [12345], G, A*4 + -10
+    jne [0x3039], 0x4000, $fail
+    and [A], -123, -123
+    jne [0x00aa], 0xff85, $fail
+    xor [A], G, 12345
+    jne [0x00aa], 0x316c, $fail
+    or [12345], A*2, A*4 + -10
+    jne [0x3039], 0x03de, $fail
+    or [A], 0xFADE + A, A*2
+    jne [0x00aa], 0xfbdc, $fail
+    xor [G], A*4 + -10, A*4 + -10
+    jne [0x0155], 0x0000, $fail
+    xor [A*4 + -10], A, 0xFADE + A
+    jne [0x029e], 0xfb22, $fail
+    xor [12345], -123, 12345
+    jne [0x3039], 0xcfbc, $fail
+    shr [A*4 + -10], G, A*4 + B
+    jne [0x029e], 0x002a, $fail
+    and [A], G, A
+    jne [0x00aa], 0x0000, $fail
+    sub [A*4 + B], 0xFADE + A, -123
+    jne [0x0363], 0xfc03, $fail
+    and [12345], A*2, A*2
+    jne [0x3039], 0x0154, $fail
+    shr [12345], A, 12345
+    jne [0x3039], 0x0000, $fail
+    imul [A*4 + -10], A*4 + B, A*4 + -10
+    jne [0x029e], 0xdd1a, $fail
+    shr [12345], A*4 + -10, -123
+    jne [0x3039], 0x0014, $fail
+    add [G], A, 12345
+    jne [0x0155], 0x30e3, $fail
+    ishr [12345], A*2, 12345
+    jne [0x3039], 0x0000, $fail
+    ishr [12345], 0xFADE + A, -123
+    jne [0x3039], 0xffdc, $fail
+    or [A*4 + -10], G, A
+    jne [0x029e], 0x01ff, $fail
+    ishr [A*4 + B], A*4 + B, A
+    jne [0x0363], 0x0000, $fail
+    shl [G], 12345, A*4 + B
+    jne [0x0155], 0x81c8, $fail
+    mul [A*2], A*4 + -10, A
+    jne [0x0154], 0xbcec, $fail
+    imul [A*4 + -10], A*4 + -10, 12345
+    jne [0x029e], 0x352e, $fail
+    xor [12345], -123, A*4 + -10
+    jne [0x3039], 0xfd1b, $fail
+    or [G], A, 0xFADE + A
+    jne [0x0155], 0xfbaa, $fail
+    imul [G], G, A*4 + -10
+    jne [0x0155], 0x7c76, $fail
+    mul [A], 12345, A*4 + -10
+    jne [0x00aa], 0x352e, $fail
+    or [G], A, A
+    jne [0x0155], 0x00aa, $fail
+    shr [A*4 + -10], A*2, 0xFADE + A
+    jne [0x029e], 0x0001, $fail
+    ishr [A], A*4 + -10, A*4 + B
+    jne [0x00aa], 0x0053, $fail
+    add [A], 12345, A
+    jne [0x00aa], 0x30e3, $fail
+    ishr [A], -123, A
+    jne [0x00aa], 0xffff, $fail
+    and [A*2], A, -123
+    jne [0x0154], 0x0080, $fail
+    xor [A*4 + B], -123, 0xFADE + A
+    jne [0x0363], 0x040d, $fail
+    add [A], 12345, A*2
+    jne [0x00aa], 0x318d, $fail
+    add [A*2], G, A*4 + B
+    jne [0x0154], 0x04b8, $fail
+    or [A], A*4 + B, A
+    jne [0x00aa], 0x03eb, $fail
+    add [A*2], -123, 12345
+    jne [0x0154], 0x2fbe, $fail
+    shl [G], A*4 + B, -123
+    jne [0x0155], 0x6c60, $fail
+    add [A*4 + -10], A*4 + -10, A*4 + B
+    jne [0x029e], 0x0601, $fail
+    or [A], A*4 + -10, 0xFADE + A
+    jne [0x00aa], 0xfb9e, $fail
+    shl [A*4 + B], A*2, -123
+    jne [0x0363], 0x2a80, $fail
+    or [12345], -123, A*4 + B
+    jne [0x3039], 0xffe7, $fail
+    add [A*2], A*4 + B, A*4 + B
+    jne [0x0154], 0x06c6, $fail
+    and [A], A*2, A
+    jne [0x00aa], 0x0000, $fail
+    sub [A], G, -123
+    jne [0x00aa], 0x01d0, $fail
+    or [A], A*4 + B, A*4 + -10
+    jne [0x00aa], 0x03ff, $fail
+    xor [A*4 + B], A, A*4 + B
+    jne [0x0363], 0x03c9, $fail
+    shl [A*2], G, A*4 + -10
+    jne [0x0154], 0x4000, $fail
+    and [A*4 + -10], 12345, A*2
+    jne [0x029e], 0x0010, $fail
+    shr [12345], A*4 + B, 0xFADE + A
+    jne [0x3039], 0x0003, $fail
+    mul [G], A*2, A*4 + B
+    jne [0x0155], 0x7f7c, $fail
+    shr [A*4 + -10], A*4 + -10, G
+    jne [0x029e], 0x0014, $fail
+    mul [A], 12345, 0xFADE + A
+    jne [0x00aa], 0x8148, $fail
+    mul [A*4 + B], -123, A*4 + -10
+    jne [0x0363], 0xbe16, $fail
+    and [A*4 + B], -123, G
+    jne [0x0363], 0x0105, $fail
+    shl [12345], 12345, A
+    jne [0x3039], 0xe400, $fail
+    imul [A], G, A*4 + B
+    jne [0x00aa], 0x82df, $fail
+    sub [A*4 + -10], -123, A*4 + -10
+    jne [0x029e], 0xfce7, $fail
+    shl [A*2], A, A*4 + B
+    jne [0x0154], 0x0550, $fail
+    add [A], A*4 + -10, A*2
+    jne [0x00aa], 0x03f2, $fail
+    mul [A*2], G, -123
+    jne [0x0154], 0x5c29, $fail
+    mul [G], -123, 12345
+    jne [0x0155], 0xd49d, $fail
+    ishr [12345], A*4 + B, A*4 + B
+    jne [0x3039], 0x006c, $fail
+    add [A*4 + B], -123, A*2
+    jne [0x0363], 0x00d9, $fail
+    mul [12345], 12345, G
+    jne [0x3039], 0x3bed, $fail
+    or [12345], A*4 + B, G
+    jne [0x3039], 0x0377, $fail
+    shl [A*4 + B], -123, 12345
+    jne [0x0363], 0x0a00, $fail
+    mul [G], -123, A*4 + B
+    jne [0x0155], 0x5f6f, $fail
+    and [A*4 + -10], 12345, G
+    jne [0x029e], 0x0011, $fail
+    ishr [A*4 + B], A*2, 0xFADE + A
+    jne [0x0363], 0x0001, $fail
+    or [A*2], A*2, A*4 + B
+    jne [0x0154], 0x0377, $fail
+    and [A*4 + B], G, G
+    jne [0x0363], 0x0155, $fail
+    shl [A*4 + B], A*4 + -10, A*4 + -10
+    jne [0x0363], 0x8000, $fail
+    sub [A*4 + -10], A*4 + B, -123
+    jne [0x029e], 0x03de, $fail
+    and [G], G, -123
+    jne [0x0155], 0x0105, $fail
+    ishr [A*2], A*4 + -10, -123
+    jne [0x0154], 0x0014, $fail
+    or [12345], A*2, G
+    jne [0x3039], 0x0155, $fail
+    or [A*4 + B], A, A*2
+    jne [0x0363], 0x01fe, $fail
+    shr [A*2], A, 12345
+    jne [0x0154], 0x0000, $fail
+    imul [A*4 + -10], A*4 + -10, 0xFADE + A
+    jne [0x029e], 0x4df0, $fail
+    shr [A*4 + B], A*4 + -10, G
+    jne [0x0363], 0x0014, $fail
+    shl [12345], A*4 + B, -123
+    jne [0x3039], 0x6c60, $fail
+    sub [12345], A*4 + -10, A
+    jne [0x3039], 0x01f4, $fail
+    sub [G], A*4 + -10, G
+    jne [0x0155], 0x0149, $fail
+    xor [A], A, A*4 + B
+    jne [0x00aa], 0x03c9, $fail
+    shr [A], A*2, A*2
+    jne [0x00aa], 0x0015, $fail
+    add [A*4 + B], 12345, A*2
+    jne [0x0363], 0x318d, $fail
+    add [G], A*4 + B, A*4 + B
+    jne [0x0155], 0x06c6, $fail
+    shl [A*4 + B], A*4 + B, A*4 + -10
+    jne [0x0363], 0xc000, $fail
+    xor [A*4 + -10], A*4 + B, A
+    jne [0x029e], 0x03c9, $fail
+    mul [A], 0xFADE + A, -123
+    jne [0x00aa], 0x25a8, $fail
+    and [A*4 + -10], 12345, 0xFADE + A
+    jne [0x029e], 0x3008, $fail
+    add [A], G, A*2
+    jne [0x00aa], 0x02a9, $fail
+    sub [G], 0xFADE + A, G
+    jne [0x0155], 0xfa33, $fail
+    shr [12345], A*4 + -10, 0xFADE + A
+    jne [0x3039], 0x0002, $fail
+    shr [A*4 + -10], A*2, A*4 + B
+    jne [0x029e], 0x002a, $fail
+    shr [G], A, A*4 + B
+    jne [0x0155], 0x0015, $fail
+    imul [A*4 + B], G, A*2
+    jne [0x0363], 0xc4e4, $fail
+    mul [A*4 + -10], 0xFADE + A, 0xFADE + A
+    jne [0x029e], 0xf840, $fail
+    add [A*4 + -10], A*4 + B, 12345
+    jne [0x029e], 0x339c, $fail
+    xor [A*4 + B], G, A*4 + -10
+    jne [0x0363], 0x03cb, $fail
+    xor [A*2], 0xFADE + A, A
+    jne [0x0154], 0xfb22, $fail
+    shr [12345], 12345, A*2
+    jne [0x3039], 0x0303, $fail
+    imul [A*4 + B], G, 12345
+    jne [0x0363], 0x3bed, $fail
+    xor [12345], -123, A*2
+    jne [0x3039], 0xfed1, $fail
+    sub [12345], G, 0xFADE + A
+    jne [0x3039], 0x05cd, $fail
+    xor [A], A*2, 0xFADE + A
+    jne [0x00aa], 0xfadc, $fail
+    mul [A*2], A*4 + -10, 12345
+    jne [0x0154], 0x352e, $fail
+    shl [A*4 + B], A*2, A
+    jne [0x0363], 0x5000, $fail
+    and [G], -123, 0xFADE + A
+    jne [0x0155], 0xfb80, $fail
+    shr [A], A, A*2
+    jne [0x00aa], 0x000a, $fail
+    xor [A*4 + -10], A, A*4 + -10
+    jne [0x029e], 0x0234, $fail
+    shl [A*4 + -10], A*4 + -10, A*2
+    jne [0x029e], 0x29e0, $fail
+    mul [A], A*4 + -10, -123
+    jne [0x00aa], 0xbe16, $fail
+    or [G], G, 12345
+    jne [0x0155], 0x317d, $fail
+    shr [A*4 + B], 0xFADE + A, A*4 + -10
+    jne [0x0363], 0x0003, $fail
+    mul [A*4 + B], A, 12345
+    jne [0x0363], 0x05da, $fail
+    and [A*4 + -10], A*2, 12345
+    jne [0x029e], 0x0010, $fail
+    and [12345], A, A*4 + B
+    jne [0x3039], 0x0022, $fail
+    imul [G], A*4 + B, G
+    jne [0x0155], 0x82df, $fail
+    sub [12345], G, A*4 + B
+    jne [0x3039], 0xfdf2, $fail
+    shr [A*4 + B], G, A*4 + B
+    jne [0x0363], 0x002a, $fail
+    or [A*4 + -10], G, G
+    jne [0x029e], 0x0155, $fail
+    xor [A*2], A, G
+    jne [0x0154], 0x01ff, $fail
+    shr [G], A*4 + -10, -123
+    jne [0x0155], 0x0014, $fail
+    ishr [12345], G, A
+    jne [0x3039], 0x0000, $fail
+    mul [A*2], -123, 0xFADE + A
+    jne [0x0154], 0x25a8, $fail
+    or [A*2], 0xFADE + A, 12345
+    jne [0x0154], 0xfbb9, $fail
+    imul [A*4 + B], 12345, 0xFADE + A
+    jne [0x0363], 0x8148, $fail
+    or [A*4 + -10], G, -123
+    jne [0x029e], 0xffd5, $fail
+    ishr [A*4 + -10], A*2, A
     jne [0x029e], 0x0000, $fail
-    xor [A*2], A*2, A*4 + B
-    jne [0x0154], 0x0237, $fail
+    and [A*2], A*4 + B, -123
+    jne [0x0154], 0x0301, $fail
+    or [A], A*2, A*4 + -10
+    jne [0x00aa], 0x03de, $fail
+    add [G], A*4 + -10, A
+    jne [0x0155], 0x0348, $fail
+    shl [A*4 + -10], A, 12345
+    jne [0x029e], 0x5400, $fail
+    shl [A], 0xFADE + A, 0xFADE + A
+    jne [0x00aa], 0x8800, $fail
+    imul [G], A*4 + -10, 12345
+    jne [0x0155], 0x352e, $fail
+    add [12345], -123, -123
+    jne [0x3039], 0xff0a, $fail
+    sub [A*2], A*4 + -10, G
+    jne [0x0154], 0x0149, $fail
+    ishr [A], 0xFADE + A, G
+    jne [0x00aa], 0xffdc, $fail
+    xor [A], 0xFADE + A, 12345
+    jne [0x00aa], 0xcbb1, $fail
+    sub [G], A*2, 0xFADE + A
+    jne [0x0155], 0x05cc, $fail
+    add [A*4 + B], 12345, 12345
+    jne [0x0363], 0x6072, $fail
+    sub [A*4 + -10], -123, 0xFADE + A
+    jne [0x029e], 0x03fd, $fail
+    add [A*2], A*2, A*4 + -10
+    jne [0x0154], 0x03f2, $fail
+    shr [A], 12345, -123
+    jne [0x00aa], 0x0181, $fail
+    imul [A*2], A, A*4 + -10
+    jne [0x0154], 0xbcec, $fail
+    or [A*4 + -10], G, 0xFADE + A
+    jne [0x029e], 0xfbdd, $fail
+    ishr [G], A, -123
+    jne [0x0155], 0x0005, $fail
+    ishr [A*2], A, 0xFADE + A
+    jne [0x0154], 0x0000, $fail
+    shr [12345], -123, A
+    jne [0x3039], 0x003f, $fail
+    imul [A], A, A*4 + -10
+    jne [0x00aa], 0xbcec, $fail
+    add [A*4 + B], 0xFADE + A, G
+    jne [0x0363], 0xfcdd, $fail
+    xor [G], 12345, A*4 + -10
+    jne [0x0155], 0x32a7, $fail
+    imul [A], 12345, A*4 + B
+    jne [0x00aa], 0x510b, $fail
+    or [A*4 + -10], 0xFADE + A, G
+    jne [0x029e], 0xfbdd, $fail
+    sub [A*2], -123, A*2
+    jne [0x0154], 0xfe31, $fail
+    or [A*4 + B], A*2, A*2
+    jne [0x0363], 0x0154, $fail
+    imul [12345], A, A*4 + -10
+    jne [0x3039], 0xbcec, $fail
+    ishr [A*4 + -10], 0xFADE + A, A*4 + B
+    jne [0x029e], 0xff71, $fail
+    and [12345], A, 0xFADE + A
+    jne [0x3039], 0x0088, $fail
+    ishr [A], G, G
+    jne [0x00aa], 0x000a, $fail
+    imul [A], A*4 + -10, A
+    jne [0x00aa], 0xbcec, $fail
+    or [12345], A*4 + -10, G
+    jne [0x3039], 0x03df, $fail
+    add [A*2], 12345, 0xFADE + A
+    jne [0x0154], 0x2bc1, $fail
+    add [12345], -123, 0xFADE + A
+    jne [0x3039], 0xfb0d, $fail
+    or [G], A, A*2
+    jne [0x0155], 0x01fe, $fail
+    shl [A*2], A*4 + B, A*2
+    jne [0x0154], 0x3630, $fail
+    add [12345], A*4 + B, 12345
+    jne [0x3039], 0x339c, $fail
+    and [A*4 + B], A, -123
+    jne [0x0363], 0x0080, $fail
+    xor [12345], A, -123
+    jne [0x3039], 0xff2f, $fail
+    and [A*2], G, 12345
+    jne [0x0154], 0x0011, $fail
+    and [A*4 + -10], G, A*4 + -10
+    jne [0x029e], 0x0014, $fail
+    mul [A*4 + -10], A*4 + B, A*4 + B
+    jne [0x029e], 0x7849, $fail
+    add [A], A*4 + -10, 12345
+    jne [0x00aa], 0x32d7, $fail
+    add [A*2], 12345, A*4 + -10
+    jne [0x0154], 0x32d7, $fail
+    xor [A*2], A*4 + -10, A*4 + -10
+    jne [0x0154], 0x0000, $fail
+    ishr [12345], A, A
+    jne [0x3039], 0x0000, $fail
+    ishr [12345], 12345, A*4 + -10
+    jne [0x3039], 0x0000, $fail
+    shl [A], -123, A*2
+    jne [0x00aa], 0xf850, $fail
+    and [12345], A*2, 0xFADE + A
+    jne [0x3039], 0x0100, $fail
+    or [A*4 + -10], -123, A
+    jne [0x029e], 0xffaf, $fail
+    imul [A*2], -123, A
+    jne [0x0154], 0xae52, $fail
+    mul [A*4 + B], A*4 + B, A*4 + B
+    jne [0x0363], 0x7849, $fail
+    sub [A*4 + B], A*4 + B, 12345
+    jne [0x0363], 0xd32a, $fail
+    and [G], -123, A*2
+    jne [0x0155], 0x0104, $fail
+    imul [A*2], 0xFADE + A, -123
+    jne [0x0154], 0x25a8, $fail
+    mul [A*2], A*2, 0xFADE + A
+    jne [0x0154], 0x10a0, $fail
+    sub [G], 12345, G
+    jne [0x0155], 0x2ee4, $fail
     mov [A], -123
     jne [0x00aa], 0xff85, $fail
-    mov [A*4 + B], 12345
-    jne [0x0363], 0x3039, $fail
-    mov [A*4 + B], 0xFADE + A
-    jne [0x0363], 0xfb88, $fail
-    mov [A], A*4 + -10
-    jne [0x00aa], 0x029e, $fail
-    mov [A*2], 12345
-    jne [0x0154], 0x3039, $fail
-    mov [A*4 + -10], A*2
-    jne [0x029e], 0x0154, $fail
-    mov [12345], A*4 + -10
-    jne [0x3039], 0x029e, $fail
-    mov [A*2], A*4 + -10
-    jne [0x0154], 0x029e, $fail
-    mov [12345], A
-    jne [0x3039], 0x00aa, $fail
     mov [A*4 + -10], A*4 + -10
     jne [0x029e], 0x029e, $fail
-    mov [A], 0xFADE + A
-    jne [0x00aa], 0xfb88, $fail
-    mov [A*4 + B], A
-    jne [0x0363], 0x00aa, $fail
-    mov [A*4 + -10], 0xFADE + A
-    jne [0x029e], 0xfb88, $fail
-    mov [A*4 + B], A*2
-    jne [0x0363], 0x0154, $fail
-    mov [A], A
-    jne [0x00aa], 0x00aa, $fail
     mov [A*2], A*4 + B
     jne [0x0154], 0x0363, $fail
-    mov [A], A*4 + B
-    jne [0x00aa], 0x0363, $fail
-    mov [A*2], 0xFADE + A
-    jne [0x0154], 0xfb88, $fail
-    mov [12345], A*4 + B
-    jne [0x3039], 0x0363, $fail
-    mov [A*2], A*2
-    jne [0x0154], 0x0154, $fail
-    mov [A*2], -123
-    jne [0x0154], 0xff85, $fail
-    mov [A], A*2
-    jne [0x00aa], 0x0154, $fail
-    mov [A*4 + -10], -123
-    jne [0x029e], 0xff85, $fail
-    mov [A], 12345
-    jne [0x00aa], 0x3039, $fail
-    mov [A*4 + B], A*4 + -10
-    jne [0x0363], 0x029e, $fail
-    mov [12345], A*2
-    jne [0x3039], 0x0154, $fail
-    mov [A*4 + -10], A
-    jne [0x029e], 0x00aa, $fail
-    mov [A*4 + -10], 12345
-    jne [0x029e], 0x3039, $fail
+    mov [12345], -123
+    jne [0x3039], 0xff85, $fail
+    mov [G], A*4 + -10
+    jne [0x0155], 0x029e, $fail
+    mov [12345], G
+    jne [0x3039], 0x0155, $fail
+    mov [G], A*2
+    jne [0x0155], 0x0154, $fail
+    mov [A*4 + -10], 0xFADE + A
+    jne [0x029e], 0xfb88, $fail
+    mov [12345], 12345
+    jne [0x3039], 0x3039, $fail
+    mov [A*4 + -10], G
+    jne [0x029e], 0x0155, $fail
+    mov [A], G
+    jne [0x00aa], 0x0155, $fail
     mov [A*4 + B], A*4 + B
     jne [0x0363], 0x0363, $fail
     mov [A*4 + -10], A*4 + B
     jne [0x029e], 0x0363, $fail
-    mov [A*2], A
-    jne [0x0154], 0x00aa, $fail
-    mov [A*4 + B], -123
-    jne [0x0363], 0xff85, $fail
-    mov [12345], -123
-    jne [0x3039], 0xff85, $fail
-    mov [12345], 12345
-    jne [0x3039], 0x3039, $fail
+    mov [A*4 + B], A
+    jne [0x0363], 0x00aa, $fail
+    mov [A*4 + -10], A
+    jne [0x029e], 0x00aa, $fail
+    mov [A], A
+    jne [0x00aa], 0x00aa, $fail
+    mov [A*4 + B], 0xFADE + A
+    jne [0x0363], 0xfb88, $fail
+    mov [A*2], -123
+    jne [0x0154], 0xff85, $fail
+    mov [A*4 + B], 12345
+    jne [0x0363], 0x3039, $fail
+    mov [A*4 + -10], -123
+    jne [0x029e], 0xff85, $fail
+    mov [A*4 + -10], A*2
+    jne [0x029e], 0x0154, $fail
+    mov [A*2], A*4 + -10
+    jne [0x0154], 0x029e, $fail
+    mov [12345], A*2
+    jne [0x3039], 0x0154, $fail
+    mov [A*2], G
+    jne [0x0154], 0x0155, $fail
+    mov [A*4 + B], G
+    jne [0x0363], 0x0155, $fail
+    mov [A*2], 0xFADE + A
+    jne [0x0154], 0xfb88, $fail
+    mov [A], A*4 + -10
+    jne [0x00aa], 0x029e, $fail
+    mov [12345], A*4 + -10
+    jne [0x3039], 0x029e, $fail
+    mov [A*4 + B], A*4 + -10
+    jne [0x0363], 0x029e, $fail
     mov [12345], 0xFADE + A
     jne [0x3039], 0xfb88, $fail
-    push 0xFADE + A
+    mov [A*2], 12345
+    jne [0x0154], 0x3039, $fail
+    mov [G], -123
+    jne [0x0155], 0xff85, $fail
+    mov [12345], A*4 + B
+    jne [0x3039], 0x0363, $fail
+    mov [G], 0xFADE + A
+    jne [0x0155], 0xfb88, $fail
+    mov [A], 12345
+    jne [0x00aa], 0x3039, $fail
+    mov [A], A*2
+    jne [0x00aa], 0x0154, $fail
+    mov [A*4 + -10], 12345
+    jne [0x029e], 0x3039, $fail
+    mov [G], A
+    jne [0x0155], 0x00aa, $fail
+    mov [A*2], A
+    jne [0x0154], 0x00aa, $fail
+    mov [G], G
+    jne [0x0155], 0x0155, $fail
+    mov [A], A*4 + B
+    jne [0x00aa], 0x0363, $fail
+    mov [A*4 + B], -123
+    jne [0x0363], 0xff85, $fail
+    mov [A*4 + B], A*2
+    jne [0x0363], 0x0154, $fail
+    mov [12345], A
+    jne [0x3039], 0x00aa, $fail
+    mov [G], 12345
+    jne [0x0155], 0x3039, $fail
+    mov [A*2], A*2
+    jne [0x0154], 0x0154, $fail
+    mov [G], A*4 + B
+    jne [0x0155], 0x0363, $fail
+    mov [A], 0xFADE + A
+    jne [0x00aa], 0xfb88, $fail
+    push A*4 + B
     pop D
-    jne D, 0xfb88, $fail
-    push A*2
+    jne D, 0x0363, $fail
+    push -123
     pop D
-    jne D, 0x0154, $fail
+    jne D, 0xff85, $fail
+    push G
+    pop D
+    jne D, 0x0155, $fail
     push A*4 + -10
     pop D
     jne D, 0x029e, $fail
     push A
     pop D
     jne D, 0x00aa, $fail
-    push A*4 + B
+    push 0xFADE + A
     pop D
-    jne D, 0x0363, $fail
+    jne D, 0xfb88, $fail
+    push A*2
+    pop D
+    jne D, 0x0154, $fail
     push 12345
     pop D
     jne D, 0x3039, $fail
-    push -123
-    pop D
-    jne D, 0xff85, $fail
     call $_L_test_uop_get_arg_1
     jne C, 0xADFE, $fail
     jmp $_L_test_uop_get_arg_2
@@ -1328,6 +1638,38 @@ test_uop_mmap:
 test_uop_umap:
     # done above
 # END test_uop_rom.asm
+
+
+# BEGIN test_aux_regs.asm
+test_aux_reg:
+    mov A, 1
+    mov B, 2
+    mov C, 3
+    mov D, 4
+
+    mov E, 5
+    mov F, 6
+    mov G, 7
+    mov H, 8
+
+    jne A, 1, $fail
+    jne B, 2, $fail
+    jne C, 3, $fail
+    jne D, 4, $fail
+
+    jne E, 5, $fail
+    jne F, 6, $fail
+    jne G, 7, $fail
+    jne H, 8, $fail
+
+    xor H, 0xFF00
+    jne H, 0xFF08, $fail
+    mov A, H
+    jne A, 0xFF08, $fail
+    mov E, G
+    jne E, 7, $fail
+    jne H, 0xFF08, $fail
+# END test_aux_regs.asm
 
 
 # BEGIN test_call_ret.asm

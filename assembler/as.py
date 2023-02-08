@@ -17,10 +17,15 @@ REGS = (
     '0', 'A', 'B', 'C', 'D', 'SP', 'PC'
 )
 assert len(REGS) == 7
-MULT_MAP = {4: 3, 2: 2, 1: 1, 0: 0}
+AUX_REGS = (
+    'E', 'F', 'G', 'H'
+)
+assert len(AUX_REGS) == 4
 
+MULT_MAP = {4: 3, 2: 2, 1: 1, 0: 0}
 CMDS_MAP = {v: i for i, v in enumerate(CMDS)}
 REGS_MAP = {v: i for i, v in enumerate(REGS)}
+AUX_REGS_MAP = {v: i for i, v in enumerate(AUX_REGS)}
 
 with open(sys.argv[1], 'r') as f:
     lines_raw = f.readlines()
@@ -154,7 +159,9 @@ def assemble(final):
             #  a  b  x -> a*(2^x) + b
             # 00011100
             if b == '0' and x == '1':
-                if a in REGS_MAP:
+                if a in AUX_REGS_MAP:
+                    bincode += f'111111{AUX_REGS_MAP[a]:02b}'
+                elif a in REGS_MAP:
                     bincode += f'{REGS_MAP[a]:03b}00000'
                 else:
                     # immediate value

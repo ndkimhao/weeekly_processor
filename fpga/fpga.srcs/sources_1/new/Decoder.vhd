@@ -123,14 +123,17 @@ begin
 						-- 7 6 5 4 3 2 1 0
 						-- a a a b b b x x
 						need_a := to_unsigned(0, 3) when nargs = 0 else
+								  to_unsigned(1, 3) when inst_in(1)(7 downto 2) = "111111" else
 								  to_unsigned(3, 3) when inst_in(1)(7 downto 5) = "111" else
 								  to_unsigned(2, 3) when inst_in(1)(4 downto 2) = "111" else
 								  to_unsigned(1, 3);
 						need_b := to_unsigned(0, 3) when nargs = 0 or nargs = 1 else
+								  to_unsigned(1, 3) when inst_in(2)(7 downto 2) = "111111" else
 								  to_unsigned(3, 3) when inst_in(2)(7 downto 5) = "111" else
 								  to_unsigned(2, 3) when inst_in(2)(4 downto 2) = "111" else
 								  to_unsigned(1, 3);
 						need_c := to_unsigned(0, 3) when nargs /= 3 else
+								  to_unsigned(1, 3) when inst_in(3)(7 downto 2) = "111111" else
 								  to_unsigned(3, 3) when inst_in(3)(7 downto 5) = "111" else
 								  to_unsigned(2, 3) when inst_in(3)(4 downto 2) = "111" else
 								  to_unsigned(1, 3);

@@ -50,6 +50,7 @@ def get_unique_label(name):
 
 #########################################################################
 
+
 append_snippet('preamble.asm')
 
 gen_section('start_test')
@@ -63,7 +64,7 @@ def gen_test_alu2_op(t, op, a, b, expected, expected_aux=None):
         gen_cmd(f'{op} B, 0x{b:04x}')
     gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     if expected_aux is not None:
-        gen_cmd(f'jne D, 0x{expected_aux:04x}, $fail')
+        gen_cmd(f'jne H, 0x{expected_aux:04x}, $fail')
     gen_cmd('')
 
 
@@ -160,6 +161,21 @@ for (a, b) in ((0xFFAB, 0x2B), (0x2B, 0xFFAB), (0xFFAB, 0xFFAB)):
 
 #########################################################################
 
+ALU_OPS_LIST = [
+    ('add', lambda a, b: (a + b) & 0xFFFF),
+    ('sub', lambda a, b: (a - b) & 0xFFFF),
+    ('mul', lambda a, b: (a * b) & 0xFFFF),
+    ('imul', lambda a, b: (as_signed(a) * as_signed(b)) & 0xFFFF),
+    ('shr', lambda a, b: a >> (b & 0xF)),
+    ('ishr', lambda a, b: calc_ishr(a, b)),
+    ('shl', lambda a, b: (a << (b & 0xF)) & 0xFFFF),
+    ('and', lambda a, b: a & b),
+    ('or', lambda a, b: a | b),
+    ('xor', lambda a, b: a ^ b),
+]
+TEST_GET_ARG_RND = random.Random(3006)
+
+
 def gen_test_get_arg_impl(nargs, x=None, y=None, z=None):
     if nargs == 1:
         gen_cmd(f'push {x[0]}')
@@ -172,8 +188,9 @@ def gen_test_get_arg_impl(nargs, x=None, y=None, z=None):
             gen_cmd(f'jne [0x{x[1]:04x}], 0x{y[1]:04x}, $fail')
             return
         if nargs == 3:
-            gen_cmd(f'xor [{x[0]}], {y[0]}, {z[0]}')
-            gen_cmd(f'jne [0x{x[1]:04x}], 0x{y[1]^z[1]:04x}, $fail')
+            op, fn = TEST_GET_ARG_RND.choice(ALU_OPS_LIST)
+            gen_cmd(f'{op} [{x[0]}], {y[0]}, {z[0]}')
+            gen_cmd(f'jne [0x{x[1]:04x}], 0x{fn(y[1], z[1]):04x}, $fail')
             return
     else:
         return
@@ -185,11 +202,14 @@ def gen_test_get_arg():
     gen_cmd('mov SP, 0x7000')
     A = 0x00AA
     B = 0x00BB
+    G = 0x0155
     gen_cmd(f'mov A, 0x{A:04x}')
     gen_cmd(f'mov B, 0x{B:04x}')
+    gen_cmd(f'mov G, 0x{G:04x}')
 
     VALUES = [
         ('A', A),  # 1 byte
+        ('G', G),  # 1 byte, aux reg
         ('A*2', A*2),  # 1 byte
         ('A*4 + -10', A*4 - 10),  # 2 bytes
         ('0xFADE + A', (0xFADE + A) & 0xFFFF),  # 3 bytes
@@ -200,9 +220,9 @@ def gen_test_get_arg():
     list3 = list(itertools.product(VALUES, VALUES, VALUES))
     list2 = list(itertools.product(VALUES, VALUES))
     list1 = list(VALUES.copy())
-    random.Random(3006).shuffle(list3)
-    random.Random(3006).shuffle(list2)
-    random.Random(3006).shuffle(list1)
+    TEST_GET_ARG_RND.shuffle(list3)
+    TEST_GET_ARG_RND.shuffle(list2)
+    TEST_GET_ARG_RND.shuffle(list1)
     for a1, a2, a3 in list3:
         gen_test_get_arg_impl(3, a1, a2, a3)
     for a1, a2 in list2:
@@ -227,6 +247,8 @@ gen_test_get_arg()
 #########################################################################
 
 append_snippet('test_uop_rom.asm')
+
+append_snippet('test_aux_regs.asm')
 
 append_snippet('test_call_ret.asm')
 

@@ -45,10 +45,14 @@ end Engine;
 architecture Behavioral of Engine is
 
 -- '0', 'A', 'B', 'C', 'D', 'SP', 'PC', 'FL',
--- 'E', 'F', 'G', 'H', '2', 'NPC', '', ''
+-- 'X', 'Y', 'Z', 'K', '2', 'NPC', '', ''
 --   NPC is the next program counter
 type TArrRegs is array(1 to 11) of TData;
 signal arr_regs : TArrRegs;
+
+-- 'E', 'F', 'G', 'H'
+type TArrAuxRegs is array(0 to 3) of TData;
+signal arr_aux_regs : TArrAuxRegs;
 
 signal idx_dst, idx_src : unsigned(4-1 downto 0);
 signal r_dst, r_src : TData;
@@ -239,11 +243,17 @@ begin
 	
 						when UOP_ARG_HEAD =>
 							if uop_tail = UOP_ARG_PUT then
-								r_write := '1';
-								r_res := r_src;
+								if v_inst(1)(7 downto 2) = "111111" then -- if aux reg
+									arr_aux_regs(to_integer(unsigned(v_inst(1)(1 downto 0)))) <= r_src;
+								else
+									r_write := '1';
+									r_res := r_src;
+								end if;
 							else
 								for i in 0 to 1 loop
-									if v_inst(i+1)(7 downto 5) = "111" then
+									if v_inst(i+1)(7 downto 2) = "111111" then -- if aux reg
+										arg_tails(i) := to_unsigned(0, InstructionIndexWidth);
+									elsif v_inst(i+1)(7 downto 5) = "111" then
 										arg_tails(i) := to_unsigned(2, InstructionIndexWidth);
 									elsif v_inst(i+1)(4 downto 2) = "111" then
 										arg_tails(i) := to_unsigned(1, InstructionIndexWidth);
@@ -259,29 +269,34 @@ begin
 								if uop_tail = UOP_ARG_GET_2 then
 									arg_tail := arg_tail + arg_tails(1);
 								end if;
-	
+
 								arg_head := v_inst(to_integer(unsigned(uop_tail)));
-								if arg_head(7 downto 5) = "111" then
-									arg_a := v_inst(to_integer(arg_tail)+1) & v_inst(to_integer(arg_tail));
-								elsif arg_head(7 downto 5) = "000" then
-									arg_a := x"0000";
-								else
-									arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
-								end if;
-								if arg_head(4 downto 2) = "111" then
-									if v_inst(to_integer(arg_tail))(7) = '0' then -- sign check
-										arg_b := x"00" & v_inst(to_integer(arg_tail));
+								if arg_head(7 downto 2) = "111111" then -- if aux reg
+									arg_a := arr_aux_regs(to_integer(unsigned(arg_head(1 downto 0))));
+									arg_b := (others => '0');
+								else -- not aux reg
+									if arg_head(7 downto 5) = "111" then
+										arg_a := v_inst(to_integer(arg_tail)+1) & v_inst(to_integer(arg_tail));
+									elsif arg_head(7 downto 5) = "000" then
+										arg_a := x"0000";
 									else
-										arg_b := x"FF" & v_inst(to_integer(arg_tail));
+										arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
 									end if;
-								elsif arg_head(4 downto 2) = "000" then
-									arg_b := x"0000";
-								else
-									arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
-								end if;
-								if arg_head(1 downto 0) /= "00" then
-									arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
-								end if;
+									if arg_head(4 downto 2) = "111" then
+										if v_inst(to_integer(arg_tail))(7) = '0' then -- sign check
+											arg_b := x"00" & v_inst(to_integer(arg_tail));
+										else
+											arg_b := x"FF" & v_inst(to_integer(arg_tail));
+										end if;
+									elsif arg_head(4 downto 2) = "000" then
+										arg_b := x"0000";
+									else
+										arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
+									end if;
+									if arg_head(1 downto 0) /= "00" then
+										arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
+									end if;
+								end if; -- else not aux reg
 	
 								r_write := '1';
 								r_res := std_logic_vector(unsigned(arg_a) + unsigned(arg_b));
@@ -305,7 +320,7 @@ begin
 									hold_counter <= hold_counter - 1;
 									if hold_counter = 1 or alu_div_done = '1' then
 										uop_hold <= '0';
-										arr_regs(REGID_D) <= alu_aux;
+										arr_aux_regs(AUXREGID_H) <= alu_aux;
 										hold_counter <= (others => '0');
 									else
 										uop_hold <= '1';

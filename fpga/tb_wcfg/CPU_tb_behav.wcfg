@@ -15,15 +15,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="7,192.782516 us"></ZoomStartTime>
-      <ZoomEndTime time="7,214.702517 us"></ZoomEndTime>
-      <Cursor1Time time="7,198.512516 us"></Cursor1Time>
+      <ZoomStartTime time="81.953216 us"></ZoomStartTime>
+      <ZoomEndTime time="95.280702 us"></ZoomEndTime>
+      <Cursor1Time time="84.589123 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="216"></NameColumnWidth>
-      <ValueColumnWidth column_width="128"></ValueColumnWidth>
+      <ValueColumnWidth column_width="123"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="30" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -169,6 +169,11 @@
       <obj_property name="ObjectShortName">reg_k[15:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/arr_aux_regs" type="array">
+      <obj_property name="ElementShortName">arr_aux_regs[0:3][15:0]</obj_property>
+      <obj_property name="ObjectShortName">arr_aux_regs[0:3][15:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/reg_fl" type="array">
       <obj_property name="DisplayName">label</obj_property>
