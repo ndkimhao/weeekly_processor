@@ -226,6 +226,8 @@ gen_test_get_arg()
 
 #########################################################################
 
+append_snippet('test_uop_rom.asm')
+
 append_snippet('test_call_ret.asm')
 
 append_snippet('test_mem_access.asm')

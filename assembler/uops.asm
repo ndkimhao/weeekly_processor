@@ -16,31 +16,26 @@ reset:
 
     # --------------------
     # reset MMU
-    # phy=A:B, idx=X, start=Y, end=Z
-    con K, 1
-    mov X, K
-    mov Y, 0
-    con Z, 0xFFFF
-    mmu # idx=1, 0000-FFFF to 0000-FFFF
-
+    # slots 0-2 are empty, slot 3 is ROM
+    # mmu: phy=A:B, idx=X, start=Y, end=Z
+    mov X, 0
     con Y, 0xFFFF
     mov Z, 0
+    mmu # idx=0
+
+    con K, 1
     alu X, K, ADD
     mmu # idx=1
+
+    alu X, K, ADD
+    mmu # idx=2
 
     con A, 0xFF # and B = 0
     con Y, 0xD000
     con Z, 0xFFFF
     alu X, K, ADD
-    mmu # idx=2
-
+    mmu # idx=3 - ROM
     mov A, 0
-    con Y, 0xFFFF
-    mov Z, 0
-    alu X, K, ADD
-    mmu # idx=3
-
-    nop # wait 1 cycle to write MMU config
 
     # --------------------
     # reset Fetcher

@@ -66,14 +66,14 @@ begin
 		a_vstart(2) when s_inrange(2) = '1' else		
 		a_vstart(1) when s_inrange(1) = '1' else		
 		a_vstart(0) when s_inrange(0) = '1' else
-		(others => '0');
+		(others => '0'); -- default maps to the builtin RAM
 
 	r_phy <= 
 		a_phy(3) when s_inrange(3) = '1' else		
 		a_phy(2) when s_inrange(2) = '1' else		
 		a_phy(1) when s_inrange(1) = '1' else		
 		a_phy(0) when s_inrange(0) = '1' else
-		(others => '0');
+		(others => '0'); -- default maps to the builtin RAM
 
 	phy_addr <= std_logic_vector(r_phy + unsigned(virt_addr(AddrWidth-1 downto PageW)) - r_start)
 					& virt_addr(PageW-1 downto 0);

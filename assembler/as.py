@@ -42,11 +42,11 @@ def out_cmd(bincode, origs):
     global romlen
     if bincode is not None:
         bc = bincode.replace(' ', '')
-        out.append((romlen, bc, origs))
+        out.append((romlen + offset, bc, origs))
         romlen += len(bc) // 8
         assert len(bc) % 8 == 0, bincode
     else:
-        out.append((romlen, '', origs))
+        out.append((romlen + offset, '', origs))
 
 
 def parse_int(s: str):
@@ -66,6 +66,7 @@ def parse_int(s: str):
 
 
 def assemble(final):
+    global offset
     for lineidx, s in enumerate(lines):
         origs = lines_raw[lineidx].rstrip()
         # print(origs)
@@ -162,7 +163,11 @@ def assemble(final):
                         bincode += f'00011100 '
                         bintail += f'{a & 0xFF:08b} '
                     else:
-                        assert 0 <= a and a < (2**16), (lineidx, origs)
+                        if a < 0:
+                            assert -(2**15) <= a < (2**15)
+                            a = a & 0xFFFF
+                        else:
+                            assert 0 <= a < (2**16), (lineidx, origs)
                         bincode += f'11100000 '
                         bintail += f'{a % 256:08b} '
                         bintail += f'{a // 256:08b} '
@@ -220,7 +225,7 @@ for romidx, bincode, origs in out:
         comma = ',' if countprinted < romlen else ' '
         hexline += f'x"{int(head, 2):02x}"{comma}'
     romidxstr = f'{romidx:3x}' if hexline != '' else ''
-    out_lines.append(f'\t/* {romidxstr:>3} */ {hexline:48} -- {origs}'.rstrip())
+    out_lines.append(f'\t/* {romidxstr:>4} */ {hexline:48} -- {origs}'.rstrip())
 out_lines += [
     f'); -- arr_rom -------------------------------------------',
     f'',
