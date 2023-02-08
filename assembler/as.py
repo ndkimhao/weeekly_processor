@@ -158,11 +158,11 @@ def assemble(final):
                 else:
                     # immediate value
                     a = parse_int(a)
-                    assert 0 <= a and a < (2**16), (lineidx, origs)
-                    if a < 256:
+                    if -128 <= a < 128:
                         bincode += f'00011100 '
-                        bintail += f'{a:08b} '
+                        bintail += f'{a & 0xFF:08b} '
                     else:
+                        assert 0 <= a and a < (2**16), (lineidx, origs)
                         bincode += f'11100000 '
                         bintail += f'{a % 256:08b} '
                         bintail += f'{a // 256:08b} '

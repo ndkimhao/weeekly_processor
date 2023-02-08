@@ -269,7 +269,11 @@ begin
 									arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
 								end if;
 								if arg_head(4 downto 2) = "111" then
-									arg_b := x"00" & v_inst(to_integer(arg_tail));
+									if v_inst(to_integer(arg_tail))(7) = '0' then -- sign check
+										arg_b := x"00" & v_inst(to_integer(arg_tail));
+									else
+										arg_b := x"FF" & v_inst(to_integer(arg_tail));
+									end if;
 								elsif arg_head(4 downto 2) = "000" then
 									arg_b := x"0000";
 								else
