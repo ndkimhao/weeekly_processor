@@ -293,9 +293,7 @@ begin
 									else
 										arg_b := arr_regs(to_integer(unsigned(arg_head(4 downto 2))));
 									end if;
-									if arg_head(1 downto 0) /= "00" then
-										arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))) - 1);
-									end if;
+									arg_a := arg_a sll (to_integer(unsigned(arg_head(1 downto 0))));
 								end if; -- else not aux reg
 	
 								r_write := '1';

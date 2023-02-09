@@ -22,7 +22,7 @@ AUX_REGS = (
 )
 assert len(AUX_REGS) == 4
 
-MULT_MAP = {4: 3, 2: 2, 1: 1, 0: 0}
+MULT_MAP = {8: 3, 4: 2, 2: 1, 1: 0}
 CMDS_MAP = {v: i for i, v in enumerate(CMDS)}
 REGS_MAP = {v: i for i, v in enumerate(REGS)}
 AUX_REGS_MAP = {v: i for i, v in enumerate(AUX_REGS)}
