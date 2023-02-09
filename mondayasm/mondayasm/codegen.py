@@ -10,9 +10,9 @@ class CodeGen:
     def __init__(self):
         # idx, bin, command
         self.buf: list[tuple[int, str, str]] = []
-        self.code_offset = 0x0000
+        self.code_offset = 0xd000
 
-        self.cur_codelen = 0
+        self.romlen = 0
         self.label_map: dict[str, int] = {}
 
     def _translate_bincode(self, s: str) -> tuple[str, int]:
@@ -34,8 +34,8 @@ class CodeGen:
         return hexcode, instlen
 
     def _gen_block(self, blk: ScopeBuilder):
-        cur_offset = self.code_offset + self.cur_codelen
         for inst in blk.instructions:
+            cur_offset = self.code_offset + self.romlen
             if isinstance(inst, Directive):
                 assert inst.name in ('.label',)
                 lbl = inst.args[0]
@@ -46,7 +46,7 @@ class CodeGen:
                 assert isinstance(inst, Instruction)
                 hexcode, instlen = self._translate_bincode(inst.bincode)
                 self.buf.append((cur_offset, hexcode, '  ' + str(inst)))
-                cur_offset += instlen
+                self.romlen += instlen
 
     def _fix_refs(self):
         label_hexmap = {lbl: f'{v % 256:02x} {v // 256:02x}' for lbl, v in self.label_map.items()}
@@ -68,5 +68,46 @@ class CodeGen:
     def write(self, file) -> 'CodeGen':
         with open(file, 'w') as f:
             for idx, hexcode, cmd in self.buf:
-                f.write(f'{hexcode:<30} # {idx:4x} | {cmd}\n')
+                idxstr = f'{idx:x}' if hexcode != '' else ''
+                f.write(f'{hexcode:<30} # {idxstr:>4} | {cmd}\n')
+        return self
+
+    def write_vhd(self, file) -> 'CodeGen':
+        with open(file, 'w') as f:
+            f.write(f'''
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use work.Constants.all;
+use work.Types.all;
+
+package CodeROM is
+
+-- ##############################################################
+-- ## BEGIN ROM
+-- ##############################################################
+
+constant ROMSize : integer := {self.romlen};
+type TArrROM is array (0 to ROMSize) of TByte;
+constant arr_rom : TArrROM := (
+'''
+                    )
+
+            for idx, hexcode, cmd in self.buf:
+                idxstr = f'{idx:x}' if hexcode != '' else ''
+                hexline = ''.join([f'x"{s}",' for s in hexcode.split(' ') if s != ''])
+                f.write(f'    {hexline:<48} -- {idxstr:>4} | {cmd}\n')
+
+            f.write('''
+    x"d8" -- HALT - end of rom
+); -- arr_rom -------------------------------------------
+
+-- ##############################################################
+-- ## END ROM
+-- ##############################################################
+
+end package;
+'''
+                    )
         return self

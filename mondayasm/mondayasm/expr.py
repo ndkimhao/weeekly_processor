@@ -11,29 +11,29 @@ class AsmArg:
     x: ArgEncode
 
     def __str__(self) -> str:
-        if self.a.value == '' and self.b.value == '':
-            return self.x.value
+        a, b, x = self.a.value, self.b.value, self.x.value
+        if a == '' and self.b.value == '':
+            return x
         s = ''
-        if str(self.a.value) != '0':
-            s += str(self.a.value)
-        if str(self.x.value) != '1':
-            s += f'*{self.x.value}'
-        if str(self.b.value) != '0':
+        if str(a) != '0':
+            s += f'0x{a:x}' if isinstance(a, int) else str(a)
+        if str(x) != '1':
+            s += f'*{x}'
+        if str(b) != '0':
             if s != '':
                 s += ' + '
-            s += f'{str(self.b.value)}'
+            s += f'0x{b:x}' if isinstance(b, int) else str(b)
         if s == '':
             s = '0'
         return s
 
     @property
-    def bincode(self) -> str:
-        head = self.a.bincode + self.b.bincode + self.x.bincode
-        tail = self.a.tailbincode + self.b.tailbincode
-        if tail != '':
-            return f'{head} {tail}'
-        else:
-            return head
+    def bincode_head(self) -> str:
+        return self.a.bincode + self.b.bincode + self.x.bincode
+
+    @property
+    def bincode_tail(self) -> str:
+        return self.a.tailbincode + self.b.tailbincode
 
 
 @dataclass(frozen=True)
@@ -128,6 +128,7 @@ class Expr:
         a = ArgEncode('0', '000', '')
         b = ArgEncode('0', '000', '')
         x = ArgEncode('1', '00', '')
+        const_enc = ArgEncode(const, '111', f'{(const & 0xFFFF) % 256:08b}{(const & 0xFFFF) // 256:08b}')
         if len(labels) != 0:
             assert len(regs) == 0 and const == 0
             # unknown constant
@@ -142,11 +143,11 @@ class Expr:
                 b = ArgEncode(const, '111', f'{const & 0xFF:08b}')
             else:
                 # large constant: a = const, b = 0, x = 1
-                a = ArgEncode(const, '111', f'{const & 0xFFFF:016b}')
+                a = const_enc
         elif not -128 <= const < 128:
             # a = big const, b = register, x = 1
             assert len(regs) == 1 and regs[0].factor == 1
-            a = ArgEncode(f'0x{const:04x}', '111', f'{const & 0xFFFF:016b}')
+            a = const_enc
             b = ArgEncode(regs[0].value, f'{REGS_MAP[regs[0].value]:03b}', '')
         elif regs[0].value in AUX_REGS_MAP:
             assert len(regs) == 1 and regs[0].factor == 1
@@ -162,7 +163,6 @@ class Expr:
                 # b = small const
                 assert -128 <= const < 128
                 assert len(regs) == 1
-                print(f' --- {const & 0xFF:08b}')
                 b = ArgEncode(const, '111', f'{const & 0xFF:08b}')
             elif len(regs) == 2:
                 # b = reg

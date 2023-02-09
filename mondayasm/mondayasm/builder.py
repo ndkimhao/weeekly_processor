@@ -17,7 +17,9 @@ class Instruction:
     def bincode(self) -> str:
         s = self.cmd.bincode + self.cmd.tailbincode
         for arg in self.args:
-            s += ' ' + arg.bincode
+            s += ' ' + arg.bincode_head
+        for arg in self.args:
+            s += ' ' + arg.bincode_tail
         return s
 
     def __str__(self):
@@ -104,8 +106,8 @@ def unwrap_indirect(a):
     if isinstance(a, (IndirectExpr, list)):
         indirect = True
         if isinstance(a, list):
-            assert len(a) == 1 and isinstance(a[0], Expr)
-            a = a[0]
+            assert len(a) == 1
+            a = Expr.to_expr(a[0])
         else:
             a = a.expr
     return a, indirect
@@ -140,7 +142,12 @@ def emit_command(name: str, a=None, b=None, c=None):
     cur_blk.add(inst)
 
 
-def emit_command_call(name, target, emit_call: bool):
+def emit_command_call(op_name, target, emit_call: bool):
+    if not callable(target):
+        if emit_call:
+            emit_command(op_name, target)
+        return
+
     blk = None
     visit_fn = callable(target) and target not in Global.visited_fns
     lbl_start = f'fn_{target.__name__}'
@@ -150,17 +157,18 @@ def emit_command_call(name, target, emit_call: bool):
         Global.add_block(blk)
         Global.enter_scope(blk)
         _Label(lbl_start, anon=False)
+        Global.visited_fns.add(target)
         target()
 
     if emit_call:
-        emit_command('call', Expr.to_expr(ConstLabel(lbl_start)))
+        emit_command(op_name, Expr.to_expr(ConstLabel(lbl_start)))
 
     if visit_fn:
         _Label(lbl_end, anon=False)
         Global.exit_scope(blk)
 
 
-def _Label(name: str = '', anon: bool = True, emit_label: bool = True) -> Expr:
+def _Label(name: str = '', anon: bool = False, emit_label: bool = True) -> Expr:
     if name == '':
         name = Global.gen_label_name(Global.current_scope().name)
     elif anon:
@@ -168,6 +176,10 @@ def _Label(name: str = '', anon: bool = True, emit_label: bool = True) -> Expr:
     if emit_label:
         Global.current_scope().add(Directive('.label', (name,)))
     return Expr.to_expr(ConstLabel(name))
+
+
+def _AnonLabel(name: str = '', emit_label: bool = True) -> Expr:
+    return _Label(name, anon=True, emit_label=emit_label)
 
 
 def _ConstData(name: str, obj) -> Expr:
@@ -209,8 +221,8 @@ class BlockContextManager:
     def __enter__(self) -> 'BlockContextManager':
         name = Global.current_scope().name if self.name == '' else self.name
         blk_name = Global.gen_label_name(name, '')
-        self.name_start = 'B_' + blk_name
-        self.name_end = 'E_' + blk_name
+        self.name_start = '_B_' + blk_name
+        self.name_end = '_E_' + blk_name
         self.label_start = _Label(self.name_start, anon=False)
         self.label_end = Expr.to_expr(ConstLabel(self.name_end))
         return self
