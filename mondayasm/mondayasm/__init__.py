@@ -11,3 +11,5 @@ from mondayasm.builder import (
     _Block as Block,
 )
 from mondayasm.codegen import CodeGen
+
+GLOBALS = (A, B, C, D, SP, PC, E, F, G, H, M,)

@@ -122,9 +122,11 @@ def emit_command(name: str, a=None, b=None, c=None):
         args.append(a.assemble())
     if b is not None:
         b = Expr.to_expr(b)
+        assert len(args) == 1
         args.append(b.assemble())
     if c is not None:
         c = Expr.to_expr(c)
+        assert len(args) == 2
         args.append(c.assemble())
 
     cmd_ord = (name.upper(), len(args))
