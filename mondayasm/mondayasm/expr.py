@@ -16,13 +16,16 @@ class AsmArg:
             return x
         s = ''
         if str(a) != '0':
-            s += f'0x{a:x}' if isinstance(a, int) else str(a)
+            s += f'0x{a & 0xFFFF:x}' if isinstance(a, int) else str(a)
         if str(x) != '1':
             s += f'*{x}'
         if str(b) != '0':
             if s != '':
                 s += ' + '
-            s += f'0x{b:x}' if isinstance(b, int) else str(b)
+            if isinstance(b, int) and b < 0:
+                s += str(b)
+            else:
+                s += f'0x{b & 0xFF:x}' if isinstance(b, int) else str(b)
         if s == '':
             s = '0'
         return s

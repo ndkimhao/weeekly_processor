@@ -316,19 +316,19 @@ constant arr_rom : TArrROM := (
     x"60",x"20",x"e0",x"aa",x"00",                   -- d5ea |   mov A, 0xaa
     x"60",x"40",x"e0",x"bb",x"00",                   -- d5ef |   mov B, 0xbb
     x"60",x"fe",x"e0",x"55",x"01",                   -- d5f4 |   mov G, 0x155
-    x"b6",x"e0",x"1c",x"fe",x"39",x"30",x"85",       -- d5f9 |   xor [0x3039], 0x-7b, G
+    x"b6",x"e0",x"1c",x"fe",x"39",x"30",x"85",       -- d5f9 |   xor [0x3039], -123, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"d0",x"fe",x"0d",x"d0", -- d600 |   jne [0x3039], 0xfed0, $fail
-    x"ae",x"3e",x"fe",x"21",x"f6",                   -- d60a |   and [A*4 + 0x-a], G, A*2
+    x"ae",x"3e",x"fe",x"21",x"f6",                   -- d60a |   and [A*4 + -10], G, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"54",x"01",x"0d",x"d0", -- d60f |   jne [0x29e], 0x154, $fail
-    x"86",x"21",x"e4",x"3e",x"de",x"fa",x"f6",       -- d619 |   sub [A*2], 0xfade + A, A*4 + 0x-a
+    x"86",x"21",x"e4",x"3e",x"de",x"fa",x"f6",       -- d619 |   sub [A*2], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ea",x"f8",x"0d",x"d0", -- d620 |   jne [0x154], 0xf8ea, $fail
     x"a6",x"e0",x"20",x"21",x"39",x"30",             -- d62a |   ishr [0x3039], A, A*2
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"0a",x"0d",x"d0", -- d630 |   jne [0x3039], 0xa, $fail
-    x"aa",x"fe",x"2a",x"3e",x"f6",                   -- d639 |   shl [G], A*4 + B, A*4 + 0x-a
+    x"aa",x"fe",x"2a",x"3e",x"f6",                   -- d639 |   shl [G], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"00",x"c0",x"0d",x"d0", -- d63e |   jne [0x155], 0xc000, $fail
-    x"b2",x"fe",x"1c",x"fe",x"85",                   -- d648 |   or [G], 0x-7b, G
+    x"b2",x"fe",x"1c",x"fe",x"85",                   -- d648 |   or [G], -123, G
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"d5",x"ff",x"0d",x"d0", -- d64d |   jne [0x155], 0xffd5, $fail
-    x"8a",x"2a",x"1c",x"20",x"85",                   -- d657 |   mul [A*4 + B], 0x-7b, A
+    x"8a",x"2a",x"1c",x"20",x"85",                   -- d657 |   mul [A*4 + B], -123, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"52",x"ae",x"0d",x"d0", -- d65c |   jne [0x363], 0xae52, $fail
     x"a6",x"e0",x"e0",x"2a",x"39",x"30",x"39",x"30", -- d666 |   ishr [0x3039], 0x3039, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"07",x"06",x"0d",x"d0", -- d66e |   jne [0x3039], 0x607, $fail
@@ -352,21 +352,21 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"03",x"03",x"0d",x"d0", -- d6f2 |   jne [0x155], 0x303, $fail
     x"ae",x"21",x"2a",x"e4",x"de",x"fa",             -- d6fc |   and [A*2], A*4 + B, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"00",x"03",x"0d",x"d0", -- d702 |   jne [0x154], 0x300, $fail
-    x"82",x"20",x"3e",x"3e",x"f6",x"f6",             -- d70c |   add [A], A*4 + 0x-a, A*4 + 0x-a
+    x"82",x"20",x"3e",x"3e",x"f6",x"f6",             -- d70c |   add [A], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"3c",x"05",x"0d",x"d0", -- d712 |   jne [0xaa], 0x53c, $fail
-    x"b2",x"e0",x"21",x"1c",x"39",x"30",x"85",       -- d71c |   or [0x3039], A*2, 0x-7b
+    x"b2",x"e0",x"21",x"1c",x"39",x"30",x"85",       -- d71c |   or [0x3039], A*2, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"d5",x"ff",x"0d",x"d0", -- d723 |   jne [0x3039], 0xffd5, $fail
     x"82",x"e0",x"fe",x"fe",x"39",x"30",             -- d72d |   add [0x3039], G, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"aa",x"02",x"0d",x"d0", -- d733 |   jne [0x3039], 0x2aa, $fail
     x"ae",x"fe",x"e0",x"e4",x"39",x"30",x"de",x"fa", -- d73d |   and [G], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"08",x"30",x"0d",x"d0", -- d745 |   jne [0x155], 0x3008, $fail
-    x"8e",x"e0",x"2a",x"3e",x"39",x"30",x"f6",       -- d74f |   imul [0x3039], A*4 + B, A*4 + 0x-a
+    x"8e",x"e0",x"2a",x"3e",x"39",x"30",x"f6",       -- d74f |   imul [0x3039], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"1a",x"dd",x"0d",x"d0", -- d756 |   jne [0x3039], 0xdd1a, $fail
     x"b2",x"21",x"e0",x"20",x"39",x"30",             -- d760 |   or [A*2], 0x3039, A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"bb",x"30",x"0d",x"d0", -- d766 |   jne [0x154], 0x30bb, $fail
-    x"8e",x"21",x"3e",x"21",x"f6",                   -- d770 |   imul [A*2], A*4 + 0x-a, A*2
+    x"8e",x"21",x"3e",x"21",x"f6",                   -- d770 |   imul [A*2], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"d8",x"79",x"0d",x"d0", -- d775 |   jne [0x154], 0x79d8, $fail
-    x"82",x"3e",x"1c",x"2a",x"f6",x"85",             -- d77f |   add [A*4 + 0x-a], 0x-7b, A*4 + B
+    x"82",x"3e",x"1c",x"2a",x"f6",x"85",             -- d77f |   add [A*4 + -10], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"e8",x"02",x"0d",x"d0", -- d785 |   jne [0x29e], 0x2e8, $fail
     x"86",x"fe",x"e4",x"21",x"de",x"fa",             -- d78f |   sub [G], 0xfade + A, A*2
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"34",x"fa",x"0d",x"d0", -- d795 |   jne [0x155], 0xfa34, $fail
@@ -376,19 +376,19 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"00",x"e0",x"54",x"01",x"0d",x"d0", -- d7b3 |   jne [0x154], 0, $fail
     x"86",x"2a",x"2a",x"fe",                         -- d7bb |   sub [A*4 + B], A*4 + B, G
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"0e",x"02",x"0d",x"d0", -- d7bf |   jne [0x363], 0x20e, $fail
-    x"82",x"3e",x"3e",x"20",x"f6",x"f6",             -- d7c9 |   add [A*4 + 0x-a], A*4 + 0x-a, A
+    x"82",x"3e",x"3e",x"20",x"f6",x"f6",             -- d7c9 |   add [A*4 + -10], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"48",x"03",x"0d",x"d0", -- d7cf |   jne [0x29e], 0x348, $fail
     x"86",x"21",x"e0",x"e0",x"39",x"30",x"39",x"30", -- d7d9 |   sub [A*2], 0x3039, 0x3039
     x"ee",x"e0",x"00",x"e0",x"54",x"01",x"0d",x"d0", -- d7e1 |   jne [0x154], 0, $fail
-    x"a2",x"20",x"1c",x"fe",x"85",                   -- d7e9 |   shr [A], 0x-7b, G
+    x"a2",x"20",x"1c",x"fe",x"85",                   -- d7e9 |   shr [A], -123, G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"fc",x"07",x"0d",x"d0", -- d7ee |   jne [0xaa], 0x7fc, $fail
-    x"aa",x"2a",x"1c",x"2a",x"85",                   -- d7f8 |   shl [A*4 + B], 0x-7b, A*4 + B
+    x"aa",x"2a",x"1c",x"2a",x"85",                   -- d7f8 |   shl [A*4 + B], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"28",x"fc",x"0d",x"d0", -- d7fd |   jne [0x363], 0xfc28, $fail
     x"b2",x"2a",x"20",x"20",                         -- d807 |   or [A*4 + B], A, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"aa",x"00",x"0d",x"d0", -- d80b |   jne [0x363], 0xaa, $fail
-    x"86",x"20",x"20",x"1c",x"85",                   -- d815 |   sub [A], A, 0x-7b
+    x"86",x"20",x"20",x"1c",x"85",                   -- d815 |   sub [A], A, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"25",x"01",x"0d",x"d0", -- d81a |   jne [0xaa], 0x125, $fail
-    x"a6",x"3e",x"e4",x"21",x"f6",x"de",x"fa",       -- d824 |   ishr [A*4 + 0x-a], 0xfade + A, A*2
+    x"a6",x"3e",x"e4",x"21",x"f6",x"de",x"fa",       -- d824 |   ishr [A*4 + -10], 0xfade + A, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"b8",x"ff",x"0d",x"d0", -- d82b |   jne [0x29e], 0xffb8, $fail
     x"86",x"20",x"e0",x"e0",x"39",x"30",x"39",x"30", -- d835 |   sub [A], 0x3039, 0x3039
     x"ee",x"e0",x"00",x"e0",x"aa",x"00",x"0d",x"d0", -- d83d |   jne [0xaa], 0, $fail
@@ -400,7 +400,7 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"72",x"e2",x"0d",x"d0", -- d86d |   jne [0xaa], 0xe272, $fail
     x"a2",x"21",x"e4",x"2a",x"de",x"fa",             -- d877 |   shr [A*2], 0xfade + A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"71",x"1f",x"0d",x"d0", -- d87d |   jne [0x154], 0x1f71, $fail
-    x"a2",x"2a",x"2a",x"1c",x"85",                   -- d887 |   shr [A*4 + B], A*4 + B, 0x-7b
+    x"a2",x"2a",x"2a",x"1c",x"85",                   -- d887 |   shr [A*4 + B], A*4 + B, -123
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"1b",x"0d",x"d0", -- d88c |   jne [0x363], 0x1b, $fail
     x"a2",x"20",x"21",x"2a",                         -- d895 |   shr [A], A*2, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"2a",x"0d",x"d0", -- d899 |   jne [0xaa], 0x2a, $fail
@@ -408,11 +408,11 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"22",x"0d",x"d0", -- d8a8 |   jne [0x3039], 0x22, $fail
     x"a2",x"e0",x"e0",x"e0",x"39",x"30",x"39",x"30",x"39",x"30", -- d8b1 |   shr [0x3039], 0x3039, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"18",x"0d",x"d0", -- d8bb |   jne [0x3039], 0x18, $fail
-    x"8a",x"20",x"fe",x"3e",x"f6",                   -- d8c4 |   mul [A], G, A*4 + 0x-a
+    x"8a",x"20",x"fe",x"3e",x"f6",                   -- d8c4 |   mul [A], G, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"76",x"7c",x"0d",x"d0", -- d8c9 |   jne [0xaa], 0x7c76, $fail
     x"82",x"2a",x"e0",x"2a",x"39",x"30",             -- d8d3 |   add [A*4 + B], 0x3039, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"9c",x"33",x"0d",x"d0", -- d8d9 |   jne [0x363], 0x339c, $fail
-    x"8e",x"fe",x"3e",x"2a",x"f6",                   -- d8e3 |   imul [G], A*4 + 0x-a, A*4 + B
+    x"8e",x"fe",x"3e",x"2a",x"f6",                   -- d8e3 |   imul [G], A*4 + -10, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"1a",x"dd",x"0d",x"d0", -- d8e8 |   jne [0x155], 0xdd1a, $fail
     x"aa",x"20",x"21",x"e0",x"39",x"30",             -- d8f2 |   shl [A], A*2, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"00",x"a8",x"0d",x"d0", -- d8f8 |   jne [0xaa], 0xa800, $fail
@@ -422,9 +422,9 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"b7",x"04",x"0d",x"d0", -- d914 |   jne [0x363], 0x4b7, $fail
     x"a2",x"20",x"fe",x"e4",x"de",x"fa",             -- d91e |   shr [A], G, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"01",x"0d",x"d0", -- d924 |   jne [0xaa], 0x1, $fail
-    x"82",x"fe",x"1c",x"20",x"85",                   -- d92d |   add [G], 0x-7b, A
+    x"82",x"fe",x"1c",x"20",x"85",                   -- d92d |   add [G], -123, A
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"2f",x"0d",x"d0", -- d932 |   jne [0x155], 0x2f, $fail
-    x"8e",x"3e",x"fe",x"e0",x"f6",x"39",x"30",       -- d93b |   imul [A*4 + 0x-a], G, 0x3039
+    x"8e",x"3e",x"fe",x"e0",x"f6",x"39",x"30",       -- d93b |   imul [A*4 + -10], G, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"ed",x"3b",x"0d",x"d0", -- d942 |   jne [0x29e], 0x3bed, $fail
     x"8a",x"fe",x"e4",x"2a",x"de",x"fa",             -- d94c |   mul [G], 0xfade + A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"98",x"dd",x"0d",x"d0", -- d952 |   jne [0x155], 0xdd98, $fail
@@ -432,75 +432,75 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"00",x"e0",x"55",x"01",x"0d",x"d0", -- d960 |   jne [0x155], 0, $fail
     x"b2",x"21",x"20",x"20",                         -- d968 |   or [A*2], A, A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"aa",x"00",x"0d",x"d0", -- d96c |   jne [0x154], 0xaa, $fail
-    x"b2",x"3e",x"1c",x"21",x"f6",x"85",             -- d976 |   or [A*4 + 0x-a], 0x-7b, A*2
+    x"b2",x"3e",x"1c",x"21",x"f6",x"85",             -- d976 |   or [A*4 + -10], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"d5",x"ff",x"0d",x"d0", -- d97c |   jne [0x29e], 0xffd5, $fail
-    x"8a",x"2a",x"1c",x"1c",x"85",x"85",             -- d986 |   mul [A*4 + B], 0x-7b, 0x-7b
+    x"8a",x"2a",x"1c",x"1c",x"85",x"85",             -- d986 |   mul [A*4 + B], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"19",x"3b",x"0d",x"d0", -- d98c |   jne [0x363], 0x3b19, $fail
     x"8a",x"e0",x"e4",x"21",x"39",x"30",x"de",x"fa", -- d996 |   mul [0x3039], 0xfade + A, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"a0",x"10",x"0d",x"d0", -- d99e |   jne [0x3039], 0x10a0, $fail
-    x"86",x"fe",x"20",x"3e",x"f6",                   -- d9a8 |   sub [G], A, A*4 + 0x-a
+    x"86",x"fe",x"20",x"3e",x"f6",                   -- d9a8 |   sub [G], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"0c",x"fe",x"0d",x"d0", -- d9ad |   jne [0x155], 0xfe0c, $fail
     x"aa",x"20",x"2a",x"21",                         -- d9b7 |   shl [A], A*4 + B, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"30",x"36",x"0d",x"d0", -- d9bb |   jne [0xaa], 0x3630, $fail
-    x"b6",x"21",x"1c",x"2a",x"85",                   -- d9c5 |   xor [A*2], 0x-7b, A*4 + B
+    x"b6",x"21",x"1c",x"2a",x"85",                   -- d9c5 |   xor [A*2], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"e6",x"fc",x"0d",x"d0", -- d9ca |   jne [0x154], 0xfce6, $fail
-    x"86",x"2a",x"3e",x"1c",x"f6",x"85",             -- d9d4 |   sub [A*4 + B], A*4 + 0x-a, 0x-7b
+    x"86",x"2a",x"3e",x"1c",x"f6",x"85",             -- d9d4 |   sub [A*4 + B], A*4 + -10, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"19",x"03",x"0d",x"d0", -- d9da |   jne [0x363], 0x319, $fail
     x"86",x"e0",x"e0",x"e4",x"39",x"30",x"39",x"30",x"de",x"fa", -- d9e4 |   sub [0x3039], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"b1",x"34",x"0d",x"d0", -- d9ee |   jne [0x3039], 0x34b1, $fail
     x"ae",x"fe",x"2a",x"e4",x"de",x"fa",             -- d9f8 |   and [G], A*4 + B, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"00",x"03",x"0d",x"d0", -- d9fe |   jne [0x155], 0x300, $fail
-    x"aa",x"20",x"3e",x"fe",x"f6",                   -- da08 |   shl [A], A*4 + 0x-a, G
+    x"aa",x"20",x"3e",x"fe",x"f6",                   -- da08 |   shl [A], A*4 + -10, G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"c0",x"53",x"0d",x"d0", -- da0d |   jne [0xaa], 0x53c0, $fail
     x"a6",x"fe",x"fe",x"e4",x"de",x"fa",             -- da17 |   ishr [G], G, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"01",x"0d",x"d0", -- da1d |   jne [0x155], 0x1, $fail
     x"ae",x"21",x"e0",x"2a",x"39",x"30",             -- da26 |   and [A*2], 0x3039, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"21",x"0d",x"d0", -- da2c |   jne [0x154], 0x21, $fail
-    x"a6",x"21",x"21",x"1c",x"85",                   -- da35 |   ishr [A*2], A*2, 0x-7b
+    x"a6",x"21",x"21",x"1c",x"85",                   -- da35 |   ishr [A*2], A*2, -123
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"0a",x"0d",x"d0", -- da3a |   jne [0x154], 0xa, $fail
     x"b6",x"fe",x"21",x"e0",x"39",x"30",             -- da43 |   xor [G], A*2, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"6d",x"31",x"0d",x"d0", -- da49 |   jne [0x155], 0x316d, $fail
-    x"86",x"2a",x"3e",x"2a",x"f6",                   -- da53 |   sub [A*4 + B], A*4 + 0x-a, A*4 + B
+    x"86",x"2a",x"3e",x"2a",x"f6",                   -- da53 |   sub [A*4 + B], A*4 + -10, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"3b",x"ff",x"0d",x"d0", -- da58 |   jne [0x363], 0xff3b, $fail
-    x"b2",x"e0",x"fe",x"1c",x"39",x"30",x"85",       -- da62 |   or [0x3039], G, 0x-7b
+    x"b2",x"e0",x"fe",x"1c",x"39",x"30",x"85",       -- da62 |   or [0x3039], G, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"d5",x"ff",x"0d",x"d0", -- da69 |   jne [0x3039], 0xffd5, $fail
-    x"aa",x"2a",x"3e",x"20",x"f6",                   -- da73 |   shl [A*4 + B], A*4 + 0x-a, A
+    x"aa",x"2a",x"3e",x"20",x"f6",                   -- da73 |   shl [A*4 + B], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"00",x"78",x"0d",x"d0", -- da78 |   jne [0x363], 0x7800, $fail
     x"86",x"e0",x"21",x"20",x"39",x"30",             -- da82 |   sub [0x3039], A*2, A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"aa",x"00",x"0d",x"d0", -- da88 |   jne [0x3039], 0xaa, $fail
     x"b6",x"e0",x"2a",x"21",x"39",x"30",             -- da92 |   xor [0x3039], A*4 + B, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"37",x"02",x"0d",x"d0", -- da98 |   jne [0x3039], 0x237, $fail
-    x"ae",x"2a",x"e0",x"1c",x"39",x"30",x"85",       -- daa2 |   and [A*4 + B], 0x3039, 0x-7b
+    x"ae",x"2a",x"e0",x"1c",x"39",x"30",x"85",       -- daa2 |   and [A*4 + B], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"01",x"30",x"0d",x"d0", -- daa9 |   jne [0x363], 0x3001, $fail
     x"8e",x"fe",x"2a",x"e0",x"39",x"30",             -- dab3 |   imul [G], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"0b",x"51",x"0d",x"d0", -- dab9 |   jne [0x155], 0x510b, $fail
     x"b2",x"2a",x"20",x"fe",                         -- dac3 |   or [A*4 + B], A, G
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"ff",x"01",x"0d",x"d0", -- dac7 |   jne [0x363], 0x1ff, $fail
-    x"a6",x"3e",x"e0",x"20",x"f6",x"39",x"30",       -- dad1 |   ishr [A*4 + 0x-a], 0x3039, A
+    x"a6",x"3e",x"e0",x"20",x"f6",x"39",x"30",       -- dad1 |   ishr [A*4 + -10], 0x3039, A
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"0c",x"0d",x"d0", -- dad8 |   jne [0x29e], 0xc, $fail
     x"aa",x"e0",x"e4",x"e4",x"39",x"30",x"de",x"fa",x"de",x"fa", -- dae1 |   shl [0x3039], 0xfade + A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"00",x"88",x"0d",x"d0", -- daeb |   jne [0x3039], 0x8800, $fail
     x"aa",x"20",x"e0",x"fe",x"39",x"30",             -- daf5 |   shl [A], 0x3039, G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"20",x"07",x"0d",x"d0", -- dafb |   jne [0xaa], 0x720, $fail
-    x"b6",x"fe",x"3e",x"21",x"f6",                   -- db05 |   xor [G], A*4 + 0x-a, A*2
+    x"b6",x"fe",x"3e",x"21",x"f6",                   -- db05 |   xor [G], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"ca",x"03",x"0d",x"d0", -- db0a |   jne [0x155], 0x3ca, $fail
-    x"b2",x"2a",x"fe",x"1c",x"85",                   -- db14 |   or [A*4 + B], G, 0x-7b
+    x"b2",x"2a",x"fe",x"1c",x"85",                   -- db14 |   or [A*4 + B], G, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"d5",x"ff",x"0d",x"d0", -- db19 |   jne [0x363], 0xffd5, $fail
-    x"86",x"3e",x"1c",x"e0",x"f6",x"85",x"39",x"30", -- db23 |   sub [A*4 + 0x-a], 0x-7b, 0x3039
+    x"86",x"3e",x"1c",x"e0",x"f6",x"85",x"39",x"30", -- db23 |   sub [A*4 + -10], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"4c",x"cf",x"0d",x"d0", -- db2b |   jne [0x29e], 0xcf4c, $fail
     x"aa",x"21",x"21",x"21",                         -- db35 |   shl [A*2], A*2, A*2
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"40",x"15",x"0d",x"d0", -- db39 |   jne [0x154], 0x1540, $fail
     x"86",x"e0",x"e4",x"e0",x"39",x"30",x"de",x"fa",x"39",x"30", -- db43 |   sub [0x3039], 0xfade + A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"4f",x"cb",x"0d",x"d0", -- db4d |   jne [0x3039], 0xcb4f, $fail
-    x"a2",x"21",x"e0",x"1c",x"39",x"30",x"85",       -- db57 |   shr [A*2], 0x3039, 0x-7b
+    x"a2",x"21",x"e0",x"1c",x"39",x"30",x"85",       -- db57 |   shr [A*2], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"81",x"01",x"0d",x"d0", -- db5e |   jne [0x154], 0x181, $fail
     x"a6",x"e0",x"e4",x"20",x"39",x"30",x"de",x"fa", -- db68 |   ishr [0x3039], 0xfade + A, A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"fe",x"ff",x"0d",x"d0", -- db70 |   jne [0x3039], 0xfffe, $fail
-    x"b6",x"3e",x"e4",x"e0",x"f6",x"de",x"fa",x"39",x"30", -- db7a |   xor [A*4 + 0x-a], 0xfade + A, 0x3039
+    x"b6",x"3e",x"e4",x"e0",x"f6",x"de",x"fa",x"39",x"30", -- db7a |   xor [A*4 + -10], 0xfade + A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"b1",x"cb",x"0d",x"d0", -- db83 |   jne [0x29e], 0xcbb1, $fail
-    x"86",x"3e",x"21",x"3e",x"f6",x"f6",             -- db8d |   sub [A*4 + 0x-a], A*2, A*4 + 0x-a
+    x"86",x"3e",x"21",x"3e",x"f6",x"f6",             -- db8d |   sub [A*4 + -10], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"b6",x"fe",x"0d",x"d0", -- db93 |   jne [0x29e], 0xfeb6, $fail
-    x"8e",x"fe",x"1c",x"3e",x"85",x"f6",             -- db9d |   imul [G], 0x-7b, A*4 + 0x-a
+    x"8e",x"fe",x"1c",x"3e",x"85",x"f6",             -- db9d |   imul [G], -123, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"16",x"be",x"0d",x"d0", -- dba3 |   jne [0x155], 0xbe16, $fail
     x"aa",x"20",x"2a",x"2a",                         -- dbad |   shl [A], A*4 + B, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"18",x"1b",x"0d",x"d0", -- dbb1 |   jne [0xaa], 0x1b18, $fail
@@ -514,47 +514,47 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"00",x"63",x"0d",x"d0", -- dbee |   jne [0xaa], 0x6300, $fail
     x"ae",x"2a",x"fe",x"20",                         -- dbf8 |   and [A*4 + B], G, A
     x"ee",x"e0",x"00",x"e0",x"63",x"03",x"0d",x"d0", -- dbfc |   jne [0x363], 0, $fail
-    x"b6",x"fe",x"21",x"1c",x"85",                   -- dc04 |   xor [G], A*2, 0x-7b
+    x"b6",x"fe",x"21",x"1c",x"85",                   -- dc04 |   xor [G], A*2, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"d1",x"fe",x"0d",x"d0", -- dc09 |   jne [0x155], 0xfed1, $fail
     x"ae",x"e0",x"fe",x"21",x"39",x"30",             -- dc13 |   and [0x3039], G, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"54",x"01",x"0d",x"d0", -- dc19 |   jne [0x3039], 0x154, $fail
-    x"b2",x"3e",x"e0",x"2a",x"f6",x"39",x"30",       -- dc23 |   or [A*4 + 0x-a], 0x3039, A*4 + B
+    x"b2",x"3e",x"e0",x"2a",x"f6",x"39",x"30",       -- dc23 |   or [A*4 + -10], 0x3039, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"7b",x"33",x"0d",x"d0", -- dc2a |   jne [0x29e], 0x337b, $fail
-    x"b6",x"fe",x"e4",x"3e",x"de",x"fa",x"f6",       -- dc34 |   xor [G], 0xfade + A, A*4 + 0x-a
+    x"b6",x"fe",x"e4",x"3e",x"de",x"fa",x"f6",       -- dc34 |   xor [G], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"16",x"f9",x"0d",x"d0", -- dc3b |   jne [0x155], 0xf916, $fail
     x"8e",x"2a",x"21",x"2a",                         -- dc45 |   imul [A*4 + B], A*2, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"7c",x"7f",x"0d",x"d0", -- dc49 |   jne [0x363], 0x7f7c, $fail
     x"a6",x"fe",x"21",x"fe",                         -- dc53 |   ishr [G], A*2, G
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"0a",x"0d",x"d0", -- dc57 |   jne [0x155], 0xa, $fail
-    x"8a",x"21",x"1c",x"1c",x"85",x"85",             -- dc60 |   mul [A*2], 0x-7b, 0x-7b
+    x"8a",x"21",x"1c",x"1c",x"85",x"85",             -- dc60 |   mul [A*2], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"19",x"3b",x"0d",x"d0", -- dc66 |   jne [0x154], 0x3b19, $fail
     x"8e",x"2a",x"e4",x"20",x"de",x"fa",             -- dc70 |   imul [A*4 + B], 0xfade + A, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"50",x"08",x"0d",x"d0", -- dc76 |   jne [0x363], 0x850, $fail
-    x"a2",x"3e",x"3e",x"3e",x"f6",x"f6",x"f6",       -- dc80 |   shr [A*4 + 0x-a], A*4 + 0x-a, A*4 + 0x-a
+    x"a2",x"3e",x"3e",x"3e",x"f6",x"f6",x"f6",       -- dc80 |   shr [A*4 + -10], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"00",x"e0",x"9e",x"02",x"0d",x"d0", -- dc87 |   jne [0x29e], 0, $fail
-    x"8a",x"20",x"1c",x"e4",x"85",x"de",x"fa",       -- dc8f |   mul [A], 0x-7b, 0xfade + A
+    x"8a",x"20",x"1c",x"e4",x"85",x"de",x"fa",       -- dc8f |   mul [A], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"a8",x"25",x"0d",x"d0", -- dc96 |   jne [0xaa], 0x25a8, $fail
-    x"a6",x"3e",x"20",x"21",x"f6",                   -- dca0 |   ishr [A*4 + 0x-a], A, A*2
+    x"a6",x"3e",x"20",x"21",x"f6",                   -- dca0 |   ishr [A*4 + -10], A, A*2
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"0a",x"0d",x"d0", -- dca5 |   jne [0x29e], 0xa, $fail
-    x"b2",x"3e",x"20",x"20",x"f6",                   -- dcae |   or [A*4 + 0x-a], A, A
+    x"b2",x"3e",x"20",x"20",x"f6",                   -- dcae |   or [A*4 + -10], A, A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"aa",x"00",x"0d",x"d0", -- dcb3 |   jne [0x29e], 0xaa, $fail
     x"82",x"e0",x"fe",x"e0",x"39",x"30",x"39",x"30", -- dcbd |   add [0x3039], G, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"8e",x"31",x"0d",x"d0", -- dcc5 |   jne [0x3039], 0x318e, $fail
-    x"8e",x"3e",x"e0",x"3e",x"f6",x"39",x"30",x"f6", -- dccf |   imul [A*4 + 0x-a], 0x3039, A*4 + 0x-a
+    x"8e",x"3e",x"e0",x"3e",x"f6",x"39",x"30",x"f6", -- dccf |   imul [A*4 + -10], 0x3039, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"2e",x"35",x"0d",x"d0", -- dcd7 |   jne [0x29e], 0x352e, $fail
     x"a6",x"fe",x"fe",x"21",                         -- dce1 |   ishr [G], G, A*2
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"15",x"0d",x"d0", -- dce5 |   jne [0x155], 0x15, $fail
-    x"8e",x"20",x"e4",x"3e",x"de",x"fa",x"f6",       -- dcee |   imul [A], 0xfade + A, A*4 + 0x-a
+    x"8e",x"20",x"e4",x"3e",x"de",x"fa",x"f6",       -- dcee |   imul [A], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"f0",x"4d",x"0d",x"d0", -- dcf5 |   jne [0xaa], 0x4df0, $fail
     x"a6",x"fe",x"20",x"fe",                         -- dcff |   ishr [G], A, G
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"05",x"0d",x"d0", -- dd03 |   jne [0x155], 0x5, $fail
-    x"82",x"2a",x"e0",x"3e",x"39",x"30",x"f6",       -- dd0c |   add [A*4 + B], 0x3039, A*4 + 0x-a
+    x"82",x"2a",x"e0",x"3e",x"39",x"30",x"f6",       -- dd0c |   add [A*4 + B], 0x3039, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"d7",x"32",x"0d",x"d0", -- dd13 |   jne [0x363], 0x32d7, $fail
-    x"ae",x"3e",x"2a",x"e4",x"f6",x"de",x"fa",       -- dd1d |   and [A*4 + 0x-a], A*4 + B, 0xfade + A
+    x"ae",x"3e",x"2a",x"e4",x"f6",x"de",x"fa",       -- dd1d |   and [A*4 + -10], A*4 + B, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"00",x"03",x"0d",x"d0", -- dd24 |   jne [0x29e], 0x300, $fail
-    x"8e",x"20",x"1c",x"2a",x"85",                   -- dd2e |   imul [A], 0x-7b, A*4 + B
+    x"8e",x"20",x"1c",x"2a",x"85",                   -- dd2e |   imul [A], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"6f",x"5f",x"0d",x"d0", -- dd33 |   jne [0xaa], 0x5f6f, $fail
-    x"a2",x"fe",x"3e",x"e4",x"f6",x"de",x"fa",       -- dd3d |   shr [G], A*4 + 0x-a, 0xfade + A
+    x"a2",x"fe",x"3e",x"e4",x"f6",x"de",x"fa",       -- dd3d |   shr [G], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"02",x"0d",x"d0", -- dd44 |   jne [0x155], 0x2, $fail
     x"b2",x"2a",x"e0",x"20",x"39",x"30",             -- dd4d |   or [A*4 + B], 0x3039, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"bb",x"30",x"0d",x"d0", -- dd53 |   jne [0x363], 0x30bb, $fail
@@ -562,23 +562,23 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"6c",x"31",x"0d",x"d0", -- dd63 |   jne [0x363], 0x316c, $fail
     x"8e",x"20",x"20",x"e0",x"39",x"30",             -- dd6d |   imul [A], A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"da",x"05",x"0d",x"d0", -- dd73 |   jne [0xaa], 0x5da, $fail
-    x"b2",x"21",x"2a",x"3e",x"f6",                   -- dd7d |   or [A*2], A*4 + B, A*4 + 0x-a
+    x"b2",x"21",x"2a",x"3e",x"f6",                   -- dd7d |   or [A*2], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ff",x"03",x"0d",x"d0", -- dd82 |   jne [0x154], 0x3ff, $fail
     x"aa",x"fe",x"e4",x"e0",x"de",x"fa",x"39",x"30", -- dd8c |   shl [G], 0xfade + A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"00",x"10",x"0d",x"d0", -- dd94 |   jne [0x155], 0x1000, $fail
     x"a6",x"2a",x"e4",x"2a",x"de",x"fa",             -- dd9e |   ishr [A*4 + B], 0xfade + A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"71",x"ff",x"0d",x"d0", -- dda4 |   jne [0x363], 0xff71, $fail
-    x"aa",x"3e",x"e4",x"1c",x"f6",x"de",x"fa",x"85", -- ddae |   shl [A*4 + 0x-a], 0xfade + A, 0x-7b
+    x"aa",x"3e",x"e4",x"1c",x"f6",x"de",x"fa",x"85", -- ddae |   shl [A*4 + -10], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"00",x"71",x"0d",x"d0", -- ddb6 |   jne [0x29e], 0x7100, $fail
-    x"a2",x"3e",x"e4",x"20",x"f6",x"de",x"fa",       -- ddc0 |   shr [A*4 + 0x-a], 0xfade + A, A
+    x"a2",x"3e",x"e4",x"20",x"f6",x"de",x"fa",       -- ddc0 |   shr [A*4 + -10], 0xfade + A, A
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"3e",x"0d",x"d0", -- ddc7 |   jne [0x29e], 0x3e, $fail
-    x"8a",x"3e",x"20",x"2a",x"f6",                   -- ddd0 |   mul [A*4 + 0x-a], A, A*4 + B
+    x"8a",x"3e",x"20",x"2a",x"f6",                   -- ddd0 |   mul [A*4 + -10], A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"be",x"3f",x"0d",x"d0", -- ddd5 |   jne [0x29e], 0x3fbe, $fail
-    x"b2",x"21",x"3e",x"2a",x"f6",                   -- dddf |   or [A*2], A*4 + 0x-a, A*4 + B
+    x"b2",x"21",x"3e",x"2a",x"f6",                   -- dddf |   or [A*2], A*4 + -10, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ff",x"03",x"0d",x"d0", -- dde4 |   jne [0x154], 0x3ff, $fail
-    x"8e",x"3e",x"21",x"1c",x"f6",x"85",             -- ddee |   imul [A*4 + 0x-a], A*2, 0x-7b
+    x"8e",x"3e",x"21",x"1c",x"f6",x"85",             -- ddee |   imul [A*4 + -10], A*2, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"a4",x"5c",x"0d",x"d0", -- ddf4 |   jne [0x29e], 0x5ca4, $fail
-    x"aa",x"e0",x"3e",x"21",x"39",x"30",x"f6",       -- ddfe |   shl [0x3039], A*4 + 0x-a, A*2
+    x"aa",x"e0",x"3e",x"21",x"39",x"30",x"f6",       -- ddfe |   shl [0x3039], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"e0",x"29",x"0d",x"d0", -- de05 |   jne [0x3039], 0x29e0, $fail
     x"aa",x"21",x"e4",x"e4",x"de",x"fa",x"de",x"fa", -- de0f |   shl [A*2], 0xfade + A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"00",x"88",x"0d",x"d0", -- de17 |   jne [0x154], 0x8800, $fail
@@ -586,13 +586,13 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"a8",x"02",x"0d",x"d0", -- de25 |   jne [0x155], 0x2a8, $fail
     x"ae",x"21",x"e4",x"fe",x"de",x"fa",             -- de2f |   and [A*2], 0xfade + A, G
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"00",x"01",x"0d",x"d0", -- de35 |   jne [0x154], 0x100, $fail
-    x"ae",x"3e",x"e0",x"e0",x"f6",x"39",x"30",x"39",x"30", -- de3f |   and [A*4 + 0x-a], 0x3039, 0x3039
+    x"ae",x"3e",x"e0",x"e0",x"f6",x"39",x"30",x"39",x"30", -- de3f |   and [A*4 + -10], 0x3039, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"39",x"30",x"0d",x"d0", -- de48 |   jne [0x29e], 0x3039, $fail
-    x"aa",x"3e",x"20",x"1c",x"f6",x"85",             -- de52 |   shl [A*4 + 0x-a], A, 0x-7b
+    x"aa",x"3e",x"20",x"1c",x"f6",x"85",             -- de52 |   shl [A*4 + -10], A, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"40",x"15",x"0d",x"d0", -- de58 |   jne [0x29e], 0x1540, $fail
-    x"ae",x"2a",x"3e",x"e4",x"f6",x"de",x"fa",       -- de62 |   and [A*4 + B], A*4 + 0x-a, 0xfade + A
+    x"ae",x"2a",x"3e",x"e4",x"f6",x"de",x"fa",       -- de62 |   and [A*4 + B], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"88",x"02",x"0d",x"d0", -- de69 |   jne [0x363], 0x288, $fail
-    x"82",x"fe",x"1c",x"1c",x"85",x"85",             -- de73 |   add [G], 0x-7b, 0x-7b
+    x"82",x"fe",x"1c",x"1c",x"85",x"85",             -- de73 |   add [G], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"0a",x"ff",x"0d",x"d0", -- de79 |   jne [0x155], 0xff0a, $fail
     x"8a",x"20",x"20",x"e4",x"de",x"fa",             -- de83 |   mul [A], A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"50",x"08",x"0d",x"d0", -- de89 |   jne [0xaa], 0x850, $fail
@@ -602,19 +602,19 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"00",x"e0",x"55",x"01",x"0d",x"d0", -- dea9 |   jne [0x155], 0, $fail
     x"a2",x"2a",x"fe",x"e4",x"de",x"fa",             -- deb1 |   shr [A*4 + B], G, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"01",x"0d",x"d0", -- deb7 |   jne [0x363], 0x1, $fail
-    x"86",x"21",x"1c",x"fe",x"85",                   -- dec0 |   sub [A*2], 0x-7b, G
+    x"86",x"21",x"1c",x"fe",x"85",                   -- dec0 |   sub [A*2], -123, G
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"30",x"fe",x"0d",x"d0", -- dec5 |   jne [0x154], 0xfe30, $fail
-    x"aa",x"3e",x"21",x"fe",x"f6",                   -- decf |   shl [A*4 + 0x-a], A*2, G
+    x"aa",x"3e",x"21",x"fe",x"f6",                   -- decf |   shl [A*4 + -10], A*2, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"80",x"2a",x"0d",x"d0", -- ded4 |   jne [0x29e], 0x2a80, $fail
-    x"aa",x"20",x"1c",x"3e",x"85",x"f6",             -- dede |   shl [A], 0x-7b, A*4 + 0x-a
+    x"aa",x"20",x"1c",x"3e",x"85",x"f6",             -- dede |   shl [A], -123, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"00",x"40",x"0d",x"d0", -- dee4 |   jne [0xaa], 0x4000, $fail
-    x"8a",x"3e",x"2a",x"21",x"f6",                   -- deee |   mul [A*4 + 0x-a], A*4 + B, A*2
+    x"8a",x"3e",x"2a",x"21",x"f6",                   -- deee |   mul [A*4 + -10], A*4 + B, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"7c",x"7f",x"0d",x"d0", -- def3 |   jne [0x29e], 0x7f7c, $fail
     x"a2",x"20",x"2a",x"fe",                         -- defd |   shr [A], A*4 + B, G
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"1b",x"0d",x"d0", -- df01 |   jne [0xaa], 0x1b, $fail
     x"82",x"20",x"2a",x"e0",x"39",x"30",             -- df0a |   add [A], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"9c",x"33",x"0d",x"d0", -- df10 |   jne [0xaa], 0x339c, $fail
-    x"b6",x"fe",x"e0",x"1c",x"39",x"30",x"85",       -- df1a |   xor [G], 0x3039, 0x-7b
+    x"b6",x"fe",x"e0",x"1c",x"39",x"30",x"85",       -- df1a |   xor [G], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"bc",x"cf",x"0d",x"d0", -- df21 |   jne [0x155], 0xcfbc, $fail
     x"86",x"20",x"e4",x"2a",x"de",x"fa",             -- df2b |   sub [A], 0xfade + A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"25",x"f8",x"0d",x"d0", -- df31 |   jne [0xaa], 0xf825, $fail
@@ -630,47 +630,47 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- df80 |   jne [0x3039], 0, $fail
     x"8e",x"fe",x"fe",x"2a",                         -- df88 |   imul [G], G, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"df",x"82",x"0d",x"d0", -- df8c |   jne [0x155], 0x82df, $fail
-    x"8e",x"3e",x"21",x"21",x"f6",                   -- df96 |   imul [A*4 + 0x-a], A*2, A*2
+    x"8e",x"3e",x"21",x"21",x"f6",                   -- df96 |   imul [A*4 + -10], A*2, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"90",x"c3",x"0d",x"d0", -- df9b |   jne [0x29e], 0xc390, $fail
-    x"b2",x"fe",x"e4",x"1c",x"de",x"fa",x"85",       -- dfa5 |   or [G], 0xfade + A, 0x-7b
+    x"b2",x"fe",x"e4",x"1c",x"de",x"fa",x"85",       -- dfa5 |   or [G], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"8d",x"ff",x"0d",x"d0", -- dfac |   jne [0x155], 0xff8d, $fail
-    x"8e",x"2a",x"20",x"3e",x"f6",                   -- dfb6 |   imul [A*4 + B], A, A*4 + 0x-a
+    x"8e",x"2a",x"20",x"3e",x"f6",                   -- dfb6 |   imul [A*4 + B], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"ec",x"bc",x"0d",x"d0", -- dfbb |   jne [0x363], 0xbcec, $fail
-    x"a2",x"2a",x"3e",x"e0",x"f6",x"39",x"30",       -- dfc5 |   shr [A*4 + B], A*4 + 0x-a, 0x3039
+    x"a2",x"2a",x"3e",x"e0",x"f6",x"39",x"30",       -- dfc5 |   shr [A*4 + B], A*4 + -10, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"01",x"0d",x"d0", -- dfcc |   jne [0x363], 0x1, $fail
     x"b6",x"2a",x"21",x"e0",x"39",x"30",             -- dfd5 |   xor [A*4 + B], A*2, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"6d",x"31",x"0d",x"d0", -- dfdb |   jne [0x363], 0x316d, $fail
-    x"a2",x"e0",x"3e",x"e0",x"39",x"30",x"f6",x"39",x"30", -- dfe5 |   shr [0x3039], A*4 + 0x-a, 0x3039
+    x"a2",x"e0",x"3e",x"e0",x"39",x"30",x"f6",x"39",x"30", -- dfe5 |   shr [0x3039], A*4 + -10, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"01",x"0d",x"d0", -- dfee |   jne [0x3039], 0x1, $fail
-    x"a2",x"21",x"1c",x"3e",x"85",x"f6",             -- dff7 |   shr [A*2], 0x-7b, A*4 + 0x-a
+    x"a2",x"21",x"1c",x"3e",x"85",x"f6",             -- dff7 |   shr [A*2], -123, A*4 + -10
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"03",x"0d",x"d0", -- dffd |   jne [0x154], 0x3, $fail
     x"b2",x"21",x"20",x"21",                         -- e006 |   or [A*2], A, A*2
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"fe",x"01",x"0d",x"d0", -- e00a |   jne [0x154], 0x1fe, $fail
     x"a2",x"fe",x"2a",x"21",                         -- e014 |   shr [G], A*4 + B, A*2
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"36",x"0d",x"d0", -- e018 |   jne [0x155], 0x36, $fail
-    x"b6",x"e0",x"3e",x"2a",x"39",x"30",x"f6",       -- e021 |   xor [0x3039], A*4 + 0x-a, A*4 + B
+    x"b6",x"e0",x"3e",x"2a",x"39",x"30",x"f6",       -- e021 |   xor [0x3039], A*4 + -10, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"fd",x"01",x"0d",x"d0", -- e028 |   jne [0x3039], 0x1fd, $fail
-    x"8a",x"3e",x"e4",x"3e",x"f6",x"de",x"fa",x"f6", -- e032 |   mul [A*4 + 0x-a], 0xfade + A, A*4 + 0x-a
+    x"8a",x"3e",x"e4",x"3e",x"f6",x"de",x"fa",x"f6", -- e032 |   mul [A*4 + -10], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"f0",x"4d",x"0d",x"d0", -- e03a |   jne [0x29e], 0x4df0, $fail
-    x"8e",x"2a",x"21",x"3e",x"f6",                   -- e044 |   imul [A*4 + B], A*2, A*4 + 0x-a
+    x"8e",x"2a",x"21",x"3e",x"f6",                   -- e044 |   imul [A*4 + B], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"d8",x"79",x"0d",x"d0", -- e049 |   jne [0x363], 0x79d8, $fail
-    x"a2",x"e0",x"e4",x"3e",x"39",x"30",x"de",x"fa",x"f6", -- e053 |   shr [0x3039], 0xfade + A, A*4 + 0x-a
+    x"a2",x"e0",x"e4",x"3e",x"39",x"30",x"de",x"fa",x"f6", -- e053 |   shr [0x3039], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"03",x"0d",x"d0", -- e05c |   jne [0x3039], 0x3, $fail
-    x"82",x"3e",x"20",x"fe",x"f6",                   -- e065 |   add [A*4 + 0x-a], A, G
+    x"82",x"3e",x"20",x"fe",x"f6",                   -- e065 |   add [A*4 + -10], A, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"ff",x"01",x"0d",x"d0", -- e06a |   jne [0x29e], 0x1ff, $fail
     x"a2",x"2a",x"e4",x"e0",x"de",x"fa",x"39",x"30", -- e074 |   shr [A*4 + B], 0xfade + A, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"7d",x"0d",x"d0", -- e07c |   jne [0x363], 0x7d, $fail
-    x"a2",x"3e",x"1c",x"1c",x"f6",x"85",x"85",       -- e085 |   shr [A*4 + 0x-a], 0x-7b, 0x-7b
+    x"a2",x"3e",x"1c",x"1c",x"f6",x"85",x"85",       -- e085 |   shr [A*4 + -10], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"fc",x"07",x"0d",x"d0", -- e08c |   jne [0x29e], 0x7fc, $fail
-    x"8e",x"20",x"1c",x"e0",x"85",x"39",x"30",       -- e096 |   imul [A], 0x-7b, 0x3039
+    x"8e",x"20",x"1c",x"e0",x"85",x"39",x"30",       -- e096 |   imul [A], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"9d",x"d4",x"0d",x"d0", -- e09d |   jne [0xaa], 0xd49d, $fail
-    x"aa",x"2a",x"3e",x"21",x"f6",                   -- e0a7 |   shl [A*4 + B], A*4 + 0x-a, A*2
+    x"aa",x"2a",x"3e",x"21",x"f6",                   -- e0a7 |   shl [A*4 + B], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"e0",x"29",x"0d",x"d0", -- e0ac |   jne [0x363], 0x29e0, $fail
     x"b6",x"21",x"e0",x"fe",x"39",x"30",             -- e0b6 |   xor [A*2], 0x3039, G
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"6c",x"31",x"0d",x"d0", -- e0bc |   jne [0x154], 0x316c, $fail
-    x"b6",x"e0",x"3e",x"3e",x"39",x"30",x"f6",x"f6", -- e0c6 |   xor [0x3039], A*4 + 0x-a, A*4 + 0x-a
+    x"b6",x"e0",x"3e",x"3e",x"39",x"30",x"f6",x"f6", -- e0c6 |   xor [0x3039], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- e0ce |   jne [0x3039], 0, $fail
-    x"b6",x"20",x"21",x"1c",x"85",                   -- e0d6 |   xor [A], A*2, 0x-7b
+    x"b6",x"20",x"21",x"1c",x"85",                   -- e0d6 |   xor [A], A*2, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"d1",x"fe",x"0d",x"d0", -- e0db |   jne [0xaa], 0xfed1, $fail
     x"b6",x"21",x"21",x"fe",                         -- e0e5 |   xor [A*2], A*2, G
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"01",x"0d",x"d0", -- e0e9 |   jne [0x154], 0x1, $fail
@@ -680,97 +680,97 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"6d",x"31",x"0d",x"d0", -- e108 |   jne [0x154], 0x316d, $fail
     x"8a",x"21",x"2a",x"e0",x"39",x"30",             -- e112 |   mul [A*2], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"0b",x"51",x"0d",x"d0", -- e118 |   jne [0x154], 0x510b, $fail
-    x"ae",x"3e",x"e0",x"1c",x"f6",x"39",x"30",x"85", -- e122 |   and [A*4 + 0x-a], 0x3039, 0x-7b
+    x"ae",x"3e",x"e0",x"1c",x"f6",x"39",x"30",x"85", -- e122 |   and [A*4 + -10], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"01",x"30",x"0d",x"d0", -- e12a |   jne [0x29e], 0x3001, $fail
     x"aa",x"fe",x"21",x"20",                         -- e134 |   shl [G], A*2, A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"00",x"50",x"0d",x"d0", -- e138 |   jne [0x155], 0x5000, $fail
     x"ae",x"20",x"e4",x"20",x"de",x"fa",             -- e142 |   and [A], 0xfade + A, A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"88",x"00",x"0d",x"d0", -- e148 |   jne [0xaa], 0x88, $fail
-    x"aa",x"21",x"3e",x"e4",x"f6",x"de",x"fa",       -- e152 |   shl [A*2], A*4 + 0x-a, 0xfade + A
+    x"aa",x"21",x"3e",x"e4",x"f6",x"de",x"fa",       -- e152 |   shl [A*2], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"00",x"9e",x"0d",x"d0", -- e159 |   jne [0x154], 0x9e00, $fail
-    x"b6",x"e0",x"e0",x"1c",x"39",x"30",x"39",x"30",x"85", -- e163 |   xor [0x3039], 0x3039, 0x-7b
+    x"b6",x"e0",x"e0",x"1c",x"39",x"30",x"39",x"30",x"85", -- e163 |   xor [0x3039], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"bc",x"cf",x"0d",x"d0", -- e16c |   jne [0x3039], 0xcfbc, $fail
-    x"8a",x"3e",x"3e",x"1c",x"f6",x"f6",x"85",       -- e176 |   mul [A*4 + 0x-a], A*4 + 0x-a, 0x-7b
+    x"8a",x"3e",x"3e",x"1c",x"f6",x"f6",x"85",       -- e176 |   mul [A*4 + -10], A*4 + -10, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"16",x"be",x"0d",x"d0", -- e17d |   jne [0x29e], 0xbe16, $fail
-    x"86",x"fe",x"21",x"3e",x"f6",                   -- e187 |   sub [G], A*2, A*4 + 0x-a
+    x"86",x"fe",x"21",x"3e",x"f6",                   -- e187 |   sub [G], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"b6",x"fe",x"0d",x"d0", -- e18c |   jne [0x155], 0xfeb6, $fail
-    x"86",x"3e",x"2a",x"fe",x"f6",                   -- e196 |   sub [A*4 + 0x-a], A*4 + B, G
+    x"86",x"3e",x"2a",x"fe",x"f6",                   -- e196 |   sub [A*4 + -10], A*4 + B, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"0e",x"02",x"0d",x"d0", -- e19b |   jne [0x29e], 0x20e, $fail
-    x"b6",x"3e",x"1c",x"fe",x"f6",x"85",             -- e1a5 |   xor [A*4 + 0x-a], 0x-7b, G
+    x"b6",x"3e",x"1c",x"fe",x"f6",x"85",             -- e1a5 |   xor [A*4 + -10], -123, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"d0",x"fe",x"0d",x"d0", -- e1ab |   jne [0x29e], 0xfed0, $fail
-    x"86",x"20",x"2a",x"1c",x"85",                   -- e1b5 |   sub [A], A*4 + B, 0x-7b
+    x"86",x"20",x"2a",x"1c",x"85",                   -- e1b5 |   sub [A], A*4 + B, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"de",x"03",x"0d",x"d0", -- e1ba |   jne [0xaa], 0x3de, $fail
     x"86",x"20",x"21",x"fe",                         -- e1c4 |   sub [A], A*2, G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"ff",x"ff",x"0d",x"d0", -- e1c8 |   jne [0xaa], 0xffff, $fail
     x"86",x"2a",x"20",x"e4",x"de",x"fa",             -- e1d2 |   sub [A*4 + B], A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"22",x"05",x"0d",x"d0", -- e1d8 |   jne [0x363], 0x522, $fail
-    x"aa",x"e0",x"fe",x"3e",x"39",x"30",x"f6",       -- e1e2 |   shl [0x3039], G, A*4 + 0x-a
+    x"aa",x"e0",x"fe",x"3e",x"39",x"30",x"f6",       -- e1e2 |   shl [0x3039], G, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"00",x"40",x"0d",x"d0", -- e1e9 |   jne [0x3039], 0x4000, $fail
-    x"ae",x"20",x"1c",x"1c",x"85",x"85",             -- e1f3 |   and [A], 0x-7b, 0x-7b
+    x"ae",x"20",x"1c",x"1c",x"85",x"85",             -- e1f3 |   and [A], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"85",x"ff",x"0d",x"d0", -- e1f9 |   jne [0xaa], 0xff85, $fail
     x"b6",x"20",x"fe",x"e0",x"39",x"30",             -- e203 |   xor [A], G, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"6c",x"31",x"0d",x"d0", -- e209 |   jne [0xaa], 0x316c, $fail
-    x"b2",x"e0",x"21",x"3e",x"39",x"30",x"f6",       -- e213 |   or [0x3039], A*2, A*4 + 0x-a
+    x"b2",x"e0",x"21",x"3e",x"39",x"30",x"f6",       -- e213 |   or [0x3039], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"de",x"03",x"0d",x"d0", -- e21a |   jne [0x3039], 0x3de, $fail
     x"b2",x"20",x"e4",x"21",x"de",x"fa",             -- e224 |   or [A], 0xfade + A, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"dc",x"fb",x"0d",x"d0", -- e22a |   jne [0xaa], 0xfbdc, $fail
-    x"b6",x"fe",x"3e",x"3e",x"f6",x"f6",             -- e234 |   xor [G], A*4 + 0x-a, A*4 + 0x-a
+    x"b6",x"fe",x"3e",x"3e",x"f6",x"f6",             -- e234 |   xor [G], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"00",x"e0",x"55",x"01",x"0d",x"d0", -- e23a |   jne [0x155], 0, $fail
-    x"b6",x"3e",x"20",x"e4",x"f6",x"de",x"fa",       -- e242 |   xor [A*4 + 0x-a], A, 0xfade + A
+    x"b6",x"3e",x"20",x"e4",x"f6",x"de",x"fa",       -- e242 |   xor [A*4 + -10], A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"22",x"fb",x"0d",x"d0", -- e249 |   jne [0x29e], 0xfb22, $fail
-    x"b6",x"e0",x"1c",x"e0",x"39",x"30",x"85",x"39",x"30", -- e253 |   xor [0x3039], 0x-7b, 0x3039
+    x"b6",x"e0",x"1c",x"e0",x"39",x"30",x"85",x"39",x"30", -- e253 |   xor [0x3039], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"bc",x"cf",x"0d",x"d0", -- e25c |   jne [0x3039], 0xcfbc, $fail
-    x"a2",x"3e",x"fe",x"2a",x"f6",                   -- e266 |   shr [A*4 + 0x-a], G, A*4 + B
+    x"a2",x"3e",x"fe",x"2a",x"f6",                   -- e266 |   shr [A*4 + -10], G, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"2a",x"0d",x"d0", -- e26b |   jne [0x29e], 0x2a, $fail
     x"ae",x"20",x"fe",x"20",                         -- e274 |   and [A], G, A
     x"ee",x"e0",x"00",x"e0",x"aa",x"00",x"0d",x"d0", -- e278 |   jne [0xaa], 0, $fail
-    x"86",x"2a",x"e4",x"1c",x"de",x"fa",x"85",       -- e280 |   sub [A*4 + B], 0xfade + A, 0x-7b
+    x"86",x"2a",x"e4",x"1c",x"de",x"fa",x"85",       -- e280 |   sub [A*4 + B], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"03",x"fc",x"0d",x"d0", -- e287 |   jne [0x363], 0xfc03, $fail
     x"ae",x"e0",x"21",x"21",x"39",x"30",             -- e291 |   and [0x3039], A*2, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"54",x"01",x"0d",x"d0", -- e297 |   jne [0x3039], 0x154, $fail
     x"a2",x"e0",x"20",x"e0",x"39",x"30",x"39",x"30", -- e2a1 |   shr [0x3039], A, 0x3039
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- e2a9 |   jne [0x3039], 0, $fail
-    x"8e",x"3e",x"2a",x"3e",x"f6",x"f6",             -- e2b1 |   imul [A*4 + 0x-a], A*4 + B, A*4 + 0x-a
+    x"8e",x"3e",x"2a",x"3e",x"f6",x"f6",             -- e2b1 |   imul [A*4 + -10], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"1a",x"dd",x"0d",x"d0", -- e2b7 |   jne [0x29e], 0xdd1a, $fail
-    x"a2",x"e0",x"3e",x"1c",x"39",x"30",x"f6",x"85", -- e2c1 |   shr [0x3039], A*4 + 0x-a, 0x-7b
+    x"a2",x"e0",x"3e",x"1c",x"39",x"30",x"f6",x"85", -- e2c1 |   shr [0x3039], A*4 + -10, -123
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"14",x"0d",x"d0", -- e2c9 |   jne [0x3039], 0x14, $fail
     x"82",x"fe",x"20",x"e0",x"39",x"30",             -- e2d2 |   add [G], A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"e3",x"30",x"0d",x"d0", -- e2d8 |   jne [0x155], 0x30e3, $fail
     x"a6",x"e0",x"21",x"e0",x"39",x"30",x"39",x"30", -- e2e2 |   ishr [0x3039], A*2, 0x3039
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- e2ea |   jne [0x3039], 0, $fail
-    x"a6",x"e0",x"e4",x"1c",x"39",x"30",x"de",x"fa",x"85", -- e2f2 |   ishr [0x3039], 0xfade + A, 0x-7b
+    x"a6",x"e0",x"e4",x"1c",x"39",x"30",x"de",x"fa",x"85", -- e2f2 |   ishr [0x3039], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"dc",x"ff",x"0d",x"d0", -- e2fb |   jne [0x3039], 0xffdc, $fail
-    x"b2",x"3e",x"fe",x"20",x"f6",                   -- e305 |   or [A*4 + 0x-a], G, A
+    x"b2",x"3e",x"fe",x"20",x"f6",                   -- e305 |   or [A*4 + -10], G, A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"ff",x"01",x"0d",x"d0", -- e30a |   jne [0x29e], 0x1ff, $fail
     x"a6",x"2a",x"2a",x"20",                         -- e314 |   ishr [A*4 + B], A*4 + B, A
     x"ee",x"e0",x"00",x"e0",x"63",x"03",x"0d",x"d0", -- e318 |   jne [0x363], 0, $fail
     x"aa",x"fe",x"e0",x"2a",x"39",x"30",             -- e320 |   shl [G], 0x3039, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"c8",x"81",x"0d",x"d0", -- e326 |   jne [0x155], 0x81c8, $fail
-    x"8a",x"21",x"3e",x"20",x"f6",                   -- e330 |   mul [A*2], A*4 + 0x-a, A
+    x"8a",x"21",x"3e",x"20",x"f6",                   -- e330 |   mul [A*2], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ec",x"bc",x"0d",x"d0", -- e335 |   jne [0x154], 0xbcec, $fail
-    x"8e",x"3e",x"3e",x"e0",x"f6",x"f6",x"39",x"30", -- e33f |   imul [A*4 + 0x-a], A*4 + 0x-a, 0x3039
+    x"8e",x"3e",x"3e",x"e0",x"f6",x"f6",x"39",x"30", -- e33f |   imul [A*4 + -10], A*4 + -10, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"2e",x"35",x"0d",x"d0", -- e347 |   jne [0x29e], 0x352e, $fail
-    x"b6",x"e0",x"1c",x"3e",x"39",x"30",x"85",x"f6", -- e351 |   xor [0x3039], 0x-7b, A*4 + 0x-a
+    x"b6",x"e0",x"1c",x"3e",x"39",x"30",x"85",x"f6", -- e351 |   xor [0x3039], -123, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"1b",x"fd",x"0d",x"d0", -- e359 |   jne [0x3039], 0xfd1b, $fail
     x"b2",x"fe",x"20",x"e4",x"de",x"fa",             -- e363 |   or [G], A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"aa",x"fb",x"0d",x"d0", -- e369 |   jne [0x155], 0xfbaa, $fail
-    x"8e",x"fe",x"fe",x"3e",x"f6",                   -- e373 |   imul [G], G, A*4 + 0x-a
+    x"8e",x"fe",x"fe",x"3e",x"f6",                   -- e373 |   imul [G], G, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"76",x"7c",x"0d",x"d0", -- e378 |   jne [0x155], 0x7c76, $fail
-    x"8a",x"20",x"e0",x"3e",x"39",x"30",x"f6",       -- e382 |   mul [A], 0x3039, A*4 + 0x-a
+    x"8a",x"20",x"e0",x"3e",x"39",x"30",x"f6",       -- e382 |   mul [A], 0x3039, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"2e",x"35",x"0d",x"d0", -- e389 |   jne [0xaa], 0x352e, $fail
     x"b2",x"fe",x"20",x"20",                         -- e393 |   or [G], A, A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"aa",x"00",x"0d",x"d0", -- e397 |   jne [0x155], 0xaa, $fail
-    x"a2",x"3e",x"21",x"e4",x"f6",x"de",x"fa",       -- e3a1 |   shr [A*4 + 0x-a], A*2, 0xfade + A
+    x"a2",x"3e",x"21",x"e4",x"f6",x"de",x"fa",       -- e3a1 |   shr [A*4 + -10], A*2, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"01",x"0d",x"d0", -- e3a8 |   jne [0x29e], 0x1, $fail
-    x"a6",x"20",x"3e",x"2a",x"f6",                   -- e3b1 |   ishr [A], A*4 + 0x-a, A*4 + B
+    x"a6",x"20",x"3e",x"2a",x"f6",                   -- e3b1 |   ishr [A], A*4 + -10, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"53",x"0d",x"d0", -- e3b6 |   jne [0xaa], 0x53, $fail
     x"82",x"20",x"e0",x"20",x"39",x"30",             -- e3bf |   add [A], 0x3039, A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"e3",x"30",x"0d",x"d0", -- e3c5 |   jne [0xaa], 0x30e3, $fail
-    x"a6",x"20",x"1c",x"20",x"85",                   -- e3cf |   ishr [A], 0x-7b, A
+    x"a6",x"20",x"1c",x"20",x"85",                   -- e3cf |   ishr [A], -123, A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"ff",x"ff",x"0d",x"d0", -- e3d4 |   jne [0xaa], 0xffff, $fail
-    x"ae",x"21",x"20",x"1c",x"85",                   -- e3de |   and [A*2], A, 0x-7b
+    x"ae",x"21",x"20",x"1c",x"85",                   -- e3de |   and [A*2], A, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"80",x"00",x"0d",x"d0", -- e3e3 |   jne [0x154], 0x80, $fail
-    x"b6",x"2a",x"1c",x"e4",x"85",x"de",x"fa",       -- e3ed |   xor [A*4 + B], 0x-7b, 0xfade + A
+    x"b6",x"2a",x"1c",x"e4",x"85",x"de",x"fa",       -- e3ed |   xor [A*4 + B], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"0d",x"04",x"0d",x"d0", -- e3f4 |   jne [0x363], 0x40d, $fail
     x"82",x"20",x"e0",x"21",x"39",x"30",             -- e3fe |   add [A], 0x3039, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"8d",x"31",x"0d",x"d0", -- e404 |   jne [0xaa], 0x318d, $fail
@@ -778,71 +778,71 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"b8",x"04",x"0d",x"d0", -- e412 |   jne [0x154], 0x4b8, $fail
     x"b2",x"20",x"2a",x"20",                         -- e41c |   or [A], A*4 + B, A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"eb",x"03",x"0d",x"d0", -- e420 |   jne [0xaa], 0x3eb, $fail
-    x"82",x"21",x"1c",x"e0",x"85",x"39",x"30",       -- e42a |   add [A*2], 0x-7b, 0x3039
+    x"82",x"21",x"1c",x"e0",x"85",x"39",x"30",       -- e42a |   add [A*2], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"be",x"2f",x"0d",x"d0", -- e431 |   jne [0x154], 0x2fbe, $fail
-    x"aa",x"fe",x"2a",x"1c",x"85",                   -- e43b |   shl [G], A*4 + B, 0x-7b
+    x"aa",x"fe",x"2a",x"1c",x"85",                   -- e43b |   shl [G], A*4 + B, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"60",x"6c",x"0d",x"d0", -- e440 |   jne [0x155], 0x6c60, $fail
-    x"82",x"3e",x"3e",x"2a",x"f6",x"f6",             -- e44a |   add [A*4 + 0x-a], A*4 + 0x-a, A*4 + B
+    x"82",x"3e",x"3e",x"2a",x"f6",x"f6",             -- e44a |   add [A*4 + -10], A*4 + -10, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"01",x"06",x"0d",x"d0", -- e450 |   jne [0x29e], 0x601, $fail
-    x"b2",x"20",x"3e",x"e4",x"f6",x"de",x"fa",       -- e45a |   or [A], A*4 + 0x-a, 0xfade + A
+    x"b2",x"20",x"3e",x"e4",x"f6",x"de",x"fa",       -- e45a |   or [A], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"9e",x"fb",x"0d",x"d0", -- e461 |   jne [0xaa], 0xfb9e, $fail
-    x"aa",x"2a",x"21",x"1c",x"85",                   -- e46b |   shl [A*4 + B], A*2, 0x-7b
+    x"aa",x"2a",x"21",x"1c",x"85",                   -- e46b |   shl [A*4 + B], A*2, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"80",x"2a",x"0d",x"d0", -- e470 |   jne [0x363], 0x2a80, $fail
-    x"b2",x"e0",x"1c",x"2a",x"39",x"30",x"85",       -- e47a |   or [0x3039], 0x-7b, A*4 + B
+    x"b2",x"e0",x"1c",x"2a",x"39",x"30",x"85",       -- e47a |   or [0x3039], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"e7",x"ff",x"0d",x"d0", -- e481 |   jne [0x3039], 0xffe7, $fail
     x"82",x"21",x"2a",x"2a",                         -- e48b |   add [A*2], A*4 + B, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"c6",x"06",x"0d",x"d0", -- e48f |   jne [0x154], 0x6c6, $fail
     x"ae",x"20",x"21",x"20",                         -- e499 |   and [A], A*2, A
     x"ee",x"e0",x"00",x"e0",x"aa",x"00",x"0d",x"d0", -- e49d |   jne [0xaa], 0, $fail
-    x"86",x"20",x"fe",x"1c",x"85",                   -- e4a5 |   sub [A], G, 0x-7b
+    x"86",x"20",x"fe",x"1c",x"85",                   -- e4a5 |   sub [A], G, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"d0",x"01",x"0d",x"d0", -- e4aa |   jne [0xaa], 0x1d0, $fail
-    x"b2",x"20",x"2a",x"3e",x"f6",                   -- e4b4 |   or [A], A*4 + B, A*4 + 0x-a
+    x"b2",x"20",x"2a",x"3e",x"f6",                   -- e4b4 |   or [A], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"ff",x"03",x"0d",x"d0", -- e4b9 |   jne [0xaa], 0x3ff, $fail
     x"b6",x"2a",x"20",x"2a",                         -- e4c3 |   xor [A*4 + B], A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"c9",x"03",x"0d",x"d0", -- e4c7 |   jne [0x363], 0x3c9, $fail
-    x"aa",x"21",x"fe",x"3e",x"f6",                   -- e4d1 |   shl [A*2], G, A*4 + 0x-a
+    x"aa",x"21",x"fe",x"3e",x"f6",                   -- e4d1 |   shl [A*2], G, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"00",x"40",x"0d",x"d0", -- e4d6 |   jne [0x154], 0x4000, $fail
-    x"ae",x"3e",x"e0",x"21",x"f6",x"39",x"30",       -- e4e0 |   and [A*4 + 0x-a], 0x3039, A*2
+    x"ae",x"3e",x"e0",x"21",x"f6",x"39",x"30",       -- e4e0 |   and [A*4 + -10], 0x3039, A*2
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"10",x"0d",x"d0", -- e4e7 |   jne [0x29e], 0x10, $fail
     x"a2",x"e0",x"2a",x"e4",x"39",x"30",x"de",x"fa", -- e4f0 |   shr [0x3039], A*4 + B, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"03",x"0d",x"d0", -- e4f8 |   jne [0x3039], 0x3, $fail
     x"8a",x"fe",x"21",x"2a",                         -- e501 |   mul [G], A*2, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"7c",x"7f",x"0d",x"d0", -- e505 |   jne [0x155], 0x7f7c, $fail
-    x"a2",x"3e",x"3e",x"fe",x"f6",x"f6",             -- e50f |   shr [A*4 + 0x-a], A*4 + 0x-a, G
+    x"a2",x"3e",x"3e",x"fe",x"f6",x"f6",             -- e50f |   shr [A*4 + -10], A*4 + -10, G
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"14",x"0d",x"d0", -- e515 |   jne [0x29e], 0x14, $fail
     x"8a",x"20",x"e0",x"e4",x"39",x"30",x"de",x"fa", -- e51e |   mul [A], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"48",x"81",x"0d",x"d0", -- e526 |   jne [0xaa], 0x8148, $fail
-    x"8a",x"2a",x"1c",x"3e",x"85",x"f6",             -- e530 |   mul [A*4 + B], 0x-7b, A*4 + 0x-a
+    x"8a",x"2a",x"1c",x"3e",x"85",x"f6",             -- e530 |   mul [A*4 + B], -123, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"16",x"be",x"0d",x"d0", -- e536 |   jne [0x363], 0xbe16, $fail
-    x"ae",x"2a",x"1c",x"fe",x"85",                   -- e540 |   and [A*4 + B], 0x-7b, G
+    x"ae",x"2a",x"1c",x"fe",x"85",                   -- e540 |   and [A*4 + B], -123, G
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"05",x"01",x"0d",x"d0", -- e545 |   jne [0x363], 0x105, $fail
     x"aa",x"e0",x"e0",x"20",x"39",x"30",x"39",x"30", -- e54f |   shl [0x3039], 0x3039, A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"00",x"e4",x"0d",x"d0", -- e557 |   jne [0x3039], 0xe400, $fail
     x"8e",x"20",x"fe",x"2a",                         -- e561 |   imul [A], G, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"df",x"82",x"0d",x"d0", -- e565 |   jne [0xaa], 0x82df, $fail
-    x"86",x"3e",x"1c",x"3e",x"f6",x"85",x"f6",       -- e56f |   sub [A*4 + 0x-a], 0x-7b, A*4 + 0x-a
+    x"86",x"3e",x"1c",x"3e",x"f6",x"85",x"f6",       -- e56f |   sub [A*4 + -10], -123, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"e7",x"fc",x"0d",x"d0", -- e576 |   jne [0x29e], 0xfce7, $fail
     x"aa",x"21",x"20",x"2a",                         -- e580 |   shl [A*2], A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"50",x"05",x"0d",x"d0", -- e584 |   jne [0x154], 0x550, $fail
-    x"82",x"20",x"3e",x"21",x"f6",                   -- e58e |   add [A], A*4 + 0x-a, A*2
+    x"82",x"20",x"3e",x"21",x"f6",                   -- e58e |   add [A], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"f2",x"03",x"0d",x"d0", -- e593 |   jne [0xaa], 0x3f2, $fail
-    x"8a",x"21",x"fe",x"1c",x"85",                   -- e59d |   mul [A*2], G, 0x-7b
+    x"8a",x"21",x"fe",x"1c",x"85",                   -- e59d |   mul [A*2], G, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"29",x"5c",x"0d",x"d0", -- e5a2 |   jne [0x154], 0x5c29, $fail
-    x"8a",x"fe",x"1c",x"e0",x"85",x"39",x"30",       -- e5ac |   mul [G], 0x-7b, 0x3039
+    x"8a",x"fe",x"1c",x"e0",x"85",x"39",x"30",       -- e5ac |   mul [G], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"9d",x"d4",x"0d",x"d0", -- e5b3 |   jne [0x155], 0xd49d, $fail
     x"a6",x"e0",x"2a",x"2a",x"39",x"30",             -- e5bd |   ishr [0x3039], A*4 + B, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"6c",x"0d",x"d0", -- e5c3 |   jne [0x3039], 0x6c, $fail
-    x"82",x"2a",x"1c",x"21",x"85",                   -- e5cc |   add [A*4 + B], 0x-7b, A*2
+    x"82",x"2a",x"1c",x"21",x"85",                   -- e5cc |   add [A*4 + B], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"d9",x"00",x"0d",x"d0", -- e5d1 |   jne [0x363], 0xd9, $fail
     x"8a",x"e0",x"e0",x"fe",x"39",x"30",x"39",x"30", -- e5db |   mul [0x3039], 0x3039, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"ed",x"3b",x"0d",x"d0", -- e5e3 |   jne [0x3039], 0x3bed, $fail
     x"b2",x"e0",x"2a",x"fe",x"39",x"30",             -- e5ed |   or [0x3039], A*4 + B, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"77",x"03",x"0d",x"d0", -- e5f3 |   jne [0x3039], 0x377, $fail
-    x"aa",x"2a",x"1c",x"e0",x"85",x"39",x"30",       -- e5fd |   shl [A*4 + B], 0x-7b, 0x3039
+    x"aa",x"2a",x"1c",x"e0",x"85",x"39",x"30",       -- e5fd |   shl [A*4 + B], -123, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"00",x"0a",x"0d",x"d0", -- e604 |   jne [0x363], 0xa00, $fail
-    x"8a",x"fe",x"1c",x"2a",x"85",                   -- e60e |   mul [G], 0x-7b, A*4 + B
+    x"8a",x"fe",x"1c",x"2a",x"85",                   -- e60e |   mul [G], -123, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"6f",x"5f",x"0d",x"d0", -- e613 |   jne [0x155], 0x5f6f, $fail
-    x"ae",x"3e",x"e0",x"fe",x"f6",x"39",x"30",       -- e61d |   and [A*4 + 0x-a], 0x3039, G
+    x"ae",x"3e",x"e0",x"fe",x"f6",x"39",x"30",       -- e61d |   and [A*4 + -10], 0x3039, G
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"11",x"0d",x"d0", -- e624 |   jne [0x29e], 0x11, $fail
     x"a6",x"2a",x"21",x"e4",x"de",x"fa",             -- e62d |   ishr [A*4 + B], A*2, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"01",x"0d",x"d0", -- e633 |   jne [0x363], 0x1, $fail
@@ -850,13 +850,13 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"77",x"03",x"0d",x"d0", -- e640 |   jne [0x154], 0x377, $fail
     x"ae",x"2a",x"fe",x"fe",                         -- e64a |   and [A*4 + B], G, G
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"55",x"01",x"0d",x"d0", -- e64e |   jne [0x363], 0x155, $fail
-    x"aa",x"2a",x"3e",x"3e",x"f6",x"f6",             -- e658 |   shl [A*4 + B], A*4 + 0x-a, A*4 + 0x-a
+    x"aa",x"2a",x"3e",x"3e",x"f6",x"f6",             -- e658 |   shl [A*4 + B], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"00",x"80",x"0d",x"d0", -- e65e |   jne [0x363], 0x8000, $fail
-    x"86",x"3e",x"2a",x"1c",x"f6",x"85",             -- e668 |   sub [A*4 + 0x-a], A*4 + B, 0x-7b
+    x"86",x"3e",x"2a",x"1c",x"f6",x"85",             -- e668 |   sub [A*4 + -10], A*4 + B, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"de",x"03",x"0d",x"d0", -- e66e |   jne [0x29e], 0x3de, $fail
-    x"ae",x"fe",x"fe",x"1c",x"85",                   -- e678 |   and [G], G, 0x-7b
+    x"ae",x"fe",x"fe",x"1c",x"85",                   -- e678 |   and [G], G, -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"05",x"01",x"0d",x"d0", -- e67d |   jne [0x155], 0x105, $fail
-    x"a6",x"21",x"3e",x"1c",x"f6",x"85",             -- e687 |   ishr [A*2], A*4 + 0x-a, 0x-7b
+    x"a6",x"21",x"3e",x"1c",x"f6",x"85",             -- e687 |   ishr [A*2], A*4 + -10, -123
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"14",x"0d",x"d0", -- e68d |   jne [0x154], 0x14, $fail
     x"b2",x"e0",x"21",x"fe",x"39",x"30",             -- e696 |   or [0x3039], A*2, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"55",x"01",x"0d",x"d0", -- e69c |   jne [0x3039], 0x155, $fail
@@ -864,15 +864,15 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"fe",x"01",x"0d",x"d0", -- e6aa |   jne [0x363], 0x1fe, $fail
     x"a2",x"21",x"20",x"e0",x"39",x"30",             -- e6b4 |   shr [A*2], A, 0x3039
     x"ee",x"e0",x"00",x"e0",x"54",x"01",x"0d",x"d0", -- e6ba |   jne [0x154], 0, $fail
-    x"8e",x"3e",x"3e",x"e4",x"f6",x"f6",x"de",x"fa", -- e6c2 |   imul [A*4 + 0x-a], A*4 + 0x-a, 0xfade + A
+    x"8e",x"3e",x"3e",x"e4",x"f6",x"f6",x"de",x"fa", -- e6c2 |   imul [A*4 + -10], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"f0",x"4d",x"0d",x"d0", -- e6ca |   jne [0x29e], 0x4df0, $fail
-    x"a2",x"2a",x"3e",x"fe",x"f6",                   -- e6d4 |   shr [A*4 + B], A*4 + 0x-a, G
+    x"a2",x"2a",x"3e",x"fe",x"f6",                   -- e6d4 |   shr [A*4 + B], A*4 + -10, G
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"14",x"0d",x"d0", -- e6d9 |   jne [0x363], 0x14, $fail
-    x"aa",x"e0",x"2a",x"1c",x"39",x"30",x"85",       -- e6e2 |   shl [0x3039], A*4 + B, 0x-7b
+    x"aa",x"e0",x"2a",x"1c",x"39",x"30",x"85",       -- e6e2 |   shl [0x3039], A*4 + B, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"60",x"6c",x"0d",x"d0", -- e6e9 |   jne [0x3039], 0x6c60, $fail
-    x"86",x"e0",x"3e",x"20",x"39",x"30",x"f6",       -- e6f3 |   sub [0x3039], A*4 + 0x-a, A
+    x"86",x"e0",x"3e",x"20",x"39",x"30",x"f6",       -- e6f3 |   sub [0x3039], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"f4",x"01",x"0d",x"d0", -- e6fa |   jne [0x3039], 0x1f4, $fail
-    x"86",x"fe",x"3e",x"fe",x"f6",                   -- e704 |   sub [G], A*4 + 0x-a, G
+    x"86",x"fe",x"3e",x"fe",x"f6",                   -- e704 |   sub [G], A*4 + -10, G
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"49",x"01",x"0d",x"d0", -- e709 |   jne [0x155], 0x149, $fail
     x"b6",x"20",x"20",x"2a",                         -- e713 |   xor [A], A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"c9",x"03",x"0d",x"d0", -- e717 |   jne [0xaa], 0x3c9, $fail
@@ -882,31 +882,31 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"8d",x"31",x"0d",x"d0", -- e734 |   jne [0x363], 0x318d, $fail
     x"82",x"fe",x"2a",x"2a",                         -- e73e |   add [G], A*4 + B, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"c6",x"06",x"0d",x"d0", -- e742 |   jne [0x155], 0x6c6, $fail
-    x"aa",x"2a",x"2a",x"3e",x"f6",                   -- e74c |   shl [A*4 + B], A*4 + B, A*4 + 0x-a
+    x"aa",x"2a",x"2a",x"3e",x"f6",                   -- e74c |   shl [A*4 + B], A*4 + B, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"00",x"c0",x"0d",x"d0", -- e751 |   jne [0x363], 0xc000, $fail
-    x"b6",x"3e",x"2a",x"20",x"f6",                   -- e75b |   xor [A*4 + 0x-a], A*4 + B, A
+    x"b6",x"3e",x"2a",x"20",x"f6",                   -- e75b |   xor [A*4 + -10], A*4 + B, A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"c9",x"03",x"0d",x"d0", -- e760 |   jne [0x29e], 0x3c9, $fail
-    x"8a",x"20",x"e4",x"1c",x"de",x"fa",x"85",       -- e76a |   mul [A], 0xfade + A, 0x-7b
+    x"8a",x"20",x"e4",x"1c",x"de",x"fa",x"85",       -- e76a |   mul [A], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"a8",x"25",x"0d",x"d0", -- e771 |   jne [0xaa], 0x25a8, $fail
-    x"ae",x"3e",x"e0",x"e4",x"f6",x"39",x"30",x"de",x"fa", -- e77b |   and [A*4 + 0x-a], 0x3039, 0xfade + A
+    x"ae",x"3e",x"e0",x"e4",x"f6",x"39",x"30",x"de",x"fa", -- e77b |   and [A*4 + -10], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"08",x"30",x"0d",x"d0", -- e784 |   jne [0x29e], 0x3008, $fail
     x"82",x"20",x"fe",x"21",                         -- e78e |   add [A], G, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"a9",x"02",x"0d",x"d0", -- e792 |   jne [0xaa], 0x2a9, $fail
     x"86",x"fe",x"e4",x"fe",x"de",x"fa",             -- e79c |   sub [G], 0xfade + A, G
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"33",x"fa",x"0d",x"d0", -- e7a2 |   jne [0x155], 0xfa33, $fail
-    x"a2",x"e0",x"3e",x"e4",x"39",x"30",x"f6",x"de",x"fa", -- e7ac |   shr [0x3039], A*4 + 0x-a, 0xfade + A
+    x"a2",x"e0",x"3e",x"e4",x"39",x"30",x"f6",x"de",x"fa", -- e7ac |   shr [0x3039], A*4 + -10, 0xfade + A
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"02",x"0d",x"d0", -- e7b5 |   jne [0x3039], 0x2, $fail
-    x"a2",x"3e",x"21",x"2a",x"f6",                   -- e7be |   shr [A*4 + 0x-a], A*2, A*4 + B
+    x"a2",x"3e",x"21",x"2a",x"f6",                   -- e7be |   shr [A*4 + -10], A*2, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"2a",x"0d",x"d0", -- e7c3 |   jne [0x29e], 0x2a, $fail
     x"a2",x"fe",x"20",x"2a",                         -- e7cc |   shr [G], A, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"15",x"0d",x"d0", -- e7d0 |   jne [0x155], 0x15, $fail
     x"8e",x"2a",x"fe",x"21",                         -- e7d9 |   imul [A*4 + B], G, A*2
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"e4",x"c4",x"0d",x"d0", -- e7dd |   jne [0x363], 0xc4e4, $fail
-    x"8a",x"3e",x"e4",x"e4",x"f6",x"de",x"fa",x"de",x"fa", -- e7e7 |   mul [A*4 + 0x-a], 0xfade + A, 0xfade + A
+    x"8a",x"3e",x"e4",x"e4",x"f6",x"de",x"fa",x"de",x"fa", -- e7e7 |   mul [A*4 + -10], 0xfade + A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"40",x"f8",x"0d",x"d0", -- e7f0 |   jne [0x29e], 0xf840, $fail
-    x"82",x"3e",x"2a",x"e0",x"f6",x"39",x"30",       -- e7fa |   add [A*4 + 0x-a], A*4 + B, 0x3039
+    x"82",x"3e",x"2a",x"e0",x"f6",x"39",x"30",       -- e7fa |   add [A*4 + -10], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"9c",x"33",x"0d",x"d0", -- e801 |   jne [0x29e], 0x339c, $fail
-    x"b6",x"2a",x"fe",x"3e",x"f6",                   -- e80b |   xor [A*4 + B], G, A*4 + 0x-a
+    x"b6",x"2a",x"fe",x"3e",x"f6",                   -- e80b |   xor [A*4 + B], G, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"cb",x"03",x"0d",x"d0", -- e810 |   jne [0x363], 0x3cb, $fail
     x"b6",x"21",x"e4",x"20",x"de",x"fa",             -- e81a |   xor [A*2], 0xfade + A, A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"22",x"fb",x"0d",x"d0", -- e820 |   jne [0x154], 0xfb22, $fail
@@ -914,33 +914,33 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"03",x"03",x"0d",x"d0", -- e832 |   jne [0x3039], 0x303, $fail
     x"8e",x"2a",x"fe",x"e0",x"39",x"30",             -- e83c |   imul [A*4 + B], G, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"ed",x"3b",x"0d",x"d0", -- e842 |   jne [0x363], 0x3bed, $fail
-    x"b6",x"e0",x"1c",x"21",x"39",x"30",x"85",       -- e84c |   xor [0x3039], 0x-7b, A*2
+    x"b6",x"e0",x"1c",x"21",x"39",x"30",x"85",       -- e84c |   xor [0x3039], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"d1",x"fe",x"0d",x"d0", -- e853 |   jne [0x3039], 0xfed1, $fail
     x"86",x"e0",x"fe",x"e4",x"39",x"30",x"de",x"fa", -- e85d |   sub [0x3039], G, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"cd",x"05",x"0d",x"d0", -- e865 |   jne [0x3039], 0x5cd, $fail
     x"b6",x"20",x"21",x"e4",x"de",x"fa",             -- e86f |   xor [A], A*2, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"dc",x"fa",x"0d",x"d0", -- e875 |   jne [0xaa], 0xfadc, $fail
-    x"8a",x"21",x"3e",x"e0",x"f6",x"39",x"30",       -- e87f |   mul [A*2], A*4 + 0x-a, 0x3039
+    x"8a",x"21",x"3e",x"e0",x"f6",x"39",x"30",       -- e87f |   mul [A*2], A*4 + -10, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"2e",x"35",x"0d",x"d0", -- e886 |   jne [0x154], 0x352e, $fail
     x"aa",x"2a",x"21",x"20",                         -- e890 |   shl [A*4 + B], A*2, A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"00",x"50",x"0d",x"d0", -- e894 |   jne [0x363], 0x5000, $fail
-    x"ae",x"fe",x"1c",x"e4",x"85",x"de",x"fa",       -- e89e |   and [G], 0x-7b, 0xfade + A
+    x"ae",x"fe",x"1c",x"e4",x"85",x"de",x"fa",       -- e89e |   and [G], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"80",x"fb",x"0d",x"d0", -- e8a5 |   jne [0x155], 0xfb80, $fail
     x"a2",x"20",x"20",x"21",                         -- e8af |   shr [A], A, A*2
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"0a",x"0d",x"d0", -- e8b3 |   jne [0xaa], 0xa, $fail
-    x"b6",x"3e",x"20",x"3e",x"f6",x"f6",             -- e8bc |   xor [A*4 + 0x-a], A, A*4 + 0x-a
+    x"b6",x"3e",x"20",x"3e",x"f6",x"f6",             -- e8bc |   xor [A*4 + -10], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"34",x"02",x"0d",x"d0", -- e8c2 |   jne [0x29e], 0x234, $fail
-    x"aa",x"3e",x"3e",x"21",x"f6",x"f6",             -- e8cc |   shl [A*4 + 0x-a], A*4 + 0x-a, A*2
+    x"aa",x"3e",x"3e",x"21",x"f6",x"f6",             -- e8cc |   shl [A*4 + -10], A*4 + -10, A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"e0",x"29",x"0d",x"d0", -- e8d2 |   jne [0x29e], 0x29e0, $fail
-    x"8a",x"20",x"3e",x"1c",x"f6",x"85",             -- e8dc |   mul [A], A*4 + 0x-a, 0x-7b
+    x"8a",x"20",x"3e",x"1c",x"f6",x"85",             -- e8dc |   mul [A], A*4 + -10, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"16",x"be",x"0d",x"d0", -- e8e2 |   jne [0xaa], 0xbe16, $fail
     x"b2",x"fe",x"fe",x"e0",x"39",x"30",             -- e8ec |   or [G], G, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"7d",x"31",x"0d",x"d0", -- e8f2 |   jne [0x155], 0x317d, $fail
-    x"a2",x"2a",x"e4",x"3e",x"de",x"fa",x"f6",       -- e8fc |   shr [A*4 + B], 0xfade + A, A*4 + 0x-a
+    x"a2",x"2a",x"e4",x"3e",x"de",x"fa",x"f6",       -- e8fc |   shr [A*4 + B], 0xfade + A, A*4 + -10
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"03",x"0d",x"d0", -- e903 |   jne [0x363], 0x3, $fail
     x"8a",x"2a",x"20",x"e0",x"39",x"30",             -- e90c |   mul [A*4 + B], A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"da",x"05",x"0d",x"d0", -- e912 |   jne [0x363], 0x5da, $fail
-    x"ae",x"3e",x"21",x"e0",x"f6",x"39",x"30",       -- e91c |   and [A*4 + 0x-a], A*2, 0x3039
+    x"ae",x"3e",x"21",x"e0",x"f6",x"39",x"30",       -- e91c |   and [A*4 + -10], A*2, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"10",x"0d",x"d0", -- e923 |   jne [0x29e], 0x10, $fail
     x"ae",x"e0",x"20",x"2a",x"39",x"30",             -- e92c |   and [0x3039], A, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"22",x"0d",x"d0", -- e932 |   jne [0x3039], 0x22, $fail
@@ -950,39 +950,39 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"f2",x"fd",x"0d",x"d0", -- e94f |   jne [0x3039], 0xfdf2, $fail
     x"a2",x"2a",x"fe",x"2a",                         -- e959 |   shr [A*4 + B], G, A*4 + B
     x"ee",x"e0",x"1c",x"e0",x"63",x"03",x"2a",x"0d",x"d0", -- e95d |   jne [0x363], 0x2a, $fail
-    x"b2",x"3e",x"fe",x"fe",x"f6",                   -- e966 |   or [A*4 + 0x-a], G, G
+    x"b2",x"3e",x"fe",x"fe",x"f6",                   -- e966 |   or [A*4 + -10], G, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"55",x"01",x"0d",x"d0", -- e96b |   jne [0x29e], 0x155, $fail
     x"b6",x"21",x"20",x"fe",                         -- e975 |   xor [A*2], A, G
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ff",x"01",x"0d",x"d0", -- e979 |   jne [0x154], 0x1ff, $fail
-    x"a2",x"fe",x"3e",x"1c",x"f6",x"85",             -- e983 |   shr [G], A*4 + 0x-a, 0x-7b
+    x"a2",x"fe",x"3e",x"1c",x"f6",x"85",             -- e983 |   shr [G], A*4 + -10, -123
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"14",x"0d",x"d0", -- e989 |   jne [0x155], 0x14, $fail
     x"a6",x"e0",x"fe",x"20",x"39",x"30",             -- e992 |   ishr [0x3039], G, A
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- e998 |   jne [0x3039], 0, $fail
-    x"8a",x"21",x"1c",x"e4",x"85",x"de",x"fa",       -- e9a0 |   mul [A*2], 0x-7b, 0xfade + A
+    x"8a",x"21",x"1c",x"e4",x"85",x"de",x"fa",       -- e9a0 |   mul [A*2], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"a8",x"25",x"0d",x"d0", -- e9a7 |   jne [0x154], 0x25a8, $fail
     x"b2",x"21",x"e4",x"e0",x"de",x"fa",x"39",x"30", -- e9b1 |   or [A*2], 0xfade + A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"b9",x"fb",x"0d",x"d0", -- e9b9 |   jne [0x154], 0xfbb9, $fail
     x"8e",x"2a",x"e0",x"e4",x"39",x"30",x"de",x"fa", -- e9c3 |   imul [A*4 + B], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"48",x"81",x"0d",x"d0", -- e9cb |   jne [0x363], 0x8148, $fail
-    x"b2",x"3e",x"fe",x"1c",x"f6",x"85",             -- e9d5 |   or [A*4 + 0x-a], G, 0x-7b
+    x"b2",x"3e",x"fe",x"1c",x"f6",x"85",             -- e9d5 |   or [A*4 + -10], G, -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"d5",x"ff",x"0d",x"d0", -- e9db |   jne [0x29e], 0xffd5, $fail
-    x"a6",x"3e",x"21",x"20",x"f6",                   -- e9e5 |   ishr [A*4 + 0x-a], A*2, A
+    x"a6",x"3e",x"21",x"20",x"f6",                   -- e9e5 |   ishr [A*4 + -10], A*2, A
     x"ee",x"e0",x"00",x"e0",x"9e",x"02",x"0d",x"d0", -- e9ea |   jne [0x29e], 0, $fail
-    x"ae",x"21",x"2a",x"1c",x"85",                   -- e9f2 |   and [A*2], A*4 + B, 0x-7b
+    x"ae",x"21",x"2a",x"1c",x"85",                   -- e9f2 |   and [A*2], A*4 + B, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"01",x"03",x"0d",x"d0", -- e9f7 |   jne [0x154], 0x301, $fail
-    x"b2",x"20",x"21",x"3e",x"f6",                   -- ea01 |   or [A], A*2, A*4 + 0x-a
+    x"b2",x"20",x"21",x"3e",x"f6",                   -- ea01 |   or [A], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"de",x"03",x"0d",x"d0", -- ea06 |   jne [0xaa], 0x3de, $fail
-    x"82",x"fe",x"3e",x"20",x"f6",                   -- ea10 |   add [G], A*4 + 0x-a, A
+    x"82",x"fe",x"3e",x"20",x"f6",                   -- ea10 |   add [G], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"48",x"03",x"0d",x"d0", -- ea15 |   jne [0x155], 0x348, $fail
-    x"aa",x"3e",x"20",x"e0",x"f6",x"39",x"30",       -- ea1f |   shl [A*4 + 0x-a], A, 0x3039
+    x"aa",x"3e",x"20",x"e0",x"f6",x"39",x"30",       -- ea1f |   shl [A*4 + -10], A, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"00",x"54",x"0d",x"d0", -- ea26 |   jne [0x29e], 0x5400, $fail
     x"aa",x"20",x"e4",x"e4",x"de",x"fa",x"de",x"fa", -- ea30 |   shl [A], 0xfade + A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"00",x"88",x"0d",x"d0", -- ea38 |   jne [0xaa], 0x8800, $fail
-    x"8e",x"fe",x"3e",x"e0",x"f6",x"39",x"30",       -- ea42 |   imul [G], A*4 + 0x-a, 0x3039
+    x"8e",x"fe",x"3e",x"e0",x"f6",x"39",x"30",       -- ea42 |   imul [G], A*4 + -10, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"2e",x"35",x"0d",x"d0", -- ea49 |   jne [0x155], 0x352e, $fail
-    x"82",x"e0",x"1c",x"1c",x"39",x"30",x"85",x"85", -- ea53 |   add [0x3039], 0x-7b, 0x-7b
+    x"82",x"e0",x"1c",x"1c",x"39",x"30",x"85",x"85", -- ea53 |   add [0x3039], -123, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"0a",x"ff",x"0d",x"d0", -- ea5b |   jne [0x3039], 0xff0a, $fail
-    x"86",x"21",x"3e",x"fe",x"f6",                   -- ea65 |   sub [A*2], A*4 + 0x-a, G
+    x"86",x"21",x"3e",x"fe",x"f6",                   -- ea65 |   sub [A*2], A*4 + -10, G
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"49",x"01",x"0d",x"d0", -- ea6a |   jne [0x154], 0x149, $fail
     x"a6",x"20",x"e4",x"fe",x"de",x"fa",             -- ea74 |   ishr [A], 0xfade + A, G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"dc",x"ff",x"0d",x"d0", -- ea7a |   jne [0xaa], 0xffdc, $fail
@@ -992,51 +992,51 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"cc",x"05",x"0d",x"d0", -- ea9c |   jne [0x155], 0x5cc, $fail
     x"82",x"2a",x"e0",x"e0",x"39",x"30",x"39",x"30", -- eaa6 |   add [A*4 + B], 0x3039, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"72",x"60",x"0d",x"d0", -- eaae |   jne [0x363], 0x6072, $fail
-    x"86",x"3e",x"1c",x"e4",x"f6",x"85",x"de",x"fa", -- eab8 |   sub [A*4 + 0x-a], 0x-7b, 0xfade + A
+    x"86",x"3e",x"1c",x"e4",x"f6",x"85",x"de",x"fa", -- eab8 |   sub [A*4 + -10], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"fd",x"03",x"0d",x"d0", -- eac0 |   jne [0x29e], 0x3fd, $fail
-    x"82",x"21",x"21",x"3e",x"f6",                   -- eaca |   add [A*2], A*2, A*4 + 0x-a
+    x"82",x"21",x"21",x"3e",x"f6",                   -- eaca |   add [A*2], A*2, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"f2",x"03",x"0d",x"d0", -- eacf |   jne [0x154], 0x3f2, $fail
-    x"a2",x"20",x"e0",x"1c",x"39",x"30",x"85",       -- ead9 |   shr [A], 0x3039, 0x-7b
+    x"a2",x"20",x"e0",x"1c",x"39",x"30",x"85",       -- ead9 |   shr [A], 0x3039, -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"81",x"01",x"0d",x"d0", -- eae0 |   jne [0xaa], 0x181, $fail
-    x"8e",x"21",x"20",x"3e",x"f6",                   -- eaea |   imul [A*2], A, A*4 + 0x-a
+    x"8e",x"21",x"20",x"3e",x"f6",                   -- eaea |   imul [A*2], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"ec",x"bc",x"0d",x"d0", -- eaef |   jne [0x154], 0xbcec, $fail
-    x"b2",x"3e",x"fe",x"e4",x"f6",x"de",x"fa",       -- eaf9 |   or [A*4 + 0x-a], G, 0xfade + A
+    x"b2",x"3e",x"fe",x"e4",x"f6",x"de",x"fa",       -- eaf9 |   or [A*4 + -10], G, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"dd",x"fb",x"0d",x"d0", -- eb00 |   jne [0x29e], 0xfbdd, $fail
-    x"a6",x"fe",x"20",x"1c",x"85",                   -- eb0a |   ishr [G], A, 0x-7b
+    x"a6",x"fe",x"20",x"1c",x"85",                   -- eb0a |   ishr [G], A, -123
     x"ee",x"e0",x"1c",x"e0",x"55",x"01",x"05",x"0d",x"d0", -- eb0f |   jne [0x155], 0x5, $fail
     x"a6",x"21",x"20",x"e4",x"de",x"fa",             -- eb18 |   ishr [A*2], A, 0xfade + A
     x"ee",x"e0",x"00",x"e0",x"54",x"01",x"0d",x"d0", -- eb1e |   jne [0x154], 0, $fail
-    x"a2",x"e0",x"1c",x"20",x"39",x"30",x"85",       -- eb26 |   shr [0x3039], 0x-7b, A
+    x"a2",x"e0",x"1c",x"20",x"39",x"30",x"85",       -- eb26 |   shr [0x3039], -123, A
     x"ee",x"e0",x"1c",x"e0",x"39",x"30",x"3f",x"0d",x"d0", -- eb2d |   jne [0x3039], 0x3f, $fail
-    x"8e",x"20",x"20",x"3e",x"f6",                   -- eb36 |   imul [A], A, A*4 + 0x-a
+    x"8e",x"20",x"20",x"3e",x"f6",                   -- eb36 |   imul [A], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"ec",x"bc",x"0d",x"d0", -- eb3b |   jne [0xaa], 0xbcec, $fail
     x"82",x"2a",x"e4",x"fe",x"de",x"fa",             -- eb45 |   add [A*4 + B], 0xfade + A, G
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"dd",x"fc",x"0d",x"d0", -- eb4b |   jne [0x363], 0xfcdd, $fail
-    x"b6",x"fe",x"e0",x"3e",x"39",x"30",x"f6",       -- eb55 |   xor [G], 0x3039, A*4 + 0x-a
+    x"b6",x"fe",x"e0",x"3e",x"39",x"30",x"f6",       -- eb55 |   xor [G], 0x3039, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"a7",x"32",x"0d",x"d0", -- eb5c |   jne [0x155], 0x32a7, $fail
     x"8e",x"20",x"e0",x"2a",x"39",x"30",             -- eb66 |   imul [A], 0x3039, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"0b",x"51",x"0d",x"d0", -- eb6c |   jne [0xaa], 0x510b, $fail
-    x"b2",x"3e",x"e4",x"fe",x"f6",x"de",x"fa",       -- eb76 |   or [A*4 + 0x-a], 0xfade + A, G
+    x"b2",x"3e",x"e4",x"fe",x"f6",x"de",x"fa",       -- eb76 |   or [A*4 + -10], 0xfade + A, G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"dd",x"fb",x"0d",x"d0", -- eb7d |   jne [0x29e], 0xfbdd, $fail
-    x"86",x"21",x"1c",x"21",x"85",                   -- eb87 |   sub [A*2], 0x-7b, A*2
+    x"86",x"21",x"1c",x"21",x"85",                   -- eb87 |   sub [A*2], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"31",x"fe",x"0d",x"d0", -- eb8c |   jne [0x154], 0xfe31, $fail
     x"b2",x"2a",x"21",x"21",                         -- eb96 |   or [A*4 + B], A*2, A*2
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"54",x"01",x"0d",x"d0", -- eb9a |   jne [0x363], 0x154, $fail
-    x"8e",x"e0",x"20",x"3e",x"39",x"30",x"f6",       -- eba4 |   imul [0x3039], A, A*4 + 0x-a
+    x"8e",x"e0",x"20",x"3e",x"39",x"30",x"f6",       -- eba4 |   imul [0x3039], A, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"ec",x"bc",x"0d",x"d0", -- ebab |   jne [0x3039], 0xbcec, $fail
-    x"a6",x"3e",x"e4",x"2a",x"f6",x"de",x"fa",       -- ebb5 |   ishr [A*4 + 0x-a], 0xfade + A, A*4 + B
+    x"a6",x"3e",x"e4",x"2a",x"f6",x"de",x"fa",       -- ebb5 |   ishr [A*4 + -10], 0xfade + A, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"71",x"ff",x"0d",x"d0", -- ebbc |   jne [0x29e], 0xff71, $fail
     x"ae",x"e0",x"20",x"e4",x"39",x"30",x"de",x"fa", -- ebc6 |   and [0x3039], A, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"88",x"00",x"0d",x"d0", -- ebce |   jne [0x3039], 0x88, $fail
     x"a6",x"20",x"fe",x"fe",                         -- ebd8 |   ishr [A], G, G
     x"ee",x"e0",x"1c",x"e0",x"aa",x"00",x"0a",x"0d",x"d0", -- ebdc |   jne [0xaa], 0xa, $fail
-    x"8e",x"20",x"3e",x"20",x"f6",                   -- ebe5 |   imul [A], A*4 + 0x-a, A
+    x"8e",x"20",x"3e",x"20",x"f6",                   -- ebe5 |   imul [A], A*4 + -10, A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"ec",x"bc",x"0d",x"d0", -- ebea |   jne [0xaa], 0xbcec, $fail
-    x"b2",x"e0",x"3e",x"fe",x"39",x"30",x"f6",       -- ebf4 |   or [0x3039], A*4 + 0x-a, G
+    x"b2",x"e0",x"3e",x"fe",x"39",x"30",x"f6",       -- ebf4 |   or [0x3039], A*4 + -10, G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"df",x"03",x"0d",x"d0", -- ebfb |   jne [0x3039], 0x3df, $fail
     x"82",x"21",x"e0",x"e4",x"39",x"30",x"de",x"fa", -- ec05 |   add [A*2], 0x3039, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"c1",x"2b",x"0d",x"d0", -- ec0d |   jne [0x154], 0x2bc1, $fail
-    x"82",x"e0",x"1c",x"e4",x"39",x"30",x"85",x"de",x"fa", -- ec17 |   add [0x3039], 0x-7b, 0xfade + A
+    x"82",x"e0",x"1c",x"e4",x"39",x"30",x"85",x"de",x"fa", -- ec17 |   add [0x3039], -123, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"0d",x"fb",x"0d",x"d0", -- ec20 |   jne [0x3039], 0xfb0d, $fail
     x"b2",x"fe",x"20",x"21",                         -- ec2a |   or [G], A, A*2
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"fe",x"01",x"0d",x"d0", -- ec2e |   jne [0x155], 0x1fe, $fail
@@ -1044,89 +1044,89 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"30",x"36",x"0d",x"d0", -- ec3c |   jne [0x154], 0x3630, $fail
     x"82",x"e0",x"2a",x"e0",x"39",x"30",x"39",x"30", -- ec46 |   add [0x3039], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"9c",x"33",x"0d",x"d0", -- ec4e |   jne [0x3039], 0x339c, $fail
-    x"ae",x"2a",x"20",x"1c",x"85",                   -- ec58 |   and [A*4 + B], A, 0x-7b
+    x"ae",x"2a",x"20",x"1c",x"85",                   -- ec58 |   and [A*4 + B], A, -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"80",x"00",x"0d",x"d0", -- ec5d |   jne [0x363], 0x80, $fail
-    x"b6",x"e0",x"20",x"1c",x"39",x"30",x"85",       -- ec67 |   xor [0x3039], A, 0x-7b
+    x"b6",x"e0",x"20",x"1c",x"39",x"30",x"85",       -- ec67 |   xor [0x3039], A, -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"2f",x"ff",x"0d",x"d0", -- ec6e |   jne [0x3039], 0xff2f, $fail
     x"ae",x"21",x"fe",x"e0",x"39",x"30",             -- ec78 |   and [A*2], G, 0x3039
     x"ee",x"e0",x"1c",x"e0",x"54",x"01",x"11",x"0d",x"d0", -- ec7e |   jne [0x154], 0x11, $fail
-    x"ae",x"3e",x"fe",x"3e",x"f6",x"f6",             -- ec87 |   and [A*4 + 0x-a], G, A*4 + 0x-a
+    x"ae",x"3e",x"fe",x"3e",x"f6",x"f6",             -- ec87 |   and [A*4 + -10], G, A*4 + -10
     x"ee",x"e0",x"1c",x"e0",x"9e",x"02",x"14",x"0d",x"d0", -- ec8d |   jne [0x29e], 0x14, $fail
-    x"8a",x"3e",x"2a",x"2a",x"f6",                   -- ec96 |   mul [A*4 + 0x-a], A*4 + B, A*4 + B
+    x"8a",x"3e",x"2a",x"2a",x"f6",                   -- ec96 |   mul [A*4 + -10], A*4 + B, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"49",x"78",x"0d",x"d0", -- ec9b |   jne [0x29e], 0x7849, $fail
-    x"82",x"20",x"3e",x"e0",x"f6",x"39",x"30",       -- eca5 |   add [A], A*4 + 0x-a, 0x3039
+    x"82",x"20",x"3e",x"e0",x"f6",x"39",x"30",       -- eca5 |   add [A], A*4 + -10, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"d7",x"32",x"0d",x"d0", -- ecac |   jne [0xaa], 0x32d7, $fail
-    x"82",x"21",x"e0",x"3e",x"39",x"30",x"f6",       -- ecb6 |   add [A*2], 0x3039, A*4 + 0x-a
+    x"82",x"21",x"e0",x"3e",x"39",x"30",x"f6",       -- ecb6 |   add [A*2], 0x3039, A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"d7",x"32",x"0d",x"d0", -- ecbd |   jne [0x154], 0x32d7, $fail
-    x"b6",x"21",x"3e",x"3e",x"f6",x"f6",             -- ecc7 |   xor [A*2], A*4 + 0x-a, A*4 + 0x-a
+    x"b6",x"21",x"3e",x"3e",x"f6",x"f6",             -- ecc7 |   xor [A*2], A*4 + -10, A*4 + -10
     x"ee",x"e0",x"00",x"e0",x"54",x"01",x"0d",x"d0", -- eccd |   jne [0x154], 0, $fail
     x"a6",x"e0",x"20",x"20",x"39",x"30",             -- ecd5 |   ishr [0x3039], A, A
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- ecdb |   jne [0x3039], 0, $fail
-    x"a6",x"e0",x"e0",x"3e",x"39",x"30",x"39",x"30",x"f6", -- ece3 |   ishr [0x3039], 0x3039, A*4 + 0x-a
+    x"a6",x"e0",x"e0",x"3e",x"39",x"30",x"39",x"30",x"f6", -- ece3 |   ishr [0x3039], 0x3039, A*4 + -10
     x"ee",x"e0",x"00",x"e0",x"39",x"30",x"0d",x"d0", -- ecec |   jne [0x3039], 0, $fail
-    x"aa",x"20",x"1c",x"21",x"85",                   -- ecf4 |   shl [A], 0x-7b, A*2
+    x"aa",x"20",x"1c",x"21",x"85",                   -- ecf4 |   shl [A], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"50",x"f8",x"0d",x"d0", -- ecf9 |   jne [0xaa], 0xf850, $fail
     x"ae",x"e0",x"21",x"e4",x"39",x"30",x"de",x"fa", -- ed03 |   and [0x3039], A*2, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"00",x"01",x"0d",x"d0", -- ed0b |   jne [0x3039], 0x100, $fail
-    x"b2",x"3e",x"1c",x"20",x"f6",x"85",             -- ed15 |   or [A*4 + 0x-a], 0x-7b, A
+    x"b2",x"3e",x"1c",x"20",x"f6",x"85",             -- ed15 |   or [A*4 + -10], -123, A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"af",x"ff",x"0d",x"d0", -- ed1b |   jne [0x29e], 0xffaf, $fail
-    x"8e",x"21",x"1c",x"20",x"85",                   -- ed25 |   imul [A*2], 0x-7b, A
+    x"8e",x"21",x"1c",x"20",x"85",                   -- ed25 |   imul [A*2], -123, A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"52",x"ae",x"0d",x"d0", -- ed2a |   jne [0x154], 0xae52, $fail
     x"8a",x"2a",x"2a",x"2a",                         -- ed34 |   mul [A*4 + B], A*4 + B, A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"49",x"78",x"0d",x"d0", -- ed38 |   jne [0x363], 0x7849, $fail
     x"86",x"2a",x"2a",x"e0",x"39",x"30",             -- ed42 |   sub [A*4 + B], A*4 + B, 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"2a",x"d3",x"0d",x"d0", -- ed48 |   jne [0x363], 0xd32a, $fail
-    x"ae",x"fe",x"1c",x"21",x"85",                   -- ed52 |   and [G], 0x-7b, A*2
+    x"ae",x"fe",x"1c",x"21",x"85",                   -- ed52 |   and [G], -123, A*2
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"04",x"01",x"0d",x"d0", -- ed57 |   jne [0x155], 0x104, $fail
-    x"8e",x"21",x"e4",x"1c",x"de",x"fa",x"85",       -- ed61 |   imul [A*2], 0xfade + A, 0x-7b
+    x"8e",x"21",x"e4",x"1c",x"de",x"fa",x"85",       -- ed61 |   imul [A*2], 0xfade + A, -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"a8",x"25",x"0d",x"d0", -- ed68 |   jne [0x154], 0x25a8, $fail
     x"8a",x"21",x"21",x"e4",x"de",x"fa",             -- ed72 |   mul [A*2], A*2, 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"a0",x"10",x"0d",x"d0", -- ed78 |   jne [0x154], 0x10a0, $fail
     x"86",x"fe",x"e0",x"fe",x"39",x"30",             -- ed82 |   sub [G], 0x3039, G
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"e4",x"2e",x"0d",x"d0", -- ed88 |   jne [0x155], 0x2ee4, $fail
-    x"62",x"20",x"1c",x"85",                         -- ed92 |   mov [A], 0x-7b
+    x"62",x"20",x"1c",x"85",                         -- ed92 |   mov [A], -123
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"85",x"ff",x"0d",x"d0", -- ed96 |   jne [0xaa], 0xff85, $fail
-    x"62",x"3e",x"3e",x"f6",x"f6",                   -- eda0 |   mov [A*4 + 0x-a], A*4 + 0x-a
+    x"62",x"3e",x"3e",x"f6",x"f6",                   -- eda0 |   mov [A*4 + -10], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"9e",x"02",x"0d",x"d0", -- eda5 |   jne [0x29e], 0x29e, $fail
     x"62",x"21",x"2a",                               -- edaf |   mov [A*2], A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"63",x"03",x"0d",x"d0", -- edb2 |   jne [0x154], 0x363, $fail
-    x"62",x"e0",x"1c",x"39",x"30",x"85",             -- edbc |   mov [0x3039], 0x-7b
+    x"62",x"e0",x"1c",x"39",x"30",x"85",             -- edbc |   mov [0x3039], -123
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"85",x"ff",x"0d",x"d0", -- edc2 |   jne [0x3039], 0xff85, $fail
-    x"62",x"fe",x"3e",x"f6",                         -- edcc |   mov [G], A*4 + 0x-a
+    x"62",x"fe",x"3e",x"f6",                         -- edcc |   mov [G], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"9e",x"02",x"0d",x"d0", -- edd0 |   jne [0x155], 0x29e, $fail
     x"62",x"e0",x"fe",x"39",x"30",                   -- edda |   mov [0x3039], G
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"55",x"01",x"0d",x"d0", -- eddf |   jne [0x3039], 0x155, $fail
     x"62",x"fe",x"21",                               -- ede9 |   mov [G], A*2
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"54",x"01",x"0d",x"d0", -- edec |   jne [0x155], 0x154, $fail
-    x"62",x"3e",x"e4",x"f6",x"de",x"fa",             -- edf6 |   mov [A*4 + 0x-a], 0xfade + A
+    x"62",x"3e",x"e4",x"f6",x"de",x"fa",             -- edf6 |   mov [A*4 + -10], 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"88",x"fb",x"0d",x"d0", -- edfc |   jne [0x29e], 0xfb88, $fail
     x"62",x"e0",x"e0",x"39",x"30",x"39",x"30",       -- ee06 |   mov [0x3039], 0x3039
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"39",x"30",x"0d",x"d0", -- ee0d |   jne [0x3039], 0x3039, $fail
-    x"62",x"3e",x"fe",x"f6",                         -- ee17 |   mov [A*4 + 0x-a], G
+    x"62",x"3e",x"fe",x"f6",                         -- ee17 |   mov [A*4 + -10], G
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"55",x"01",x"0d",x"d0", -- ee1b |   jne [0x29e], 0x155, $fail
     x"62",x"20",x"fe",                               -- ee25 |   mov [A], G
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"55",x"01",x"0d",x"d0", -- ee28 |   jne [0xaa], 0x155, $fail
     x"62",x"2a",x"2a",                               -- ee32 |   mov [A*4 + B], A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"63",x"03",x"0d",x"d0", -- ee35 |   jne [0x363], 0x363, $fail
-    x"62",x"3e",x"2a",x"f6",                         -- ee3f |   mov [A*4 + 0x-a], A*4 + B
+    x"62",x"3e",x"2a",x"f6",                         -- ee3f |   mov [A*4 + -10], A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"63",x"03",x"0d",x"d0", -- ee43 |   jne [0x29e], 0x363, $fail
     x"62",x"2a",x"20",                               -- ee4d |   mov [A*4 + B], A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"aa",x"00",x"0d",x"d0", -- ee50 |   jne [0x363], 0xaa, $fail
-    x"62",x"3e",x"20",x"f6",                         -- ee5a |   mov [A*4 + 0x-a], A
+    x"62",x"3e",x"20",x"f6",                         -- ee5a |   mov [A*4 + -10], A
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"aa",x"00",x"0d",x"d0", -- ee5e |   jne [0x29e], 0xaa, $fail
     x"62",x"20",x"20",                               -- ee68 |   mov [A], A
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"aa",x"00",x"0d",x"d0", -- ee6b |   jne [0xaa], 0xaa, $fail
     x"62",x"2a",x"e4",x"de",x"fa",                   -- ee75 |   mov [A*4 + B], 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"88",x"fb",x"0d",x"d0", -- ee7a |   jne [0x363], 0xfb88, $fail
-    x"62",x"21",x"1c",x"85",                         -- ee84 |   mov [A*2], 0x-7b
+    x"62",x"21",x"1c",x"85",                         -- ee84 |   mov [A*2], -123
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"85",x"ff",x"0d",x"d0", -- ee88 |   jne [0x154], 0xff85, $fail
     x"62",x"2a",x"e0",x"39",x"30",                   -- ee92 |   mov [A*4 + B], 0x3039
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"39",x"30",x"0d",x"d0", -- ee97 |   jne [0x363], 0x3039, $fail
-    x"62",x"3e",x"1c",x"f6",x"85",                   -- eea1 |   mov [A*4 + 0x-a], 0x-7b
+    x"62",x"3e",x"1c",x"f6",x"85",                   -- eea1 |   mov [A*4 + -10], -123
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"85",x"ff",x"0d",x"d0", -- eea6 |   jne [0x29e], 0xff85, $fail
-    x"62",x"3e",x"21",x"f6",                         -- eeb0 |   mov [A*4 + 0x-a], A*2
+    x"62",x"3e",x"21",x"f6",                         -- eeb0 |   mov [A*4 + -10], A*2
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"54",x"01",x"0d",x"d0", -- eeb4 |   jne [0x29e], 0x154, $fail
-    x"62",x"21",x"3e",x"f6",                         -- eebe |   mov [A*2], A*4 + 0x-a
+    x"62",x"21",x"3e",x"f6",                         -- eebe |   mov [A*2], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"9e",x"02",x"0d",x"d0", -- eec2 |   jne [0x154], 0x29e, $fail
     x"62",x"e0",x"21",x"39",x"30",                   -- eecc |   mov [0x3039], A*2
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"54",x"01",x"0d",x"d0", -- eed1 |   jne [0x3039], 0x154, $fail
@@ -1136,17 +1136,17 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"55",x"01",x"0d",x"d0", -- eeeb |   jne [0x363], 0x155, $fail
     x"62",x"21",x"e4",x"de",x"fa",                   -- eef5 |   mov [A*2], 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"88",x"fb",x"0d",x"d0", -- eefa |   jne [0x154], 0xfb88, $fail
-    x"62",x"20",x"3e",x"f6",                         -- ef04 |   mov [A], A*4 + 0x-a
+    x"62",x"20",x"3e",x"f6",                         -- ef04 |   mov [A], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"9e",x"02",x"0d",x"d0", -- ef08 |   jne [0xaa], 0x29e, $fail
-    x"62",x"e0",x"3e",x"39",x"30",x"f6",             -- ef12 |   mov [0x3039], A*4 + 0x-a
+    x"62",x"e0",x"3e",x"39",x"30",x"f6",             -- ef12 |   mov [0x3039], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"9e",x"02",x"0d",x"d0", -- ef18 |   jne [0x3039], 0x29e, $fail
-    x"62",x"2a",x"3e",x"f6",                         -- ef22 |   mov [A*4 + B], A*4 + 0x-a
+    x"62",x"2a",x"3e",x"f6",                         -- ef22 |   mov [A*4 + B], A*4 + -10
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"9e",x"02",x"0d",x"d0", -- ef26 |   jne [0x363], 0x29e, $fail
     x"62",x"e0",x"e4",x"39",x"30",x"de",x"fa",       -- ef30 |   mov [0x3039], 0xfade + A
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"88",x"fb",x"0d",x"d0", -- ef37 |   jne [0x3039], 0xfb88, $fail
     x"62",x"21",x"e0",x"39",x"30",                   -- ef41 |   mov [A*2], 0x3039
     x"ee",x"e0",x"e0",x"e0",x"54",x"01",x"39",x"30",x"0d",x"d0", -- ef46 |   jne [0x154], 0x3039, $fail
-    x"62",x"fe",x"1c",x"85",                         -- ef50 |   mov [G], 0x-7b
+    x"62",x"fe",x"1c",x"85",                         -- ef50 |   mov [G], -123
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"85",x"ff",x"0d",x"d0", -- ef54 |   jne [0x155], 0xff85, $fail
     x"62",x"e0",x"2a",x"39",x"30",                   -- ef5e |   mov [0x3039], A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"39",x"30",x"63",x"03",x"0d",x"d0", -- ef63 |   jne [0x3039], 0x363, $fail
@@ -1156,7 +1156,7 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"39",x"30",x"0d",x"d0", -- ef81 |   jne [0xaa], 0x3039, $fail
     x"62",x"20",x"21",                               -- ef8b |   mov [A], A*2
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"54",x"01",x"0d",x"d0", -- ef8e |   jne [0xaa], 0x154, $fail
-    x"62",x"3e",x"e0",x"f6",x"39",x"30",             -- ef98 |   mov [A*4 + 0x-a], 0x3039
+    x"62",x"3e",x"e0",x"f6",x"39",x"30",             -- ef98 |   mov [A*4 + -10], 0x3039
     x"ee",x"e0",x"e0",x"e0",x"9e",x"02",x"39",x"30",x"0d",x"d0", -- ef9e |   jne [0x29e], 0x3039, $fail
     x"62",x"fe",x"20",                               -- efa8 |   mov [G], A
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"aa",x"00",x"0d",x"d0", -- efab |   jne [0x155], 0xaa, $fail
@@ -1166,7 +1166,7 @@ constant arr_rom : TArrROM := (
     x"ee",x"e0",x"e0",x"e0",x"55",x"01",x"55",x"01",x"0d",x"d0", -- efc5 |   jne [0x155], 0x155, $fail
     x"62",x"20",x"2a",                               -- efcf |   mov [A], A*4 + B
     x"ee",x"e0",x"e0",x"e0",x"aa",x"00",x"63",x"03",x"0d",x"d0", -- efd2 |   jne [0xaa], 0x363, $fail
-    x"62",x"2a",x"1c",x"85",                         -- efdc |   mov [A*4 + B], 0x-7b
+    x"62",x"2a",x"1c",x"85",                         -- efdc |   mov [A*4 + B], -123
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"85",x"ff",x"0d",x"d0", -- efe0 |   jne [0x363], 0xff85, $fail
     x"62",x"2a",x"21",                               -- efea |   mov [A*4 + B], A*2
     x"ee",x"e0",x"e0",x"e0",x"63",x"03",x"54",x"01",x"0d",x"d0", -- efed |   jne [0x363], 0x154, $fail
@@ -1183,13 +1183,13 @@ constant arr_rom : TArrROM := (
     x"e0",x"2a",                                     -- f03e |   push A*4 + B
     x"e4",x"80",                                     -- f040 |   pop D
     x"ec",x"80",x"e0",x"e0",x"63",x"03",x"0d",x"d0", -- f042 |   jne D, 0x363, $fail
-    x"e0",x"1c",x"85",                               -- f04a |   push 0x-7b
+    x"e0",x"1c",x"85",                               -- f04a |   push -123
     x"e4",x"80",                                     -- f04d |   pop D
     x"ec",x"80",x"e0",x"e0",x"85",x"ff",x"0d",x"d0", -- f04f |   jne D, 0xff85, $fail
     x"e0",x"fe",                                     -- f057 |   push G
     x"e4",x"80",                                     -- f059 |   pop D
     x"ec",x"80",x"e0",x"e0",x"55",x"01",x"0d",x"d0", -- f05b |   jne D, 0x155, $fail
-    x"e0",x"3e",x"f6",                               -- f063 |   push A*4 + 0x-a
+    x"e0",x"3e",x"f6",                               -- f063 |   push A*4 + -10
     x"e4",x"80",                                     -- f066 |   pop D
     x"ec",x"80",x"e0",x"e0",x"9e",x"02",x"0d",x"d0", -- f068 |   jne D, 0x29e, $fail
     x"e0",x"20",                                     -- f070 |   push A
@@ -1294,26 +1294,26 @@ constant arr_rom : TArrROM := (
     x"ec",x"40",x"1c",x"e0",x"7b",x"0d",x"d0",       -- f263 |   jne B, 0x7b, $fail
     x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       -- f26a |   jne A, 0xe, $fail
                                                      --      | test_uop_cmp_di:
-    x"62",x"1c",x"1c",x"64",x"85",                   -- f271 |   mov [0x64], 0x-7b
+    x"62",x"1c",x"1c",x"64",x"85",                   -- f271 |   mov [0x64], -123
     x"60",x"40",x"e0",x"c8",x"01",                   -- f276 |   mov B, 0x1c8
     x"d1",x"40",x"1c",x"64",                         -- f27b |   icmp B, [0x64]
     x"4c",x"20",                                     -- f27f |   getf A
     x"ec",x"40",x"e0",x"e0",x"c8",x"01",x"0d",x"d0", -- f281 |   jne B, 0x1c8, $fail
     x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       -- f289 |   jne A, 0x32, $fail
                                                      --      | test_uop_cmp_id:
-    x"62",x"1c",x"1c",x"64",x"85",                   -- f290 |   mov [0x64], 0x-7b
+    x"62",x"1c",x"1c",x"64",x"85",                   -- f290 |   mov [0x64], -123
     x"60",x"40",x"e0",x"c8",x"01",                   -- f295 |   mov B, 0x1c8
     x"d2",x"1c",x"40",x"64",                         -- f29a |   icmp [0x64], B
     x"4c",x"20",                                     -- f29e |   getf A
     x"ec",x"40",x"e0",x"e0",x"c8",x"01",x"0d",x"d0", -- f2a0 |   jne B, 0x1c8, $fail
     x"ec",x"20",x"1c",x"e0",x"0e",x"0d",x"d0",       -- f2a8 |   jne A, 0xe, $fail
                                                      --      | test_uop_cmp_ii:
-    x"62",x"1c",x"1c",x"64",x"85",                   -- f2af |   mov [0x64], 0x-7b
-    x"62",x"1c",x"e0",x"66",x"38",x"fe",             -- f2b4 |   mov [0x66], 0x-1c8
+    x"62",x"1c",x"1c",x"64",x"85",                   -- f2af |   mov [0x64], -123
+    x"62",x"1c",x"e0",x"66",x"38",x"fe",             -- f2b4 |   mov [0x66], 0xfe38
     x"d3",x"1c",x"1c",x"64",x"66",                   -- f2ba |   icmp [0x64], [0x66]
     x"4c",x"20",                                     -- f2bf |   getf A
-    x"ee",x"1c",x"1c",x"e0",x"64",x"85",x"0d",x"d0", -- f2c1 |   jne [0x64], 0x-7b, $fail
-    x"ee",x"1c",x"e0",x"e0",x"66",x"38",x"fe",x"0d",x"d0", -- f2c9 |   jne [0x66], 0x-1c8, $fail
+    x"ee",x"1c",x"1c",x"e0",x"64",x"85",x"0d",x"d0", -- f2c1 |   jne [0x64], -123, $fail
+    x"ee",x"1c",x"e0",x"e0",x"66",x"38",x"fe",x"0d",x"d0", -- f2c9 |   jne [0x66], 0xfe38, $fail
     x"ec",x"20",x"1c",x"e0",x"32",x"0d",x"d0",       -- f2d2 |   jne A, 0x32, $fail
                                                      --      | test_uop_jmp_d:
     x"60",x"20",x"e0",x"e4",x"f2",                   -- f2d9 |   mov A, $_L_test_uop_jmp_d_okay
