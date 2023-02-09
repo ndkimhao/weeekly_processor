@@ -1,0 +1,35 @@
+                               #      | SECTION_BEGIN_boot:
+60 a0 e0 00 20                 # d000 |   mov SP, 0x2000
+5c e0 0a d0                    # d005 |   call $fn_start
+d8                             # d009 |   halt
+                               #      | SECTION_END_boot:
+                               #      | 
+                               #      | fn_start:
+e0 20                          # d00a |   push A
+e0 40                          # d00c |   push B
+e0 60                          # d00e |   push C
+80 40 e0 e0 30 d2 12 a0        # d010 |   add B, 0xd230, 0xa012
+                               #      | _B_fn_start_1:
+e8 20 1c e0 7b 20 d0           # d018 |   jeq A, 0x7b, $_E_fn_start_1
+dc                             # d01f |   ret
+                               #      | _E_fn_start_1:
+60 40 e0 35 d0                 # d020 |   mov B, $const_data_2
+63 e0 40 00 a0                 # d025 |   mov [$var_data_1], [B]
+5c e0 0a d0                    # d02a |   call $fn_start
+e4 60                          # d02e |   pop C
+e4 40                          # d030 |   pop B
+e4 20                          # d032 |   pop A
+dc                             # d034 |   ret
+                               #      | end_fn_start:
+                               #      | 
+                               #      | SECTION_BEGIN_const_data:
+                               #      | const_data_2:
+52 45 41 44 59 00              # d035 |   .data str:"READY"
+                               #      | SECTION_END_const_data:
+                               #      | 
+                               #      | .offset 0xa000
+                               #      | SECTION_BEGIN_static_data:
+                               #      | var_data_1:
+                               # a000 |   .bss size:123
+                               #      | SECTION_END_static_data:
+                               #      | 

@@ -165,9 +165,14 @@ def RET():
     return __emit_command('ret')
 
 
-def PUSH(a):
-    return __emit_command('push', a)
+def PUSH(*args):
+    for a in args:
+        __emit_command('push', a)
+    return tuple(args)
 
 
-def POP(a):
-    return __emit_command('pop', a)
+def POP(*args):
+    if isinstance(args[0], tuple):
+        args = args[0]
+    for a in reversed(args):
+        __emit_command('pop', a)

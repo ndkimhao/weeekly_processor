@@ -193,6 +193,8 @@ class Expr:
         if isinstance(v, Expr):
             return v
         else:
+            if isinstance(v, str):
+                v = ConstLabel(v)
             assert isinstance(v, (Register, ConstLabel, int))
             return Expr() + v
 

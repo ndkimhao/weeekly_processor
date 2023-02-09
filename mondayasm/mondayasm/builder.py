@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Union, Callable
+from typing import Union, Callable, Optional
 import re
 
 from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel
 from mondayasm.data import CMDS_MAP
-from mondayasm.types import ArgEncode, CmdEncode, DataEncode
+from mondayasm.types import CmdEncode, DataEncode
 
 
 @dataclass(frozen=True)
@@ -42,7 +42,20 @@ class Directive:
 @dataclass
 class ScopeBuilder:
     name: str
-    instructions: list[Union[Instruction, Directive]] = field(default_factory=list)
+    instructions: list[Union[Instruction, Directive]]
+    add_boundary_labels: bool
+
+    def __init__(self, name, add_boundary_labels=False):
+        self.name = name
+        self.instructions = []
+        self.add_boundary_labels = add_boundary_labels
+        if self.add_boundary_labels:
+            _Label(f'SECTION_BEGIN_{self.name}', emit_to=self)
+
+    def finalize_block(self):
+        if self.add_boundary_labels:
+            _Label(f'SECTION_END_{self.name}', emit_to=self)
+            self.add_boundary_labels = False
 
     def add(self, inst: Union[Instruction, Directive]):
         assert isinstance(inst, (Instruction, Directive))
@@ -58,15 +71,26 @@ class StaticData:
 
 
 class Global:
-    blocks: dict[str, ScopeBuilder] = {
-        '_start': ScopeBuilder('_start')
-    }
-    scope_stack: list[ScopeBuilder] = [blocks['_start']]
+    blocks: dict[str, ScopeBuilder] = {}
+    scope_stack: list[ScopeBuilder] = []
     blocks_unique_counter: dict[str, int] = {}
 
     static_data: dict[str, StaticData] = {}
 
     visited_fns: set[Callable] = set()
+
+    boot_scope: ScopeBuilder
+    const_data_scope: ScopeBuilder
+    static_var_scope: ScopeBuilder
+
+    @classmethod
+    def internal_static_init(cls):
+        cls.boot_scope = ScopeBuilder('boot', add_boundary_labels=True)
+        cls.add_block(cls.boot_scope)
+        cls.enter_scope(cls.boot_scope)
+
+        cls.const_data_scope = ScopeBuilder('const_data', add_boundary_labels=True)
+        cls.static_var_scope = ScopeBuilder('static_data', add_boundary_labels=True)
 
     @classmethod
     def enter_scope(cls, blk: ScopeBuilder):
@@ -96,9 +120,15 @@ class Global:
         return blk_name
 
     @classmethod
-    def add_static_data(cls, d: StaticData):
+    def add_static_data(cls, d: StaticData) -> Expr:
         assert d.name not in cls.static_data
         cls.static_data[d.name] = d
+        scope = cls.const_data_scope if d.readonly else cls.static_var_scope
+        prefix = 'const' if d.readonly else 'var'
+        lbl = _Label(f'{prefix}_{d.name}', emit_to=scope)
+        directive = '.data' if d.readonly else '.bss'
+        scope.add(Directive(directive, (d.data.value, d.data.bincode, d.size)))
+        return lbl
 
 
 def unwrap_indirect(a):
@@ -113,7 +143,10 @@ def unwrap_indirect(a):
     return a, indirect
 
 
-def emit_command(name: str, a=None, b=None, c=None):
+def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
+    if emit_to is None:
+        emit_to = Global.current_scope()
+
     a, indirect_a = unwrap_indirect(a)
     b, indirect_b = unwrap_indirect(b)
     id_specs = (2 if indirect_a else 0) | (1 if indirect_b else 0)
@@ -132,14 +165,12 @@ def emit_command(name: str, a=None, b=None, c=None):
         args.append(c.assemble())
 
     cmd_ord = (name.upper(), len(args))
-    cur_blk = Global.current_scope()
     inst = Instruction(
         cmd=CmdEncode(name, f'{CMDS_MAP[cmd_ord]:06b}', f'{id_specs:02b}'),
         args=tuple(args),
         is_indirect=tuple([id_specs & 2 != 0, id_specs & 1 != 0, False][:len(args)])
     )
-
-    cur_blk.add(inst)
+    emit_to.add(inst)
 
 
 def emit_command_call(op_name, target, emit_call: bool):
@@ -152,6 +183,7 @@ def emit_command_call(op_name, target, emit_call: bool):
     visit_fn = callable(target) and target not in Global.visited_fns
     lbl_start = f'fn_{target.__name__}'
     lbl_end = f'end_fn_{target.__name__}'
+    caller_scope = Global.current_scope()
     if visit_fn:
         blk = ScopeBuilder(lbl_start)
         Global.add_block(blk)
@@ -161,20 +193,24 @@ def emit_command_call(op_name, target, emit_call: bool):
         target()
 
     if emit_call:
-        emit_command(op_name, Expr.to_expr(ConstLabel(lbl_start)))
+        emit_command(op_name, Expr.to_expr(ConstLabel(lbl_start)), emit_to=caller_scope)
 
     if visit_fn:
+        emit_command('ret')
         _Label(lbl_end, anon=False)
         Global.exit_scope(blk)
 
 
-def _Label(name: str = '', anon: bool = False, emit_label: bool = True) -> Expr:
+def _Label(name: str = '', anon: bool = False,
+           emit_label: bool = True, emit_to: Optional[ScopeBuilder] = None) -> Expr:
     if name == '':
         name = Global.gen_label_name(Global.current_scope().name)
     elif anon:
         name = Global.gen_label_name(name)
     if emit_label:
-        Global.current_scope().add(Directive('.label', (name,)))
+        if emit_to is None:
+            emit_to = Global.current_scope()
+        emit_to.add(Directive('.label', (name,)))
     return Expr.to_expr(ConstLabel(name))
 
 
@@ -182,32 +218,38 @@ def _AnonLabel(name: str = '', emit_label: bool = True) -> Expr:
     return _Label(name, anon=True, emit_label=emit_label)
 
 
-def _ConstData(name: str, obj) -> Expr:
+def _ConstData(name, obj=None) -> Expr:
+    if obj is None:
+        obj = name
+        name = Global.gen_label_name('data', '')
     if isinstance(obj, str):
-        value = f'"{re.escape(obj)}"'
-        data = bytes(obj, 'utf-8')
+        value = f'str:"{re.escape(obj)}"'
+        data = bytes(obj + '\0', 'utf-8')
     elif isinstance(obj, bytes):
-        value = f'RAW:{obj.hex()}'
+        value = f'raw:{obj.hex()}'
         data = obj
     else:
         assert False, f'unknown data type: {type(obj)}'
-    Global.add_static_data(StaticData(
+    bincode = ' '.join(f'{b:02x}' for b in data)
+    return Global.add_static_data(StaticData(
         name=name,
         readonly=True,
-        data=DataEncode(value, data),
+        data=DataEncode(value, data, bincode),
         size=len(data),
     ))
-    return Expr.to_expr(ConstLabel(f'_CONST_{name}'))
 
 
-def _StaticVar(name: str, size) -> Expr:
-    Global.add_static_data(StaticData(
+def _StaticVar(name: Union[str, int], size=None) -> Expr:
+    if size is None:
+        size = name
+        assert isinstance(size, int)
+        name = Global.gen_label_name('data', '')
+    return Global.add_static_data(StaticData(
         name=name,
         readonly=False,
-        data=DataEncode('', bytes()),
+        data=DataEncode('', bytes(), ''),
         size=size,
     ))
-    return Expr.to_expr(ConstLabel(f'_VAR_{name}'))
 
 
 class BlockContextManager:
@@ -241,3 +283,6 @@ class BlockContextManager:
 
 def _Block(name: str = '') -> BlockContextManager:
     return BlockContextManager(name)
+
+
+Global.internal_static_init()
