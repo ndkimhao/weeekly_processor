@@ -277,7 +277,15 @@ class BlockContextManager:
         return self.label_start
 
     @property
+    def begin(self) -> Expr:
+        return self.label_start
+
+    @property
     def end(self) -> Expr:
+        return self.label_end
+
+    @property
+    def stop(self) -> Expr:
         return self.label_end
 
 

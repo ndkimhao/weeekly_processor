@@ -16,7 +16,10 @@ entity CPU is
 		vbuf_wr : out std_logic;
 		vbuf_addr : out TAddr;
 		vbuf_dout : out TData;
-		vbuf_din : in TData
+		vbuf_din : in TData;
+		
+		uart_tx : out std_logic;
+		uart_rx : in std_logic
 	);
 end CPU;
 
@@ -64,8 +67,10 @@ signal reg_k : TData;
 
 begin
 
-	mem : entity work.MemoryController port map (
+	devices_controller : entity work.MemoryController port map (
 		clk => clk,
+		reset => reset,
+
 		en => mem_en,
 		wr => mem_wr,
 		addr => mem_phy_addr,
@@ -76,7 +81,10 @@ begin
 		vbuf_wr => vbuf_wr,
 		vbuf_addr => vbuf_addr,
 		vbuf_dout => vbuf_dout,
-		vbuf_din => vbuf_din
+		vbuf_din => vbuf_din,
+		
+		uart_tx => uart_tx,
+		uart_rx => uart_rx
 	);
 
 	mmu : entity work.MMU port map (

@@ -12,7 +12,7 @@ class CodeGen:
         # idx, bin, command
         self.buf: list[tuple[int, str, str]] = []
         self.code_offset = 0xd000
-        self.var_offset = 0xA000
+        self.var_offset = 0x0000
 
         self.romlen = 0
         self.label_map: dict[str, int] = {}
@@ -58,8 +58,11 @@ class CodeGen:
                     self.label_map[lbl] = get_offset()
                 elif inst.name == '.data':
                     self.buf.append((get_offset(), inst.args[1], f'  .data {inst.args[0]}'))
+                    self.romlen += inst.args[2]
                 elif inst.name == '.bss':
-                    self.buf.append((get_offset(), inst.args[1], f'  .bss size:{inst.args[2]}'))
+                    bss_size = inst.args[2]
+                    self.buf.append((get_offset(), inst.args[1], f'  .bss size:{bss_size}'))
+                    blocklen += bss_size
                 else:
                     assert False, inst
             else:

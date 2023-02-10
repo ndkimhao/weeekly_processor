@@ -15,7 +15,7 @@ package Constants is
 	constant MMUIdxWidth : integer := 2;
 	constant MMUSlots    : integer := 4;
 
-	constant RAMSize : integer := 262144; -- 256KB
+	constant RAMSize : integer := 65536; -- 64KB
 
 	constant InstructionIndexWidth : integer := 5;
 	constant MaxInstructionLen : integer := 16;

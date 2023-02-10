@@ -21,6 +21,7 @@ signal vbuf_addr :  TAddr;
 signal vbuf_din : TData;
 signal vbuf_dout : TData;
 
+signal uart_line : std_logic;
 
 begin
 
@@ -32,7 +33,10 @@ begin
 		vbuf_wr => vbuf_wr,
 		vbuf_addr => vbuf_addr,
 		vbuf_dout => vbuf_din,
-		vbuf_din => vbuf_dout
+		vbuf_din => vbuf_dout,
+		
+		uart_rx => uart_line,
+		uart_tx => uart_line
 	);
 
 	display: entity work.video port map ( 
