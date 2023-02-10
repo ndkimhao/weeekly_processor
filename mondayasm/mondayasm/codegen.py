@@ -53,7 +53,7 @@ class CodeGen:
             if isinstance(inst, Directive):
                 if inst.name == '.label':
                     lbl = inst.args[0]
-                    assert lbl not in self.label_map
+                    assert lbl not in self.label_map, lbl
                     self.buf.append((get_offset(), '', f'{lbl}:'))
                     self.label_map[lbl] = get_offset()
                 elif inst.name == '.data':

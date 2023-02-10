@@ -6,11 +6,14 @@ from mondayasm.expr import (
 )
 from mondayasm.user_cmds import *
 from mondayasm.builder import (
-    _Label as Label,
-    _AnonLabel as AnonLabel,
-    _ConstData as ConstData,
-    _StaticVar as StaticVar,
-    _Block as Block,
+    Label,
+    EmitLabel,
+    DeclLabel,
+    DeclAnonLabel,
+    AnonLabel,
+    ConstData,
+    StaticVar,
+    Block,
 )
 from mondayasm.codegen import CodeGen
 

@@ -22,6 +22,7 @@ signal vbuf_din : TData;
 signal vbuf_dout : TData;
 
 signal uart_line : std_logic;
+signal led_line : TByte;
 
 begin
 
@@ -36,7 +37,10 @@ begin
 		vbuf_din => vbuf_dout,
 		
 		uart_rx => uart_line,
-		uart_tx => uart_line
+		uart_tx => uart_line,
+		
+		led_out => led_line,
+		btn_in => led_line & "00000"
 	);
 
 	display: entity work.video port map ( 

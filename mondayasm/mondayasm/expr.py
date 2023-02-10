@@ -111,7 +111,6 @@ class Expr:
         regs = [Term(k, v) for k, v in regs.items() if v != 0]
         labels = [Term(k, v) for k, v in labels.items() if v != 0]
         assert len(labels) <= 1
-        assert len(labels) == 0 or (len(regs) == 0 and const == 0)
         assert len(regs) <= 2
         assert len(labels) == 0 or const == 0
         if len(regs) == 2 and regs[0].factor < regs[1].factor:
@@ -133,9 +132,12 @@ class Expr:
         x = ArgEncode('1', '00', '')
         const_enc = ArgEncode(const, '111', f'{(const & 0xFFFF) % 256:08b}{(const & 0xFFFF) // 256:08b}')
         if len(labels) != 0:
-            assert len(regs) == 0 and const == 0
-            # unknown constant
+            assert const == 0
+            # unknown constant, encode as big constant
             a = ArgEncode('$' + labels[0].value, '111', '${' + labels[0].value + '}')
+            if len(regs) != 0:
+                assert len(regs) == 1
+                b = ArgEncode(regs[0].value, f'{REGS_MAP[regs[0].value]:03b}', '')
         elif len(regs) == 0:
             # constant
             if const == 0:

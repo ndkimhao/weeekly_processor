@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from typing import Union, Callable, Optional
-import re
 
 from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel
 from mondayasm.data import CMDS_MAP
@@ -50,11 +49,11 @@ class ScopeBuilder:
         self.instructions = []
         self.add_boundary_labels = add_boundary_labels
         if self.add_boundary_labels:
-            _Label(f'SECTION_BEGIN_{self.name}', emit_to=self)
+            Label(f'SECTION_BEGIN_{self.name}', emit_to=self)
 
     def finalize_block(self):
         if self.add_boundary_labels:
-            _Label(f'SECTION_END_{self.name}', emit_to=self)
+            Label(f'SECTION_END_{self.name}', emit_to=self)
             self.add_boundary_labels = False
 
     def add(self, inst: Union[Instruction, Directive]):
@@ -125,7 +124,7 @@ class Global:
         cls.static_data[d.name] = d
         scope = cls.const_data_scope if d.readonly else cls.static_var_scope
         prefix = 'const' if d.readonly else 'var'
-        lbl = _Label(f'{prefix}_{d.name}', emit_to=scope)
+        lbl = Label(f'{prefix}_{d.name}', emit_to=scope)
         directive = '.data' if d.readonly else '.bss'
         scope.add(Directive(directive, (d.data.value, d.data.bincode, d.size)))
         return lbl
@@ -188,7 +187,7 @@ def emit_command_call(op_name, target, emit_call: bool):
         blk = ScopeBuilder(lbl_start)
         Global.add_block(blk)
         Global.enter_scope(blk)
-        _Label(lbl_start, anon=False)
+        Label(lbl_start, anon=False)
         Global.visited_fns.add(target)
         target()
 
@@ -197,33 +196,50 @@ def emit_command_call(op_name, target, emit_call: bool):
 
     if visit_fn:
         emit_command('ret')
-        _Label(lbl_end, anon=False)
+        Label(lbl_end, anon=False)
         Global.exit_scope(blk)
 
 
-def _Label(name: str = '', anon: bool = False,
-           emit_label: bool = True, emit_to: Optional[ScopeBuilder] = None) -> Expr:
+def Label(name: str = '', anon: bool = False,
+          emit: bool = True, emit_to: Optional[ScopeBuilder] = None) -> Expr:
     if name == '':
         name = Global.gen_label_name(Global.current_scope().name)
     elif anon:
         name = Global.gen_label_name(name)
-    if emit_label:
+    if emit:
         if emit_to is None:
             emit_to = Global.current_scope()
         emit_to.add(Directive('.label', (name,)))
     return Expr.to_expr(ConstLabel(name))
 
 
-def _AnonLabel(name: str = '', emit_label: bool = True) -> Expr:
-    return _Label(name, anon=True, emit_label=emit_label)
+def DeclLabel(name: str = '', anon: bool = False) -> Expr:
+    return Label(name, anon=anon, emit=False)
 
 
-def _ConstData(name, obj=None) -> Expr:
+def DeclAnonLabel(name: str = '') -> Expr:
+    return Label(name, anon=True, emit=False)
+
+
+def EmitLabel(lbl: Expr):
+    assert isinstance(lbl, Expr)
+    assert len(lbl.terms) == 1 and lbl.terms[0].factor == 1
+    val = lbl.terms[0].value
+    assert isinstance(val, ConstLabel)
+    Label(val.name)
+
+
+def AnonLabel(name: str = '', emit_label: bool = True) -> Expr:
+    return Label(name, anon=True, emit=emit_label)
+
+
+def ConstData(name, obj=None) -> Expr:
     if obj is None:
         obj = name
         name = Global.gen_label_name('data', '')
     if isinstance(obj, str):
-        value = f'str:"{re.escape(obj)}"'
+        escaped = obj.replace('\\', '\\\\').replace('\n', '\\n').replace('\0', '\\0')
+        value = f'str:"{escaped}"'
         data = bytes(obj + '\0', 'utf-8')
     elif isinstance(obj, bytes):
         value = f'raw:{obj.hex()}'
@@ -239,7 +255,7 @@ def _ConstData(name, obj=None) -> Expr:
     ))
 
 
-def _StaticVar(name: Union[str, int], size=None) -> Expr:
+def StaticVar(name: Union[str, int], size=None) -> Expr:
     if size is None:
         size = name
         assert isinstance(size, int)
@@ -253,8 +269,9 @@ def _StaticVar(name: Union[str, int], size=None) -> Expr:
 
 
 class BlockContextManager:
-    def __init__(self, name):
+    def __init__(self, name, stash: Optional[list]):
         self.name = name
+        self.stash = stash if stash is not None else []
         self.label_start = None
         self.label_end = None
         self.name_start = None
@@ -265,12 +282,16 @@ class BlockContextManager:
         blk_name = Global.gen_label_name(name, '')
         self.name_start = '_B_' + blk_name
         self.name_end = '_E_' + blk_name
-        self.label_start = _Label(self.name_start, anon=False)
+        self.label_start = Label(self.name_start, anon=False)
         self.label_end = Expr.to_expr(ConstLabel(self.name_end))
+        for v in self.stash:
+            emit_command('push', v)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        _Label(self.name_end, anon=False)
+        for v in reversed(self.stash):
+            emit_command('pop', v)
+        Label(self.name_end, anon=False)
 
     @property
     def start(self) -> Expr:
@@ -289,8 +310,8 @@ class BlockContextManager:
         return self.label_end
 
 
-def _Block(name: str = '') -> BlockContextManager:
-    return BlockContextManager(name)
+def Block(name: str = '', stash: Optional[list] = None) -> BlockContextManager:
+    return BlockContextManager(name, stash)
 
 
 Global.internal_static_init()

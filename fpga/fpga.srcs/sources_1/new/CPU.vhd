@@ -9,8 +9,6 @@ entity CPU is
 	port (
 		clk : in std_logic;
 		reset : in std_logic;
-		
-		led : out std_logic_vector(8-1 downto 0);
 
 		vbuf_en : out std_logic;
 		vbuf_wr : out std_logic;
@@ -19,7 +17,9 @@ entity CPU is
 		vbuf_din : in TData;
 		
 		uart_tx : out std_logic;
-		uart_rx : in std_logic
+		uart_rx : in std_logic;
+		led_out : out std_logic_vector(8-1 downto 0);
+		btn_in : in std_logic_vector(13-1 downto 0)
 	);
 end CPU;
 
@@ -84,7 +84,9 @@ begin
 		vbuf_din => vbuf_din,
 		
 		uart_tx => uart_tx,
-		uart_rx => uart_rx
+		uart_rx => uart_rx,
+		led_out => led_out,
+		btn_in => btn_in
 	);
 
 	mmu : entity work.MMU port map (
@@ -179,7 +181,5 @@ begin
 	mem_din <= eng_dout; -- fetcher never writes
 
 	fet_dvalid <= mem_en and not eng_den;
-	
-	led <= reg_a(7 downto 0);
 
 end Behavioral;

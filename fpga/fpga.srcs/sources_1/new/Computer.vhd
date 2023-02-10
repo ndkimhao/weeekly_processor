@@ -10,7 +10,8 @@ entity Computer is
 		sysclk : in std_logic;
 		cpu_resetn : in std_logic;
 		
-		led : out std_logic_vector(8-1 downto 0);
+		led_out : out std_logic_vector(8-1 downto 0);
+		btn_in : in std_logic_vector(13-1 downto 0);
 		
 		tmds : out  std_logic_vector (3 downto 0);
 		tmdsb : out  std_logic_vector (3 downto 0);
@@ -65,7 +66,6 @@ begin
 	cpu: entity work.CPU port map (
 		clk => cpu_clk,
 		reset => syn_reset,
-		led => led,
 
 		vbuf_en => vbuf_en,
 		vbuf_wr => vbuf_wr,
@@ -74,7 +74,10 @@ begin
 		vbuf_din => vbuf_dout,
 		
 		uart_tx => uart_rx_out,
-		uart_rx => uart_tx_in
+		uart_rx => uart_tx_in,
+
+		led_out => led_out,
+		btn_in => btn_in
 	);
 
 	display: entity work.video port map ( 

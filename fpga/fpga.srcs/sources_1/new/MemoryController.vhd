@@ -23,7 +23,10 @@ entity MemoryController is
 		vbuf_din : in TData;
 		
 		uart_tx : out std_logic;
-		uart_rx : in std_logic
+		uart_rx : in std_logic;
+		
+		led_out : out TByte;
+		btn_in : in std_logic_vector(13-1 downto 0)
 	);
 end MemoryController;
 
@@ -70,14 +73,24 @@ constant EN_VIDEO : integer := 2;
 constant EN_UART_SEND : integer := 3;
 constant EN_UART_RECV : integer := 4;
 constant EN_UART_STATUS : integer := 5;
-constant EN_COUNT : integer := 6;
+constant EN_SPI_SEND : integer := 6;
+constant EN_SPI_STATUS : integer := 7;
+constant EN_LED_WRITE : integer := 8;
+constant EN_BTN_READ : integer := 9;
+constant EN_PS2_READ : integer := 10;
+constant EN_CLK_LO_READ : integer := 11;
+constant EN_CLK_HI_READ : integer := 12;
+constant EN_COUNT : integer := 13;
 signal a : std_logic_vector(EN_COUNT-1 downto 0);
 signal last_a : std_logic_vector(EN_COUNT-1 downto 0);
 
-signal uart_en : std_logic;
+signal dev_en : std_logic;
+signal s_led_out : TByte := (others => '0');
 
 signal ram_out, rom_out : TData;
 signal rom_addr : TPhyAddr;
+
+signal clk_counter : unsigned(38-1 downto 0) := (others => '0');
 
 -----
 
@@ -88,11 +101,25 @@ begin
 	a(EN_RAM) <= en when ahigh < (RAMSize / 256) else '0';
 	a(EN_ROM) <= en when x"FF00" <= ahigh else '0';
 	a(EN_VIDEO) <= en when x"FE00" <= ahigh and ahigh < x"FE96" else '0';
-	
-	uart_en <= en when x"FD00" <= ahigh and ahigh < x"FD01" else '0';
-	a(EN_UART_SEND) <= uart_en when addr(2 downto 0) = "000" else '0';
-	a(EN_UART_RECV) <= uart_en when addr(2 downto 0) = "010" else '0';
-	a(EN_UART_STATUS) <= uart_en when addr(2 downto 0) = "100" else '0';
+
+	-- External devices
+	dev_en <= '1' when addr(PhyAddrWidth-1 downto 8) = x"FD00" else '0';
+
+	a(EN_UART_SEND)   <= dev_en when alow(7 downto 0) = x"00" else '0';
+	a(EN_UART_RECV)   <= dev_en when alow(7 downto 0) = x"02" else '0';
+	a(EN_UART_STATUS) <= dev_en when alow(7 downto 0) = x"04" else '0';
+
+	a(EN_SPI_SEND)   <= dev_en when alow(7 downto 0) = x"06" else '0';
+	a(EN_SPI_STATUS) <= dev_en when alow(7 downto 0) = x"08" else '0';
+
+	a(EN_LED_WRITE) <= dev_en when alow(7 downto 0) = x"0A" else '0';
+	a(EN_BTN_READ)  <= dev_en when alow(7 downto 0) = x"0C" else '0';
+
+	a(EN_PS2_READ) <= dev_en when alow(7 downto 0) = x"0E" else '0';
+
+	a(EN_CLK_LO_READ) <= dev_en when alow(7 downto 0) = x"10" else '0';
+	a(EN_CLK_HI_READ) <= dev_en when alow(7 downto 0) = x"12" else '0';
+	---
 
 	rom_addr <= x"00" & addr(15 downto 0);
 	vbuf_addr <= addr(15 downto 0);
@@ -123,6 +150,9 @@ begin
 			"0" & uart_recv_empty & uart_recv_full & uart_recv_data_count &
 			"0" & uart_send_empty & uart_send_full & uart_send_data_count
 				when last_a(EN_UART_STATUS) = '1' else
+			"000" & btn_in when last_a(EN_BTN_READ) = '1' else
+			std_logic_vector(clk_counter(21 downto 6)) when last_a(EN_CLK_LO_READ) = '1' else
+			std_logic_vector(clk_counter(37 downto 22)) when last_a(EN_CLK_HI_READ) = '1' else
 			(others => '0');
 
 	vbuf_dout <= din;
@@ -131,9 +161,27 @@ begin
 	begin
 		if rising_edge(clk) then
 			last_a <= a;
+			
+			if a(EN_LED_WRITE) then
+				s_led_out <= din(7 downto 0);
+			end if;
 		end if;
 	end process;
 
+	process(clk)
+	begin
+		if rising_edge(clk) then
+			if reset = '1' then
+				clk_counter <= (others => '0');
+			else
+				clk_counter <= clk_counter + 1;
+			end if;
+		end if;
+	end process;
+
+    --- GPIO
+    led_out <= s_led_out;
+ 
 	--- UART
 
 	uart_send_buffer : fifo_uart_buffer port map (
@@ -174,4 +222,5 @@ begin
 		tx => uart_tx,
 		rx => uart_rx
     );
+
 end Behavioral;
