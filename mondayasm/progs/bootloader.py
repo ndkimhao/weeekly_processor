@@ -53,6 +53,16 @@ def send_data():
     POP(stashed)
 
 
+def recv_echo():
+    stashed = PUSH(C, D)
+    MOV(C, M_UART_RECV)
+    AND(D, C, FLAG_UART_RECV_VALID)
+    with Block() as if_recv:
+        JEQ(D, 0, if_recv.end)  # if (C & FLAG_UART_RECV_VALID == 0) break;
+        MOV(M_UART_SEND, C + 1)
+    POP(stashed)
+
+
 def start():
     MOV(A, 0xFD)
     MOV(B, 0)
@@ -64,6 +74,9 @@ def start():
         CALL(send_data)
         INC(H)
         JLT(H, 4, for_a.begin)
+    with Block() as while_true:
+        CALL(recv_echo)
+        JMP(while_true.begin)
 
 
 if __name__ == '__main__':

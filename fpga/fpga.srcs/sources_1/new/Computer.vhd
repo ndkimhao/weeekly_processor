@@ -11,8 +11,12 @@ entity Computer is
 		cpu_resetn : in std_logic;
 		
 		led : out std_logic_vector(8-1 downto 0);
+		
 		tmds : out  std_logic_vector (3 downto 0);
-		tmdsb : out  std_logic_vector (3 downto 0)
+		tmdsb : out  std_logic_vector (3 downto 0);
+		
+		uart_rx_out : out std_logic;
+		uart_tx_in : in std_logic
 	);
 end Computer;
 
@@ -67,7 +71,10 @@ begin
 		vbuf_wr => vbuf_wr,
 		vbuf_addr => vbuf_addr,
 		vbuf_dout => vbuf_din,
-		vbuf_din => vbuf_dout
+		vbuf_din => vbuf_dout,
+		
+		uart_tx => uart_rx_out,
+		uart_rx => uart_tx_in
 	);
 
 	display: entity work.video port map ( 
