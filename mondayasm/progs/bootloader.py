@@ -1,7 +1,7 @@
 from mondayasm import *
 
-# Caller save: (none)
-# Callee save: A, B, C, D, SP, E, F, G, H
+# Caller save: H
+# Callee save: A, B, C, D, SP, E, F, G
 #   Arg passing: A -> H
 #   Return: H (optionally B->G)
 
@@ -88,6 +88,9 @@ def recv_command():
         # break at end line char
         JEQ(C, ord('\n'), loop_recv.end)
 
+        # ignore \r characters
+        JEQ(C, ord('\r'), loop_recv.start)
+
         # write result to recv buffer
         # move writes 2 bytes, so it's automatically 0-terminated
         MOV([recv_buf + A], C)
@@ -154,7 +157,7 @@ def handle_ping():
 
 # A => PTR string
 def parse_command():
-    fn_stash = PUSH(A, B, C, D)
+    fn_stash = PUSH(B, C)
 
     # Get first argument => command name
     CALL(split_command)
