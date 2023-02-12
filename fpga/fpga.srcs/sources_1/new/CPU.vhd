@@ -86,7 +86,10 @@ begin
 		uart_tx => uart_tx,
 		uart_rx => uart_rx,
 		led_out => led_out,
-		btn_in => btn_in
+		btn_in => btn_in,
+		
+		uop_hold => dec_hold,
+		uop_done => dec_done
 	);
 
 	mmu : entity work.MMU port map (

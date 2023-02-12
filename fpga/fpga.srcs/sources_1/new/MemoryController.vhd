@@ -26,7 +26,10 @@ entity MemoryController is
 		uart_rx : in std_logic;
 		
 		led_out : out TByte;
-		btn_in : in std_logic_vector(13-1 downto 0)
+		btn_in : in std_logic_vector(13-1 downto 0);
+
+		uop_hold : in std_logic;
+		uop_done : in std_logic
 	);
 end MemoryController;
 
@@ -82,7 +85,9 @@ type TMappedMemory is (
 	M_CLK_READ_0,
 	M_CLK_READ_1,
 	M_CLK_READ_2,
-	M_CLK_READ_3,
+	M_INSTCNT_READ_0,
+	M_INSTCNT_READ_1,
+	M_INSTCNT_READ_2,
 	M_NONE
 );
 
@@ -95,7 +100,8 @@ signal s_led_out : TByte := (others => '0');
 signal ram_out, rom_out : TData;
 signal rom_addr : TPhyAddr;
 
-signal clk_counter : unsigned(64-1 downto 0) := (others => '0');
+signal clk_counter : unsigned(48-1 downto 0) := (others => '0');
+signal inst_counter : unsigned(48-1 downto 0) := (others => '0');
 
 -----
 signal ram_en : std_logic;
@@ -128,7 +134,10 @@ begin
 		M_CLK_READ_0 when dev_en = '1' and alow(7 downto 0) = x"10" else
 		M_CLK_READ_1 when dev_en = '1' and alow(7 downto 0) = x"12" else
 		M_CLK_READ_2 when dev_en = '1' and alow(7 downto 0) = x"14" else
-		M_CLK_READ_3 when dev_en = '1' and alow(7 downto 0) = x"16" else
+
+		M_INSTCNT_READ_0 when dev_en = '1' and alow(7 downto 0) = x"16" else
+		M_INSTCNT_READ_1 when dev_en = '1' and alow(7 downto 0) = x"18" else
+		M_INSTCNT_READ_2 when dev_en = '1' and alow(7 downto 0) = x"1A" else
 
 		--
 		M_NONE;
@@ -152,7 +161,10 @@ begin
 		std_logic_vector(clk_counter(15 downto  0)) when last_mtype = M_CLK_READ_0 else
 		std_logic_vector(clk_counter(31 downto 16)) when last_mtype = M_CLK_READ_1 else
 		std_logic_vector(clk_counter(47 downto 32)) when last_mtype = M_CLK_READ_2 else
-		std_logic_vector(clk_counter(63 downto 48)) when last_mtype = M_CLK_READ_3 else
+
+		std_logic_vector(inst_counter(15 downto  0)) when last_mtype = M_INSTCNT_READ_0 else
+		std_logic_vector(inst_counter(31 downto 16)) when last_mtype = M_INSTCNT_READ_1 else
+		std_logic_vector(inst_counter(47 downto 32)) when last_mtype = M_INSTCNT_READ_2 else
 
 		--
 		(others => '0'); -- M_NONE
@@ -197,8 +209,12 @@ begin
 		if rising_edge(clk) then
 			if reset = '1' then
 				clk_counter <= (others => '0');
+				inst_counter <= (others => '0');
 			else
 				clk_counter <= clk_counter + 1;
+				if uop_hold = '0' and uop_done = '1' then
+					inst_counter <= inst_counter + 1;
+				end if;
 			end if;
 		end if;
 	end process;
