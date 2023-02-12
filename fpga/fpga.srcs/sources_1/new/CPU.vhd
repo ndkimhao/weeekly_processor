@@ -43,10 +43,10 @@ signal dec_hold : std_logic;
 signal dec_ready : std_logic;
 signal dec_done : std_logic;
 signal dec_uop : TUop;
-signal dec_uop_idx : TUopIndex;
 signal dec_inst_len : TInstBufferIdx;
 signal dec_inst_nargs : unsigned(2-1 downto 0);
 signal dec_booted : std_logic;
+signal dec_inst_out : TInstBuffer;
 
 signal eng_den : std_logic;
 signal eng_dwr : std_logic;
@@ -115,7 +115,6 @@ begin
 		inst_buffer => fet_buffer,
 		inst_pc => fet_inst_pc,
 
-		dec_done => dec_done,
 		dec_inst_len => dec_inst_len
 	);
 
@@ -134,7 +133,7 @@ begin
 		ready => dec_ready, -- uop is ready
 		brk => dec_done, -- last uop of the block
 		uop => dec_uop,
-		uop_idx => dec_uop_idx,
+		inst_out => dec_inst_out,
 		used_len => dec_inst_len,
 		
 		booted => dec_booted
@@ -147,9 +146,8 @@ begin
 		uop_ready => dec_ready,
 		uop_hold => dec_hold,
 		uop => dec_uop,
-		uop_idx => dec_uop_idx,
 		uop_done => dec_done,
-		inst_buffer => TEngineInstBuffer(fet_buffer(0 to EngineMaxInstructionLen-1)),
+		inst_buffer => TEngineInstBuffer(dec_inst_out(0 to EngineMaxInstructionLen-1)),
 		inst_len => dec_inst_len,
 		inst_nargs => dec_inst_nargs,
 

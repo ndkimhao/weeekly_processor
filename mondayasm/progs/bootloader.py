@@ -92,11 +92,12 @@ def recv_command():
         JEQ(C, ord('\r'), loop_recv.start)
 
         # write result to recv buffer
-        # move writes 2 bytes, so it's automatically 0-terminated
+        # the buffer has padding so over-write is okay
         MOV([recv_buf + A], C)
         INC(A)
         JMP(loop_recv.start)
     # loop_recv.end
+    BMOV([A], 0)  # null terminate
     MOV(H, A)
     POP(stash)
 

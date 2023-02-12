@@ -22,7 +22,7 @@ entity Decoder is
 		ready : out std_logic; -- uop is ready
 		brk   : out std_logic; -- last uop of the block
 		uop   : out TUop;
-		uop_idx : out TUopIndex;
+		inst_out  : out TInstBuffer;
 		used_len : out TInstBufferIdx;
 
 		booted : out std_logic := '0' -- reset vector has been run
@@ -58,11 +58,7 @@ begin
 				used_len <= (others => '0');
 				booted <= '0';
 				s_uop <= (others => '0');
-				uop_idx <= (others => '0');
 			elsif hold = '0' then
-				need := (others => '0');
-				op_prog := (others => '0');
-	
 				if s_idx /= 0 and brk = '0' then
 					next_idx := s_idx + 1;
 				else
@@ -71,7 +67,7 @@ begin
 				end if;
 	
 				-- BEGIN DECODE
-				if avail /= 0 then
+				if avail /= 0 and next_idx = 0 then
 					op := unsigned(inst_in(0)(7 downto 2));
 					indirect_specs := unsigned(inst_in(0)(1 downto 0));
 					nargs := to_unsigned(0, NArgsW);
@@ -140,10 +136,12 @@ begin
 	
 						need := to_unsigned(1, InstIdxW) + need_a + need_b + need_c;
 	
-						 -- wait one cycle between ops decode (check s_idx instead of next_idx)
-						if s_idx = 0 and pc = inst_pc and avail >= need then
+						 -- check if we can really speculatively decode the next instruction from fetcher
+						if avail >= need and (pc = inst_pc or (unsigned(s_uop) /= 0 and unsigned(s_uop(7 downto 4)) /= REGID_PC)) then
 							-- can decode now
 							next_idx := op_prog;
+							inst_out <= inst_in;
+							used_len <= need;
 						end if;
 					end if;
 					
@@ -154,12 +152,9 @@ begin
 				s_idx <= next_idx;
 				if next_idx /= 0 then
 					ready <= '1';
-					used_len <= need;
-					uop_idx <= next_idx - op_prog;
 				else
 					ready <= '0';
 					used_len <= (others => '0');
-					uop_idx <= (others => '0');
 				end if;
 
 				next_fetched_uop := uops_rom(to_integer(next_idx));

@@ -15,7 +15,6 @@ entity Engine is
 		uop_hold : out std_logic; -- pause uop decode
 		uop : in TUop;
 		uop_done : in std_logic; -- last uop of the current instruction
-		uop_idx : in TUopIndex;
 		inst_buffer : in TEngineInstBuffer;
 		inst_len : in TInstBufferIdx;
 		inst_nargs : in unsigned(2-1 downto 0);
@@ -70,7 +69,6 @@ signal alu_div_done : std_logic;
 signal fl_selector : unsigned(ALUOpLen-1 downto 0);
 signal fl_bit : std_logic;
 
-signal last_inst_buffer : TEngineInstBuffer;
 signal inst_opcode : TByte;
 signal next_pc : TData;
 
@@ -84,9 +82,7 @@ begin
 
 	next_pc <= std_logic_vector(unsigned(arr_regs(REGID_PC)) + inst_len);
 
-	inst_opcode <=
-		inst_buffer(0) when uop_idx = 0 else
-		last_inst_buffer(0);
+	inst_opcode <= inst_buffer(0);
 	
 	effective_uop <= cached_uop when hold_counter /= 0 else uop;
 
@@ -157,8 +153,6 @@ begin
 		variable arg_a : TData;
 		variable arg_b : TData;
 		variable arg_x : TData;
-
-		variable v_inst : TEngineInstBuffer;
 	begin
 
 		if rising_edge(clk) then
@@ -173,14 +167,6 @@ begin
 				hold_counter <= (others => '0');
 				alu_start_op <= '0';
 			else
-		
-				if uop_idx = 0 then
-					v_inst := inst_buffer;
-				else
-					v_inst := last_inst_buffer;
-				end if;
-				last_inst_buffer <= v_inst;
-	
 				if hold_counter = 0 then
 					cached_uop <= uop;
 				end if;
@@ -243,19 +229,19 @@ begin
 	
 						when UOP_ARG_HEAD =>
 							if uop_tail = UOP_ARG_PUT then
-								if v_inst(1)(7 downto 2) = "111111" then -- if aux reg
-									arr_aux_regs(to_integer(unsigned(v_inst(1)(1 downto 0)))) <= r_src;
+								if inst_buffer(1)(7 downto 2) = "111111" then -- if aux reg
+									arr_aux_regs(to_integer(unsigned(inst_buffer(1)(1 downto 0)))) <= r_src;
 								else
 									r_write := '1';
 									r_res := r_src;
 								end if;
 							else
 								for i in 0 to 1 loop
-									if v_inst(i+1)(7 downto 2) = "111111" then -- if aux reg
+									if inst_buffer(i+1)(7 downto 2) = "111111" then -- if aux reg
 										arg_tails(i) := to_unsigned(0, InstructionIndexWidth);
-									elsif v_inst(i+1)(7 downto 5) = "111" then
+									elsif inst_buffer(i+1)(7 downto 5) = "111" then
 										arg_tails(i) := to_unsigned(2, InstructionIndexWidth);
-									elsif v_inst(i+1)(4 downto 2) = "111" then
+									elsif inst_buffer(i+1)(4 downto 2) = "111" then
 										arg_tails(i) := to_unsigned(1, InstructionIndexWidth);
 									else
 										arg_tails(i) := to_unsigned(0, InstructionIndexWidth);
@@ -270,23 +256,23 @@ begin
 									arg_tail := arg_tail + arg_tails(1);
 								end if;
 
-								arg_head := v_inst(to_integer(unsigned(uop_tail)));
+								arg_head := inst_buffer(to_integer(unsigned(uop_tail)));
 								if arg_head(7 downto 2) = "111111" then -- if aux reg
 									arg_a := arr_aux_regs(to_integer(unsigned(arg_head(1 downto 0))));
 									arg_b := (others => '0');
 								else -- not aux reg
 									if arg_head(7 downto 5) = "111" then
-										arg_a := v_inst(to_integer(arg_tail)+1) & v_inst(to_integer(arg_tail));
+										arg_a := inst_buffer(to_integer(arg_tail)+1) & inst_buffer(to_integer(arg_tail));
 									elsif arg_head(7 downto 5) = "000" then
 										arg_a := x"0000";
 									else
 										arg_a := arr_regs(to_integer(unsigned(arg_head(7 downto 5))));
 									end if;
 									if arg_head(4 downto 2) = "111" then
-										if v_inst(to_integer(arg_tail))(7) = '0' then -- sign check
-											arg_b := x"00" & v_inst(to_integer(arg_tail));
+										if inst_buffer(to_integer(arg_tail))(7) = '0' then -- sign check
+											arg_b := x"00" & inst_buffer(to_integer(arg_tail));
 										else
-											arg_b := x"FF" & v_inst(to_integer(arg_tail));
+											arg_b := x"FF" & inst_buffer(to_integer(arg_tail));
 										end if;
 									elsif arg_head(4 downto 2) = "000" then
 										arg_b := x"0000";
@@ -345,7 +331,7 @@ begin
 						if uop_head = UOP_CMP_HEAD then
 							r_idx := to_unsigned(REGID_FL, 4);
 						elsif uop_head = UOP_ARG_HEAD and uop_tail = UOP_ARG_PUT then
-							r_idx := "0" & unsigned(v_inst(1)(7 downto 5)); -- first arg of instruction
+							r_idx := "0" & unsigned(inst_buffer(1)(7 downto 5)); -- first arg of instruction
 						else 
 							r_idx := idx_dst;
 						end if;

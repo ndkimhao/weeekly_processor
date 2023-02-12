@@ -20,7 +20,6 @@ entity Fetcher is
 		inst_buffer : out TInstBuffer;
 		inst_pc : out TAddr;
 
-		dec_done : in std_logic;
 		dec_inst_len : in TInstBufferIdx
 	);
 end Fetcher;
@@ -51,10 +50,7 @@ begin
 				last_dvalid <= '0';
 				last_diff_pc <= '0';
 			else -- reset = '0'
-				virt_pc := pc;
-				if dec_done = '1' then
-					virt_pc := std_logic_vector(unsigned(virt_pc) + dec_inst_len);
-				end if;
+				virt_pc := std_logic_vector(unsigned(pc) + dec_inst_len);
 	
 				new_inst := inst_buffer;
 				diff_pc := unsigned(virt_pc) - unsigned(s_old_pc);

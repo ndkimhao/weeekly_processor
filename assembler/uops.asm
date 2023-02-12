@@ -1,3 +1,5 @@
+# WARNING: each instruction should take at least 2 cycles because of fetcher -> decoder pipeline
+
     nop # dummy instruction at index 0 & 1
     nop, !FALLTHROUGH
 
@@ -151,6 +153,7 @@ halt:
 
 getf:
     arg FL, PUT
+    nop # padding so it takes 2 cycles
 
 setf:
     arg FL, GET_0
@@ -193,17 +196,11 @@ mmap: # start, end, slot_idx / Y, Z, X
     arg, Z, GET_1
     arg, X, GET_2
     mmu
-    mov K, NPC
-    mov PC, 0 # reset Fetcher
-    mov PC, K
 
 umap:
     arg, X, GET_0
     con Y, 0xFFFF
     mov Z, 0
     mmu
-    mov K, NPC
-    mov PC, 0 # reset Fetcher
-    mov PC, K
 
 end_of_uop_rom:
