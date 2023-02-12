@@ -23,7 +23,7 @@ signal f_dwant : std_logic; -- want to read
 signal f_daddr : TAddr;
 signal f_dvalid: std_logic; -- din is valid
 
-signal f_avail : TInstBufferIdx;
+signal f_avail : TFetcherBufferIdx;
 signal f_inst : TInstBuffer;
 
 signal m_en : std_logic;
@@ -52,7 +52,8 @@ begin
 		din => r_dout,
 		dvalid => f_dvalid,
 		avail => f_avail,
-		inst_buffer => f_inst
+		inst_buffer => f_inst,
+		dec_inst_len => (others => '0')
 	);
 
 	r_en <= m_en or f_dwant;
@@ -118,7 +119,7 @@ begin
 
 		wait for 10us;
 
-		wait for 1us;
+		wait for 20us;
 		std.env.finish;
 	end process;
 end Behavioral;

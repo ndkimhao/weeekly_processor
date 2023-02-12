@@ -15,12 +15,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="4,461.415000 us"></ZoomStartTime>
-      <ZoomEndTime time="4,506.095001 us"></ZoomEndTime>
-      <Cursor1Time time="4,483.515000 us"></Cursor1Time>
+      <ZoomStartTime time="690.766667 us"></ZoomStartTime>
+      <ZoomEndTime time="713.166668 us"></ZoomEndTime>
+      <Cursor1Time time="694.500000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="212"></NameColumnWidth>
+      <NameColumnWidth column_width="206"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="44" />
@@ -53,20 +53,20 @@
       <obj_property name="CustomSignalColor">#FFA500</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/CPU_tb/cpu/fetcher/avail" type="array">
+   <wvobject fp_name="/CPU_tb/cpu/fetcher/s_avail" type="array">
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">avail[4:0]</obj_property>
-      <obj_property name="ObjectShortName">avail[4:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="ElementShortName">s_avail[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_avail[4:0]</obj_property>
       <obj_property name="label">fet_avail</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/fet_buffer" type="array">
-      <obj_property name="ElementShortName">fet_buffer[0:16][7:0]</obj_property>
-      <obj_property name="ObjectShortName">fet_buffer[0:16][7:0]</obj_property>
+      <obj_property name="ElementShortName">fet_buffer[0:10][7:0]</obj_property>
+      <obj_property name="ObjectShortName">fet_buffer[0:10][7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/inst_buffer" type="array">
-      <obj_property name="ElementShortName">inst_buffer[0:9][7:0]</obj_property>
-      <obj_property name="ObjectShortName">inst_buffer[0:9][7:0]</obj_property>
+      <obj_property name="ElementShortName">inst_buffer[0:10][7:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_buffer[0:10][7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/uop_done" type="logic">
       <obj_property name="ElementShortName">uop_done</obj_property>

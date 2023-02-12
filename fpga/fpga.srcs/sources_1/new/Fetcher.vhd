@@ -31,80 +31,56 @@ signal last_dwant : std_logic;
 signal last_dvalid : std_logic;
 signal last_diff_pc : std_logic;
 
+signal s_inst_buffer : TFetcherInstBuffer;
+signal s_start_buffer : TInstBufferIdx;
+signal s_avail : TFetcherBufferIdx;
+
 begin
+
+	gen_inst_out : for i in 0 to MaxInstructionLen-1 generate
+		inst_buffer(i) <= s_inst_buffer(to_integer(s_start_buffer + i));
+	end generate gen_inst_out;
+
+	avail <= to_unsigned(MaxInstructionLen, InstructionIndexWidth) when s_avail >= MaxInstructionLen else
+			s_avail(InstructionIndexWidth-1 downto 0);
 
 	process (clk)
 		variable diff_pc : unsigned(AddrWidth-1 downto 0);
-		variable new_avail, lookahead : TInstBufferIdx;
-		variable new_inst : TInstBuffer;
+		variable new_avail, lookahead : TFetcherBufferIdx;
 		variable virt_pc : TAddr;
+		variable new_start_buffer : TInstBufferIdx;
+		variable write_idx_0, write_idx_1 : TInstBufferIdx;
 	begin	
 		if rising_edge(clk) then
 			if reset = '1' then
 				dwant <= '0';
 				daddr <= (others => '0');
-				avail <= (others => '0');
+				s_avail <= (others => '0');
 				s_old_pc <= (others => '0');
 				
 				last_dwant <= '0';
 				last_dvalid <= '0';
 				last_diff_pc <= '0';
+				
+				s_start_buffer <= (others => '0');
 			else -- reset = '0'
 				virt_pc := std_logic_vector(unsigned(pc) + dec_inst_len);
-	
-				new_inst := inst_buffer;
 				diff_pc := unsigned(virt_pc) - unsigned(s_old_pc);
 				s_old_pc <= virt_pc;
-				if diff_pc < avail then -- avail <= 17, so 0 <= diff_pc <= 16
-	--				for i in 0 to MaxInstructionLen-1 loop
-	--					if i + diff_pc <= MaxInstructionLen then
-	--						new_inst(i) := new_inst(i + to_integer(diff_pc));
-	--					end if;
-	--				end loop;
-					case diff_pc is  -- avail <= 17, so 0 <= diff_pc <= 16
-						when to_unsigned(1, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-1) := new_inst(1 to MaxInstructionLen);
-						when to_unsigned(2, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-2) := new_inst(2 to MaxInstructionLen);
-						when to_unsigned(3, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-3) := new_inst(3 to MaxInstructionLen);
-						when to_unsigned(4, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-4) := new_inst(4 to MaxInstructionLen);
-						when to_unsigned(5, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-5) := new_inst(5 to MaxInstructionLen);
-						when to_unsigned(6, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-6) := new_inst(6 to MaxInstructionLen);
-						when to_unsigned(7, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-7) := new_inst(7 to MaxInstructionLen);
-						when to_unsigned(8, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-8) := new_inst(8 to MaxInstructionLen);
-						when to_unsigned(9, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-9) := new_inst(9 to MaxInstructionLen);
-						when to_unsigned(10, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-10) := new_inst(10 to MaxInstructionLen);
-						when to_unsigned(11, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-11) := new_inst(11 to MaxInstructionLen);
-						when to_unsigned(12, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-12) := new_inst(12 to MaxInstructionLen);
-						when to_unsigned(13, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-13) := new_inst(13 to MaxInstructionLen);
-						when to_unsigned(14, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-14) := new_inst(14 to MaxInstructionLen);
-						when to_unsigned(15, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-15) := new_inst(15 to MaxInstructionLen);
-						when to_unsigned(16, AddrWidth) =>
-							new_inst(0 to MaxInstructionLen-16) := new_inst(16 to MaxInstructionLen);
-						when others =>
-							null;
-					end case;
-					new_avail := avail - diff_pc(4 downto 0);
+				if diff_pc < s_avail then
+					new_start_buffer := s_start_buffer + diff_pc(InstructionIndexWidth-1 downto 0);
+					new_avail := s_avail - diff_pc(InstructionIndexWidth-1 downto 0);
 				else
+					new_start_buffer := (others => '0');
 					new_avail := (others => '0');
 				end if;
+				s_start_buffer <= new_start_buffer;
 	
 				if last_dwant = '1' and last_dvalid = '1' and diff_pc = 0 and last_diff_pc = '0' then
-					new_inst(to_integer(new_avail)) := din(7 downto 0);
-					new_inst(to_integer(new_avail) + 1) := din(15 downto 8);
+					write_idx_0 := new_start_buffer + new_avail(InstructionIndexWidth-1 downto 0);
+					write_idx_1 := write_idx_0 + 1;
+					s_inst_buffer(to_integer(write_idx_0)) <= din(7 downto 0);
+					s_inst_buffer(to_integer(write_idx_1)) <= din(15 downto 8);
 					new_avail := new_avail + 2;
 				end if;
 	
@@ -114,7 +90,7 @@ begin
 					lookahead := new_avail;
 				end if;
 	
-				if lookahead < MaxInstructionLen then
+				if lookahead <= FetcherBufferSize-2 then
 					dwant <= '1';
 					daddr <= std_logic_vector(unsigned(virt_pc) + lookahead);
 				else
@@ -130,8 +106,7 @@ begin
 					last_diff_pc <= '1';
 				end if;
 	
-				avail <= new_avail;
-				inst_buffer <= new_inst;
+				s_avail <= new_avail;
 				inst_pc <= virt_pc;
 			end if; -- reset = '0'
 		end if; -- rising_edge(clk)

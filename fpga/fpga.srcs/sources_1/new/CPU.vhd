@@ -147,7 +147,7 @@ begin
 		uop_hold => dec_hold,
 		uop => dec_uop,
 		uop_done => dec_done,
-		inst_buffer => TEngineInstBuffer(dec_inst_out(0 to EngineMaxInstructionLen-1)),
+		inst_buffer => dec_inst_out,
 		inst_len => dec_inst_len,
 		inst_nargs => dec_inst_nargs,
 

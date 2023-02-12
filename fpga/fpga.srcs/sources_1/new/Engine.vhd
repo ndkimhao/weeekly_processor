@@ -15,7 +15,7 @@ entity Engine is
 		uop_hold : out std_logic; -- pause uop decode
 		uop : in TUop;
 		uop_done : in std_logic; -- last uop of the current instruction
-		inst_buffer : in TEngineInstBuffer;
+		inst_buffer : in TInstBuffer;
 		inst_len : in TInstBufferIdx;
 		inst_nargs : in unsigned(2-1 downto 0);
 
@@ -246,7 +246,7 @@ begin
 									end if;
 								end loop;
 	
-								arg_tail := ("000" & inst_nargs) + 1;
+								arg_tail := ("00" & inst_nargs) + 1;
 								if uop_tail = UOP_ARG_GET_1 or uop_tail = UOP_ARG_GET_2 then
 									arg_tail := arg_tail + arg_tails(0);
 								end if;

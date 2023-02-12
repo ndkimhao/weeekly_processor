@@ -17,9 +17,10 @@ package Constants is
 
 	constant RAMSize : integer := 65536; -- 64KB
 
-	constant InstructionIndexWidth : integer := 5;
-	constant MaxInstructionLen : integer := 16;
-	constant EngineMaxInstructionLen : integer := 10; -- 10 bytes: 1 op + 3*3 args
+	constant InstructionIndexWidth : integer := 4;
+	constant MaxInstructionLen : integer := 10;
+	constant FetcherBufferIndexWidth : integer := InstructionIndexWidth+1;
+	constant FetcherBufferSize : integer := 16;
 
 	constant UopIndexWidth : integer := 9; -- uop rom
 	constant UopLen : integer := 13;
@@ -38,8 +39,9 @@ package Constants is
 	subtype TByte is std_logic_vector(7 downto 0);
 
 	subtype TInstBufferIdx is unsigned(InstructionIndexWidth-1 downto 0);
+	subtype TFetcherBufferIdx is unsigned(FetcherBufferIndexWidth-1 downto 0);
 	type TInstBuffer is array(0 to MaxInstructionLen) of TByte; -- allow 1 extra byte at the end
-	type TEngineInstBuffer is array(0 to EngineMaxInstructionLen-1) of TByte;
+	type TFetcherInstBuffer is array(0 to FetcherBufferSize-1) of TByte;
 
 	subtype TUop is std_logic_vector(UopLen-1 downto 0);
 	subtype TUcode is std_logic_vector(UcodeLen-1 downto 0);
