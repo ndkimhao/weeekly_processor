@@ -15,15 +15,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10,497.900000 us"></ZoomStartTime>
-      <ZoomEndTime time="10,542.460001 us"></ZoomEndTime>
-      <Cursor1Time time="10,532.980000 us"></Cursor1Time>
+      <ZoomStartTime time="4,461.415000 us"></ZoomStartTime>
+      <ZoomEndTime time="4,506.095001 us"></ZoomEndTime>
+      <Cursor1Time time="4,483.515000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="218"></NameColumnWidth>
+      <NameColumnWidth column_width="212"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="43" />
+   <WVObjectSize size="44" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -63,6 +63,10 @@
    <wvobject fp_name="/CPU_tb/cpu/fet_buffer" type="array">
       <obj_property name="ElementShortName">fet_buffer[0:16][7:0]</obj_property>
       <obj_property name="ObjectShortName">fet_buffer[0:16][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_tb/cpu/engine/inst_buffer" type="array">
+      <obj_property name="ElementShortName">inst_buffer[0:9][7:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_buffer[0:9][7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/CPU_tb/cpu/engine/uop_done" type="logic">
       <obj_property name="ElementShortName">uop_done</obj_property>

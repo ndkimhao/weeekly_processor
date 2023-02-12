@@ -64,7 +64,6 @@ signal alu_out, alu_aux : TData;
 signal alu_cmp : std_logic_vector(AluNumFLags-1 downto 0);
 signal alu_cmp_signed : std_logic;
 signal alu_start_op : std_logic;
-signal alu_div_done : std_logic;
 
 signal fl_selector : unsigned(ALUOpLen-1 downto 0);
 signal fl_bit : std_logic;
@@ -137,8 +136,7 @@ begin
 		aux => alu_aux,
 		cmp_signed => alu_cmp_signed,
 		cmp => alu_cmp,
-		start_op => alu_start_op,
-		div_done => alu_div_done
+		start_op => alu_start_op
 	);
 
 	process(clk)
@@ -295,14 +293,17 @@ begin
 								if hold_counter = 0 then
 									if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
 										hold_counter <= to_unsigned(4, HoldCounterW);
-									else
-										hold_counter <= to_unsigned(31, HoldCounterW);
+									elsif unsigned(alu_op) = OP_DIV then
+										hold_counter <= to_unsigned(18, HoldCounterW);
+										alu_start_op <= '1';
+									else -- OP_IDIV
+										hold_counter <= to_unsigned(20, HoldCounterW);
 										alu_start_op <= '1';
 									end if;
 									uop_hold <= '1';
 								else
 									hold_counter <= hold_counter - 1;
-									if hold_counter = 1 or alu_div_done = '1' then
+									if hold_counter = 1 then
 										uop_hold <= '0';
 										arr_aux_regs(AUXREGID_H) <= alu_aux;
 										hold_counter <= (others => '0');
