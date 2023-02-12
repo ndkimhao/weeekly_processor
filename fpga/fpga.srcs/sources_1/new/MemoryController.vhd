@@ -67,22 +67,27 @@ signal uart_recv_data_count : std_logic_vector(4 downto 0);
 signal ahigh : unsigned(PhyAddrWidth-8-1 downto 0);
 signal alow : unsigned(8-1 downto 0);
 
-constant EN_RAM : integer := 0;
-constant EN_ROM : integer := 1;
-constant EN_VIDEO : integer := 2;
-constant EN_UART_SEND : integer := 3;
-constant EN_UART_RECV : integer := 4;
-constant EN_UART_STATUS : integer := 5;
-constant EN_SPI_SEND : integer := 6;
-constant EN_SPI_STATUS : integer := 7;
-constant EN_LED_WRITE : integer := 8;
-constant EN_BTN_READ : integer := 9;
-constant EN_PS2_READ : integer := 10;
-constant EN_CLK_LO_READ : integer := 11;
-constant EN_CLK_HI_READ : integer := 12;
-constant EN_COUNT : integer := 13;
-signal a : std_logic_vector(EN_COUNT-1 downto 0);
-signal last_a : std_logic_vector(EN_COUNT-1 downto 0);
+type TMappedMemory is (
+	M_RAM,
+	M_ROM,
+	M_VIDEO,
+	M_UART_SEND,
+	M_UART_RECV,
+	M_UART_STATUS,
+	M_SPI_SEND,
+	M_SPI_STATUS,
+	M_LED_WRITE,
+	M_BTN_READ,
+	M_PS2_READ,
+	M_CLK_READ_0,
+	M_CLK_READ_1,
+	M_CLK_READ_2,
+	M_CLK_READ_3,
+	M_NONE
+);
+
+signal mtype : TMappedMemory;
+signal last_mtype : TMappedMemory;
 
 signal dev_en : std_logic;
 signal s_led_out : TByte := (others => '0');
@@ -90,46 +95,78 @@ signal s_led_out : TByte := (others => '0');
 signal ram_out, rom_out : TData;
 signal rom_addr : TPhyAddr;
 
-signal clk_counter : unsigned(38-1 downto 0) := (others => '0');
+signal clk_counter : unsigned(64-1 downto 0) := (others => '0');
 
+-----
+signal ram_en : std_logic;
+signal uart_send_buffer_en, uart_recv_buffer_en : std_logic;
 -----
 
 begin
 	ahigh <= unsigned(addr(PhyAddrWidth-1 downto 8));
 	alow <= unsigned(addr(7 downto 0));
 
-	a(EN_RAM) <= en when ahigh < (RAMSize / 256) else '0';
-	a(EN_ROM) <= en when x"FF00" <= ahigh else '0';
-	a(EN_VIDEO) <= en when x"FE00" <= ahigh and ahigh < x"FE96" else '0';
-
-	-- External devices
 	dev_en <= '1' when addr(PhyAddrWidth-1 downto 8) = x"FD00" else '0';
 
-	a(EN_UART_SEND)   <= dev_en when alow(7 downto 0) = x"00" else '0';
-	a(EN_UART_RECV)   <= dev_en when alow(7 downto 0) = x"02" else '0';
-	a(EN_UART_STATUS) <= dev_en when alow(7 downto 0) = x"04" else '0';
+	mtype <=
+		-- Memory
+		M_RAM when en = '1' and ahigh < (RAMSize / 256) else
+		M_ROM when en = '1' and x"FF00" <= ahigh else
+		M_VIDEO when en = '1' and x"FE00" <= ahigh and ahigh < x"FE96" else
+		
+		-- External devices
+		M_UART_SEND when dev_en = '1' and alow(7 downto 0) = x"00" else
+		M_UART_RECV when dev_en = '1' and alow(7 downto 0) = x"02" else
+		M_UART_STATUS when dev_en = '1' and alow(7 downto 0) = x"04" else
+		M_SPI_SEND when dev_en = '1' and alow(7 downto 0) = x"06" else
+		M_SPI_STATUS when dev_en = '1' and alow(7 downto 0) = x"08" else
+		M_LED_WRITE when dev_en = '1' and alow(7 downto 0) = x"0A" else
+		M_BTN_READ when dev_en = '1' and alow(7 downto 0) = x"0C" else
+		M_PS2_READ when dev_en = '1' and alow(7 downto 0) = x"0E" else
+		
+		-- Counters
+		M_CLK_READ_0 when dev_en = '1' and alow(7 downto 0) = x"10" else
+		M_CLK_READ_1 when dev_en = '1' and alow(7 downto 0) = x"12" else
+		M_CLK_READ_2 when dev_en = '1' and alow(7 downto 0) = x"14" else
+		M_CLK_READ_3 when dev_en = '1' and alow(7 downto 0) = x"16" else
 
-	a(EN_SPI_SEND)   <= dev_en when alow(7 downto 0) = x"06" else '0';
-	a(EN_SPI_STATUS) <= dev_en when alow(7 downto 0) = x"08" else '0';
+		--
+		M_NONE;
 
-	a(EN_LED_WRITE) <= dev_en when alow(7 downto 0) = x"0A" else '0';
-	a(EN_BTN_READ)  <= dev_en when alow(7 downto 0) = x"0C" else '0';
+	dout <= 
+		-- Memory
+		ram_out when last_mtype = M_RAM else
+		rom_out when last_mtype = M_ROM else
+		vbuf_din when last_mtype = M_VIDEO else
+		
+		-- External devices
+		uart_recv_valid & uart_recv_empty & "000000" & uart_recv_dout
+			when last_mtype = M_UART_RECV else
+		"0" & uart_recv_empty & uart_recv_full & uart_recv_data_count &
+		"0" & uart_send_empty & uart_send_full & uart_send_data_count
+			when last_mtype = M_UART_STATUS else
+		"000" & btn_in
+			when last_mtype = M_BTN_READ else
+		
+		-- Counters
+		std_logic_vector(clk_counter(15 downto  0)) when last_mtype = M_CLK_READ_0 else
+		std_logic_vector(clk_counter(31 downto 16)) when last_mtype = M_CLK_READ_1 else
+		std_logic_vector(clk_counter(47 downto 32)) when last_mtype = M_CLK_READ_2 else
+		std_logic_vector(clk_counter(63 downto 48)) when last_mtype = M_CLK_READ_3 else
 
-	a(EN_PS2_READ) <= dev_en when alow(7 downto 0) = x"0E" else '0';
-
-	a(EN_CLK_LO_READ) <= dev_en when alow(7 downto 0) = x"10" else '0';
-	a(EN_CLK_HI_READ) <= dev_en when alow(7 downto 0) = x"12" else '0';
-	---
+		--
+		(others => '0'); -- M_NONE
 
 	rom_addr <= x"00" & addr(15 downto 0);
 	vbuf_addr <= addr(15 downto 0);
 
 	vbuf_wr <= wr;
-	vbuf_en <= a(EN_VIDEO);
+	vbuf_en <= '1' when mtype = M_VIDEO else '0';
 
+	ram_en <= '1' when mtype = M_RAM else '0';
 	ram : entity work.RAM port map (
 		clk => clk,
-		en => a(EN_RAM),
+		en => ram_en,
 		wr => wr,
 		addr => addr,
 		din => din,
@@ -142,27 +179,14 @@ begin
 		dout => rom_out
 	);
 
-	dout <= ram_out when last_a(EN_RAM) = '1' else
-			rom_out when last_a(EN_ROM) = '1' else
-			vbuf_din when last_a(EN_VIDEO) = '1' else
-			uart_recv_valid & uart_recv_empty & "000000" & uart_recv_dout
-				when last_a(EN_UART_RECV) = '1' else
-			"0" & uart_recv_empty & uart_recv_full & uart_recv_data_count &
-			"0" & uart_send_empty & uart_send_full & uart_send_data_count
-				when last_a(EN_UART_STATUS) = '1' else
-			"000" & btn_in when last_a(EN_BTN_READ) = '1' else
-			std_logic_vector(clk_counter(21 downto 6)) when last_a(EN_CLK_LO_READ) = '1' else
-			std_logic_vector(clk_counter(37 downto 22)) when last_a(EN_CLK_HI_READ) = '1' else
-			(others => '0');
-
 	vbuf_dout <= din;
 
 	process(clk)
 	begin
 		if rising_edge(clk) then
-			last_a <= a;
-			
-			if a(EN_LED_WRITE) then
+			last_mtype <= mtype;
+
+			if mtype = M_LED_WRITE then
 				s_led_out <= din(7 downto 0);
 			end if;
 		end if;
@@ -184,11 +208,12 @@ begin
  
 	--- UART
 
+	uart_send_buffer_en <= '1' when mtype = M_UART_SEND else '0';
 	uart_send_buffer : fifo_uart_buffer port map (
 		clk => clk,
 		srst => reset,
 		din => din(7 downto 0),
-		wr_en => a(EN_UART_SEND),
+		wr_en => uart_send_buffer_en,
 		rd_en => uart_send_rd_en,
 		dout => uart_send_dout,
 		full => uart_send_full,
@@ -197,12 +222,13 @@ begin
 		data_count => uart_send_data_count
 	);
 
+	uart_recv_buffer_en <= '1' when mtype = M_UART_RECV else '0';
 	uart_recv_buffer : fifo_uart_buffer port map (
 		clk => clk,
 		srst => reset,
 		din => uart_recv_din,
 		wr_en => uart_recv_wr_en,
-		rd_en => a(EN_UART_RECV),
+		rd_en => uart_recv_buffer_en,
 		dout => uart_recv_dout,
 		full => uart_recv_full,
 		empty => uart_recv_empty,
