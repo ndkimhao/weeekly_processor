@@ -282,16 +282,16 @@ class BlockContextManager:
         blk_name = Global.gen_label_name(name, '')
         self.name_start = '_B_' + blk_name
         self.name_end = '_E_' + blk_name
-        self.label_start = Label(self.name_start, anon=False)
-        self.label_end = Expr.to_expr(ConstLabel(self.name_end))
         for v in self.stash:
             emit_command('push', v)
+        self.label_start = Label(self.name_start, anon=False)
+        self.label_end = Expr.to_expr(ConstLabel(self.name_end))
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        Label(self.name_end, anon=False)
         for v in reversed(self.stash):
             emit_command('pop', v)
-        Label(self.name_end, anon=False)
 
     @property
     def start(self) -> Expr:

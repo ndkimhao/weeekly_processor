@@ -1,6 +1,7 @@
 import string
 from dataclasses import dataclass
 from typing import Optional
+import re
 
 from mondayasm.builder import ScopeBuilder, Directive, Global, Instruction
 
@@ -24,8 +25,8 @@ class CodeGen:
         while len(s) > 0:
             if len(hexcode) > 0:
                 hexcode += ' '
-            if s.startswith('$'):
-                end = s.index('}')
+            if s.startswith('<'):
+                end = s.index('>')
                 hexcode += s[:end + 1]
                 s = s[end + 1:]
                 instlen += 2
@@ -73,12 +74,17 @@ class CodeGen:
                 blocklen += instlen
         self.buf.append((get_offset(), '', ''))  # spacing
 
+    def _fix_ref_arth(self, match):
+        v = sum(int(s, 16) for s in match.group(1).split('+'))
+        return f'{v % 256:02x} {v // 256:02x}'
+
     def _fix_refs(self):
-        label_hexmap = {lbl: f'{v % 256:02x} {v // 256:02x}' for lbl, v in self.label_map.items()}
+        label_hexmap = {lbl: f'{v:04x}' for lbl, v in self.label_map.items()}
         new_buf = []
         for idx, hexcode, cmd in self.buf:
-            if '$' in hexcode:
+            if '<' in hexcode:
                 hexcode = string.Template(hexcode).substitute(label_hexmap)
+                hexcode = re.sub(r'<([0-9a-z+]+)>', self._fix_ref_arth, hexcode)
             new_buf.append((idx, hexcode, cmd))
         self.buf = new_buf
 

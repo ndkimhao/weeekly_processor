@@ -3,7 +3,7 @@ from mondayasm import *
 # Caller save: H
 # Callee save: A, B, C, D, SP, E, F, G
 #   Arg passing: A -> H
-#   Return: H (optionally B->G)
+#   Return: H (optionally G, F, E)
 
 ###
 
@@ -31,7 +31,7 @@ MASK_UART_SEND_COUNT = 0x003F
 ###
 
 UART_HW_BUFSZ = 16
-UART_BUFSZ = 128
+UART_BUFSZ = 150
 recv_buf = StaticVar('uart_recv_buf', UART_BUFSZ + 2)
 send_buf = StaticVar('uart_send_buf', UART_BUFSZ + 2)
 m_led_stt = M[StaticVar('led_status', 2)]
@@ -150,15 +150,249 @@ def string_cmp():
 
 
 def handle_ping():
-    fn_stash = PUSH(A)
+    stash = PUSH(A)
     MOV(A, ConstData("PONG\n"))
     CALL(send_data)
-    POP(fn_stash)
+    MOV(H, 1)  # success
+    POP(stash)
+
+
+# input: A => PTR to 1-byte char
+# output: H => value
+#         G => is valid
+def parse_hex_4():
+    lb_ok = DeclAnonLabel()
+    lb_fail = DeclAnonLabel()
+
+    BMOV(H, [A])
+    OR(H, 0b00100000)  # convert to lower case
+
+    JLT(H, ord('0'), lb_fail)
+    JGT(H, ord('f'), lb_fail)
+    with Block() as chk:
+        JLE(H, ord('9'), chk.end)
+        JGE(H, ord('a'), chk.end)
+        JMP(lb_fail)
+
+    with Block() as if_le_9:
+        JGT(H, ord('9'), if_le_9.end)
+        SUB(H, ord('0'))
+        JMP(lb_ok)
+    # else
+    SUB(H, ord('a') - 10)
+
+    # lb_ok
+    EmitLabel(lb_ok)
+    MOV(G, 1)
+    RET()  # EARLY RETURN
+
+    # lb_fail:
+    EmitLabel(lb_fail)
+    MOV(G, 0)
+
+
+# input: A => PTR to 4-byte string hex value
+# output: H => value
+#         G => is valid
+def parse_hex_16():
+    lb_ret = DeclAnonLabel()
+    stash = PUSH(A, C)
+
+    for i in range(4):
+        CALL(parse_hex_4)
+        JEQ(G, 0, lb_ret)  # passthrough G == 0
+        SHL(C, 4)
+        OR(C, H)
+        INC(A)
+
+    MOV(H, C)
+    MOV(G, 1)
+    EmitLabel(lb_ret)
+    POP(stash)
+
+
+# Input: A => PTR to string buffer (2 bytes, null-terminated)
+#        B => value
+# Output: none
+def put_hex_4():
+    lb_ret = DeclAnonLabel()
+    MOV(H, B)
+    with Block() as if_le_9:
+        JGT(H, 9, if_le_9.end)
+        ADD(H, ord('0'))
+        JMP(lb_ret)
+    # else
+    ADD(H, ord('a') - 10)
+
+    # lb_ret:
+    EmitLabel(lb_ret)
+    MOV([A], H)
+
+
+# Input: A => PTR to string buffer (5 bytes, null-terminated)
+#        B => value
+# Output: none
+def put_hex_16():
+    stash = PUSH(A, B, C)
+    MOV(C, B)
+    for i in [3, 2, 1, 0]:
+        SHR(B, C, i * 4)
+        AND(B, 0xF)
+        CALL(put_hex_4)
+        INC(A)
+    POP(stash)
+
+
+# Input/output: A: PTR to string
+# Output: H, G
+#         A => NEW END POINTER
+def _parse_hex_arg():
+    lb_ret_fail = DeclAnonLabel()
+
+    with Block() as if_space:
+        BMOV(H, [A])
+        JNE(H, ord(' '), if_space.end)
+        INC(A)
+
+    CALL(split_command)
+
+    MOV(G, 0)
+    JNE(A + 4, H, lb_ret_fail)
+
+    CALL(parse_hex_16)
+    JEQ(G, 0, lb_ret_fail)
+
+    MOV(G, 1)
+    MOV(A, A + 4)
+    EmitLabel(lb_ret_fail)
+
+
+# A start of cmd, B is the end of cmd name
+def handle_read():
+    lb_ret_ok = DeclAnonLabel()
+    lb_ret_fail = DeclAnonLabel()
+
+    stash = PUSH(A, B, C, D, E, F, G)
+
+    # parse first argument
+    CALL(_parse_hex_arg)
+    JEQ(G, 0, lb_ret_fail)
+    MOV(C, H)  # start addr
+
+    # parse second argument
+    CALL(_parse_hex_arg)
+    JEQ(G, 0, lb_ret_fail)
+    MOV(D, H)  # end addr
+
+    # print memory
+    MOV(A, send_buf)
+    MOV(B, C)
+    CALL(put_hex_16)
+    MOV([A + 4], ord(' '))
+
+    MOV(A, A + 5)
+    MOV(B, D)
+    CALL(put_hex_16)
+    MOV([A + 4], ord(' '))
+
+    MOV(A, A + 5)
+    with Block() as loop_cd:
+        JGE(C, D, loop_cd.end)
+
+        MOV(E, [C])
+        # swap byte order
+        SHL(B, E, 8)
+        SHR(E, 8)
+        OR(B, E)
+
+        CALL(put_hex_16)
+        MOV(A, A + 4)  # hex output
+        MOV(C, C + 2)  # addr
+
+        JMP(loop_cd.begin)
+
+    MOV([A], ord('\n'))
+    MOV(A, send_buf)
+    CALL(send_data)
+
+    # Return result
+    with Block() as blk_ret:
+        # lb_ret_ok:
+        EmitLabel(lb_ret_ok)
+        MOV(H, 1)
+        JMP(blk_ret.end)
+        # lb_ret_fail:
+        EmitLabel(lb_ret_fail)
+        MOV(H, 0)
+
+    POP(stash)
+
+
+def handle_write():
+    lb_ret_fail = DeclAnonLabel()
+    stash = PUSH(A, B, C, E, F, G)
+
+    # parse first argument
+    CALL(_parse_hex_arg)
+    JEQ(G, 0, lb_ret_fail)
+    MOV(C, H)  # start addr
+    MOV(F, H)
+
+    # check second argument
+    BMOV(H, [A])
+    JEQ(H, ord('\0'), lb_ret_fail)
+    INC(A)
+
+    CALL(split_command)
+    MOV(B, H)  # [A,B)
+
+    # write memory
+    with Block() as loop:
+        JGE(A, B, loop.end)
+        # JGT(A + 4, B, lb_ret_fail)
+
+        CALL(parse_hex_16)
+        JEQ(G, 0, lb_ret_fail)
+        SHL(E, H, 8)
+        SHR(H, 8)
+        OR(E, H)
+        MOV([C], E)
+
+        MOV(A, A + 4)
+        MOV(C, C + 2)
+        JMP(loop.begin)
+
+    with Block() as b:
+        MOV(A, send_buf)
+        MOV([A], 0x4B4F)  # OK
+
+        MOV([A + 2], ord(' '))
+        MOV(A, A + 3)
+        MOV(B, F)  # start addr
+        CALL(put_hex_16)
+
+        MOV([A + 4], ord(' '))
+        MOV(A, A + 5)
+        MOV(B, C)  # end addr
+        CALL(put_hex_16)
+        MOV([A + 4], ord('\n'))
+
+        MOV(A, send_buf)
+        CALL(send_data)
+
+        MOV(H, 1)  # ok
+        JMP(b.end)
+
+        EmitLabel(lb_ret_fail)
+        MOV(H, 0)  # fail
+    POP(stash)
 
 
 # A => PTR string
 def parse_command():
-    fn_stash = PUSH(B, C)
+    lb_ret_ok = DeclAnonLabel()
+    lb_ret_fail = DeclAnonLabel()
+    stash = PUSH(B, C)
 
     # Get first argument => command name
     CALL(split_command)
@@ -166,13 +400,34 @@ def parse_command():
     # Check commands
     # A is start of string, got from caller
     MOV(B, H)  # H is the end of first chunk
-    MOV(C, ConstData("PING"))
-    CALL(string_cmp)
-    with Block() as is_ping:
-        JEQ(H, 0, is_ping.end)
-        CALL(handle_ping)
 
-    POP(fn_stash)
+    # Handle commands
+    def check_cmd(cmd, handler, need_arg):
+        MOV(C, ConstData(cmd))
+        CALL(string_cmp)  # compare [A,B) with C
+        with Block() as is_matched:
+            JEQ(H, 0, is_matched.end)
+            if need_arg:
+                BMOV(H, [B])
+                JEQ(H, ord('\0'), lb_ret_fail)
+            MOV(A, B + 1)  # skip first part
+            CALL(handler)
+            # handler returns 0 if failed
+            JEQ(H, 0, lb_ret_fail)
+            JMP(lb_ret_ok)
+
+    check_cmd("PING", handle_ping, False)
+    check_cmd("READ", handle_read, True)
+    check_cmd("WRITE", handle_write, True)
+
+    # lb_ret_fail:
+    EmitLabel(lb_ret_fail)
+    MOV(A, ConstData("INVALID\n"))
+    CALL(send_data)
+
+    # lb_ret_ok:
+    EmitLabel(lb_ret_ok)
+    POP(stash)
 
 
 def led_activity():
