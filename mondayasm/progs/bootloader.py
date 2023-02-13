@@ -7,17 +7,19 @@ from mondayasm import *
 
 ###
 
-M_UART_SEND = M[0x3000]
-M_UART_RECV = M[0x3002]
-M_UART_STATUS = M[0x3004]
+DEV_ADDR = 0xFF00
 
-M_SPI_SEND = M[0x3006]
-M_SPI_STATUS = M[0x3008]
+M_UART_SEND = M[DEV_ADDR + 0x00]
+M_UART_RECV = M[DEV_ADDR + 0x02]
+M_UART_STATUS = M[DEV_ADDR + 0x04]
 
-M_LED = M[0x300A]
-M_BTN_READ = M[0x300C]
+M_SPI_SEND = M[DEV_ADDR + 0x06]
+M_SPI_STATUS = M[DEV_ADDR + 0x08]
 
-M_PS2_READ = M[0x300E]
+M_LED = M[DEV_ADDR + 0x0A]
+M_BTN_READ = M[DEV_ADDR + 0x0C]
+
+M_PS2_READ = M[DEV_ADDR + 0x0E]
 
 FLAG_UART_RECV_VALID = 0x8000
 FLAG_UART_RECV_EMPTY = 0x4000
@@ -440,7 +442,7 @@ def start():
     # map device range
     MOV(A, 0xFD)
     MOV(B, 0)
-    MMAP(0x3000, 0x3000, 2)
+    MMAP(DEV_ADDR, DEV_ADDR + 0xFF, 2)
 
     # send hello
     MOV(A, ConstData('READY\n'))
@@ -472,9 +474,24 @@ def start():
         JMP(while_true.begin)
 
 
+START_ADDR = 0xE000
+
 if __name__ == '__main__':
-    MOV(SP, 0x2000)
+    with Block() as check_mmap:
+        JEQ(PC, START_ADDR, check_mmap.end)  # MUST be the first instruction
+        MOV(A, 0xFF)
+        MOV(B, 0)
+        MMAP(START_ADDR, 0xFEFF, 2)  # tmp slot 2
+        JMP(START_ADDR)
+
+    # PC == START_ADDR
+    MMAP(START_ADDR, 0xFEFF, 3)
+    UMAP(2)
+
+    MOV(SP, 0x500)
     CALL(start)
     HALT()
 
-    CodeGen().compile().write('bootloader.hex').write_vhd('bootloader.vhd')
+    cg = CodeGen()
+    cg.code_offset = START_ADDR
+    cg.compile().write('bootloader.hex').write_vhd('bootloader.vhd')
