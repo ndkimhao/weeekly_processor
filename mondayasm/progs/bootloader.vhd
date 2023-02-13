@@ -12,7 +12,7 @@ package CodeROM is
 -- ## BEGIN ROM
 -- ##############################################################
 
-constant ROMSize : integer := 1226;
+constant ROMSize : integer := 1234;
 type TArrROM is array (0 to ROMSize) of TByte;
 constant arr_rom : TArrROM := (
                                                      --      | SECTION_BEGIN_boot:
@@ -34,7 +34,7 @@ constant arr_rom : TArrROM := (
     x"60",x"20",x"e0",x"fd",x"00",                   -- e033 |   mov A, 0xfd
     x"60",x"40",x"00",                               -- e038 |   mov B, 0
     x"54",x"e0",x"1c",x"1c",x"00",x"ff",x"ff",x"02", -- e03b |   mmap 0xff00, 0xff, 0x2
-    x"60",x"20",x"e0",x"9a",x"e4",                   -- e043 |   mov A, ${const_data_1}
+    x"60",x"20",x"e0",x"a2",x"e4",                   -- e043 |   mov A, ${const_data_1}
     x"5c",x"f8",x"2a",x"00",                         -- e048 |   call ${fn_send_data}:rel + PC
     x"60",x"20",x"ff",                               -- e04c |   mov A, H
     x"62",x"e0",x"1c",x"30",x"01",x"01",             -- e04f |   mov [${var_led_status}], 0x1
@@ -85,7 +85,7 @@ constant arr_rom : TArrROM := (
                                                      --      | _B_fn_recv_command_2:
     x"f0",x"20",x"e0",x"f8",x"95",x"00",x"1b",x"00", -- e0bd |   jlt A, 0x95, ${_E_fn_recv_command_2}:rel + PC
     x"60",x"fe",x"20",                               -- e0c5 |   mov G, A
-    x"60",x"20",x"e0",x"a1",x"e4",                   -- e0c8 |   mov A, ${const_data_2}
+    x"60",x"20",x"e0",x"a9",x"e4",                   -- e0c8 |   mov A, ${const_data_2}
     x"5c",x"f8",x"a5",x"ff",                         -- e0cd |   call ${fn_send_data}:rel + PC
     x"60",x"20",x"fe",                               -- e0d1 |   mov A, G
     x"58",x"f8",x"38",x"00",                         -- e0d4 |   jmp ${_E_fn_recv_command_1}:rel + PC
@@ -121,7 +121,7 @@ constant arr_rom : TArrROM := (
     x"e0",x"60",                                     -- e129 |   push C
     x"5c",x"f8",x"8a",x"00",                         -- e12b |   call ${fn_split_command}:rel + PC
     x"60",x"40",x"ff",                               -- e12f |   mov B, H
-    x"60",x"60",x"e0",x"ab",x"e4",                   -- e132 |   mov C, ${const_data_3}
+    x"60",x"60",x"e0",x"b3",x"e4",                   -- e132 |   mov C, ${const_data_3}
     x"5c",x"f8",x"9c",x"00",                         -- e137 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_3:
     x"e8",x"ff",x"00",x"f8",x"18",x"00",             -- e13b |   jeq H, 0, ${_E_fn_parse_command_3}:rel + PC
@@ -130,7 +130,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"5e",x"00",             -- e149 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"61",x"00",                         -- e14f |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_3:
-    x"60",x"60",x"e0",x"b6",x"e4",                   -- e153 |   mov C, ${const_data_5}
+    x"60",x"60",x"e0",x"be",x"e4",                   -- e153 |   mov C, ${const_data_5}
     x"5c",x"f8",x"7b",x"00",                         -- e158 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_4:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- e15c |   jeq H, 0, ${_E_fn_parse_command_4}:rel + PC
@@ -141,19 +141,19 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"34",x"00",             -- e173 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"37",x"00",                         -- e179 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_4:
-    x"60",x"60",x"e0",x"bb",x"e4",                   -- e17d |   mov C, ${const_data_6}
+    x"60",x"60",x"e0",x"c3",x"e4",                   -- e17d |   mov C, ${const_data_6}
     x"5c",x"f8",x"51",x"00",                         -- e182 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_5:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- e186 |   jeq H, 0, ${_E_fn_parse_command_5}:rel + PC
     x"65",x"ff",x"40",                               -- e18c |   bmov H, [B]
     x"e8",x"ff",x"00",x"f8",x"18",x"00",             -- e18f |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"60",x"20",x"5c",x"01",                         -- e195 |   mov A, B + 0x1
-    x"5c",x"f8",x"58",x"02",                         -- e199 |   call ${fn_handle_write}:rel + PC
+    x"5c",x"f8",x"60",x"02",                         -- e199 |   call ${fn_handle_write}:rel + PC
     x"e8",x"ff",x"00",x"f8",x"0a",x"00",             -- e19d |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"0d",x"00",                         -- e1a3 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_5:
                                                      --      | _L_fn_parse_command_2:
-    x"60",x"20",x"e0",x"c1",x"e4",                   -- e1a7 |   mov A, ${const_data_7}
+    x"60",x"20",x"e0",x"c9",x"e4",                   -- e1a7 |   mov A, ${const_data_7}
     x"5c",x"f8",x"c6",x"fe",                         -- e1ac |   call ${fn_send_data}:rel + PC
                                                      --      | _L_fn_parse_command_1:
     x"e4",x"60",                                     -- e1b0 |   pop C
@@ -206,7 +206,7 @@ constant arr_rom : TArrROM := (
                                                      --      | 
                                                      --      | fn_handle_ping:
     x"e0",x"20",                                     -- e215 |   push A
-    x"60",x"20",x"e0",x"b0",x"e4",                   -- e217 |   mov A, ${const_data_4}
+    x"60",x"20",x"e0",x"b8",x"e4",                   -- e217 |   mov A, ${const_data_4}
     x"5c",x"f8",x"56",x"fe",                         -- e21c |   call ${fn_send_data}:rel + PC
     x"60",x"ff",x"1c",x"01",                         -- e220 |   mov H, 0x1
     x"e4",x"20",                                     -- e224 |   pop A
@@ -221,235 +221,236 @@ constant arr_rom : TArrROM := (
     x"e0",x"fc",                                     -- e22f |   push E
     x"e0",x"fd",                                     -- e231 |   push F
     x"e0",x"fe",                                     -- e233 |   push G
-    x"5c",x"f8",x"8b",x"00",                         -- e235 |   call ${fn__parse_hex_arg}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"75",x"00",             -- e239 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
+    x"5c",x"f8",x"93",x"00",                         -- e235 |   call ${fn__parse_hex_arg}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"7d",x"00",             -- e239 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
     x"60",x"60",x"ff",                               -- e23f |   mov C, H
-    x"5c",x"f8",x"7e",x"00",                         -- e242 |   call ${fn__parse_hex_arg}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"68",x"00",             -- e246 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
+    x"5c",x"f8",x"86",x"00",                         -- e242 |   call ${fn__parse_hex_arg}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"70",x"00",             -- e246 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
     x"60",x"80",x"ff",                               -- e24c |   mov D, H
     x"60",x"20",x"e0",x"98",x"00",                   -- e24f |   mov A, ${var_uart_send_buf}
     x"60",x"40",x"60",                               -- e254 |   mov B, C
-    x"5c",x"f8",x"35",x"01",                         -- e257 |   call ${fn_put_hex_16}:rel + PC
+    x"5c",x"f8",x"3d",x"01",                         -- e257 |   call ${fn_put_hex_16}:rel + PC
     x"62",x"3c",x"1c",x"04",x"20",                   -- e25b |   mov [A + 0x4], 0x20
     x"60",x"20",x"3c",x"05",                         -- e260 |   mov A, A + 0x5
     x"60",x"40",x"80",                               -- e264 |   mov B, D
-    x"5c",x"f8",x"25",x"01",                         -- e267 |   call ${fn_put_hex_16}:rel + PC
+    x"5c",x"f8",x"2d",x"01",                         -- e267 |   call ${fn_put_hex_16}:rel + PC
     x"62",x"3c",x"1c",x"04",x"20",                   -- e26b |   mov [A + 0x4], 0x20
     x"60",x"20",x"3c",x"05",                         -- e270 |   mov A, A + 0x5
                                                      --      | _B_fn_handle_read_3:
-    x"fc",x"60",x"80",x"f8",x"25",x"00",             -- e274 |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
-    x"61",x"fc",x"60",                               -- e27a |   mov E, [C]
-    x"a8",x"40",x"fc",x"1c",x"08",                   -- e27d |   shl B, E, 0x8
-    x"20",x"fc",x"1c",x"08",                         -- e282 |   shr E, 0x8
-    x"30",x"40",x"fc",                               -- e286 |   or B, E
-    x"5c",x"f8",x"03",x"01",                         -- e289 |   call ${fn_put_hex_16}:rel + PC
-    x"60",x"20",x"3c",x"04",                         -- e28d |   mov A, A + 0x4
-    x"60",x"60",x"7c",x"02",                         -- e291 |   mov C, C + 0x2
-    x"58",x"f8",x"df",x"ff",                         -- e295 |   jmp ${_B_fn_handle_read_3}:rel + PC
+    x"fc",x"20",x"e0",x"f8",x"95",x"00",x"42",x"00", -- e274 |   jge A, ${var_uart_recv_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
+    x"fc",x"60",x"80",x"f8",x"25",x"00",             -- e27c |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
+    x"61",x"fc",x"60",                               -- e282 |   mov E, [C]
+    x"a8",x"40",x"fc",x"1c",x"08",                   -- e285 |   shl B, E, 0x8
+    x"20",x"fc",x"1c",x"08",                         -- e28a |   shr E, 0x8
+    x"30",x"40",x"fc",                               -- e28e |   or B, E
+    x"5c",x"f8",x"03",x"01",                         -- e291 |   call ${fn_put_hex_16}:rel + PC
+    x"60",x"20",x"3c",x"04",                         -- e295 |   mov A, A + 0x4
+    x"60",x"60",x"7c",x"02",                         -- e299 |   mov C, C + 0x2
+    x"58",x"f8",x"d7",x"ff",                         -- e29d |   jmp ${_B_fn_handle_read_3}:rel + PC
                                                      --      | _E_fn_handle_read_3:
-    x"62",x"20",x"1c",x"0a",                         -- e299 |   mov [A], 0xa
-    x"60",x"20",x"e0",x"98",x"00",                   -- e29d |   mov A, ${var_uart_send_buf}
-    x"5c",x"f8",x"d0",x"fd",                         -- e2a2 |   call ${fn_send_data}:rel + PC
+    x"62",x"20",x"1c",x"0a",                         -- e2a1 |   mov [A], 0xa
+    x"60",x"20",x"e0",x"98",x"00",                   -- e2a5 |   mov A, ${var_uart_send_buf}
+    x"5c",x"f8",x"c8",x"fd",                         -- e2aa |   call ${fn_send_data}:rel + PC
                                                      --      | _B_fn_handle_read_4:
                                                      --      | _L_fn_handle_read_1:
-    x"60",x"ff",x"1c",x"01",                         -- e2a6 |   mov H, 0x1
-    x"58",x"f8",x"07",x"00",                         -- e2aa |   jmp ${_E_fn_handle_read_4}:rel + PC
+    x"60",x"ff",x"1c",x"01",                         -- e2ae |   mov H, 0x1
+    x"58",x"f8",x"07",x"00",                         -- e2b2 |   jmp ${_E_fn_handle_read_4}:rel + PC
                                                      --      | _L_fn_handle_read_2:
-    x"60",x"ff",x"00",                               -- e2ae |   mov H, 0
+    x"60",x"ff",x"00",                               -- e2b6 |   mov H, 0
                                                      --      | _E_fn_handle_read_4:
-    x"e4",x"fe",                                     -- e2b1 |   pop G
-    x"e4",x"fd",                                     -- e2b3 |   pop F
-    x"e4",x"fc",                                     -- e2b5 |   pop E
-    x"e4",x"80",                                     -- e2b7 |   pop D
-    x"e4",x"60",                                     -- e2b9 |   pop C
-    x"e4",x"40",                                     -- e2bb |   pop B
-    x"e4",x"20",                                     -- e2bd |   pop A
-    x"dc",                                           -- e2bf |   ret
+    x"e4",x"fe",                                     -- e2b9 |   pop G
+    x"e4",x"fd",                                     -- e2bb |   pop F
+    x"e4",x"fc",                                     -- e2bd |   pop E
+    x"e4",x"80",                                     -- e2bf |   pop D
+    x"e4",x"60",                                     -- e2c1 |   pop C
+    x"e4",x"40",                                     -- e2c3 |   pop B
+    x"e4",x"20",                                     -- e2c5 |   pop A
+    x"dc",                                           -- e2c7 |   ret
                                                      --      | end_fn_handle_read:
                                                      --      | 
                                                      --      | fn__parse_hex_arg:
                                                      --      | _B_fn__parse_hex_arg_2:
-    x"65",x"ff",x"20",                               -- e2c0 |   bmov H, [A]
-    x"ec",x"ff",x"1c",x"f8",x"20",x"09",x"00",       -- e2c3 |   jne H, 0x20, ${_E_fn__parse_hex_arg_2}:rel + PC
-    x"44",x"20",                                     -- e2ca |   inc A
+    x"65",x"ff",x"20",                               -- e2c8 |   bmov H, [A]
+    x"ec",x"ff",x"1c",x"f8",x"20",x"09",x"00",       -- e2cb |   jne H, 0x20, ${_E_fn__parse_hex_arg_2}:rel + PC
+    x"44",x"20",                                     -- e2d2 |   inc A
                                                      --      | _E_fn__parse_hex_arg_2:
-    x"5c",x"f8",x"e9",x"fe",                         -- e2cc |   call ${fn_split_command}:rel + PC
-    x"60",x"fe",x"00",                               -- e2d0 |   mov G, 0
-    x"ec",x"3c",x"ff",x"f8",x"04",x"19",x"00",       -- e2d3 |   jne A + 0x4, H, ${_L_fn__parse_hex_arg_1}:rel + PC
-    x"5c",x"f8",x"13",x"00",                         -- e2da |   call ${fn_parse_hex_16}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"0e",x"00",             -- e2de |   jeq G, 0, ${_L_fn__parse_hex_arg_1}:rel + PC
-    x"60",x"fe",x"1c",x"01",                         -- e2e4 |   mov G, 0x1
-    x"60",x"20",x"3c",x"04",                         -- e2e8 |   mov A, A + 0x4
+    x"5c",x"f8",x"e1",x"fe",                         -- e2d4 |   call ${fn_split_command}:rel + PC
+    x"60",x"fe",x"00",                               -- e2d8 |   mov G, 0
+    x"ec",x"3c",x"ff",x"f8",x"04",x"19",x"00",       -- e2db |   jne A + 0x4, H, ${_L_fn__parse_hex_arg_1}:rel + PC
+    x"5c",x"f8",x"13",x"00",                         -- e2e2 |   call ${fn_parse_hex_16}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"0e",x"00",             -- e2e6 |   jeq G, 0, ${_L_fn__parse_hex_arg_1}:rel + PC
+    x"60",x"fe",x"1c",x"01",                         -- e2ec |   mov G, 0x1
+    x"60",x"20",x"3c",x"04",                         -- e2f0 |   mov A, A + 0x4
                                                      --      | _L_fn__parse_hex_arg_1:
-    x"dc",                                           -- e2ec |   ret
+    x"dc",                                           -- e2f4 |   ret
                                                      --      | end_fn__parse_hex_arg:
                                                      --      | 
                                                      --      | fn_parse_hex_16:
-    x"e0",x"20",                                     -- e2ed |   push A
-    x"e0",x"60",                                     -- e2ef |   push C
-    x"5c",x"f8",x"58",x"00",                         -- e2f1 |   call ${fn_parse_hex_4}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"4f",x"00",             -- e2f5 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-    x"28",x"60",x"1c",x"04",                         -- e2fb |   shl C, 0x4
-    x"30",x"60",x"ff",                               -- e2ff |   or C, H
-    x"44",x"20",                                     -- e302 |   inc A
-    x"5c",x"f8",x"45",x"00",                         -- e304 |   call ${fn_parse_hex_4}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"3c",x"00",             -- e308 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-    x"28",x"60",x"1c",x"04",                         -- e30e |   shl C, 0x4
-    x"30",x"60",x"ff",                               -- e312 |   or C, H
-    x"44",x"20",                                     -- e315 |   inc A
-    x"5c",x"f8",x"32",x"00",                         -- e317 |   call ${fn_parse_hex_4}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"29",x"00",             -- e31b |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-    x"28",x"60",x"1c",x"04",                         -- e321 |   shl C, 0x4
-    x"30",x"60",x"ff",                               -- e325 |   or C, H
-    x"44",x"20",                                     -- e328 |   inc A
-    x"5c",x"f8",x"1f",x"00",                         -- e32a |   call ${fn_parse_hex_4}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"16",x"00",             -- e32e |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-    x"28",x"60",x"1c",x"04",                         -- e334 |   shl C, 0x4
-    x"30",x"60",x"ff",                               -- e338 |   or C, H
-    x"44",x"20",                                     -- e33b |   inc A
-    x"60",x"ff",x"60",                               -- e33d |   mov H, C
-    x"60",x"fe",x"1c",x"01",                         -- e340 |   mov G, 0x1
+    x"e0",x"20",                                     -- e2f5 |   push A
+    x"e0",x"60",                                     -- e2f7 |   push C
+    x"5c",x"f8",x"58",x"00",                         -- e2f9 |   call ${fn_parse_hex_4}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"4f",x"00",             -- e2fd |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+    x"28",x"60",x"1c",x"04",                         -- e303 |   shl C, 0x4
+    x"30",x"60",x"ff",                               -- e307 |   or C, H
+    x"44",x"20",                                     -- e30a |   inc A
+    x"5c",x"f8",x"45",x"00",                         -- e30c |   call ${fn_parse_hex_4}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"3c",x"00",             -- e310 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+    x"28",x"60",x"1c",x"04",                         -- e316 |   shl C, 0x4
+    x"30",x"60",x"ff",                               -- e31a |   or C, H
+    x"44",x"20",                                     -- e31d |   inc A
+    x"5c",x"f8",x"32",x"00",                         -- e31f |   call ${fn_parse_hex_4}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"29",x"00",             -- e323 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+    x"28",x"60",x"1c",x"04",                         -- e329 |   shl C, 0x4
+    x"30",x"60",x"ff",                               -- e32d |   or C, H
+    x"44",x"20",                                     -- e330 |   inc A
+    x"5c",x"f8",x"1f",x"00",                         -- e332 |   call ${fn_parse_hex_4}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"16",x"00",             -- e336 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+    x"28",x"60",x"1c",x"04",                         -- e33c |   shl C, 0x4
+    x"30",x"60",x"ff",                               -- e340 |   or C, H
+    x"44",x"20",                                     -- e343 |   inc A
+    x"60",x"ff",x"60",                               -- e345 |   mov H, C
+    x"60",x"fe",x"1c",x"01",                         -- e348 |   mov G, 0x1
                                                      --      | _L_fn_parse_hex_16_1:
-    x"e4",x"60",                                     -- e344 |   pop C
-    x"e4",x"20",                                     -- e346 |   pop A
-    x"dc",                                           -- e348 |   ret
+    x"e4",x"60",                                     -- e34c |   pop C
+    x"e4",x"20",                                     -- e34e |   pop A
+    x"dc",                                           -- e350 |   ret
                                                      --      | end_fn_parse_hex_16:
                                                      --      | 
                                                      --      | fn_parse_hex_4:
-    x"65",x"ff",x"20",                               -- e349 |   bmov H, [A]
-    x"30",x"ff",x"1c",x"20",                         -- e34c |   or H, 0x20
-    x"f0",x"ff",x"1c",x"f8",x"30",x"38",x"00",       -- e350 |   jlt H, 0x30, ${_L_fn_parse_hex_4_2}:rel + PC
-    x"f8",x"ff",x"1c",x"f8",x"66",x"31",x"00",       -- e357 |   jgt H, 0x66, ${_L_fn_parse_hex_4_2}:rel + PC
+    x"65",x"ff",x"20",                               -- e351 |   bmov H, [A]
+    x"30",x"ff",x"1c",x"20",                         -- e354 |   or H, 0x20
+    x"f0",x"ff",x"1c",x"f8",x"30",x"38",x"00",       -- e358 |   jlt H, 0x30, ${_L_fn_parse_hex_4_2}:rel + PC
+    x"f8",x"ff",x"1c",x"f8",x"66",x"31",x"00",       -- e35f |   jgt H, 0x66, ${_L_fn_parse_hex_4_2}:rel + PC
                                                      --      | _B_fn_parse_hex_4_3:
-    x"f4",x"ff",x"1c",x"f8",x"39",x"12",x"00",       -- e35e |   jle H, 0x39, ${_E_fn_parse_hex_4_3}:rel + PC
-    x"fc",x"ff",x"1c",x"f8",x"61",x"0b",x"00",       -- e365 |   jge H, 0x61, ${_E_fn_parse_hex_4_3}:rel + PC
-    x"58",x"f8",x"1c",x"00",                         -- e36c |   jmp ${_L_fn_parse_hex_4_2}:rel + PC
+    x"f4",x"ff",x"1c",x"f8",x"39",x"12",x"00",       -- e366 |   jle H, 0x39, ${_E_fn_parse_hex_4_3}:rel + PC
+    x"fc",x"ff",x"1c",x"f8",x"61",x"0b",x"00",       -- e36d |   jge H, 0x61, ${_E_fn_parse_hex_4_3}:rel + PC
+    x"58",x"f8",x"1c",x"00",                         -- e374 |   jmp ${_L_fn_parse_hex_4_2}:rel + PC
                                                      --      | _E_fn_parse_hex_4_3:
                                                      --      | _B_fn_parse_hex_4_4:
-    x"f8",x"ff",x"1c",x"f8",x"39",x"0f",x"00",       -- e370 |   jgt H, 0x39, ${_E_fn_parse_hex_4_4}:rel + PC
-    x"04",x"ff",x"1c",x"30",                         -- e377 |   sub H, 0x30
-    x"58",x"f8",x"08",x"00",                         -- e37b |   jmp ${_L_fn_parse_hex_4_1}:rel + PC
+    x"f8",x"ff",x"1c",x"f8",x"39",x"0f",x"00",       -- e378 |   jgt H, 0x39, ${_E_fn_parse_hex_4_4}:rel + PC
+    x"04",x"ff",x"1c",x"30",                         -- e37f |   sub H, 0x30
+    x"58",x"f8",x"08",x"00",                         -- e383 |   jmp ${_L_fn_parse_hex_4_1}:rel + PC
                                                      --      | _E_fn_parse_hex_4_4:
-    x"04",x"ff",x"1c",x"57",                         -- e37f |   sub H, 0x57
+    x"04",x"ff",x"1c",x"57",                         -- e387 |   sub H, 0x57
                                                      --      | _L_fn_parse_hex_4_1:
-    x"60",x"fe",x"1c",x"01",                         -- e383 |   mov G, 0x1
-    x"dc",                                           -- e387 |   ret
+    x"60",x"fe",x"1c",x"01",                         -- e38b |   mov G, 0x1
+    x"dc",                                           -- e38f |   ret
                                                      --      | _L_fn_parse_hex_4_2:
-    x"60",x"fe",x"00",                               -- e388 |   mov G, 0
-    x"dc",                                           -- e38b |   ret
+    x"60",x"fe",x"00",                               -- e390 |   mov G, 0
+    x"dc",                                           -- e393 |   ret
                                                      --      | end_fn_parse_hex_4:
                                                      --      | 
                                                      --      | fn_put_hex_16:
-    x"e0",x"20",                                     -- e38c |   push A
-    x"e0",x"40",                                     -- e38e |   push B
-    x"e0",x"60",                                     -- e390 |   push C
-    x"60",x"60",x"40",                               -- e392 |   mov C, B
-    x"a0",x"40",x"60",x"1c",x"0c",                   -- e395 |   shr B, C, 0xc
-    x"2c",x"40",x"1c",x"0f",                         -- e39a |   and B, 0xf
-    x"5c",x"f8",x"39",x"00",                         -- e39e |   call ${fn_put_hex_4}:rel + PC
-    x"44",x"20",                                     -- e3a2 |   inc A
-    x"a0",x"40",x"60",x"1c",x"08",                   -- e3a4 |   shr B, C, 0x8
-    x"2c",x"40",x"1c",x"0f",                         -- e3a9 |   and B, 0xf
-    x"5c",x"f8",x"2a",x"00",                         -- e3ad |   call ${fn_put_hex_4}:rel + PC
-    x"44",x"20",                                     -- e3b1 |   inc A
-    x"a0",x"40",x"60",x"1c",x"04",                   -- e3b3 |   shr B, C, 0x4
-    x"2c",x"40",x"1c",x"0f",                         -- e3b8 |   and B, 0xf
-    x"5c",x"f8",x"1b",x"00",                         -- e3bc |   call ${fn_put_hex_4}:rel + PC
-    x"44",x"20",                                     -- e3c0 |   inc A
-    x"a0",x"40",x"60",x"00",                         -- e3c2 |   shr B, C, 0
-    x"2c",x"40",x"1c",x"0f",                         -- e3c6 |   and B, 0xf
-    x"5c",x"f8",x"0d",x"00",                         -- e3ca |   call ${fn_put_hex_4}:rel + PC
-    x"44",x"20",                                     -- e3ce |   inc A
-    x"e4",x"60",                                     -- e3d0 |   pop C
-    x"e4",x"40",                                     -- e3d2 |   pop B
-    x"e4",x"20",                                     -- e3d4 |   pop A
-    x"dc",                                           -- e3d6 |   ret
+    x"e0",x"20",                                     -- e394 |   push A
+    x"e0",x"40",                                     -- e396 |   push B
+    x"e0",x"60",                                     -- e398 |   push C
+    x"60",x"60",x"40",                               -- e39a |   mov C, B
+    x"a0",x"40",x"60",x"1c",x"0c",                   -- e39d |   shr B, C, 0xc
+    x"2c",x"40",x"1c",x"0f",                         -- e3a2 |   and B, 0xf
+    x"5c",x"f8",x"39",x"00",                         -- e3a6 |   call ${fn_put_hex_4}:rel + PC
+    x"44",x"20",                                     -- e3aa |   inc A
+    x"a0",x"40",x"60",x"1c",x"08",                   -- e3ac |   shr B, C, 0x8
+    x"2c",x"40",x"1c",x"0f",                         -- e3b1 |   and B, 0xf
+    x"5c",x"f8",x"2a",x"00",                         -- e3b5 |   call ${fn_put_hex_4}:rel + PC
+    x"44",x"20",                                     -- e3b9 |   inc A
+    x"a0",x"40",x"60",x"1c",x"04",                   -- e3bb |   shr B, C, 0x4
+    x"2c",x"40",x"1c",x"0f",                         -- e3c0 |   and B, 0xf
+    x"5c",x"f8",x"1b",x"00",                         -- e3c4 |   call ${fn_put_hex_4}:rel + PC
+    x"44",x"20",                                     -- e3c8 |   inc A
+    x"a0",x"40",x"60",x"00",                         -- e3ca |   shr B, C, 0
+    x"2c",x"40",x"1c",x"0f",                         -- e3ce |   and B, 0xf
+    x"5c",x"f8",x"0d",x"00",                         -- e3d2 |   call ${fn_put_hex_4}:rel + PC
+    x"44",x"20",                                     -- e3d6 |   inc A
+    x"e4",x"60",                                     -- e3d8 |   pop C
+    x"e4",x"40",                                     -- e3da |   pop B
+    x"e4",x"20",                                     -- e3dc |   pop A
+    x"dc",                                           -- e3de |   ret
                                                      --      | end_fn_put_hex_16:
                                                      --      | 
                                                      --      | fn_put_hex_4:
-    x"60",x"ff",x"40",                               -- e3d7 |   mov H, B
+    x"60",x"ff",x"40",                               -- e3df |   mov H, B
                                                      --      | _B_fn_put_hex_4_2:
-    x"f8",x"ff",x"1c",x"f8",x"09",x"0f",x"00",       -- e3da |   jgt H, 0x9, ${_E_fn_put_hex_4_2}:rel + PC
-    x"00",x"ff",x"1c",x"30",                         -- e3e1 |   add H, 0x30
-    x"58",x"f8",x"08",x"00",                         -- e3e5 |   jmp ${_L_fn_put_hex_4_1}:rel + PC
+    x"f8",x"ff",x"1c",x"f8",x"09",x"0f",x"00",       -- e3e2 |   jgt H, 0x9, ${_E_fn_put_hex_4_2}:rel + PC
+    x"00",x"ff",x"1c",x"30",                         -- e3e9 |   add H, 0x30
+    x"58",x"f8",x"08",x"00",                         -- e3ed |   jmp ${_L_fn_put_hex_4_1}:rel + PC
                                                      --      | _E_fn_put_hex_4_2:
-    x"00",x"ff",x"1c",x"57",                         -- e3e9 |   add H, 0x57
+    x"00",x"ff",x"1c",x"57",                         -- e3f1 |   add H, 0x57
                                                      --      | _L_fn_put_hex_4_1:
-    x"62",x"20",x"ff",                               -- e3ed |   mov [A], H
-    x"dc",                                           -- e3f0 |   ret
+    x"62",x"20",x"ff",                               -- e3f5 |   mov [A], H
+    x"dc",                                           -- e3f8 |   ret
                                                      --      | end_fn_put_hex_4:
                                                      --      | 
                                                      --      | fn_handle_write:
-    x"e0",x"20",                                     -- e3f1 |   push A
-    x"e0",x"40",                                     -- e3f3 |   push B
-    x"e0",x"60",                                     -- e3f5 |   push C
-    x"e0",x"fc",                                     -- e3f7 |   push E
-    x"e0",x"fd",                                     -- e3f9 |   push F
-    x"e0",x"fe",                                     -- e3fb |   push G
-    x"5c",x"f8",x"c3",x"fe",                         -- e3fd |   call ${fn__parse_hex_arg}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"89",x"00",             -- e401 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
-    x"60",x"60",x"ff",                               -- e407 |   mov C, H
-    x"60",x"fd",x"ff",                               -- e40a |   mov F, H
-    x"65",x"ff",x"20",                               -- e40d |   bmov H, [A]
-    x"e8",x"ff",x"00",x"f8",x"7a",x"00",             -- e410 |   jeq H, 0, ${_L_fn_handle_write_1}:rel + PC
-    x"44",x"20",                                     -- e416 |   inc A
-    x"5c",x"f8",x"9d",x"fd",                         -- e418 |   call ${fn_split_command}:rel + PC
-    x"60",x"40",x"ff",                               -- e41c |   mov B, H
+    x"e0",x"20",                                     -- e3f9 |   push A
+    x"e0",x"40",                                     -- e3fb |   push B
+    x"e0",x"60",                                     -- e3fd |   push C
+    x"e0",x"fc",                                     -- e3ff |   push E
+    x"e0",x"fd",                                     -- e401 |   push F
+    x"e0",x"fe",                                     -- e403 |   push G
+    x"5c",x"f8",x"c3",x"fe",                         -- e405 |   call ${fn__parse_hex_arg}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"89",x"00",             -- e409 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
+    x"60",x"60",x"ff",                               -- e40f |   mov C, H
+    x"60",x"fd",x"ff",                               -- e412 |   mov F, H
+    x"65",x"ff",x"20",                               -- e415 |   bmov H, [A]
+    x"e8",x"ff",x"00",x"f8",x"7a",x"00",             -- e418 |   jeq H, 0, ${_L_fn_handle_write_1}:rel + PC
+    x"44",x"20",                                     -- e41e |   inc A
+    x"5c",x"f8",x"95",x"fd",                         -- e420 |   call ${fn_split_command}:rel + PC
+    x"60",x"40",x"ff",                               -- e424 |   mov B, H
                                                      --      | _B_fn_handle_write_2:
-    x"fc",x"20",x"40",x"f8",x"2b",x"00",             -- e41f |   jge A, B, ${_E_fn_handle_write_2}:rel + PC
-    x"5c",x"f8",x"c8",x"fe",                         -- e425 |   call ${fn_parse_hex_16}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"61",x"00",             -- e429 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
-    x"a8",x"fc",x"ff",x"1c",x"08",                   -- e42f |   shl E, H, 0x8
-    x"20",x"ff",x"1c",x"08",                         -- e434 |   shr H, 0x8
-    x"30",x"fc",x"ff",                               -- e438 |   or E, H
-    x"62",x"60",x"fc",                               -- e43b |   mov [C], E
-    x"60",x"20",x"3c",x"04",                         -- e43e |   mov A, A + 0x4
-    x"60",x"60",x"7c",x"02",                         -- e442 |   mov C, C + 0x2
-    x"58",x"f8",x"d9",x"ff",                         -- e446 |   jmp ${_B_fn_handle_write_2}:rel + PC
+    x"fc",x"20",x"40",x"f8",x"2b",x"00",             -- e427 |   jge A, B, ${_E_fn_handle_write_2}:rel + PC
+    x"5c",x"f8",x"c8",x"fe",                         -- e42d |   call ${fn_parse_hex_16}:rel + PC
+    x"e8",x"fe",x"00",x"f8",x"61",x"00",             -- e431 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
+    x"a8",x"fc",x"ff",x"1c",x"08",                   -- e437 |   shl E, H, 0x8
+    x"20",x"ff",x"1c",x"08",                         -- e43c |   shr H, 0x8
+    x"30",x"fc",x"ff",                               -- e440 |   or E, H
+    x"62",x"60",x"fc",                               -- e443 |   mov [C], E
+    x"60",x"20",x"3c",x"04",                         -- e446 |   mov A, A + 0x4
+    x"60",x"60",x"7c",x"02",                         -- e44a |   mov C, C + 0x2
+    x"58",x"f8",x"d9",x"ff",                         -- e44e |   jmp ${_B_fn_handle_write_2}:rel + PC
                                                      --      | _E_fn_handle_write_2:
                                                      --      | _B_fn_handle_write_3:
-    x"60",x"20",x"e0",x"98",x"00",                   -- e44a |   mov A, ${var_uart_send_buf}
-    x"62",x"20",x"e0",x"4f",x"4b",                   -- e44f |   mov [A], 0x4b4f
-    x"62",x"3c",x"1c",x"02",x"20",                   -- e454 |   mov [A + 0x2], 0x20
-    x"60",x"20",x"3c",x"03",                         -- e459 |   mov A, A + 0x3
-    x"60",x"40",x"fd",                               -- e45d |   mov B, F
-    x"5c",x"f8",x"2c",x"ff",                         -- e460 |   call ${fn_put_hex_16}:rel + PC
-    x"62",x"3c",x"1c",x"04",x"20",                   -- e464 |   mov [A + 0x4], 0x20
-    x"60",x"20",x"3c",x"05",                         -- e469 |   mov A, A + 0x5
-    x"60",x"40",x"60",                               -- e46d |   mov B, C
-    x"5c",x"f8",x"1c",x"ff",                         -- e470 |   call ${fn_put_hex_16}:rel + PC
-    x"62",x"3c",x"1c",x"04",x"0a",                   -- e474 |   mov [A + 0x4], 0xa
-    x"60",x"20",x"e0",x"98",x"00",                   -- e479 |   mov A, ${var_uart_send_buf}
-    x"5c",x"f8",x"f4",x"fb",                         -- e47e |   call ${fn_send_data}:rel + PC
-    x"60",x"ff",x"1c",x"01",                         -- e482 |   mov H, 0x1
-    x"58",x"f8",x"07",x"00",                         -- e486 |   jmp ${_E_fn_handle_write_3}:rel + PC
+    x"60",x"20",x"e0",x"98",x"00",                   -- e452 |   mov A, ${var_uart_send_buf}
+    x"62",x"20",x"e0",x"4f",x"4b",                   -- e457 |   mov [A], 0x4b4f
+    x"62",x"3c",x"1c",x"02",x"20",                   -- e45c |   mov [A + 0x2], 0x20
+    x"60",x"20",x"3c",x"03",                         -- e461 |   mov A, A + 0x3
+    x"60",x"40",x"fd",                               -- e465 |   mov B, F
+    x"5c",x"f8",x"2c",x"ff",                         -- e468 |   call ${fn_put_hex_16}:rel + PC
+    x"62",x"3c",x"1c",x"04",x"20",                   -- e46c |   mov [A + 0x4], 0x20
+    x"60",x"20",x"3c",x"05",                         -- e471 |   mov A, A + 0x5
+    x"60",x"40",x"60",                               -- e475 |   mov B, C
+    x"5c",x"f8",x"1c",x"ff",                         -- e478 |   call ${fn_put_hex_16}:rel + PC
+    x"62",x"3c",x"1c",x"04",x"0a",                   -- e47c |   mov [A + 0x4], 0xa
+    x"60",x"20",x"e0",x"98",x"00",                   -- e481 |   mov A, ${var_uart_send_buf}
+    x"5c",x"f8",x"ec",x"fb",                         -- e486 |   call ${fn_send_data}:rel + PC
+    x"60",x"ff",x"1c",x"01",                         -- e48a |   mov H, 0x1
+    x"58",x"f8",x"07",x"00",                         -- e48e |   jmp ${_E_fn_handle_write_3}:rel + PC
                                                      --      | _L_fn_handle_write_1:
-    x"60",x"ff",x"00",                               -- e48a |   mov H, 0
+    x"60",x"ff",x"00",                               -- e492 |   mov H, 0
                                                      --      | _E_fn_handle_write_3:
-    x"e4",x"fe",                                     -- e48d |   pop G
-    x"e4",x"fd",                                     -- e48f |   pop F
-    x"e4",x"fc",                                     -- e491 |   pop E
-    x"e4",x"60",                                     -- e493 |   pop C
-    x"e4",x"40",                                     -- e495 |   pop B
-    x"e4",x"20",                                     -- e497 |   pop A
-    x"dc",                                           -- e499 |   ret
+    x"e4",x"fe",                                     -- e495 |   pop G
+    x"e4",x"fd",                                     -- e497 |   pop F
+    x"e4",x"fc",                                     -- e499 |   pop E
+    x"e4",x"60",                                     -- e49b |   pop C
+    x"e4",x"40",                                     -- e49d |   pop B
+    x"e4",x"20",                                     -- e49f |   pop A
+    x"dc",                                           -- e4a1 |   ret
                                                      --      | end_fn_handle_write:
                                                      --      | 
                                                      --      | SECTION_BEGIN_const_data:
                                                      --      | const_data_1:
-    x"52",x"45",x"41",x"44",x"59",x"0a",x"00",       -- e49a |   .data str:"READY\n"
+    x"52",x"45",x"41",x"44",x"59",x"0a",x"00",       -- e4a2 |   .data str:"READY\n"
                                                      --      | const_data_2:
-    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- e4a1 |   .data str:"OVERFLOW\n"
+    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- e4a9 |   .data str:"OVERFLOW\n"
                                                      --      | const_data_3:
-    x"50",x"49",x"4e",x"47",x"00",                   -- e4ab |   .data str:"PING"
+    x"50",x"49",x"4e",x"47",x"00",                   -- e4b3 |   .data str:"PING"
                                                      --      | const_data_4:
-    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- e4b0 |   .data str:"PONG\n"
+    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- e4b8 |   .data str:"PONG\n"
                                                      --      | const_data_5:
-    x"52",x"45",x"41",x"44",x"00",                   -- e4b6 |   .data str:"READ"
+    x"52",x"45",x"41",x"44",x"00",                   -- e4be |   .data str:"READ"
                                                      --      | const_data_6:
-    x"57",x"52",x"49",x"54",x"45",x"00",             -- e4bb |   .data str:"WRITE"
+    x"57",x"52",x"49",x"54",x"45",x"00",             -- e4c3 |   .data str:"WRITE"
                                                      --      | const_data_7:
-    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- e4c1 |   .data str:"INVALID\n"
+    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- e4c9 |   .data str:"INVALID\n"
                                                      --      | SECTION_END_const_data:
                                                      --      | 
                                                      --      | .offset 0x0000
