@@ -33,8 +33,8 @@ reset:
     mmu # idx=2
 
     con A, 0xFF # and B = 0
-    con Y, 0xD000
-    con Z, 0xFFFF
+    con Y, $CodeRomStartAddr
+    con Z, $CodeRomEndAddr
     alu X, K, ADD
     mmu # idx=3 - ROM
     mov A, 0
@@ -42,7 +42,7 @@ reset:
     # --------------------
     # reset Fetcher
     mov PC, 0
-    con PC, 0xD000
+    con PC, $CodeRomStartAddr
 
 # ======================================
 # ALU

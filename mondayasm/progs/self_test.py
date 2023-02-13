@@ -1,5 +1,6 @@
 from mondayasm import *
 
+
 def self_test():
     #
     # # BEGIN preamble.asm
@@ -1814,6 +1815,19 @@ def self_test():
     JMP(ConstLabel('success'))  # jmp $success
 
 
+START_ADDR = 0xD000
+
 if __name__ == '__main__':
+    with Block() as check_mmap:
+        JEQ(PC, START_ADDR, check_mmap.end)  # MUST be the first instruction
+        MOV(A, 0xFF)
+        MOV(B, 0)
+        MMAP(START_ADDR, 0xFEFF, 2)  # tmp slot 2
+        JMP(START_ADDR)
+
+    # PC == START_ADDR
+    MMAP(START_ADDR, 0xFEFF, 3)
+    UMAP(2)
+
     CALL(self_test, emit_call=False)
     CodeGen().compile().write('self_test.asm').write_vhd('self_test.vhd')

@@ -44,15 +44,15 @@ constant uops_rom : TArrUopROM := (
 	/*  16 */ 14x"0c8b", --     alu X, K, ADD
 	/*  17 */ 14x"0300", --     mmu # idx=2
 	/*  18 */ 14x"0212", --     con A, 0xFF # and B = 0
-	/*  19 */ 14x"0293", --     con Y, 0xD000
-	/*  20 */ 14x"02a0", --     con Z, 0xFFFF
+	/*  19 */ 14x"0293", --     con Y, $CodeRomStartAddr
+	/*  20 */ 14x"02a4", --     con Z, $CodeRomEndAddr
 	/*  21 */ 14x"0c8b", --     alu X, K, ADD
 	/*  22 */ 14x"0300", --     mmu # idx=3 - ROM
 	/*  23 */ 14x"0110", --     mov A, 0
 	/*     */            --     # --------------------
 	/*     */            --     # reset Fetcher
 	/*  24 */ 14x"0160", --     mov PC, 0
-	/*  25 */ 14x"2263", --     con PC, 0xD000
+	/*  25 */ 14x"2263", --     con PC, $CodeRomStartAddr
 	/*     */            -- # ======================================
 	/*     */            -- # ALU
 	/*     */            -- alu_2dd:
@@ -232,7 +232,7 @@ constant uops_rom : TArrUopROM := (
 	/* 161 */ 14x"0e9a", --     (--) alu Y, Z, AND
 	/* 162 */ 14x"09bb", --     (i-) arg K, GET_0
 	/* 163 */ 14x"048b", --     (i-) mem X, K, LOAD
-	/* 164 */ 14x"02a4", --     (i-) con Z, 0xFF00
+	/* 164 */ 14x"02a5", --     (i-) con Z, 0xFF00
 	/* 165 */ 14x"0e8a", --     (i-) alu X, Z, AND
 	/* 166 */ 14x"0c89", --     (i-) alu X, Y, ADD
 	/* 167 */ 14x"25b8", --     (i-) mem K, X, STORE
@@ -243,7 +243,7 @@ constant uops_rom : TArrUopROM := (
 	/* 171 */ 14x"0e9a", --     (--) alu Y, Z, AND
 	/* 172 */ 14x"09bb", --     (i-) arg K, GET_0
 	/* 173 */ 14x"048b", --     (i-) mem X, K, LOAD
-	/* 174 */ 14x"02a4", --     (i-) con Z, 0xFF00
+	/* 174 */ 14x"02a5", --     (i-) con Z, 0xFF00
 	/* 175 */ 14x"0e8a", --     (i-) alu X, Z, AND
 	/* 176 */ 14x"0c89", --     (i-) alu X, Y, ADD
 	/* 177 */ 14x"25b8", --     (i-) mem K, X, STORE
@@ -256,7 +256,7 @@ constant uops_rom : TArrUopROM := (
 	/* 180 */ 14x"2000", --     nop # padding so it takes 2 cycles
 	/*     */            -- setf:
 	/* 181 */ 14x"0977", --     arg FL, GET_0
-	/* 182 */ 14x"0285", --     con X, 0x3F # 6 bits
+	/* 182 */ 14x"0286", --     con X, 0x3F # 6 bits
 	/* 183 */ 14x"2e78", --     alu FL, X, AND
 	/*     */            -- call_d:
 	/* 184 */ 14x"0988", --     (-) arg X, GET_0
@@ -356,12 +356,13 @@ constant label_umap : integer := 214;
 constant label_end_of_uop_rom : integer := 218;
 
 
-type TArrUopsConstsROM is array (0 to 6-1) of TData;
+type TArrUopsConstsROM is array (0 to 7-1) of TData;
 constant uops_consts_rom : TArrUopsConstsROM := (
-	x"FFFF", -- used 3 times
+	x"FFFF", -- used 2 times
 	x"0001", -- used 1 times
 	x"00FF", -- used 5 times
-	x"D000", -- used 2 times
+	CodeRomStartAddr, -- used 2 times
+	CodeRomEndAddr, -- used 1 times
 	x"FF00", -- used 2 times
 	x"003F"  -- used 1 times
 ); -- uops_consts_rom -------------------------------------------
@@ -369,6 +370,7 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 -- ##############################################################
 -- ## END UOPS ROM
 -- ##############################################################
+
 
 
 

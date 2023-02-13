@@ -49,6 +49,9 @@ package Constants is
 	subtype TUcodeTail is std_logic_vector(UcodeTailLen-1 downto 0);
 	subtype TUopIndex is unsigned(UopIndexWidth-1 downto 0);
 
+	constant CodeRomStartAddr : TAddr := x"FE00";
+	constant CodeRomEndAddr   : TAddr := x"FEFF"; -- inclusive
+
 	-- ===========================================================================
 	-- || Uops
 	-- ===========================================================================

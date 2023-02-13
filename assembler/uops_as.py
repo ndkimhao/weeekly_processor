@@ -7,6 +7,7 @@
 
 import re
 import fnmatch
+from typing import Union
 
 # MUL/DIV always place result to X:Y
 REGS = (
@@ -85,7 +86,7 @@ while lineidx+1 < len(lines_proc):
                 lbl = lbl.replace('$$', gen_curname)
                 origs = origs.replace('$$', gen_curname)
             if not fallthrough and last_cmd_idx != -1:
-                cmd_buffer[last_cmd_idx][1][0] = '1' # modify FIN bit of last command
+                cmd_buffer[last_cmd_idx][1][0] = '1'  # modify FIN bit of last command
             label_map[lbl] = romlen
         if origs != '':
             out_cmd(None, origs)
@@ -130,8 +131,10 @@ while lineidx+1 < len(lines_proc):
         argstr += f'{aid:04b}'
 
     if ps[0] == 'CON':  # load constant
-        v = ps[-1]
-        if v.startswith('0x'):
+        v: Union[int, str] = ps[-1]
+        if v.startswith('$'):
+            v = v[1:]
+        elif v.startswith('0x'):
             v = int(v[2:], 16)
         else:
             v = int(v, 10)
@@ -190,8 +193,12 @@ for i in range(16):
     if i not in const_map_r:
         break
     v = const_map_r[i]
+    if isinstance(v, int):
+        vstr = f'x"{v:04X}"'
+    else:
+        vstr = v
     comma = ',' if i+1 in const_map_r else ' '
-    out.append(f'\tx"{v:04X}"{comma} -- used {const_map_cnt[v]} times')
+    out.append(f'\t{vstr}{comma} -- used {const_map_cnt[v]} times')
 out += [
     f'); -- uops_consts_rom -------------------------------------------',
 ]
