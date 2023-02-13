@@ -137,7 +137,10 @@ begin
 						need := to_unsigned(1, InstIdxW) + need_a + need_b + need_c;
 	
 						 -- check if we can really speculatively decode the next instruction from fetcher
-						if avail >= need and (pc = inst_pc or (unsigned(s_uop) /= 0 and unsigned(s_uop(7 downto 4)) /= REGID_PC)) then
+						if avail >= need
+							and ((brk = '0' and pc = inst_pc) or (brk = '1'))
+							and unsigned(s_uop(7 downto 4)) /= REGID_PC
+						then
 							-- can decode now
 							next_idx := op_prog;
 							inst_out <= inst_in;

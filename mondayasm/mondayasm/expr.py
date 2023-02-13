@@ -67,6 +67,8 @@ REGISTER_G = Register('G')
 REGISTER_H = Register('H')
 REGISTER_0 = Register('0')
 
+LABEL_REL_PC = ConstLabel('__PC__')
+
 
 @dataclass(frozen=True)
 class Expr:
@@ -110,7 +112,6 @@ class Expr:
                 const += term
         regs = [Term(k, v) for k, v in regs.items() if v != 0]
         labels = [Term(k, v) for k, v in labels.items() if v != 0]
-        assert len(labels) <= 1
         assert len(regs) <= 2
         if len(regs) == 2 and regs[0].factor < regs[1].factor:
             regs[0], regs[1] = regs[1], regs[0]
@@ -131,9 +132,13 @@ class Expr:
         x = ArgEncode('1', '00', '')
         const_enc = ArgEncode(const, '111', f'{(const & 0xFFFF) % 256:08b}{(const & 0xFFFF) // 256:08b}')
         if len(labels) != 0:
+            const_head = ' + '.join(f'{lbl.factor:x} * ${{{lbl.value}}}'
+                                    if lbl.factor != 1 else f'${{{lbl.value}}}'
+                                    for lbl in labels)
             const_tail = '' if const == 0 else f' + {const:04x}'
+            humanval = f'{const_head}{const_tail}'.replace(f' + -1 * ${{{LABEL_REL_PC.name}}}', ':rel')
             # unknown constant, encode as big constant
-            a = ArgEncode(f'${labels[0].value}{const_tail}', '111', '<${' + labels[0].value + '}' + const_tail + '>')
+            a = ArgEncode(humanval, '111', f'<{const_head}{const_tail}>')
             if len(regs) != 0:
                 assert len(regs) == 1
                 b = ArgEncode(regs[0].value, f'{REGS_MAP[regs[0].value]:03b}', '')
@@ -176,6 +181,27 @@ class Expr:
                 # b = 0
                 pass
         return AsmArg(a, b, x)
+
+    def _has_term_value(self, tval):
+        return any(tval == t.value for t in self.terms)
+
+    @property
+    def relative(self) -> 'Expr':
+        if not self._has_term_value(LABEL_REL_PC):
+            return self + Expr((Term(LABEL_REL_PC, -1),)) + Expr.to_expr(REGISTER_PC)
+        else:
+            return self
+
+    @property
+    def absolute(self):
+        if self._has_term_value(LABEL_REL_PC):
+            return self + Expr((Term(LABEL_REL_PC, +1),)) - Expr.to_expr(REGISTER_PC)
+        else:
+            return self
+
+    @property
+    def is_pure_label(self):
+        return len(self.terms) == 1 and self.terms[0].factor == 1 and isinstance(self.terms[0].value, ConstLabel)
 
     def __str__(self) -> str:
         s = ''

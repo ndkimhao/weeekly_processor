@@ -5,6 +5,8 @@ from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel
 from mondayasm.data import CMDS_MAP
 from mondayasm.types import CmdEncode, DataEncode
 
+ADDR_RELATIVE = True
+
 
 @dataclass(frozen=True)
 class Instruction:
@@ -149,6 +151,14 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
     a, indirect_a = unwrap_indirect(a)
     b, indirect_b = unwrap_indirect(b)
     id_specs = (2 if indirect_a else 0) | (1 if indirect_b else 0)
+
+    if ADDR_RELATIVE and name in ('call', 'jmp', 'jeq', 'jne', 'jlt', 'jle', 'jgt', 'jge'):
+        if c is not None:
+            if Expr.to_expr(c).is_pure_label:
+                c = Expr.to_expr(c).relative
+        else:
+            if Expr.to_expr(a).is_pure_label:
+                a = Expr.to_expr(a).relative
 
     args: list[AsmArg] = []
     if a is not None:

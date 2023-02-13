@@ -4,6 +4,8 @@ from typing import Optional
 import re
 
 from mondayasm.builder import ScopeBuilder, Directive, Global, Instruction
+from mondayasm.expr import LABEL_REL_PC
+from mondayasm.vhd import vhd_header, vhd_footer
 
 
 @dataclass
@@ -75,16 +77,23 @@ class CodeGen:
         self.buf.append((get_offset(), '', ''))  # spacing
 
     def _fix_ref_arth(self, match):
-        v = sum(int(s, 16) for s in match.group(1).split('+'))
+        v = 0
+        for s in match.group(1).split('+'):
+            t = 1
+            for x in s.split('*'):
+                t *= int(x, 16)
+            v += t
+        v = v & 0xFFFF
         return f'{v % 256:02x} {v // 256:02x}'
 
     def _fix_refs(self):
         label_hexmap = {lbl: f'{v:04x}' for lbl, v in self.label_map.items()}
         new_buf = []
         for idx, hexcode, cmd in self.buf:
+            label_hexmap[LABEL_REL_PC.name] = f'{idx:04x}'
             if '<' in hexcode:
                 hexcode = string.Template(hexcode).substitute(label_hexmap)
-                hexcode = re.sub(r'<([0-9a-z+]+)>', self._fix_ref_arth, hexcode)
+                hexcode = re.sub(r'<([0-9a-z+*-]+)>', self._fix_ref_arth, hexcode)
             new_buf.append((idx, hexcode, cmd))
         self.buf = new_buf
 
@@ -114,40 +123,12 @@ class CodeGen:
 
     def write_vhd(self, file) -> 'CodeGen':
         with open(file, 'w') as f:
-            f.write(f'''
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-use work.Constants.all;
-use work.Types.all;
-
-package CodeROM is
-
--- ##############################################################
--- ## BEGIN ROM
--- ##############################################################
-
-constant ROMSize : integer := {self.romlen};
-type TArrROM is array (0 to ROMSize) of TByte;
-constant arr_rom : TArrROM := (
-'''
-                    )
+            f.write(vhd_header(self.romlen))
 
             for idx, hexcode, cmd in self.buf:
                 idxstr = self.get_idxstr(idx, hexcode, cmd)
                 hexline = ''.join([f'x"{s}",' for s in hexcode.split(' ') if s != ''])
                 f.write(f'    {hexline:<48} -- {idxstr:>4} | {cmd}\n')
 
-            f.write('''
-    x"d8" -- HALT - end of rom
-); -- arr_rom -------------------------------------------
-
--- ##############################################################
--- ## END ROM
--- ##############################################################
-
-end package;
-'''
-                    )
+            f.write(vhd_footer())
         return self
