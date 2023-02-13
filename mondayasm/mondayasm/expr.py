@@ -150,6 +150,10 @@ class Expr:
             elif -128 <= const < 128:
                 # small constant: a = 0, b = const, x = 1
                 b = ArgEncode(const, '111', f'{const & 0xFF:08b}')
+            elif -128 <= const - 0x10000:
+                # convert big const to small negative value
+                c2 = const - 0x10000
+                b = ArgEncode(const, '111', f'{c2 & 0xFF:08b}')
             else:
                 # large constant: a = const, b = 0, x = 1
                 a = const_enc
