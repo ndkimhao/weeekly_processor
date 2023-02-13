@@ -13,9 +13,8 @@ package UopROM is
 -- ## BEGIN UOPS ROM
 -- ##############################################################
 
-type TArrUopROM is array (0 to 218-1) of std_logic_vector(1+UopLen-1 downto 0);
+type TArrUopROM is array (0 to 217-1) of std_logic_vector(1+UopLen-1 downto 0);
 constant uops_rom : TArrUopROM := (
-	/*     */            -- # WARNING: each instruction should take at least 2 cycles because of fetcher -> decoder pipeline
 	/*   0 */ 14x"0000", --     nop # dummy instruction at index 0 & 1
 	/*   1 */ 14x"0000", --     nop, !FALLTHROUGH
 	/*     */            -- # ======================================
@@ -252,55 +251,54 @@ constant uops_rom : TArrUopROM := (
 	/*     */            -- halt:
 	/* 178 */ 14x"2166", --     mov PC, PC
 	/*     */            -- getf:
-	/* 179 */ 14x"0877", --     arg FL, PUT
-	/* 180 */ 14x"2000", --     nop # padding so it takes 2 cycles
+	/* 179 */ 14x"2877", --     arg FL, PUT
 	/*     */            -- setf:
-	/* 181 */ 14x"0977", --     arg FL, GET_0
-	/* 182 */ 14x"0286", --     con X, 0x3F # 6 bits
-	/* 183 */ 14x"2e78", --     alu FL, X, AND
+	/* 180 */ 14x"0977", --     arg FL, GET_0
+	/* 181 */ 14x"0286", --     con X, 0x3F # 6 bits
+	/* 182 */ 14x"2e78", --     alu FL, X, AND
 	/*     */            -- call_d:
-	/* 184 */ 14x"0988", --     (-) arg X, GET_0
-	/* 185 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 186 */ 14x"055d", --     (-) mem SP, NPC, STORE
-	/* 187 */ 14x"2168", --     (-) mov PC, X
+	/* 183 */ 14x"0988", --     (-) arg X, GET_0
+	/* 184 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 185 */ 14x"055d", --     (-) mem SP, NPC, STORE
+	/* 186 */ 14x"2168", --     (-) mov PC, X
 	/*     */            -- call_i:
-	/* 188 */ 14x"0988", --     (-) arg X, GET_0
-	/* 189 */ 14x"0488", --     (i) mem X, X, LOAD
-	/* 190 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 191 */ 14x"055d", --     (-) mem SP, NPC, STORE
-	/* 192 */ 14x"2168", --     (-) mov PC, X
+	/* 187 */ 14x"0988", --     (-) arg X, GET_0
+	/* 188 */ 14x"0488", --     (i) mem X, X, LOAD
+	/* 189 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 190 */ 14x"055d", --     (-) mem SP, NPC, STORE
+	/* 191 */ 14x"2168", --     (-) mov PC, X
 	/*     */            -- ret:
-	/* 193 */ 14x"0485", --     mem X, SP, LOAD
-	/* 194 */ 14x"0c5c", --     alu SP, 2, ADD
-	/* 195 */ 14x"2168", --     mov PC, X
+	/* 192 */ 14x"0485", --     mem X, SP, LOAD
+	/* 193 */ 14x"0c5c", --     alu SP, 2, ADD
+	/* 194 */ 14x"2168", --     mov PC, X
 	/*     */            -- push_d:
-	/* 196 */ 14x"0988", --     (-) arg X, GET_0
-	/* 197 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 198 */ 14x"2558", --     (-) mem SP, X, STORE
+	/* 195 */ 14x"0988", --     (-) arg X, GET_0
+	/* 196 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 197 */ 14x"2558", --     (-) mem SP, X, STORE
 	/*     */            -- push_i:
-	/* 199 */ 14x"0988", --     (-) arg X, GET_0
-	/* 200 */ 14x"0488", --     (i) mem X, X, LOAD
-	/* 201 */ 14x"0d5c", --     (-) alu SP, 2, SUB
-	/* 202 */ 14x"2558", --     (-) mem SP, X, STORE
+	/* 198 */ 14x"0988", --     (-) arg X, GET_0
+	/* 199 */ 14x"0488", --     (i) mem X, X, LOAD
+	/* 200 */ 14x"0d5c", --     (-) alu SP, 2, SUB
+	/* 201 */ 14x"2558", --     (-) mem SP, X, STORE
 	/*     */            -- pop_d:
-	/* 203 */ 14x"0495", --     (-) mem Y, SP, LOAD
-	/* 204 */ 14x"0c5c", --     (-) alu SP, 2, ADD
-	/* 205 */ 14x"2899", --     (d) arg Y, PUT
+	/* 202 */ 14x"0495", --     (-) mem Y, SP, LOAD
+	/* 203 */ 14x"0c5c", --     (-) alu SP, 2, ADD
+	/* 204 */ 14x"2899", --     (d) arg Y, PUT
 	/*     */            -- pop_i:
-	/* 206 */ 14x"0495", --     (-) mem Y, SP, LOAD
-	/* 207 */ 14x"0c5c", --     (-) alu SP, 2, ADD
-	/* 208 */ 14x"0988", --     (i) arg X, GET_0
-	/* 209 */ 14x"2589", --     (i) mem X, Y, STORE
+	/* 205 */ 14x"0495", --     (-) mem Y, SP, LOAD
+	/* 206 */ 14x"0c5c", --     (-) alu SP, 2, ADD
+	/* 207 */ 14x"0988", --     (i) arg X, GET_0
+	/* 208 */ 14x"2589", --     (i) mem X, Y, STORE
 	/*     */            -- mmap: # start, end, slot_idx / Y, Z, X
-	/* 210 */ 14x"0999", --     arg, Y, GET_0
-	/* 211 */ 14x"0aaa", --     arg, Z, GET_1
-	/* 212 */ 14x"0b88", --     arg, X, GET_2
-	/* 213 */ 14x"2300", --     mmu
+	/* 209 */ 14x"0999", --     arg, Y, GET_0
+	/* 210 */ 14x"0aaa", --     arg, Z, GET_1
+	/* 211 */ 14x"0b88", --     arg, X, GET_2
+	/* 212 */ 14x"2300", --     mmu
 	/*     */            -- umap:
-	/* 214 */ 14x"0988", --     arg, X, GET_0
-	/* 215 */ 14x"0290", --     con Y, 0xFFFF
-	/* 216 */ 14x"01a0", --     mov Z, 0
-	/* 217 */ 14x"2300"  --     mmu
+	/* 213 */ 14x"0988", --     arg, X, GET_0
+	/* 214 */ 14x"0290", --     con Y, 0xFFFF
+	/* 215 */ 14x"01a0", --     mov Z, 0
+	/* 216 */ 14x"2300"  --     mmu
 	/*     */            -- end_of_uop_rom:
 ); -- uops_rom ---------------------------------------------------
 
@@ -343,17 +341,17 @@ constant label_bmov_id : integer := 159;
 constant label_bmov_ii : integer := 168;
 constant label_halt : integer := 178;
 constant label_getf : integer := 179;
-constant label_setf : integer := 181;
-constant label_call_d : integer := 184;
-constant label_call_i : integer := 188;
-constant label_ret : integer := 193;
-constant label_push_d : integer := 196;
-constant label_push_i : integer := 199;
-constant label_pop_d : integer := 203;
-constant label_pop_i : integer := 206;
-constant label_mmap : integer := 210;
-constant label_umap : integer := 214;
-constant label_end_of_uop_rom : integer := 218;
+constant label_setf : integer := 180;
+constant label_call_d : integer := 183;
+constant label_call_i : integer := 187;
+constant label_ret : integer := 192;
+constant label_push_d : integer := 195;
+constant label_push_i : integer := 198;
+constant label_pop_d : integer := 202;
+constant label_pop_i : integer := 205;
+constant label_mmap : integer := 209;
+constant label_umap : integer := 213;
+constant label_end_of_uop_rom : integer := 217;
 
 
 type TArrUopsConstsROM is array (0 to 7-1) of TData;
@@ -370,9 +368,6 @@ constant uops_consts_rom : TArrUopsConstsROM := (
 -- ##############################################################
 -- ## END UOPS ROM
 -- ##############################################################
-
-
-
 
 
 

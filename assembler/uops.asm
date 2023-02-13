@@ -1,5 +1,3 @@
-# WARNING: each instruction should take at least 2 cycles because of fetcher -> decoder pipeline
-
     nop # dummy instruction at index 0 & 1
     nop, !FALLTHROUGH
 
@@ -153,7 +151,6 @@ halt:
 
 getf:
     arg FL, PUT
-    nop # padding so it takes 2 cycles
 
 setf:
     arg FL, GET_0

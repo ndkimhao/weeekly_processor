@@ -138,7 +138,8 @@ begin
 	
 						 -- check if we can really speculatively decode the next instruction from fetcher
 						if avail >= need
-							and ((brk = '0' and pc = inst_pc) or (brk = '1'))
+							and   ((brk = '0' and pc = inst_pc) 
+								or (brk = '1' and pc = std_logic_vector(unsigned(inst_pc) + used_len)))
 							and unsigned(s_uop(7 downto 4)) /= REGID_PC
 						then
 							-- can decode now
