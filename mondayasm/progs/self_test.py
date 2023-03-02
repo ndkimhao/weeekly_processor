@@ -311,19 +311,24 @@ def self_test():
     XOR(B, C, D)  # xor B, C, D
     JNE(B, 0x7222, ConstLabel('fail'))  # jne B, 0x7222, $fail
     #
-    NEG(B, 0xd230)  # neg B, 0xd230
+    MOV(C, 0xd230)  # mov C, 0xd230
+    NEG(B, C)  # neg B, C
     JNE(B, 0x2dd0, ConstLabel('fail'))  # jne B, 0x2dd0, $fail
     #
-    NOT(B, 0xd230)  # not B, 0xd230
+    MOV(C, 0xd230)  # mov C, 0xd230
+    NOT(B, C)  # not B, C
     JNE(B, 0x2dcf, ConstLabel('fail'))  # jne B, 0x2dcf, $fail
     #
-    BOOL(B, 0xd230)  # bool B, 0xd230
+    MOV(C, 0xd230)  # mov C, 0xd230
+    BOOL(B, C)  # bool B, C
     JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
     #
-    INC(B, 0xd230)  # inc B, 0xd230
+    MOV(C, 0xd230)  # mov C, 0xd230
+    INC(B, C)  # inc B, C
     JNE(B, 0xd231, ConstLabel('fail'))  # jne B, 0xd231, $fail
     #
-    DEC(B, 0xd230)  # dec B, 0xd230
+    MOV(C, 0xd230)  # mov C, 0xd230
+    DEC(B, C)  # dec B, C
     JNE(B, 0xd22f, ConstLabel('fail'))  # jne B, 0xd22f, $fail
     #
     #      # (direct) t=True, a=00ad, b=da37
@@ -379,19 +384,24 @@ def self_test():
     XOR(B, C, D)  # xor B, C, D
     JNE(B, 0xda9a, ConstLabel('fail'))  # jne B, 0xda9a, $fail
     #
-    NEG(B, 0x00ad)  # neg B, 0x00ad
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    NEG(B, C)  # neg B, C
     JNE(B, 0xff53, ConstLabel('fail'))  # jne B, 0xff53, $fail
     #
-    NOT(B, 0x00ad)  # not B, 0x00ad
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    NOT(B, C)  # not B, C
     JNE(B, 0xff52, ConstLabel('fail'))  # jne B, 0xff52, $fail
     #
-    BOOL(B, 0x00ad)  # bool B, 0x00ad
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    BOOL(B, C)  # bool B, C
     JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
     #
-    INC(B, 0x00ad)  # inc B, 0x00ad
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    INC(B, C)  # inc B, C
     JNE(B, 0x00ae, ConstLabel('fail'))  # jne B, 0x00ae, $fail
     #
-    DEC(B, 0x00ad)  # dec B, 0x00ad
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    DEC(B, C)  # dec B, C
     JNE(B, 0x00ac, ConstLabel('fail'))  # jne B, 0x00ac, $fail
     #
     #      # (direct) t=False, a=f0ad, b=2a3f
@@ -457,23 +467,28 @@ def self_test():
     XOR(B, D)  # xor B, D
     JNE(B, 0xda92, ConstLabel('fail'))  # jne B, 0xda92, $fail
     #
-    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(B, C)  # mov B, C
     NEG(B)  # neg B
     JNE(B, 0x0f53, ConstLabel('fail'))  # jne B, 0x0f53, $fail
     #
-    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(B, C)  # mov B, C
     NOT(B)  # not B
     JNE(B, 0x0f52, ConstLabel('fail'))  # jne B, 0x0f52, $fail
     #
-    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(B, C)  # mov B, C
     BOOL(B)  # bool B
     JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
     #
-    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(B, C)  # mov B, C
     INC(B)  # inc B
     JNE(B, 0xf0ae, ConstLabel('fail'))  # jne B, 0xf0ae, $fail
     #
-    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(B, C)  # mov B, C
     DEC(B)  # dec B
     JNE(B, 0xf0ac, ConstLabel('fail'))  # jne B, 0xf0ac, $fail
     #
@@ -540,23 +555,28 @@ def self_test():
     XOR(B, D)  # xor B, D
     JNE(B, 0xdead, ConstLabel('fail'))  # jne B, 0xdead, $fail
     #
-    MOV(B, 0x0000)  # mov B, 0x0000
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(B, C)  # mov B, C
     NEG(B)  # neg B
     JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
     #
-    MOV(B, 0x0000)  # mov B, 0x0000
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(B, C)  # mov B, C
     NOT(B)  # not B
     JNE(B, 0xffff, ConstLabel('fail'))  # jne B, 0xffff, $fail
     #
-    MOV(B, 0x0000)  # mov B, 0x0000
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(B, C)  # mov B, C
     BOOL(B)  # bool B
     JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
     #
-    MOV(B, 0x0000)  # mov B, 0x0000
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(B, C)  # mov B, C
     INC(B)  # inc B
     JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
     #
-    MOV(B, 0x0000)  # mov B, 0x0000
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(B, C)  # mov B, C
     DEC(B)  # dec B
     JNE(B, 0xffff, ConstLabel('fail'))  # jne B, 0xffff, $fail
     #

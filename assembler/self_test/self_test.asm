@@ -307,19 +307,24 @@ alu_test_direct_reg:
     xor B, C, D
     jne B, 0x7222, $fail
 
-    neg B, 0xd230
+    mov C, 0xd230
+    neg B, C
     jne B, 0x2dd0, $fail
 
-    not B, 0xd230
+    mov C, 0xd230
+    not B, C
     jne B, 0x2dcf, $fail
 
-    bool B, 0xd230
+    mov C, 0xd230
+    bool B, C
     jne B, 0x0001, $fail
 
-    inc B, 0xd230
+    mov C, 0xd230
+    inc B, C
     jne B, 0xd231, $fail
 
-    dec B, 0xd230
+    mov C, 0xd230
+    dec B, C
     jne B, 0xd22f, $fail
 
      # (direct) t=True, a=00ad, b=da37
@@ -375,19 +380,24 @@ alu_test_direct_reg:
     xor B, C, D
     jne B, 0xda9a, $fail
 
-    neg B, 0x00ad
+    mov C, 0x00ad
+    neg B, C
     jne B, 0xff53, $fail
 
-    not B, 0x00ad
+    mov C, 0x00ad
+    not B, C
     jne B, 0xff52, $fail
 
-    bool B, 0x00ad
+    mov C, 0x00ad
+    bool B, C
     jne B, 0x0001, $fail
 
-    inc B, 0x00ad
+    mov C, 0x00ad
+    inc B, C
     jne B, 0x00ae, $fail
 
-    dec B, 0x00ad
+    mov C, 0x00ad
+    dec B, C
     jne B, 0x00ac, $fail
 
      # (direct) t=False, a=f0ad, b=2a3f
@@ -453,23 +463,28 @@ alu_test_direct_reg:
     xor B, D
     jne B, 0xda92, $fail
 
-    mov B, 0xf0ad
+    mov C, 0xf0ad
+    mov B, C
     neg B
     jne B, 0x0f53, $fail
 
-    mov B, 0xf0ad
+    mov C, 0xf0ad
+    mov B, C
     not B
     jne B, 0x0f52, $fail
 
-    mov B, 0xf0ad
+    mov C, 0xf0ad
+    mov B, C
     bool B
     jne B, 0x0001, $fail
 
-    mov B, 0xf0ad
+    mov C, 0xf0ad
+    mov B, C
     inc B
     jne B, 0xf0ae, $fail
 
-    mov B, 0xf0ad
+    mov C, 0xf0ad
+    mov B, C
     dec B
     jne B, 0xf0ac, $fail
 
@@ -536,23 +551,28 @@ alu_test_direct_reg:
     xor B, D
     jne B, 0xdead, $fail
 
-    mov B, 0x0000
+    mov C, 0x0000
+    mov B, C
     neg B
     jne B, 0x0000, $fail
 
-    mov B, 0x0000
+    mov C, 0x0000
+    mov B, C
     not B
     jne B, 0xffff, $fail
 
-    mov B, 0x0000
+    mov C, 0x0000
+    mov B, C
     bool B
     jne B, 0x0000, $fail
 
-    mov B, 0x0000
+    mov C, 0x0000
+    mov B, C
     inc B
     jne B, 0x0001, $fail
 
-    mov B, 0x0000
+    mov C, 0x0000
+    mov B, C
     dec B
     jne B, 0xffff, $fail
 

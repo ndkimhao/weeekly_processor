@@ -234,1671 +234,1691 @@ ec 40 e0 f8 32 f2 28 fb        # d50d |   jne B, 0xf232, ${fail}:rel + PC
 60 80 e0 12 a0                 # d51a |   mov D, 0xa012
 b4 40 60 80                    # d51f |   xor B, C, D
 ec 40 e0 f8 22 72 12 fb        # d523 |   jne B, 0x7222, ${fail}:rel + PC
-b8 40 e0 30 d2                 # d52b |   neg B, 0xd230
-ec 40 e0 f8 d0 2d 05 fb        # d530 |   jne B, 0x2dd0, ${fail}:rel + PC
-bc 40 e0 30 d2                 # d538 |   not B, 0xd230
-ec 40 e0 f8 cf 2d f8 fa        # d53d |   jne B, 0x2dcf, ${fail}:rel + PC
-c0 40 e0 30 d2                 # d545 |   bool B, 0xd230
-ec 40 1c f8 01 eb fa           # d54a |   jne B, 0x1, ${fail}:rel + PC
-c4 40 e0 30 d2                 # d551 |   inc B, 0xd230
-ec 40 e0 f8 31 d2 df fa        # d556 |   jne B, 0xd231, ${fail}:rel + PC
-c8 40 e0 30 d2                 # d55e |   dec B, 0xd230
-ec 40 e0 f8 2f d2 d2 fa        # d563 |   jne B, 0xd22f, ${fail}:rel + PC
-60 60 e0 ad 00                 # d56b |   mov C, 0xad
-60 80 e0 37 da                 # d570 |   mov D, 0xda37
-80 40 60 80                    # d575 |   add B, C, D
-ec 40 e0 f8 e4 da bc fa        # d579 |   jne B, 0xdae4, ${fail}:rel + PC
-60 60 e0 ad 00                 # d581 |   mov C, 0xad
-60 80 e0 37 da                 # d586 |   mov D, 0xda37
-84 40 60 80                    # d58b |   sub B, C, D
-ec 40 e0 f8 76 26 a6 fa        # d58f |   jne B, 0x2676, ${fail}:rel + PC
-60 60 e0 ad 00                 # d597 |   mov C, 0xad
-60 80 e0 37 da                 # d59c |   mov D, 0xda37
-88 40 60 80                    # d5a1 |   mul B, C, D
-ec 40 e0 f8 2b 77 90 fa        # d5a5 |   jne B, 0x772b, ${fail}:rel + PC
-ec ff e0 f8 93 00 88 fa        # d5ad |   jne H, 0x93, ${fail}:rel + PC
-60 60 e0 ad 00                 # d5b5 |   mov C, 0xad
-60 80 e0 37 da                 # d5ba |   mov D, 0xda37
-8c 40 60 80                    # d5bf |   imul B, C, D
-ec 40 e0 f8 2b 77 72 fa        # d5c3 |   jne B, 0x772b, ${fail}:rel + PC
-ec ff 1c f8 e6 6a fa           # d5cb |   jne H, 0xe6, ${fail}:rel + PC
-60 60 e0 ad 00                 # d5d2 |   mov C, 0xad
-60 80 e0 37 da                 # d5d7 |   mov D, 0xda37
-a0 40 60 80                    # d5dc |   shr B, C, D
-ec 40 1c f8 01 55 fa           # d5e0 |   jne B, 0x1, ${fail}:rel + PC
-60 60 e0 ad 00                 # d5e7 |   mov C, 0xad
-60 80 e0 37 da                 # d5ec |   mov D, 0xda37
-a4 40 60 80                    # d5f1 |   ishr B, C, D
-ec 40 1c f8 01 40 fa           # d5f5 |   jne B, 0x1, ${fail}:rel + PC
-60 60 e0 ad 00                 # d5fc |   mov C, 0xad
-60 80 e0 37 da                 # d601 |   mov D, 0xda37
-a8 40 60 80                    # d606 |   shl B, C, D
-ec 40 e0 f8 80 56 2b fa        # d60a |   jne B, 0x5680, ${fail}:rel + PC
-60 60 e0 ad 00                 # d612 |   mov C, 0xad
-60 80 e0 37 da                 # d617 |   mov D, 0xda37
-ac 40 60 80                    # d61c |   and B, C, D
-ec 40 1c f8 25 15 fa           # d620 |   jne B, 0x25, ${fail}:rel + PC
-60 60 e0 ad 00                 # d627 |   mov C, 0xad
-60 80 e0 37 da                 # d62c |   mov D, 0xda37
-b0 40 60 80                    # d631 |   or B, C, D
-ec 40 e0 f8 bf da 00 fa        # d635 |   jne B, 0xdabf, ${fail}:rel + PC
-60 60 e0 ad 00                 # d63d |   mov C, 0xad
-60 80 e0 37 da                 # d642 |   mov D, 0xda37
-b4 40 60 80                    # d647 |   xor B, C, D
-ec 40 e0 f8 9a da ea f9        # d64b |   jne B, 0xda9a, ${fail}:rel + PC
-b8 40 e0 ad 00                 # d653 |   neg B, 0xad
-ec 40 e0 f8 53 ff dd f9        # d658 |   jne B, 0xff53, ${fail}:rel + PC
-bc 40 e0 ad 00                 # d660 |   not B, 0xad
-ec 40 e0 f8 52 ff d0 f9        # d665 |   jne B, 0xff52, ${fail}:rel + PC
-c0 40 e0 ad 00                 # d66d |   bool B, 0xad
-ec 40 1c f8 01 c3 f9           # d672 |   jne B, 0x1, ${fail}:rel + PC
-c4 40 e0 ad 00                 # d679 |   inc B, 0xad
-ec 40 e0 f8 ae 00 b7 f9        # d67e |   jne B, 0xae, ${fail}:rel + PC
-c8 40 e0 ad 00                 # d686 |   dec B, 0xad
-ec 40 e0 f8 ac 00 aa f9        # d68b |   jne B, 0xac, ${fail}:rel + PC
-60 60 e0 ad f0                 # d693 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d698 |   mov D, 0x2a3f
-60 40 60                       # d69d |   mov B, C
-00 40 80                       # d6a0 |   add B, D
-ec 40 e0 f8 ec 1a 92 f9        # d6a3 |   jne B, 0x1aec, ${fail}:rel + PC
-60 60 e0 ad f0                 # d6ab |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d6b0 |   mov D, 0x2a3f
-60 40 60                       # d6b5 |   mov B, C
-04 40 80                       # d6b8 |   sub B, D
-ec 40 e0 f8 6e c6 7a f9        # d6bb |   jne B, 0xc66e, ${fail}:rel + PC
-60 60 e0 ad f0                 # d6c3 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d6c8 |   mov D, 0x2a3f
-60 40 60                       # d6cd |   mov B, C
-08 40 80                       # d6d0 |   mul B, D
-ec 40 e0 f8 93 9c 62 f9        # d6d3 |   jne B, 0x9c93, ${fail}:rel + PC
-ec ff e0 f8 b7 27 5a f9        # d6db |   jne H, 0x27b7, ${fail}:rel + PC
-60 60 e0 ad f0                 # d6e3 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d6e8 |   mov D, 0x2a3f
-60 40 60                       # d6ed |   mov B, C
-0c 40 80                       # d6f0 |   imul B, D
-ec 40 e0 f8 93 9c 42 f9        # d6f3 |   jne B, 0x9c93, ${fail}:rel + PC
-ec ff e0 f8 78 fd 3a f9        # d6fb |   jne H, 0xfd78, ${fail}:rel + PC
-60 60 e0 ad f0                 # d703 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d708 |   mov D, 0x2a3f
-60 40 60                       # d70d |   mov B, C
-20 40 80                       # d710 |   shr B, D
-ec 40 1c f8 01 22 f9           # d713 |   jne B, 0x1, ${fail}:rel + PC
-60 60 e0 ad f0                 # d71a |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d71f |   mov D, 0x2a3f
-60 40 60                       # d724 |   mov B, C
-24 40 80                       # d727 |   ishr B, D
-ec 40 1c f8 ff 0b f9           # d72a |   jne B, 0xff, ${fail}:rel + PC
-60 60 e0 ad f0                 # d731 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d736 |   mov D, 0x2a3f
-60 40 60                       # d73b |   mov B, C
-28 40 80                       # d73e |   shl B, D
-ec 40 e0 f8 00 80 f4 f8        # d741 |   jne B, 0x8000, ${fail}:rel + PC
-60 60 e0 ad f0                 # d749 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d74e |   mov D, 0x2a3f
-60 40 60                       # d753 |   mov B, C
-2c 40 80                       # d756 |   and B, D
-ec 40 e0 f8 2d 20 dc f8        # d759 |   jne B, 0x202d, ${fail}:rel + PC
-60 60 e0 ad f0                 # d761 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d766 |   mov D, 0x2a3f
-60 40 60                       # d76b |   mov B, C
-30 40 80                       # d76e |   or B, D
-ec 40 e0 f8 bf fa c4 f8        # d771 |   jne B, 0xfabf, ${fail}:rel + PC
-60 60 e0 ad f0                 # d779 |   mov C, 0xf0ad
-60 80 e0 3f 2a                 # d77e |   mov D, 0x2a3f
-60 40 60                       # d783 |   mov B, C
-34 40 80                       # d786 |   xor B, D
-ec 40 e0 f8 92 da ac f8        # d789 |   jne B, 0xda92, ${fail}:rel + PC
-60 40 e0 ad f0                 # d791 |   mov B, 0xf0ad
-38 40                          # d796 |   neg B
-ec 40 e0 f8 53 0f 9d f8        # d798 |   jne B, 0xf53, ${fail}:rel + PC
-60 40 e0 ad f0                 # d7a0 |   mov B, 0xf0ad
-3c 40                          # d7a5 |   not B
-ec 40 e0 f8 52 0f 8e f8        # d7a7 |   jne B, 0xf52, ${fail}:rel + PC
-60 40 e0 ad f0                 # d7af |   mov B, 0xf0ad
-40 40                          # d7b4 |   bool B
-ec 40 1c f8 01 7f f8           # d7b6 |   jne B, 0x1, ${fail}:rel + PC
-60 40 e0 ad f0                 # d7bd |   mov B, 0xf0ad
-44 40                          # d7c2 |   inc B
-ec 40 e0 f8 ae f0 71 f8        # d7c4 |   jne B, 0xf0ae, ${fail}:rel + PC
-60 40 e0 ad f0                 # d7cc |   mov B, 0xf0ad
-48 40                          # d7d1 |   dec B
-ec 40 e0 f8 ac f0 62 f8        # d7d3 |   jne B, 0xf0ac, ${fail}:rel + PC
-60 60 00                       # d7db |   mov C, 0
-60 80 e0 ad de                 # d7de |   mov D, 0xdead
-60 40 60                       # d7e3 |   mov B, C
-00 40 80                       # d7e6 |   add B, D
-ec 40 e0 f8 ad de 4c f8        # d7e9 |   jne B, 0xdead, ${fail}:rel + PC
-60 60 00                       # d7f1 |   mov C, 0
-60 80 e0 ad de                 # d7f4 |   mov D, 0xdead
-60 40 60                       # d7f9 |   mov B, C
-04 40 80                       # d7fc |   sub B, D
-ec 40 e0 f8 53 21 36 f8        # d7ff |   jne B, 0x2153, ${fail}:rel + PC
-60 60 00                       # d807 |   mov C, 0
-60 80 e0 ad de                 # d80a |   mov D, 0xdead
-60 40 60                       # d80f |   mov B, C
-08 40 80                       # d812 |   mul B, D
-ec 40 00 f8 20 f8              # d815 |   jne B, 0, ${fail}:rel + PC
-ec ff 00 f8 1a f8              # d81b |   jne H, 0, ${fail}:rel + PC
-60 60 00                       # d821 |   mov C, 0
-60 80 e0 ad de                 # d824 |   mov D, 0xdead
-60 40 60                       # d829 |   mov B, C
-0c 40 80                       # d82c |   imul B, D
-ec 40 00 f8 06 f8              # d82f |   jne B, 0, ${fail}:rel + PC
-ec ff 00 f8 00 f8              # d835 |   jne H, 0, ${fail}:rel + PC
-60 60 00                       # d83b |   mov C, 0
-60 80 e0 ad de                 # d83e |   mov D, 0xdead
-60 40 60                       # d843 |   mov B, C
-20 40 80                       # d846 |   shr B, D
-ec 40 00 f8 ec f7              # d849 |   jne B, 0, ${fail}:rel + PC
-60 60 00                       # d84f |   mov C, 0
-60 80 e0 ad de                 # d852 |   mov D, 0xdead
-60 40 60                       # d857 |   mov B, C
-24 40 80                       # d85a |   ishr B, D
-ec 40 00 f8 d8 f7              # d85d |   jne B, 0, ${fail}:rel + PC
-60 60 00                       # d863 |   mov C, 0
-60 80 e0 ad de                 # d866 |   mov D, 0xdead
-60 40 60                       # d86b |   mov B, C
-28 40 80                       # d86e |   shl B, D
-ec 40 00 f8 c4 f7              # d871 |   jne B, 0, ${fail}:rel + PC
-60 60 00                       # d877 |   mov C, 0
-60 80 e0 ad de                 # d87a |   mov D, 0xdead
-60 40 60                       # d87f |   mov B, C
-2c 40 80                       # d882 |   and B, D
-ec 40 00 f8 b0 f7              # d885 |   jne B, 0, ${fail}:rel + PC
-60 60 00                       # d88b |   mov C, 0
-60 80 e0 ad de                 # d88e |   mov D, 0xdead
-60 40 60                       # d893 |   mov B, C
-30 40 80                       # d896 |   or B, D
-ec 40 e0 f8 ad de 9c f7        # d899 |   jne B, 0xdead, ${fail}:rel + PC
-60 60 00                       # d8a1 |   mov C, 0
-60 80 e0 ad de                 # d8a4 |   mov D, 0xdead
-60 40 60                       # d8a9 |   mov B, C
-34 40 80                       # d8ac |   xor B, D
-ec 40 e0 f8 ad de 86 f7        # d8af |   jne B, 0xdead, ${fail}:rel + PC
-60 40 00                       # d8b7 |   mov B, 0
-38 40                          # d8ba |   neg B
-ec 40 00 f8 79 f7              # d8bc |   jne B, 0, ${fail}:rel + PC
-60 40 00                       # d8c2 |   mov B, 0
-3c 40                          # d8c5 |   not B
-ec 40 1c f8 ff 6e f7           # d8c7 |   jne B, 0xff, ${fail}:rel + PC
-60 40 00                       # d8ce |   mov B, 0
-40 40                          # d8d1 |   bool B
-ec 40 00 f8 62 f7              # d8d3 |   jne B, 0, ${fail}:rel + PC
-60 40 00                       # d8d9 |   mov B, 0
-44 40                          # d8dc |   inc B
-ec 40 1c f8 01 57 f7           # d8de |   jne B, 0x1, ${fail}:rel + PC
-60 40 00                       # d8e5 |   mov B, 0
-48 40                          # d8e8 |   dec B
-ec 40 1c f8 ff 4b f7           # d8ea |   jne B, 0xff, ${fail}:rel + PC
+60 60 e0 30 d2                 # d52b |   mov C, 0xd230
+b8 40 60                       # d530 |   neg B, C
+ec 40 e0 f8 d0 2d 02 fb        # d533 |   jne B, 0x2dd0, ${fail}:rel + PC
+60 60 e0 30 d2                 # d53b |   mov C, 0xd230
+bc 40 60                       # d540 |   not B, C
+ec 40 e0 f8 cf 2d f2 fa        # d543 |   jne B, 0x2dcf, ${fail}:rel + PC
+60 60 e0 30 d2                 # d54b |   mov C, 0xd230
+c0 40 60                       # d550 |   bool B, C
+ec 40 1c f8 01 e2 fa           # d553 |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 30 d2                 # d55a |   mov C, 0xd230
+c4 40 60                       # d55f |   inc B, C
+ec 40 e0 f8 31 d2 d3 fa        # d562 |   jne B, 0xd231, ${fail}:rel + PC
+60 60 e0 30 d2                 # d56a |   mov C, 0xd230
+c8 40 60                       # d56f |   dec B, C
+ec 40 e0 f8 2f d2 c3 fa        # d572 |   jne B, 0xd22f, ${fail}:rel + PC
+60 60 e0 ad 00                 # d57a |   mov C, 0xad
+60 80 e0 37 da                 # d57f |   mov D, 0xda37
+80 40 60 80                    # d584 |   add B, C, D
+ec 40 e0 f8 e4 da ad fa        # d588 |   jne B, 0xdae4, ${fail}:rel + PC
+60 60 e0 ad 00                 # d590 |   mov C, 0xad
+60 80 e0 37 da                 # d595 |   mov D, 0xda37
+84 40 60 80                    # d59a |   sub B, C, D
+ec 40 e0 f8 76 26 97 fa        # d59e |   jne B, 0x2676, ${fail}:rel + PC
+60 60 e0 ad 00                 # d5a6 |   mov C, 0xad
+60 80 e0 37 da                 # d5ab |   mov D, 0xda37
+88 40 60 80                    # d5b0 |   mul B, C, D
+ec 40 e0 f8 2b 77 81 fa        # d5b4 |   jne B, 0x772b, ${fail}:rel + PC
+ec ff e0 f8 93 00 79 fa        # d5bc |   jne H, 0x93, ${fail}:rel + PC
+60 60 e0 ad 00                 # d5c4 |   mov C, 0xad
+60 80 e0 37 da                 # d5c9 |   mov D, 0xda37
+8c 40 60 80                    # d5ce |   imul B, C, D
+ec 40 e0 f8 2b 77 63 fa        # d5d2 |   jne B, 0x772b, ${fail}:rel + PC
+ec ff 1c f8 e6 5b fa           # d5da |   jne H, 0xe6, ${fail}:rel + PC
+60 60 e0 ad 00                 # d5e1 |   mov C, 0xad
+60 80 e0 37 da                 # d5e6 |   mov D, 0xda37
+a0 40 60 80                    # d5eb |   shr B, C, D
+ec 40 1c f8 01 46 fa           # d5ef |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 ad 00                 # d5f6 |   mov C, 0xad
+60 80 e0 37 da                 # d5fb |   mov D, 0xda37
+a4 40 60 80                    # d600 |   ishr B, C, D
+ec 40 1c f8 01 31 fa           # d604 |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 ad 00                 # d60b |   mov C, 0xad
+60 80 e0 37 da                 # d610 |   mov D, 0xda37
+a8 40 60 80                    # d615 |   shl B, C, D
+ec 40 e0 f8 80 56 1c fa        # d619 |   jne B, 0x5680, ${fail}:rel + PC
+60 60 e0 ad 00                 # d621 |   mov C, 0xad
+60 80 e0 37 da                 # d626 |   mov D, 0xda37
+ac 40 60 80                    # d62b |   and B, C, D
+ec 40 1c f8 25 06 fa           # d62f |   jne B, 0x25, ${fail}:rel + PC
+60 60 e0 ad 00                 # d636 |   mov C, 0xad
+60 80 e0 37 da                 # d63b |   mov D, 0xda37
+b0 40 60 80                    # d640 |   or B, C, D
+ec 40 e0 f8 bf da f1 f9        # d644 |   jne B, 0xdabf, ${fail}:rel + PC
+60 60 e0 ad 00                 # d64c |   mov C, 0xad
+60 80 e0 37 da                 # d651 |   mov D, 0xda37
+b4 40 60 80                    # d656 |   xor B, C, D
+ec 40 e0 f8 9a da db f9        # d65a |   jne B, 0xda9a, ${fail}:rel + PC
+60 60 e0 ad 00                 # d662 |   mov C, 0xad
+b8 40 60                       # d667 |   neg B, C
+ec 40 e0 f8 53 ff cb f9        # d66a |   jne B, 0xff53, ${fail}:rel + PC
+60 60 e0 ad 00                 # d672 |   mov C, 0xad
+bc 40 60                       # d677 |   not B, C
+ec 40 e0 f8 52 ff bb f9        # d67a |   jne B, 0xff52, ${fail}:rel + PC
+60 60 e0 ad 00                 # d682 |   mov C, 0xad
+c0 40 60                       # d687 |   bool B, C
+ec 40 1c f8 01 ab f9           # d68a |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 ad 00                 # d691 |   mov C, 0xad
+c4 40 60                       # d696 |   inc B, C
+ec 40 e0 f8 ae 00 9c f9        # d699 |   jne B, 0xae, ${fail}:rel + PC
+60 60 e0 ad 00                 # d6a1 |   mov C, 0xad
+c8 40 60                       # d6a6 |   dec B, C
+ec 40 e0 f8 ac 00 8c f9        # d6a9 |   jne B, 0xac, ${fail}:rel + PC
+60 60 e0 ad f0                 # d6b1 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d6b6 |   mov D, 0x2a3f
+60 40 60                       # d6bb |   mov B, C
+00 40 80                       # d6be |   add B, D
+ec 40 e0 f8 ec 1a 74 f9        # d6c1 |   jne B, 0x1aec, ${fail}:rel + PC
+60 60 e0 ad f0                 # d6c9 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d6ce |   mov D, 0x2a3f
+60 40 60                       # d6d3 |   mov B, C
+04 40 80                       # d6d6 |   sub B, D
+ec 40 e0 f8 6e c6 5c f9        # d6d9 |   jne B, 0xc66e, ${fail}:rel + PC
+60 60 e0 ad f0                 # d6e1 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d6e6 |   mov D, 0x2a3f
+60 40 60                       # d6eb |   mov B, C
+08 40 80                       # d6ee |   mul B, D
+ec 40 e0 f8 93 9c 44 f9        # d6f1 |   jne B, 0x9c93, ${fail}:rel + PC
+ec ff e0 f8 b7 27 3c f9        # d6f9 |   jne H, 0x27b7, ${fail}:rel + PC
+60 60 e0 ad f0                 # d701 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d706 |   mov D, 0x2a3f
+60 40 60                       # d70b |   mov B, C
+0c 40 80                       # d70e |   imul B, D
+ec 40 e0 f8 93 9c 24 f9        # d711 |   jne B, 0x9c93, ${fail}:rel + PC
+ec ff e0 f8 78 fd 1c f9        # d719 |   jne H, 0xfd78, ${fail}:rel + PC
+60 60 e0 ad f0                 # d721 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d726 |   mov D, 0x2a3f
+60 40 60                       # d72b |   mov B, C
+20 40 80                       # d72e |   shr B, D
+ec 40 1c f8 01 04 f9           # d731 |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 ad f0                 # d738 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d73d |   mov D, 0x2a3f
+60 40 60                       # d742 |   mov B, C
+24 40 80                       # d745 |   ishr B, D
+ec 40 1c f8 ff ed f8           # d748 |   jne B, 0xff, ${fail}:rel + PC
+60 60 e0 ad f0                 # d74f |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d754 |   mov D, 0x2a3f
+60 40 60                       # d759 |   mov B, C
+28 40 80                       # d75c |   shl B, D
+ec 40 e0 f8 00 80 d6 f8        # d75f |   jne B, 0x8000, ${fail}:rel + PC
+60 60 e0 ad f0                 # d767 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d76c |   mov D, 0x2a3f
+60 40 60                       # d771 |   mov B, C
+2c 40 80                       # d774 |   and B, D
+ec 40 e0 f8 2d 20 be f8        # d777 |   jne B, 0x202d, ${fail}:rel + PC
+60 60 e0 ad f0                 # d77f |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d784 |   mov D, 0x2a3f
+60 40 60                       # d789 |   mov B, C
+30 40 80                       # d78c |   or B, D
+ec 40 e0 f8 bf fa a6 f8        # d78f |   jne B, 0xfabf, ${fail}:rel + PC
+60 60 e0 ad f0                 # d797 |   mov C, 0xf0ad
+60 80 e0 3f 2a                 # d79c |   mov D, 0x2a3f
+60 40 60                       # d7a1 |   mov B, C
+34 40 80                       # d7a4 |   xor B, D
+ec 40 e0 f8 92 da 8e f8        # d7a7 |   jne B, 0xda92, ${fail}:rel + PC
+60 60 e0 ad f0                 # d7af |   mov C, 0xf0ad
+60 40 60                       # d7b4 |   mov B, C
+38 40                          # d7b7 |   neg B
+ec 40 e0 f8 53 0f 7c f8        # d7b9 |   jne B, 0xf53, ${fail}:rel + PC
+60 60 e0 ad f0                 # d7c1 |   mov C, 0xf0ad
+60 40 60                       # d7c6 |   mov B, C
+3c 40                          # d7c9 |   not B
+ec 40 e0 f8 52 0f 6a f8        # d7cb |   jne B, 0xf52, ${fail}:rel + PC
+60 60 e0 ad f0                 # d7d3 |   mov C, 0xf0ad
+60 40 60                       # d7d8 |   mov B, C
+40 40                          # d7db |   bool B
+ec 40 1c f8 01 58 f8           # d7dd |   jne B, 0x1, ${fail}:rel + PC
+60 60 e0 ad f0                 # d7e4 |   mov C, 0xf0ad
+60 40 60                       # d7e9 |   mov B, C
+44 40                          # d7ec |   inc B
+ec 40 e0 f8 ae f0 47 f8        # d7ee |   jne B, 0xf0ae, ${fail}:rel + PC
+60 60 e0 ad f0                 # d7f6 |   mov C, 0xf0ad
+60 40 60                       # d7fb |   mov B, C
+48 40                          # d7fe |   dec B
+ec 40 e0 f8 ac f0 35 f8        # d800 |   jne B, 0xf0ac, ${fail}:rel + PC
+60 60 00                       # d808 |   mov C, 0
+60 80 e0 ad de                 # d80b |   mov D, 0xdead
+60 40 60                       # d810 |   mov B, C
+00 40 80                       # d813 |   add B, D
+ec 40 e0 f8 ad de 1f f8        # d816 |   jne B, 0xdead, ${fail}:rel + PC
+60 60 00                       # d81e |   mov C, 0
+60 80 e0 ad de                 # d821 |   mov D, 0xdead
+60 40 60                       # d826 |   mov B, C
+04 40 80                       # d829 |   sub B, D
+ec 40 e0 f8 53 21 09 f8        # d82c |   jne B, 0x2153, ${fail}:rel + PC
+60 60 00                       # d834 |   mov C, 0
+60 80 e0 ad de                 # d837 |   mov D, 0xdead
+60 40 60                       # d83c |   mov B, C
+08 40 80                       # d83f |   mul B, D
+ec 40 00 f8 f3 f7              # d842 |   jne B, 0, ${fail}:rel + PC
+ec ff 00 f8 ed f7              # d848 |   jne H, 0, ${fail}:rel + PC
+60 60 00                       # d84e |   mov C, 0
+60 80 e0 ad de                 # d851 |   mov D, 0xdead
+60 40 60                       # d856 |   mov B, C
+0c 40 80                       # d859 |   imul B, D
+ec 40 00 f8 d9 f7              # d85c |   jne B, 0, ${fail}:rel + PC
+ec ff 00 f8 d3 f7              # d862 |   jne H, 0, ${fail}:rel + PC
+60 60 00                       # d868 |   mov C, 0
+60 80 e0 ad de                 # d86b |   mov D, 0xdead
+60 40 60                       # d870 |   mov B, C
+20 40 80                       # d873 |   shr B, D
+ec 40 00 f8 bf f7              # d876 |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d87c |   mov C, 0
+60 80 e0 ad de                 # d87f |   mov D, 0xdead
+60 40 60                       # d884 |   mov B, C
+24 40 80                       # d887 |   ishr B, D
+ec 40 00 f8 ab f7              # d88a |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d890 |   mov C, 0
+60 80 e0 ad de                 # d893 |   mov D, 0xdead
+60 40 60                       # d898 |   mov B, C
+28 40 80                       # d89b |   shl B, D
+ec 40 00 f8 97 f7              # d89e |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d8a4 |   mov C, 0
+60 80 e0 ad de                 # d8a7 |   mov D, 0xdead
+60 40 60                       # d8ac |   mov B, C
+2c 40 80                       # d8af |   and B, D
+ec 40 00 f8 83 f7              # d8b2 |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d8b8 |   mov C, 0
+60 80 e0 ad de                 # d8bb |   mov D, 0xdead
+60 40 60                       # d8c0 |   mov B, C
+30 40 80                       # d8c3 |   or B, D
+ec 40 e0 f8 ad de 6f f7        # d8c6 |   jne B, 0xdead, ${fail}:rel + PC
+60 60 00                       # d8ce |   mov C, 0
+60 80 e0 ad de                 # d8d1 |   mov D, 0xdead
+60 40 60                       # d8d6 |   mov B, C
+34 40 80                       # d8d9 |   xor B, D
+ec 40 e0 f8 ad de 59 f7        # d8dc |   jne B, 0xdead, ${fail}:rel + PC
+60 60 00                       # d8e4 |   mov C, 0
+60 40 60                       # d8e7 |   mov B, C
+38 40                          # d8ea |   neg B
+ec 40 00 f8 49 f7              # d8ec |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d8f2 |   mov C, 0
+60 40 60                       # d8f5 |   mov B, C
+3c 40                          # d8f8 |   not B
+ec 40 1c f8 ff 3b f7           # d8fa |   jne B, 0xff, ${fail}:rel + PC
+60 60 00                       # d901 |   mov C, 0
+60 40 60                       # d904 |   mov B, C
+40 40                          # d907 |   bool B
+ec 40 00 f8 2c f7              # d909 |   jne B, 0, ${fail}:rel + PC
+60 60 00                       # d90f |   mov C, 0
+60 40 60                       # d912 |   mov B, C
+44 40                          # d915 |   inc B
+ec 40 1c f8 01 1e f7           # d917 |   jne B, 0x1, ${fail}:rel + PC
+60 60 00                       # d91e |   mov C, 0
+60 40 60                       # d921 |   mov B, C
+48 40                          # d924 |   dec B
+ec 40 1c f8 ff 0f f7           # d926 |   jne B, 0xff, ${fail}:rel + PC
                                #      | jmp_test:
-e8 1c 1c f8 ab 2b 44 f7        # d8f1 |   jeq 0xab, 0x2b, ${fail}:rel + PC
-ec 1c 1c f8 ab 2b 0c 00        # d8f9 |   jne 0xab, 0x2b, ${_L_test_jmp_1}:rel + PC
-58 f8 34 f7                    # d901 |   jmp ${fail}:rel + PC
+e8 1c 1c f8 ab 2b 08 f7        # d92d |   jeq 0xab, 0x2b, ${fail}:rel + PC
+ec 1c 1c f8 ab 2b 0c 00        # d935 |   jne 0xab, 0x2b, ${_L_test_jmp_1}:rel + PC
+58 f8 f8 f6                    # d93d |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_1:
-f0 1c 1c f8 ab 2b 30 f7        # d905 |   jlt 0xab, 0x2b, ${fail}:rel + PC
-f4 1c 1c f8 ab 2b 28 f7        # d90d |   jle 0xab, 0x2b, ${fail}:rel + PC
-f8 1c 1c f8 ab 2b 0c 00        # d915 |   jgt 0xab, 0x2b, ${_L_test_jmp_2}:rel + PC
-58 f8 18 f7                    # d91d |   jmp ${fail}:rel + PC
+f0 1c 1c f8 ab 2b f4 f6        # d941 |   jlt 0xab, 0x2b, ${fail}:rel + PC
+f4 1c 1c f8 ab 2b ec f6        # d949 |   jle 0xab, 0x2b, ${fail}:rel + PC
+f8 1c 1c f8 ab 2b 0c 00        # d951 |   jgt 0xab, 0x2b, ${_L_test_jmp_2}:rel + PC
+58 f8 dc f6                    # d959 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_2:
-fc 1c 1c f8 ab 2b 0c 00        # d921 |   jge 0xab, 0x2b, ${_L_test_jmp_3}:rel + PC
-58 f8 0c f7                    # d929 |   jmp ${fail}:rel + PC
+fc 1c 1c f8 ab 2b 0c 00        # d95d |   jge 0xab, 0x2b, ${_L_test_jmp_3}:rel + PC
+58 f8 d0 f6                    # d965 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_3:
-50 1c 1c ab 2b                 # d92d |   cmp 0xab, 0x2b
-68 f8 03 f7                    # d932 |   jeq ${fail}:rel + PC
-6c f8 08 00                    # d936 |   jne ${_L_test_jmp_4}:rel + PC
-58 f8 fb f6                    # d93a |   jmp ${fail}:rel + PC
+50 1c 1c ab 2b                 # d969 |   cmp 0xab, 0x2b
+68 f8 c7 f6                    # d96e |   jeq ${fail}:rel + PC
+6c f8 08 00                    # d972 |   jne ${_L_test_jmp_4}:rel + PC
+58 f8 bf f6                    # d976 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_4:
-70 f8 f7 f6                    # d93e |   jlt ${fail}:rel + PC
-74 f8 f3 f6                    # d942 |   jle ${fail}:rel + PC
-78 f8 08 00                    # d946 |   jgt ${_L_test_jmp_5}:rel + PC
-58 f8 eb f6                    # d94a |   jmp ${fail}:rel + PC
+70 f8 bb f6                    # d97a |   jlt ${fail}:rel + PC
+74 f8 b7 f6                    # d97e |   jle ${fail}:rel + PC
+78 f8 08 00                    # d982 |   jgt ${_L_test_jmp_5}:rel + PC
+58 f8 af f6                    # d986 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_5:
-7c f8 08 00                    # d94e |   jge ${_L_test_jmp_6}:rel + PC
-58 f8 e3 f6                    # d952 |   jmp ${fail}:rel + PC
+7c f8 08 00                    # d98a |   jge ${_L_test_jmp_6}:rel + PC
+58 f8 a7 f6                    # d98e |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_6:
-d0 1c 1c ab 2b                 # d956 |   icmp 0xab, 0x2b
-68 f8 da f6                    # d95b |   jeq ${fail}:rel + PC
-6c f8 08 00                    # d95f |   jne ${_L_test_jmp_7}:rel + PC
-58 f8 d2 f6                    # d963 |   jmp ${fail}:rel + PC
+d0 1c 1c ab 2b                 # d992 |   icmp 0xab, 0x2b
+68 f8 9e f6                    # d997 |   jeq ${fail}:rel + PC
+6c f8 08 00                    # d99b |   jne ${_L_test_jmp_7}:rel + PC
+58 f8 96 f6                    # d99f |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_7:
-70 f8 08 00                    # d967 |   jlt ${_L_test_jmp_8}:rel + PC
-58 f8 ca f6                    # d96b |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_8:
-74 f8 08 00                    # d96f |   jle ${_L_test_jmp_9}:rel + PC
-58 f8 c2 f6                    # d973 |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_9:
-78 f8 be f6                    # d977 |   jgt ${fail}:rel + PC
-7c f8 ba f6                    # d97b |   jge ${fail}:rel + PC
-e8 1c 1c f8 2b ab b6 f6        # d97f |   jeq 0x2b, 0xab, ${fail}:rel + PC
-ec 1c 1c f8 2b ab 0c 00        # d987 |   jne 0x2b, 0xab, ${_L_test_jmp_10}:rel + PC
-58 f8 a6 f6                    # d98f |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_10:
-f0 1c 1c f8 2b ab 0c 00        # d993 |   jlt 0x2b, 0xab, ${_L_test_jmp_11}:rel + PC
-58 f8 9a f6                    # d99b |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_11:
-f4 1c 1c f8 2b ab 0c 00        # d99f |   jle 0x2b, 0xab, ${_L_test_jmp_12}:rel + PC
+70 f8 08 00                    # d9a3 |   jlt ${_L_test_jmp_8}:rel + PC
 58 f8 8e f6                    # d9a7 |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_8:
+74 f8 08 00                    # d9ab |   jle ${_L_test_jmp_9}:rel + PC
+58 f8 86 f6                    # d9af |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_9:
+78 f8 82 f6                    # d9b3 |   jgt ${fail}:rel + PC
+7c f8 7e f6                    # d9b7 |   jge ${fail}:rel + PC
+e8 1c 1c f8 2b ab 7a f6        # d9bb |   jeq 0x2b, 0xab, ${fail}:rel + PC
+ec 1c 1c f8 2b ab 0c 00        # d9c3 |   jne 0x2b, 0xab, ${_L_test_jmp_10}:rel + PC
+58 f8 6a f6                    # d9cb |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_10:
+f0 1c 1c f8 2b ab 0c 00        # d9cf |   jlt 0x2b, 0xab, ${_L_test_jmp_11}:rel + PC
+58 f8 5e f6                    # d9d7 |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_11:
+f4 1c 1c f8 2b ab 0c 00        # d9db |   jle 0x2b, 0xab, ${_L_test_jmp_12}:rel + PC
+58 f8 52 f6                    # d9e3 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_12:
-f8 1c 1c f8 2b ab 8a f6        # d9ab |   jgt 0x2b, 0xab, ${fail}:rel + PC
-fc 1c 1c f8 2b ab 82 f6        # d9b3 |   jge 0x2b, 0xab, ${fail}:rel + PC
-50 1c 1c 2b ab                 # d9bb |   cmp 0x2b, 0xab
-68 f8 75 f6                    # d9c0 |   jeq ${fail}:rel + PC
-6c f8 08 00                    # d9c4 |   jne ${_L_test_jmp_13}:rel + PC
-58 f8 6d f6                    # d9c8 |   jmp ${fail}:rel + PC
+f8 1c 1c f8 2b ab 4e f6        # d9e7 |   jgt 0x2b, 0xab, ${fail}:rel + PC
+fc 1c 1c f8 2b ab 46 f6        # d9ef |   jge 0x2b, 0xab, ${fail}:rel + PC
+50 1c 1c 2b ab                 # d9f7 |   cmp 0x2b, 0xab
+68 f8 39 f6                    # d9fc |   jeq ${fail}:rel + PC
+6c f8 08 00                    # da00 |   jne ${_L_test_jmp_13}:rel + PC
+58 f8 31 f6                    # da04 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_13:
-70 f8 08 00                    # d9cc |   jlt ${_L_test_jmp_14}:rel + PC
-58 f8 65 f6                    # d9d0 |   jmp ${fail}:rel + PC
+70 f8 08 00                    # da08 |   jlt ${_L_test_jmp_14}:rel + PC
+58 f8 29 f6                    # da0c |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_14:
-74 f8 08 00                    # d9d4 |   jle ${_L_test_jmp_15}:rel + PC
-58 f8 5d f6                    # d9d8 |   jmp ${fail}:rel + PC
+74 f8 08 00                    # da10 |   jle ${_L_test_jmp_15}:rel + PC
+58 f8 21 f6                    # da14 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_15:
-78 f8 59 f6                    # d9dc |   jgt ${fail}:rel + PC
-7c f8 55 f6                    # d9e0 |   jge ${fail}:rel + PC
-d0 1c 1c 2b ab                 # d9e4 |   icmp 0x2b, 0xab
-68 f8 4c f6                    # d9e9 |   jeq ${fail}:rel + PC
-6c f8 08 00                    # d9ed |   jne ${_L_test_jmp_16}:rel + PC
-58 f8 44 f6                    # d9f1 |   jmp ${fail}:rel + PC
+78 f8 1d f6                    # da18 |   jgt ${fail}:rel + PC
+7c f8 19 f6                    # da1c |   jge ${fail}:rel + PC
+d0 1c 1c 2b ab                 # da20 |   icmp 0x2b, 0xab
+68 f8 10 f6                    # da25 |   jeq ${fail}:rel + PC
+6c f8 08 00                    # da29 |   jne ${_L_test_jmp_16}:rel + PC
+58 f8 08 f6                    # da2d |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_16:
-70 f8 40 f6                    # d9f5 |   jlt ${fail}:rel + PC
-74 f8 3c f6                    # d9f9 |   jle ${fail}:rel + PC
-78 f8 08 00                    # d9fd |   jgt ${_L_test_jmp_17}:rel + PC
-58 f8 34 f6                    # da01 |   jmp ${fail}:rel + PC
+70 f8 04 f6                    # da31 |   jlt ${fail}:rel + PC
+74 f8 00 f6                    # da35 |   jle ${fail}:rel + PC
+78 f8 08 00                    # da39 |   jgt ${_L_test_jmp_17}:rel + PC
+58 f8 f8 f5                    # da3d |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_17:
-7c f8 08 00                    # da05 |   jge ${_L_test_jmp_18}:rel + PC
-58 f8 2c f6                    # da09 |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_18:
-e8 1c 1c f8 ab ab 0c 00        # da0d |   jeq 0xab, 0xab, ${_L_test_jmp_19}:rel + PC
-58 f8 20 f6                    # da15 |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_19:
-ec 1c 1c f8 ab ab 1c f6        # da19 |   jne 0xab, 0xab, ${fail}:rel + PC
-f0 1c 1c f8 ab ab 14 f6        # da21 |   jlt 0xab, 0xab, ${fail}:rel + PC
-f4 1c 1c f8 ab ab 0c 00        # da29 |   jle 0xab, 0xab, ${_L_test_jmp_20}:rel + PC
-58 f8 04 f6                    # da31 |   jmp ${fail}:rel + PC
-                               #      | _L_test_jmp_20:
-f8 1c 1c f8 ab ab 00 f6        # da35 |   jgt 0xab, 0xab, ${fail}:rel + PC
-fc 1c 1c f8 ab ab 0c 00        # da3d |   jge 0xab, 0xab, ${_L_test_jmp_21}:rel + PC
+7c f8 08 00                    # da41 |   jge ${_L_test_jmp_18}:rel + PC
 58 f8 f0 f5                    # da45 |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_18:
+e8 1c 1c f8 ab ab 0c 00        # da49 |   jeq 0xab, 0xab, ${_L_test_jmp_19}:rel + PC
+58 f8 e4 f5                    # da51 |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_19:
+ec 1c 1c f8 ab ab e0 f5        # da55 |   jne 0xab, 0xab, ${fail}:rel + PC
+f0 1c 1c f8 ab ab d8 f5        # da5d |   jlt 0xab, 0xab, ${fail}:rel + PC
+f4 1c 1c f8 ab ab 0c 00        # da65 |   jle 0xab, 0xab, ${_L_test_jmp_20}:rel + PC
+58 f8 c8 f5                    # da6d |   jmp ${fail}:rel + PC
+                               #      | _L_test_jmp_20:
+f8 1c 1c f8 ab ab c4 f5        # da71 |   jgt 0xab, 0xab, ${fail}:rel + PC
+fc 1c 1c f8 ab ab 0c 00        # da79 |   jge 0xab, 0xab, ${_L_test_jmp_21}:rel + PC
+58 f8 b4 f5                    # da81 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_21:
-50 1c 1c ab ab                 # da49 |   cmp 0xab, 0xab
-68 f8 08 00                    # da4e |   jeq ${_L_test_jmp_22}:rel + PC
-58 f8 e3 f5                    # da52 |   jmp ${fail}:rel + PC
+50 1c 1c ab ab                 # da85 |   cmp 0xab, 0xab
+68 f8 08 00                    # da8a |   jeq ${_L_test_jmp_22}:rel + PC
+58 f8 a7 f5                    # da8e |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_22:
-6c f8 df f5                    # da56 |   jne ${fail}:rel + PC
-70 f8 db f5                    # da5a |   jlt ${fail}:rel + PC
-74 f8 08 00                    # da5e |   jle ${_L_test_jmp_23}:rel + PC
-58 f8 d3 f5                    # da62 |   jmp ${fail}:rel + PC
+6c f8 a3 f5                    # da92 |   jne ${fail}:rel + PC
+70 f8 9f f5                    # da96 |   jlt ${fail}:rel + PC
+74 f8 08 00                    # da9a |   jle ${_L_test_jmp_23}:rel + PC
+58 f8 97 f5                    # da9e |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_23:
-78 f8 cf f5                    # da66 |   jgt ${fail}:rel + PC
-7c f8 08 00                    # da6a |   jge ${_L_test_jmp_24}:rel + PC
-58 f8 c7 f5                    # da6e |   jmp ${fail}:rel + PC
+78 f8 93 f5                    # daa2 |   jgt ${fail}:rel + PC
+7c f8 08 00                    # daa6 |   jge ${_L_test_jmp_24}:rel + PC
+58 f8 8b f5                    # daaa |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_24:
-d0 1c 1c ab ab                 # da72 |   icmp 0xab, 0xab
-68 f8 08 00                    # da77 |   jeq ${_L_test_jmp_25}:rel + PC
-58 f8 ba f5                    # da7b |   jmp ${fail}:rel + PC
+d0 1c 1c ab ab                 # daae |   icmp 0xab, 0xab
+68 f8 08 00                    # dab3 |   jeq ${_L_test_jmp_25}:rel + PC
+58 f8 7e f5                    # dab7 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_25:
-6c f8 b6 f5                    # da7f |   jne ${fail}:rel + PC
-70 f8 b2 f5                    # da83 |   jlt ${fail}:rel + PC
-74 f8 08 00                    # da87 |   jle ${_L_test_jmp_26}:rel + PC
-58 f8 aa f5                    # da8b |   jmp ${fail}:rel + PC
+6c f8 7a f5                    # dabb |   jne ${fail}:rel + PC
+70 f8 76 f5                    # dabf |   jlt ${fail}:rel + PC
+74 f8 08 00                    # dac3 |   jle ${_L_test_jmp_26}:rel + PC
+58 f8 6e f5                    # dac7 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_26:
-78 f8 a6 f5                    # da8f |   jgt ${fail}:rel + PC
-7c f8 08 00                    # da93 |   jge ${_L_test_jmp_27}:rel + PC
-58 f8 9e f5                    # da97 |   jmp ${fail}:rel + PC
+78 f8 6a f5                    # dacb |   jgt ${fail}:rel + PC
+7c f8 08 00                    # dacf |   jge ${_L_test_jmp_27}:rel + PC
+58 f8 62 f5                    # dad3 |   jmp ${fail}:rel + PC
                                #      | _L_test_jmp_27:
                                #      | test_uop_get_arg:
-60 a0 e0 00 70                 # da9b |   mov SP, 0x7000
-60 20 e0 aa 00                 # daa0 |   mov A, 0xaa
-60 40 e0 bb 00                 # daa5 |   mov B, 0xbb
-60 fe e0 55 01                 # daaa |   mov G, 0x155
-b6 e0 1c fe 39 30 85           # daaf |   xor [0x3039], -123, G
-ee e0 e0 f8 39 30 d0 fe 7f f5  # dab6 |   jne [0x3039], 0xfed0, ${fail}:rel + PC
-ae 3e fe 21 f6                 # dac0 |   and [A*4 + -10], G, A*2
-ee e0 e0 f8 9e 02 54 01 70 f5  # dac5 |   jne [0x29e], 0x154, ${fail}:rel + PC
-86 21 e4 3e de fa f6           # dacf |   sub [A*2], 0xfade + A, A*4 + -10
-ee e0 e0 f8 54 01 ea f8 5f f5  # dad6 |   jne [0x154], 0xf8ea, ${fail}:rel + PC
-a6 e0 20 21 39 30              # dae0 |   ishr [0x3039], A, A*2
-ee e0 1c f8 39 30 0a 4f f5     # dae6 |   jne [0x3039], 0xa, ${fail}:rel + PC
-aa fe 2a 3e f6                 # daef |   shl [G], A*4 + B, A*4 + -10
-ee e0 e0 f8 55 01 00 c0 41 f5  # daf4 |   jne [0x155], 0xc000, ${fail}:rel + PC
-b2 fe 1c fe 85                 # dafe |   or [G], -123, G
-ee e0 1c f8 55 01 d5 32 f5     # db03 |   jne [0x155], 0xd5, ${fail}:rel + PC
-8a 2a 1c 20 85                 # db0c |   mul [A*4 + B], -123, A
-ee e0 e0 f8 63 03 52 ae 24 f5  # db11 |   jne [0x363], 0xae52, ${fail}:rel + PC
-a6 e0 e0 2a 39 30 39 30        # db1b |   ishr [0x3039], 0x3039, A*4 + B
-ee e0 e0 f8 39 30 07 06 12 f5  # db23 |   jne [0x3039], 0x607, ${fail}:rel + PC
-a2 21 e4 21 de fa              # db2d |   shr [A*2], 0xfade + A, A*2
-ee e0 e0 f8 54 01 b8 0f 02 f5  # db33 |   jne [0x154], 0xfb8, ${fail}:rel + PC
-82 21 fe fe                    # db3d |   add [A*2], G, G
-ee e0 e0 f8 54 01 aa 02 f4 f4  # db41 |   jne [0x154], 0x2aa, ${fail}:rel + PC
-a6 fe e4 20 de fa              # db4b |   ishr [G], 0xfade + A, A
-ee e0 1c f8 55 01 fe e4 f4     # db51 |   jne [0x155], 0xfe, ${fail}:rel + PC
-82 e0 e4 2a 39 30 de fa        # db5a |   add [0x3039], 0xfade + A, A*4 + B
-ee e0 e0 f8 39 30 eb fe d3 f4  # db62 |   jne [0x3039], 0xfeeb, ${fail}:rel + PC
-a6 20 20 20                    # db6c |   ishr [A], A, A
-ee e0 00 f8 aa 00 c5 f4        # db70 |   jne [0xaa], 0, ${fail}:rel + PC
-82 fe 2a 20                    # db78 |   add [G], A*4 + B, A
-ee e0 e0 f8 55 01 0d 04 b9 f4  # db7c |   jne [0x155], 0x40d, ${fail}:rel + PC
-b6 fe fe fe                    # db86 |   xor [G], G, G
-ee e0 00 f8 55 01 ab f4        # db8a |   jne [0x155], 0, ${fail}:rel + PC
-aa 21 fe 21                    # db92 |   shl [A*2], G, A*2
-ee e0 e0 f8 54 01 50 15 9f f4  # db96 |   jne [0x154], 0x1550, ${fail}:rel + PC
-a6 fe e0 21 39 30              # dba0 |   ishr [G], 0x3039, A*2
-ee e0 e0 f8 55 01 03 03 8f f4  # dba6 |   jne [0x155], 0x303, ${fail}:rel + PC
-ae 21 2a e4 de fa              # dbb0 |   and [A*2], A*4 + B, 0xfade + A
-ee e0 e0 f8 54 01 00 03 7f f4  # dbb6 |   jne [0x154], 0x300, ${fail}:rel + PC
-82 20 3e 3e f6 f6              # dbc0 |   add [A], A*4 + -10, A*4 + -10
-ee e0 e0 f8 aa 00 3c 05 6f f4  # dbc6 |   jne [0xaa], 0x53c, ${fail}:rel + PC
-b2 e0 21 1c 39 30 85           # dbd0 |   or [0x3039], A*2, -123
-ee e0 1c f8 39 30 d5 5e f4     # dbd7 |   jne [0x3039], 0xd5, ${fail}:rel + PC
-82 e0 fe fe 39 30              # dbe0 |   add [0x3039], G, G
-ee e0 e0 f8 39 30 aa 02 4f f4  # dbe6 |   jne [0x3039], 0x2aa, ${fail}:rel + PC
-ae fe e0 e4 39 30 de fa        # dbf0 |   and [G], 0x3039, 0xfade + A
-ee e0 e0 f8 55 01 08 30 3d f4  # dbf8 |   jne [0x155], 0x3008, ${fail}:rel + PC
-8e e0 2a 3e 39 30 f6           # dc02 |   imul [0x3039], A*4 + B, A*4 + -10
-ee e0 e0 f8 39 30 1a dd 2c f4  # dc09 |   jne [0x3039], 0xdd1a, ${fail}:rel + PC
-b2 21 e0 20 39 30              # dc13 |   or [A*2], 0x3039, A
-ee e0 e0 f8 54 01 bb 30 1c f4  # dc19 |   jne [0x154], 0x30bb, ${fail}:rel + PC
-8e 21 3e 21 f6                 # dc23 |   imul [A*2], A*4 + -10, A*2
-ee e0 e0 f8 54 01 d8 79 0d f4  # dc28 |   jne [0x154], 0x79d8, ${fail}:rel + PC
-82 3e 1c 2a f6 85              # dc32 |   add [A*4 + -10], -123, A*4 + B
-ee e0 e0 f8 9e 02 e8 02 fd f3  # dc38 |   jne [0x29e], 0x2e8, ${fail}:rel + PC
-86 fe e4 21 de fa              # dc42 |   sub [G], 0xfade + A, A*2
-ee e0 e0 f8 55 01 34 fa ed f3  # dc48 |   jne [0x155], 0xfa34, ${fail}:rel + PC
-b2 2a e4 21 de fa              # dc52 |   or [A*4 + B], 0xfade + A, A*2
-ee e0 e0 f8 63 03 dc fb dd f3  # dc58 |   jne [0x363], 0xfbdc, ${fail}:rel + PC
-ae 21 21 20                    # dc62 |   and [A*2], A*2, A
-ee e0 00 f8 54 01 cf f3        # dc66 |   jne [0x154], 0, ${fail}:rel + PC
-86 2a 2a fe                    # dc6e |   sub [A*4 + B], A*4 + B, G
-ee e0 e0 f8 63 03 0e 02 c3 f3  # dc72 |   jne [0x363], 0x20e, ${fail}:rel + PC
-82 3e 3e 20 f6 f6              # dc7c |   add [A*4 + -10], A*4 + -10, A
-ee e0 e0 f8 9e 02 48 03 b3 f3  # dc82 |   jne [0x29e], 0x348, ${fail}:rel + PC
-86 21 e0 e0 39 30 39 30        # dc8c |   sub [A*2], 0x3039, 0x3039
-ee e0 00 f8 54 01 a1 f3        # dc94 |   jne [0x154], 0, ${fail}:rel + PC
-a2 20 1c fe 85                 # dc9c |   shr [A], -123, G
-ee e0 e0 f8 aa 00 fc 07 94 f3  # dca1 |   jne [0xaa], 0x7fc, ${fail}:rel + PC
-aa 2a 1c 2a 85                 # dcab |   shl [A*4 + B], -123, A*4 + B
-ee e0 e0 f8 63 03 28 fc 85 f3  # dcb0 |   jne [0x363], 0xfc28, ${fail}:rel + PC
-b2 2a 20 20                    # dcba |   or [A*4 + B], A, A
-ee e0 e0 f8 63 03 aa 00 77 f3  # dcbe |   jne [0x363], 0xaa, ${fail}:rel + PC
-86 20 20 1c 85                 # dcc8 |   sub [A], A, -123
-ee e0 e0 f8 aa 00 25 01 68 f3  # dccd |   jne [0xaa], 0x125, ${fail}:rel + PC
-a6 3e e4 21 f6 de fa           # dcd7 |   ishr [A*4 + -10], 0xfade + A, A*2
-ee e0 1c f8 9e 02 b8 57 f3     # dcde |   jne [0x29e], 0xb8, ${fail}:rel + PC
-86 20 e0 e0 39 30 39 30        # dce7 |   sub [A], 0x3039, 0x3039
-ee e0 00 f8 aa 00 46 f3        # dcef |   jne [0xaa], 0, ${fail}:rel + PC
-82 fe e0 e0 39 30 39 30        # dcf7 |   add [G], 0x3039, 0x3039
-ee e0 e0 f8 55 01 72 60 36 f3  # dcff |   jne [0x155], 0x6072, ${fail}:rel + PC
-a2 2a e4 e4 de fa de fa        # dd09 |   shr [A*4 + B], 0xfade + A, 0xfade + A
-ee e0 e0 f8 63 03 fb 00 24 f3  # dd11 |   jne [0x363], 0xfb, ${fail}:rel + PC
-8e 20 20 fe                    # dd1b |   imul [A], A, G
-ee e0 e0 f8 aa 00 72 e2 16 f3  # dd1f |   jne [0xaa], 0xe272, ${fail}:rel + PC
-a2 21 e4 2a de fa              # dd29 |   shr [A*2], 0xfade + A, A*4 + B
-ee e0 e0 f8 54 01 71 1f 06 f3  # dd2f |   jne [0x154], 0x1f71, ${fail}:rel + PC
-a2 2a 2a 1c 85                 # dd39 |   shr [A*4 + B], A*4 + B, -123
-ee e0 1c f8 63 03 1b f7 f2     # dd3e |   jne [0x363], 0x1b, ${fail}:rel + PC
-a2 20 21 2a                    # dd47 |   shr [A], A*2, A*4 + B
-ee e0 1c f8 aa 00 2a ea f2     # dd4b |   jne [0xaa], 0x2a, ${fail}:rel + PC
-ae e0 2a 20 39 30              # dd54 |   and [0x3039], A*4 + B, A
-ee e0 1c f8 39 30 22 db f2     # dd5a |   jne [0x3039], 0x22, ${fail}:rel + PC
-a2 e0 e0 e0 39 30 39 30 39 30  # dd63 |   shr [0x3039], 0x3039, 0x3039
-ee e0 1c f8 39 30 18 c8 f2     # dd6d |   jne [0x3039], 0x18, ${fail}:rel + PC
-8a 20 fe 3e f6                 # dd76 |   mul [A], G, A*4 + -10
-ee e0 e0 f8 aa 00 76 7c ba f2  # dd7b |   jne [0xaa], 0x7c76, ${fail}:rel + PC
-82 2a e0 2a 39 30              # dd85 |   add [A*4 + B], 0x3039, A*4 + B
-ee e0 e0 f8 63 03 9c 33 aa f2  # dd8b |   jne [0x363], 0x339c, ${fail}:rel + PC
-8e fe 3e 2a f6                 # dd95 |   imul [G], A*4 + -10, A*4 + B
-ee e0 e0 f8 55 01 1a dd 9b f2  # dd9a |   jne [0x155], 0xdd1a, ${fail}:rel + PC
-aa 20 21 e0 39 30              # dda4 |   shl [A], A*2, 0x3039
-ee e0 e0 f8 aa 00 00 a8 8b f2  # ddaa |   jne [0xaa], 0xa800, ${fail}:rel + PC
-82 21 fe 20                    # ddb4 |   add [A*2], G, A
-ee e0 e0 f8 54 01 ff 01 7d f2  # ddb8 |   jne [0x154], 0x1ff, ${fail}:rel + PC
-82 2a 2a 21                    # ddc2 |   add [A*4 + B], A*4 + B, A*2
-ee e0 e0 f8 63 03 b7 04 6f f2  # ddc6 |   jne [0x363], 0x4b7, ${fail}:rel + PC
-a2 20 fe e4 de fa              # ddd0 |   shr [A], G, 0xfade + A
-ee e0 1c f8 aa 00 01 5f f2     # ddd6 |   jne [0xaa], 0x1, ${fail}:rel + PC
-82 fe 1c 20 85                 # dddf |   add [G], -123, A
-ee e0 1c f8 55 01 2f 51 f2     # dde4 |   jne [0x155], 0x2f, ${fail}:rel + PC
-8e 3e fe e0 f6 39 30           # dded |   imul [A*4 + -10], G, 0x3039
-ee e0 e0 f8 9e 02 ed 3b 41 f2  # ddf4 |   jne [0x29e], 0x3bed, ${fail}:rel + PC
-8a fe e4 2a de fa              # ddfe |   mul [G], 0xfade + A, A*4 + B
-ee e0 e0 f8 55 01 98 dd 31 f2  # de04 |   jne [0x155], 0xdd98, ${fail}:rel + PC
-a2 fe fe 20                    # de0e |   shr [G], G, A
-ee e0 00 f8 55 01 23 f2        # de12 |   jne [0x155], 0, ${fail}:rel + PC
-b2 21 20 20                    # de1a |   or [A*2], A, A
-ee e0 e0 f8 54 01 aa 00 17 f2  # de1e |   jne [0x154], 0xaa, ${fail}:rel + PC
-b2 3e 1c 21 f6 85              # de28 |   or [A*4 + -10], -123, A*2
-ee e0 1c f8 9e 02 d5 07 f2     # de2e |   jne [0x29e], 0xd5, ${fail}:rel + PC
-8a 2a 1c 1c 85 85              # de37 |   mul [A*4 + B], -123, -123
-ee e0 e0 f8 63 03 19 3b f8 f1  # de3d |   jne [0x363], 0x3b19, ${fail}:rel + PC
-8a e0 e4 21 39 30 de fa        # de47 |   mul [0x3039], 0xfade + A, A*2
-ee e0 e0 f8 39 30 a0 10 e6 f1  # de4f |   jne [0x3039], 0x10a0, ${fail}:rel + PC
-86 fe 20 3e f6                 # de59 |   sub [G], A, A*4 + -10
-ee e0 e0 f8 55 01 0c fe d7 f1  # de5e |   jne [0x155], 0xfe0c, ${fail}:rel + PC
-aa 20 2a 21                    # de68 |   shl [A], A*4 + B, A*2
-ee e0 e0 f8 aa 00 30 36 c9 f1  # de6c |   jne [0xaa], 0x3630, ${fail}:rel + PC
-b6 21 1c 2a 85                 # de76 |   xor [A*2], -123, A*4 + B
-ee e0 e0 f8 54 01 e6 fc ba f1  # de7b |   jne [0x154], 0xfce6, ${fail}:rel + PC
-86 2a 3e 1c f6 85              # de85 |   sub [A*4 + B], A*4 + -10, -123
-ee e0 e0 f8 63 03 19 03 aa f1  # de8b |   jne [0x363], 0x319, ${fail}:rel + PC
-86 e0 e0 e4 39 30 39 30 de fa  # de95 |   sub [0x3039], 0x3039, 0xfade + A
-ee e0 e0 f8 39 30 b1 34 96 f1  # de9f |   jne [0x3039], 0x34b1, ${fail}:rel + PC
-ae fe 2a e4 de fa              # dea9 |   and [G], A*4 + B, 0xfade + A
-ee e0 e0 f8 55 01 00 03 86 f1  # deaf |   jne [0x155], 0x300, ${fail}:rel + PC
-aa 20 3e fe f6                 # deb9 |   shl [A], A*4 + -10, G
-ee e0 e0 f8 aa 00 c0 53 77 f1  # debe |   jne [0xaa], 0x53c0, ${fail}:rel + PC
-a6 fe fe e4 de fa              # dec8 |   ishr [G], G, 0xfade + A
-ee e0 1c f8 55 01 01 67 f1     # dece |   jne [0x155], 0x1, ${fail}:rel + PC
-ae 21 e0 2a 39 30              # ded7 |   and [A*2], 0x3039, A*4 + B
-ee e0 1c f8 54 01 21 58 f1     # dedd |   jne [0x154], 0x21, ${fail}:rel + PC
-a6 21 21 1c 85                 # dee6 |   ishr [A*2], A*2, -123
-ee e0 1c f8 54 01 0a 4a f1     # deeb |   jne [0x154], 0xa, ${fail}:rel + PC
-b6 fe 21 e0 39 30              # def4 |   xor [G], A*2, 0x3039
-ee e0 e0 f8 55 01 6d 31 3b f1  # defa |   jne [0x155], 0x316d, ${fail}:rel + PC
-86 2a 3e 2a f6                 # df04 |   sub [A*4 + B], A*4 + -10, A*4 + B
-ee e0 e0 f8 63 03 3b ff 2c f1  # df09 |   jne [0x363], 0xff3b, ${fail}:rel + PC
-b2 e0 fe 1c 39 30 85           # df13 |   or [0x3039], G, -123
-ee e0 1c f8 39 30 d5 1b f1     # df1a |   jne [0x3039], 0xd5, ${fail}:rel + PC
-aa 2a 3e 20 f6                 # df23 |   shl [A*4 + B], A*4 + -10, A
-ee e0 e0 f8 63 03 00 78 0d f1  # df28 |   jne [0x363], 0x7800, ${fail}:rel + PC
-86 e0 21 20 39 30              # df32 |   sub [0x3039], A*2, A
-ee e0 e0 f8 39 30 aa 00 fd f0  # df38 |   jne [0x3039], 0xaa, ${fail}:rel + PC
-b6 e0 2a 21 39 30              # df42 |   xor [0x3039], A*4 + B, A*2
-ee e0 e0 f8 39 30 37 02 ed f0  # df48 |   jne [0x3039], 0x237, ${fail}:rel + PC
-ae 2a e0 1c 39 30 85           # df52 |   and [A*4 + B], 0x3039, -123
-ee e0 e0 f8 63 03 01 30 dc f0  # df59 |   jne [0x363], 0x3001, ${fail}:rel + PC
-8e fe 2a e0 39 30              # df63 |   imul [G], A*4 + B, 0x3039
-ee e0 e0 f8 55 01 0b 51 cc f0  # df69 |   jne [0x155], 0x510b, ${fail}:rel + PC
-b2 2a 20 fe                    # df73 |   or [A*4 + B], A, G
-ee e0 e0 f8 63 03 ff 01 be f0  # df77 |   jne [0x363], 0x1ff, ${fail}:rel + PC
-a6 3e e0 20 f6 39 30           # df81 |   ishr [A*4 + -10], 0x3039, A
-ee e0 1c f8 9e 02 0c ad f0     # df88 |   jne [0x29e], 0xc, ${fail}:rel + PC
-aa e0 e4 e4 39 30 de fa de fa  # df91 |   shl [0x3039], 0xfade + A, 0xfade + A
-ee e0 e0 f8 39 30 00 88 9a f0  # df9b |   jne [0x3039], 0x8800, ${fail}:rel + PC
-aa 20 e0 fe 39 30              # dfa5 |   shl [A], 0x3039, G
-ee e0 e0 f8 aa 00 20 07 8a f0  # dfab |   jne [0xaa], 0x720, ${fail}:rel + PC
-b6 fe 3e 21 f6                 # dfb5 |   xor [G], A*4 + -10, A*2
-ee e0 e0 f8 55 01 ca 03 7b f0  # dfba |   jne [0x155], 0x3ca, ${fail}:rel + PC
-b2 2a fe 1c 85                 # dfc4 |   or [A*4 + B], G, -123
-ee e0 1c f8 63 03 d5 6c f0     # dfc9 |   jne [0x363], 0xd5, ${fail}:rel + PC
-86 3e 1c e0 f6 85 39 30        # dfd2 |   sub [A*4 + -10], -123, 0x3039
-ee e0 e0 f8 9e 02 4c cf 5b f0  # dfda |   jne [0x29e], 0xcf4c, ${fail}:rel + PC
-aa 21 21 21                    # dfe4 |   shl [A*2], A*2, A*2
-ee e0 e0 f8 54 01 40 15 4d f0  # dfe8 |   jne [0x154], 0x1540, ${fail}:rel + PC
-86 e0 e4 e0 39 30 de fa 39 30  # dff2 |   sub [0x3039], 0xfade + A, 0x3039
-ee e0 e0 f8 39 30 4f cb 39 f0  # dffc |   jne [0x3039], 0xcb4f, ${fail}:rel + PC
-a2 21 e0 1c 39 30 85           # e006 |   shr [A*2], 0x3039, -123
-ee e0 e0 f8 54 01 81 01 28 f0  # e00d |   jne [0x154], 0x181, ${fail}:rel + PC
-a6 e0 e4 20 39 30 de fa        # e017 |   ishr [0x3039], 0xfade + A, A
-ee e0 1c f8 39 30 fe 16 f0     # e01f |   jne [0x3039], 0xfe, ${fail}:rel + PC
-b6 3e e4 e0 f6 de fa 39 30     # e028 |   xor [A*4 + -10], 0xfade + A, 0x3039
-ee e0 e0 f8 9e 02 b1 cb 04 f0  # e031 |   jne [0x29e], 0xcbb1, ${fail}:rel + PC
-86 3e 21 3e f6 f6              # e03b |   sub [A*4 + -10], A*2, A*4 + -10
-ee e0 e0 f8 9e 02 b6 fe f4 ef  # e041 |   jne [0x29e], 0xfeb6, ${fail}:rel + PC
-8e fe 1c 3e 85 f6              # e04b |   imul [G], -123, A*4 + -10
-ee e0 e0 f8 55 01 16 be e4 ef  # e051 |   jne [0x155], 0xbe16, ${fail}:rel + PC
-aa 20 2a 2a                    # e05b |   shl [A], A*4 + B, A*4 + B
-ee e0 e0 f8 aa 00 18 1b d6 ef  # e05f |   jne [0xaa], 0x1b18, ${fail}:rel + PC
-b6 e0 21 2a 39 30              # e069 |   xor [0x3039], A*2, A*4 + B
-ee e0 e0 f8 39 30 37 02 c6 ef  # e06f |   jne [0x3039], 0x237, ${fail}:rel + PC
-82 21 21 e0 39 30              # e079 |   add [A*2], A*2, 0x3039
-ee e0 e0 f8 54 01 8d 31 b6 ef  # e07f |   jne [0x154], 0x318d, ${fail}:rel + PC
-ae 21 2a 20                    # e089 |   and [A*2], A*4 + B, A
-ee e0 1c f8 54 01 22 a8 ef     # e08d |   jne [0x154], 0x22, ${fail}:rel + PC
-aa 20 2a e4 de fa              # e096 |   shl [A], A*4 + B, 0xfade + A
-ee e0 e0 f8 aa 00 00 63 99 ef  # e09c |   jne [0xaa], 0x6300, ${fail}:rel + PC
-ae 2a fe 20                    # e0a6 |   and [A*4 + B], G, A
-ee e0 00 f8 63 03 8b ef        # e0aa |   jne [0x363], 0, ${fail}:rel + PC
-b6 fe 21 1c 85                 # e0b2 |   xor [G], A*2, -123
-ee e0 e0 f8 55 01 d1 fe 7e ef  # e0b7 |   jne [0x155], 0xfed1, ${fail}:rel + PC
-ae e0 fe 21 39 30              # e0c1 |   and [0x3039], G, A*2
-ee e0 e0 f8 39 30 54 01 6e ef  # e0c7 |   jne [0x3039], 0x154, ${fail}:rel + PC
-b2 3e e0 2a f6 39 30           # e0d1 |   or [A*4 + -10], 0x3039, A*4 + B
-ee e0 e0 f8 9e 02 7b 33 5d ef  # e0d8 |   jne [0x29e], 0x337b, ${fail}:rel + PC
-b6 fe e4 3e de fa f6           # e0e2 |   xor [G], 0xfade + A, A*4 + -10
-ee e0 e0 f8 55 01 16 f9 4c ef  # e0e9 |   jne [0x155], 0xf916, ${fail}:rel + PC
-8e 2a 21 2a                    # e0f3 |   imul [A*4 + B], A*2, A*4 + B
-ee e0 e0 f8 63 03 7c 7f 3e ef  # e0f7 |   jne [0x363], 0x7f7c, ${fail}:rel + PC
-a6 fe 21 fe                    # e101 |   ishr [G], A*2, G
-ee e0 1c f8 55 01 0a 30 ef     # e105 |   jne [0x155], 0xa, ${fail}:rel + PC
-8a 21 1c 1c 85 85              # e10e |   mul [A*2], -123, -123
-ee e0 e0 f8 54 01 19 3b 21 ef  # e114 |   jne [0x154], 0x3b19, ${fail}:rel + PC
-8e 2a e4 20 de fa              # e11e |   imul [A*4 + B], 0xfade + A, A
-ee e0 e0 f8 63 03 50 08 11 ef  # e124 |   jne [0x363], 0x850, ${fail}:rel + PC
-a2 3e 3e 3e f6 f6 f6           # e12e |   shr [A*4 + -10], A*4 + -10, A*4 + -10
-ee e0 00 f8 9e 02 00 ef        # e135 |   jne [0x29e], 0, ${fail}:rel + PC
-8a 20 1c e4 85 de fa           # e13d |   mul [A], -123, 0xfade + A
-ee e0 e0 f8 aa 00 a8 25 f1 ee  # e144 |   jne [0xaa], 0x25a8, ${fail}:rel + PC
-a6 3e 20 21 f6                 # e14e |   ishr [A*4 + -10], A, A*2
-ee e0 1c f8 9e 02 0a e2 ee     # e153 |   jne [0x29e], 0xa, ${fail}:rel + PC
-b2 3e 20 20 f6                 # e15c |   or [A*4 + -10], A, A
-ee e0 e0 f8 9e 02 aa 00 d4 ee  # e161 |   jne [0x29e], 0xaa, ${fail}:rel + PC
-82 e0 fe e0 39 30 39 30        # e16b |   add [0x3039], G, 0x3039
-ee e0 e0 f8 39 30 8e 31 c2 ee  # e173 |   jne [0x3039], 0x318e, ${fail}:rel + PC
-8e 3e e0 3e f6 39 30 f6        # e17d |   imul [A*4 + -10], 0x3039, A*4 + -10
-ee e0 e0 f8 9e 02 2e 35 b0 ee  # e185 |   jne [0x29e], 0x352e, ${fail}:rel + PC
-a6 fe fe 21                    # e18f |   ishr [G], G, A*2
-ee e0 1c f8 55 01 15 a2 ee     # e193 |   jne [0x155], 0x15, ${fail}:rel + PC
-8e 20 e4 3e de fa f6           # e19c |   imul [A], 0xfade + A, A*4 + -10
-ee e0 e0 f8 aa 00 f0 4d 92 ee  # e1a3 |   jne [0xaa], 0x4df0, ${fail}:rel + PC
-a6 fe 20 fe                    # e1ad |   ishr [G], A, G
-ee e0 1c f8 55 01 05 84 ee     # e1b1 |   jne [0x155], 0x5, ${fail}:rel + PC
-82 2a e0 3e 39 30 f6           # e1ba |   add [A*4 + B], 0x3039, A*4 + -10
-ee e0 e0 f8 63 03 d7 32 74 ee  # e1c1 |   jne [0x363], 0x32d7, ${fail}:rel + PC
-ae 3e 2a e4 f6 de fa           # e1cb |   and [A*4 + -10], A*4 + B, 0xfade + A
-ee e0 e0 f8 9e 02 00 03 63 ee  # e1d2 |   jne [0x29e], 0x300, ${fail}:rel + PC
-8e 20 1c 2a 85                 # e1dc |   imul [A], -123, A*4 + B
-ee e0 e0 f8 aa 00 6f 5f 54 ee  # e1e1 |   jne [0xaa], 0x5f6f, ${fail}:rel + PC
-a2 fe 3e e4 f6 de fa           # e1eb |   shr [G], A*4 + -10, 0xfade + A
-ee e0 1c f8 55 01 02 43 ee     # e1f2 |   jne [0x155], 0x2, ${fail}:rel + PC
-b2 2a e0 20 39 30              # e1fb |   or [A*4 + B], 0x3039, A
-ee e0 e0 f8 63 03 bb 30 34 ee  # e201 |   jne [0x363], 0x30bb, ${fail}:rel + PC
-b6 2a e0 fe 39 30              # e20b |   xor [A*4 + B], 0x3039, G
-ee e0 e0 f8 63 03 6c 31 24 ee  # e211 |   jne [0x363], 0x316c, ${fail}:rel + PC
-8e 20 20 e0 39 30              # e21b |   imul [A], A, 0x3039
-ee e0 e0 f8 aa 00 da 05 14 ee  # e221 |   jne [0xaa], 0x5da, ${fail}:rel + PC
-b2 21 2a 3e f6                 # e22b |   or [A*2], A*4 + B, A*4 + -10
-ee e0 e0 f8 54 01 ff 03 05 ee  # e230 |   jne [0x154], 0x3ff, ${fail}:rel + PC
-aa fe e4 e0 de fa 39 30        # e23a |   shl [G], 0xfade + A, 0x3039
-ee e0 e0 f8 55 01 00 10 f3 ed  # e242 |   jne [0x155], 0x1000, ${fail}:rel + PC
-a6 2a e4 2a de fa              # e24c |   ishr [A*4 + B], 0xfade + A, A*4 + B
-ee e0 e0 f8 63 03 71 ff e3 ed  # e252 |   jne [0x363], 0xff71, ${fail}:rel + PC
-aa 3e e4 1c f6 de fa 85        # e25c |   shl [A*4 + -10], 0xfade + A, -123
-ee e0 e0 f8 9e 02 00 71 d1 ed  # e264 |   jne [0x29e], 0x7100, ${fail}:rel + PC
-a2 3e e4 20 f6 de fa           # e26e |   shr [A*4 + -10], 0xfade + A, A
-ee e0 1c f8 9e 02 3e c0 ed     # e275 |   jne [0x29e], 0x3e, ${fail}:rel + PC
-8a 3e 20 2a f6                 # e27e |   mul [A*4 + -10], A, A*4 + B
-ee e0 e0 f8 9e 02 be 3f b2 ed  # e283 |   jne [0x29e], 0x3fbe, ${fail}:rel + PC
-b2 21 3e 2a f6                 # e28d |   or [A*2], A*4 + -10, A*4 + B
-ee e0 e0 f8 54 01 ff 03 a3 ed  # e292 |   jne [0x154], 0x3ff, ${fail}:rel + PC
-8e 3e 21 1c f6 85              # e29c |   imul [A*4 + -10], A*2, -123
-ee e0 e0 f8 9e 02 a4 5c 93 ed  # e2a2 |   jne [0x29e], 0x5ca4, ${fail}:rel + PC
-aa e0 3e 21 39 30 f6           # e2ac |   shl [0x3039], A*4 + -10, A*2
-ee e0 e0 f8 39 30 e0 29 82 ed  # e2b3 |   jne [0x3039], 0x29e0, ${fail}:rel + PC
-aa 21 e4 e4 de fa de fa        # e2bd |   shl [A*2], 0xfade + A, 0xfade + A
-ee e0 e0 f8 54 01 00 88 70 ed  # e2c5 |   jne [0x154], 0x8800, ${fail}:rel + PC
-82 fe 21 21                    # e2cf |   add [G], A*2, A*2
-ee e0 e0 f8 55 01 a8 02 62 ed  # e2d3 |   jne [0x155], 0x2a8, ${fail}:rel + PC
-ae 21 e4 fe de fa              # e2dd |   and [A*2], 0xfade + A, G
-ee e0 e0 f8 54 01 00 01 52 ed  # e2e3 |   jne [0x154], 0x100, ${fail}:rel + PC
-ae 3e e0 e0 f6 39 30 39 30     # e2ed |   and [A*4 + -10], 0x3039, 0x3039
-ee e0 e0 f8 9e 02 39 30 3f ed  # e2f6 |   jne [0x29e], 0x3039, ${fail}:rel + PC
-aa 3e 20 1c f6 85              # e300 |   shl [A*4 + -10], A, -123
-ee e0 e0 f8 9e 02 40 15 2f ed  # e306 |   jne [0x29e], 0x1540, ${fail}:rel + PC
-ae 2a 3e e4 f6 de fa           # e310 |   and [A*4 + B], A*4 + -10, 0xfade + A
-ee e0 e0 f8 63 03 88 02 1e ed  # e317 |   jne [0x363], 0x288, ${fail}:rel + PC
-82 fe 1c 1c 85 85              # e321 |   add [G], -123, -123
-ee e0 e0 f8 55 01 0a ff 0e ed  # e327 |   jne [0x155], 0xff0a, ${fail}:rel + PC
-8a 20 20 e4 de fa              # e331 |   mul [A], A, 0xfade + A
-ee e0 e0 f8 aa 00 50 08 fe ec  # e337 |   jne [0xaa], 0x850, ${fail}:rel + PC
-b2 21 2a fe                    # e341 |   or [A*2], A*4 + B, G
-ee e0 e0 f8 54 01 77 03 f0 ec  # e345 |   jne [0x154], 0x377, ${fail}:rel + PC
-86 fe e4 e4 de fa de fa        # e34f |   sub [G], 0xfade + A, 0xfade + A
-ee e0 00 f8 55 01 de ec        # e357 |   jne [0x155], 0, ${fail}:rel + PC
-a2 2a fe e4 de fa              # e35f |   shr [A*4 + B], G, 0xfade + A
-ee e0 1c f8 63 03 01 d0 ec     # e365 |   jne [0x363], 0x1, ${fail}:rel + PC
-86 21 1c fe 85                 # e36e |   sub [A*2], -123, G
-ee e0 e0 f8 54 01 30 fe c2 ec  # e373 |   jne [0x154], 0xfe30, ${fail}:rel + PC
-aa 3e 21 fe f6                 # e37d |   shl [A*4 + -10], A*2, G
-ee e0 e0 f8 9e 02 80 2a b3 ec  # e382 |   jne [0x29e], 0x2a80, ${fail}:rel + PC
-aa 20 1c 3e 85 f6              # e38c |   shl [A], -123, A*4 + -10
-ee e0 e0 f8 aa 00 00 40 a3 ec  # e392 |   jne [0xaa], 0x4000, ${fail}:rel + PC
-8a 3e 2a 21 f6                 # e39c |   mul [A*4 + -10], A*4 + B, A*2
-ee e0 e0 f8 9e 02 7c 7f 94 ec  # e3a1 |   jne [0x29e], 0x7f7c, ${fail}:rel + PC
-a2 20 2a fe                    # e3ab |   shr [A], A*4 + B, G
-ee e0 1c f8 aa 00 1b 86 ec     # e3af |   jne [0xaa], 0x1b, ${fail}:rel + PC
-82 20 2a e0 39 30              # e3b8 |   add [A], A*4 + B, 0x3039
-ee e0 e0 f8 aa 00 9c 33 77 ec  # e3be |   jne [0xaa], 0x339c, ${fail}:rel + PC
-b6 fe e0 1c 39 30 85           # e3c8 |   xor [G], 0x3039, -123
-ee e0 e0 f8 55 01 bc cf 66 ec  # e3cf |   jne [0x155], 0xcfbc, ${fail}:rel + PC
-86 20 e4 2a de fa              # e3d9 |   sub [A], 0xfade + A, A*4 + B
-ee e0 e0 f8 aa 00 25 f8 56 ec  # e3df |   jne [0xaa], 0xf825, ${fail}:rel + PC
-a6 2a 21 fe                    # e3e9 |   ishr [A*4 + B], A*2, G
-ee e0 1c f8 63 03 0a 48 ec     # e3ed |   jne [0x363], 0xa, ${fail}:rel + PC
-b2 21 fe e4 de fa              # e3f6 |   or [A*2], G, 0xfade + A
-ee e0 e0 f8 54 01 dd fb 39 ec  # e3fc |   jne [0x154], 0xfbdd, ${fail}:rel + PC
-8a e0 e4 fe 39 30 de fa        # e406 |   mul [0x3039], 0xfade + A, G
-ee e0 e0 f8 39 30 28 0c 27 ec  # e40e |   jne [0x3039], 0xc28, ${fail}:rel + PC
-8e 2a 2a e4 de fa              # e418 |   imul [A*4 + B], A*4 + B, 0xfade + A
-ee e0 e0 f8 63 03 98 dd 17 ec  # e41e |   jne [0x363], 0xdd98, ${fail}:rel + PC
-ae e0 20 fe 39 30              # e428 |   and [0x3039], A, G
-ee e0 00 f8 39 30 07 ec        # e42e |   jne [0x3039], 0, ${fail}:rel + PC
-8e fe fe 2a                    # e436 |   imul [G], G, A*4 + B
-ee e0 e0 f8 55 01 df 82 fb eb  # e43a |   jne [0x155], 0x82df, ${fail}:rel + PC
-8e 3e 21 21 f6                 # e444 |   imul [A*4 + -10], A*2, A*2
-ee e0 e0 f8 9e 02 90 c3 ec eb  # e449 |   jne [0x29e], 0xc390, ${fail}:rel + PC
-b2 fe e4 1c de fa 85           # e453 |   or [G], 0xfade + A, -123
-ee e0 1c f8 55 01 8d db eb     # e45a |   jne [0x155], 0x8d, ${fail}:rel + PC
-8e 2a 20 3e f6                 # e463 |   imul [A*4 + B], A, A*4 + -10
-ee e0 e0 f8 63 03 ec bc cd eb  # e468 |   jne [0x363], 0xbcec, ${fail}:rel + PC
-a2 2a 3e e0 f6 39 30           # e472 |   shr [A*4 + B], A*4 + -10, 0x3039
-ee e0 1c f8 63 03 01 bc eb     # e479 |   jne [0x363], 0x1, ${fail}:rel + PC
-b6 2a 21 e0 39 30              # e482 |   xor [A*4 + B], A*2, 0x3039
-ee e0 e0 f8 63 03 6d 31 ad eb  # e488 |   jne [0x363], 0x316d, ${fail}:rel + PC
-a2 e0 3e e0 39 30 f6 39 30     # e492 |   shr [0x3039], A*4 + -10, 0x3039
-ee e0 1c f8 39 30 01 9a eb     # e49b |   jne [0x3039], 0x1, ${fail}:rel + PC
-a2 21 1c 3e 85 f6              # e4a4 |   shr [A*2], -123, A*4 + -10
-ee e0 1c f8 54 01 03 8b eb     # e4aa |   jne [0x154], 0x3, ${fail}:rel + PC
-b2 21 20 21                    # e4b3 |   or [A*2], A, A*2
-ee e0 e0 f8 54 01 fe 01 7e eb  # e4b7 |   jne [0x154], 0x1fe, ${fail}:rel + PC
-a2 fe 2a 21                    # e4c1 |   shr [G], A*4 + B, A*2
-ee e0 1c f8 55 01 36 70 eb     # e4c5 |   jne [0x155], 0x36, ${fail}:rel + PC
-b6 e0 3e 2a 39 30 f6           # e4ce |   xor [0x3039], A*4 + -10, A*4 + B
-ee e0 e0 f8 39 30 fd 01 60 eb  # e4d5 |   jne [0x3039], 0x1fd, ${fail}:rel + PC
-8a 3e e4 3e f6 de fa f6        # e4df |   mul [A*4 + -10], 0xfade + A, A*4 + -10
-ee e0 e0 f8 9e 02 f0 4d 4e eb  # e4e7 |   jne [0x29e], 0x4df0, ${fail}:rel + PC
-8e 2a 21 3e f6                 # e4f1 |   imul [A*4 + B], A*2, A*4 + -10
-ee e0 e0 f8 63 03 d8 79 3f eb  # e4f6 |   jne [0x363], 0x79d8, ${fail}:rel + PC
-a2 e0 e4 3e 39 30 de fa f6     # e500 |   shr [0x3039], 0xfade + A, A*4 + -10
-ee e0 1c f8 39 30 03 2c eb     # e509 |   jne [0x3039], 0x3, ${fail}:rel + PC
-82 3e 20 fe f6                 # e512 |   add [A*4 + -10], A, G
-ee e0 e0 f8 9e 02 ff 01 1e eb  # e517 |   jne [0x29e], 0x1ff, ${fail}:rel + PC
-a2 2a e4 e0 de fa 39 30        # e521 |   shr [A*4 + B], 0xfade + A, 0x3039
-ee e0 1c f8 63 03 7d 0c eb     # e529 |   jne [0x363], 0x7d, ${fail}:rel + PC
-a2 3e 1c 1c f6 85 85           # e532 |   shr [A*4 + -10], -123, -123
-ee e0 e0 f8 9e 02 fc 07 fc ea  # e539 |   jne [0x29e], 0x7fc, ${fail}:rel + PC
-8e 20 1c e0 85 39 30           # e543 |   imul [A], -123, 0x3039
-ee e0 e0 f8 aa 00 9d d4 eb ea  # e54a |   jne [0xaa], 0xd49d, ${fail}:rel + PC
-aa 2a 3e 21 f6                 # e554 |   shl [A*4 + B], A*4 + -10, A*2
-ee e0 e0 f8 63 03 e0 29 dc ea  # e559 |   jne [0x363], 0x29e0, ${fail}:rel + PC
-b6 21 e0 fe 39 30              # e563 |   xor [A*2], 0x3039, G
-ee e0 e0 f8 54 01 6c 31 cc ea  # e569 |   jne [0x154], 0x316c, ${fail}:rel + PC
-b6 e0 3e 3e 39 30 f6 f6        # e573 |   xor [0x3039], A*4 + -10, A*4 + -10
-ee e0 00 f8 39 30 ba ea        # e57b |   jne [0x3039], 0, ${fail}:rel + PC
-b6 20 21 1c 85                 # e583 |   xor [A], A*2, -123
-ee e0 e0 f8 aa 00 d1 fe ad ea  # e588 |   jne [0xaa], 0xfed1, ${fail}:rel + PC
-b6 21 21 fe                    # e592 |   xor [A*2], A*2, G
-ee e0 1c f8 54 01 01 9f ea     # e596 |   jne [0x154], 0x1, ${fail}:rel + PC
-8a fe e0 20 39 30              # e59f |   mul [G], 0x3039, A
-ee e0 e0 f8 55 01 da 05 90 ea  # e5a5 |   jne [0x155], 0x5da, ${fail}:rel + PC
-b6 21 e0 21 39 30              # e5af |   xor [A*2], 0x3039, A*2
-ee e0 e0 f8 54 01 6d 31 80 ea  # e5b5 |   jne [0x154], 0x316d, ${fail}:rel + PC
-8a 21 2a e0 39 30              # e5bf |   mul [A*2], A*4 + B, 0x3039
-ee e0 e0 f8 54 01 0b 51 70 ea  # e5c5 |   jne [0x154], 0x510b, ${fail}:rel + PC
-ae 3e e0 1c f6 39 30 85        # e5cf |   and [A*4 + -10], 0x3039, -123
-ee e0 e0 f8 9e 02 01 30 5e ea  # e5d7 |   jne [0x29e], 0x3001, ${fail}:rel + PC
-aa fe 21 20                    # e5e1 |   shl [G], A*2, A
-ee e0 e0 f8 55 01 00 50 50 ea  # e5e5 |   jne [0x155], 0x5000, ${fail}:rel + PC
-ae 20 e4 20 de fa              # e5ef |   and [A], 0xfade + A, A
-ee e0 e0 f8 aa 00 88 00 40 ea  # e5f5 |   jne [0xaa], 0x88, ${fail}:rel + PC
-aa 21 3e e4 f6 de fa           # e5ff |   shl [A*2], A*4 + -10, 0xfade + A
-ee e0 e0 f8 54 01 00 9e 2f ea  # e606 |   jne [0x154], 0x9e00, ${fail}:rel + PC
-b6 e0 e0 1c 39 30 39 30 85     # e610 |   xor [0x3039], 0x3039, -123
-ee e0 e0 f8 39 30 bc cf 1c ea  # e619 |   jne [0x3039], 0xcfbc, ${fail}:rel + PC
-8a 3e 3e 1c f6 f6 85           # e623 |   mul [A*4 + -10], A*4 + -10, -123
-ee e0 e0 f8 9e 02 16 be 0b ea  # e62a |   jne [0x29e], 0xbe16, ${fail}:rel + PC
-86 fe 21 3e f6                 # e634 |   sub [G], A*2, A*4 + -10
-ee e0 e0 f8 55 01 b6 fe fc e9  # e639 |   jne [0x155], 0xfeb6, ${fail}:rel + PC
-86 3e 2a fe f6                 # e643 |   sub [A*4 + -10], A*4 + B, G
-ee e0 e0 f8 9e 02 0e 02 ed e9  # e648 |   jne [0x29e], 0x20e, ${fail}:rel + PC
-b6 3e 1c fe f6 85              # e652 |   xor [A*4 + -10], -123, G
-ee e0 e0 f8 9e 02 d0 fe dd e9  # e658 |   jne [0x29e], 0xfed0, ${fail}:rel + PC
-86 20 2a 1c 85                 # e662 |   sub [A], A*4 + B, -123
-ee e0 e0 f8 aa 00 de 03 ce e9  # e667 |   jne [0xaa], 0x3de, ${fail}:rel + PC
-86 20 21 fe                    # e671 |   sub [A], A*2, G
-ee e0 1c f8 aa 00 ff c0 e9     # e675 |   jne [0xaa], 0xff, ${fail}:rel + PC
-86 2a 20 e4 de fa              # e67e |   sub [A*4 + B], A, 0xfade + A
-ee e0 e0 f8 63 03 22 05 b1 e9  # e684 |   jne [0x363], 0x522, ${fail}:rel + PC
-aa e0 fe 3e 39 30 f6           # e68e |   shl [0x3039], G, A*4 + -10
-ee e0 e0 f8 39 30 00 40 a0 e9  # e695 |   jne [0x3039], 0x4000, ${fail}:rel + PC
-ae 20 1c 1c 85 85              # e69f |   and [A], -123, -123
-ee e0 1c f8 aa 00 85 90 e9     # e6a5 |   jne [0xaa], 0x85, ${fail}:rel + PC
-b6 20 fe e0 39 30              # e6ae |   xor [A], G, 0x3039
-ee e0 e0 f8 aa 00 6c 31 81 e9  # e6b4 |   jne [0xaa], 0x316c, ${fail}:rel + PC
-b2 e0 21 3e 39 30 f6           # e6be |   or [0x3039], A*2, A*4 + -10
-ee e0 e0 f8 39 30 de 03 70 e9  # e6c5 |   jne [0x3039], 0x3de, ${fail}:rel + PC
-b2 20 e4 21 de fa              # e6cf |   or [A], 0xfade + A, A*2
-ee e0 e0 f8 aa 00 dc fb 60 e9  # e6d5 |   jne [0xaa], 0xfbdc, ${fail}:rel + PC
-b6 fe 3e 3e f6 f6              # e6df |   xor [G], A*4 + -10, A*4 + -10
-ee e0 00 f8 55 01 50 e9        # e6e5 |   jne [0x155], 0, ${fail}:rel + PC
-b6 3e 20 e4 f6 de fa           # e6ed |   xor [A*4 + -10], A, 0xfade + A
-ee e0 e0 f8 9e 02 22 fb 41 e9  # e6f4 |   jne [0x29e], 0xfb22, ${fail}:rel + PC
-b6 e0 1c e0 39 30 85 39 30     # e6fe |   xor [0x3039], -123, 0x3039
-ee e0 e0 f8 39 30 bc cf 2e e9  # e707 |   jne [0x3039], 0xcfbc, ${fail}:rel + PC
-a2 3e fe 2a f6                 # e711 |   shr [A*4 + -10], G, A*4 + B
-ee e0 1c f8 9e 02 2a 1f e9     # e716 |   jne [0x29e], 0x2a, ${fail}:rel + PC
-ae 20 fe 20                    # e71f |   and [A], G, A
-ee e0 00 f8 aa 00 12 e9        # e723 |   jne [0xaa], 0, ${fail}:rel + PC
-86 2a e4 1c de fa 85           # e72b |   sub [A*4 + B], 0xfade + A, -123
-ee e0 e0 f8 63 03 03 fc 03 e9  # e732 |   jne [0x363], 0xfc03, ${fail}:rel + PC
-ae e0 21 21 39 30              # e73c |   and [0x3039], A*2, A*2
-ee e0 e0 f8 39 30 54 01 f3 e8  # e742 |   jne [0x3039], 0x154, ${fail}:rel + PC
-a2 e0 20 e0 39 30 39 30        # e74c |   shr [0x3039], A, 0x3039
-ee e0 00 f8 39 30 e1 e8        # e754 |   jne [0x3039], 0, ${fail}:rel + PC
-8e 3e 2a 3e f6 f6              # e75c |   imul [A*4 + -10], A*4 + B, A*4 + -10
-ee e0 e0 f8 9e 02 1a dd d3 e8  # e762 |   jne [0x29e], 0xdd1a, ${fail}:rel + PC
-a2 e0 3e 1c 39 30 f6 85        # e76c |   shr [0x3039], A*4 + -10, -123
-ee e0 1c f8 39 30 14 c1 e8     # e774 |   jne [0x3039], 0x14, ${fail}:rel + PC
-82 fe 20 e0 39 30              # e77d |   add [G], A, 0x3039
-ee e0 e0 f8 55 01 e3 30 b2 e8  # e783 |   jne [0x155], 0x30e3, ${fail}:rel + PC
-a6 e0 21 e0 39 30 39 30        # e78d |   ishr [0x3039], A*2, 0x3039
-ee e0 00 f8 39 30 a0 e8        # e795 |   jne [0x3039], 0, ${fail}:rel + PC
-a6 e0 e4 1c 39 30 de fa 85     # e79d |   ishr [0x3039], 0xfade + A, -123
-ee e0 1c f8 39 30 dc 8f e8     # e7a6 |   jne [0x3039], 0xdc, ${fail}:rel + PC
-b2 3e fe 20 f6                 # e7af |   or [A*4 + -10], G, A
-ee e0 e0 f8 9e 02 ff 01 81 e8  # e7b4 |   jne [0x29e], 0x1ff, ${fail}:rel + PC
-a6 2a 2a 20                    # e7be |   ishr [A*4 + B], A*4 + B, A
-ee e0 00 f8 63 03 73 e8        # e7c2 |   jne [0x363], 0, ${fail}:rel + PC
-aa fe e0 2a 39 30              # e7ca |   shl [G], 0x3039, A*4 + B
-ee e0 e0 f8 55 01 c8 81 65 e8  # e7d0 |   jne [0x155], 0x81c8, ${fail}:rel + PC
-8a 21 3e 20 f6                 # e7da |   mul [A*2], A*4 + -10, A
-ee e0 e0 f8 54 01 ec bc 56 e8  # e7df |   jne [0x154], 0xbcec, ${fail}:rel + PC
-8e 3e 3e e0 f6 f6 39 30        # e7e9 |   imul [A*4 + -10], A*4 + -10, 0x3039
-ee e0 e0 f8 9e 02 2e 35 44 e8  # e7f1 |   jne [0x29e], 0x352e, ${fail}:rel + PC
-b6 e0 1c 3e 39 30 85 f6        # e7fb |   xor [0x3039], -123, A*4 + -10
-ee e0 e0 f8 39 30 1b fd 32 e8  # e803 |   jne [0x3039], 0xfd1b, ${fail}:rel + PC
-b2 fe 20 e4 de fa              # e80d |   or [G], A, 0xfade + A
-ee e0 e0 f8 55 01 aa fb 22 e8  # e813 |   jne [0x155], 0xfbaa, ${fail}:rel + PC
-8e fe fe 3e f6                 # e81d |   imul [G], G, A*4 + -10
-ee e0 e0 f8 55 01 76 7c 13 e8  # e822 |   jne [0x155], 0x7c76, ${fail}:rel + PC
-8a 20 e0 3e 39 30 f6           # e82c |   mul [A], 0x3039, A*4 + -10
-ee e0 e0 f8 aa 00 2e 35 02 e8  # e833 |   jne [0xaa], 0x352e, ${fail}:rel + PC
-b2 fe 20 20                    # e83d |   or [G], A, A
-ee e0 e0 f8 55 01 aa 00 f4 e7  # e841 |   jne [0x155], 0xaa, ${fail}:rel + PC
-a2 3e 21 e4 f6 de fa           # e84b |   shr [A*4 + -10], A*2, 0xfade + A
-ee e0 1c f8 9e 02 01 e3 e7     # e852 |   jne [0x29e], 0x1, ${fail}:rel + PC
-a6 20 3e 2a f6                 # e85b |   ishr [A], A*4 + -10, A*4 + B
-ee e0 1c f8 aa 00 53 d5 e7     # e860 |   jne [0xaa], 0x53, ${fail}:rel + PC
-82 20 e0 20 39 30              # e869 |   add [A], 0x3039, A
-ee e0 e0 f8 aa 00 e3 30 c6 e7  # e86f |   jne [0xaa], 0x30e3, ${fail}:rel + PC
-a6 20 1c 20 85                 # e879 |   ishr [A], -123, A
-ee e0 1c f8 aa 00 ff b7 e7     # e87e |   jne [0xaa], 0xff, ${fail}:rel + PC
-ae 21 20 1c 85                 # e887 |   and [A*2], A, -123
-ee e0 e0 f8 54 01 80 00 a9 e7  # e88c |   jne [0x154], 0x80, ${fail}:rel + PC
-b6 2a 1c e4 85 de fa           # e896 |   xor [A*4 + B], -123, 0xfade + A
-ee e0 e0 f8 63 03 0d 04 98 e7  # e89d |   jne [0x363], 0x40d, ${fail}:rel + PC
-82 20 e0 21 39 30              # e8a7 |   add [A], 0x3039, A*2
-ee e0 e0 f8 aa 00 8d 31 88 e7  # e8ad |   jne [0xaa], 0x318d, ${fail}:rel + PC
-82 21 fe 2a                    # e8b7 |   add [A*2], G, A*4 + B
-ee e0 e0 f8 54 01 b8 04 7a e7  # e8bb |   jne [0x154], 0x4b8, ${fail}:rel + PC
-b2 20 2a 20                    # e8c5 |   or [A], A*4 + B, A
-ee e0 e0 f8 aa 00 eb 03 6c e7  # e8c9 |   jne [0xaa], 0x3eb, ${fail}:rel + PC
-82 21 1c e0 85 39 30           # e8d3 |   add [A*2], -123, 0x3039
-ee e0 e0 f8 54 01 be 2f 5b e7  # e8da |   jne [0x154], 0x2fbe, ${fail}:rel + PC
-aa fe 2a 1c 85                 # e8e4 |   shl [G], A*4 + B, -123
-ee e0 e0 f8 55 01 60 6c 4c e7  # e8e9 |   jne [0x155], 0x6c60, ${fail}:rel + PC
-82 3e 3e 2a f6 f6              # e8f3 |   add [A*4 + -10], A*4 + -10, A*4 + B
-ee e0 e0 f8 9e 02 01 06 3c e7  # e8f9 |   jne [0x29e], 0x601, ${fail}:rel + PC
-b2 20 3e e4 f6 de fa           # e903 |   or [A], A*4 + -10, 0xfade + A
-ee e0 e0 f8 aa 00 9e fb 2b e7  # e90a |   jne [0xaa], 0xfb9e, ${fail}:rel + PC
-aa 2a 21 1c 85                 # e914 |   shl [A*4 + B], A*2, -123
-ee e0 e0 f8 63 03 80 2a 1c e7  # e919 |   jne [0x363], 0x2a80, ${fail}:rel + PC
-b2 e0 1c 2a 39 30 85           # e923 |   or [0x3039], -123, A*4 + B
-ee e0 1c f8 39 30 e7 0b e7     # e92a |   jne [0x3039], 0xe7, ${fail}:rel + PC
-82 21 2a 2a                    # e933 |   add [A*2], A*4 + B, A*4 + B
-ee e0 e0 f8 54 01 c6 06 fe e6  # e937 |   jne [0x154], 0x6c6, ${fail}:rel + PC
-ae 20 21 20                    # e941 |   and [A], A*2, A
-ee e0 00 f8 aa 00 f0 e6        # e945 |   jne [0xaa], 0, ${fail}:rel + PC
-86 20 fe 1c 85                 # e94d |   sub [A], G, -123
-ee e0 e0 f8 aa 00 d0 01 e3 e6  # e952 |   jne [0xaa], 0x1d0, ${fail}:rel + PC
-b2 20 2a 3e f6                 # e95c |   or [A], A*4 + B, A*4 + -10
-ee e0 e0 f8 aa 00 ff 03 d4 e6  # e961 |   jne [0xaa], 0x3ff, ${fail}:rel + PC
-b6 2a 20 2a                    # e96b |   xor [A*4 + B], A, A*4 + B
-ee e0 e0 f8 63 03 c9 03 c6 e6  # e96f |   jne [0x363], 0x3c9, ${fail}:rel + PC
-aa 21 fe 3e f6                 # e979 |   shl [A*2], G, A*4 + -10
-ee e0 e0 f8 54 01 00 40 b7 e6  # e97e |   jne [0x154], 0x4000, ${fail}:rel + PC
-ae 3e e0 21 f6 39 30           # e988 |   and [A*4 + -10], 0x3039, A*2
-ee e0 1c f8 9e 02 10 a6 e6     # e98f |   jne [0x29e], 0x10, ${fail}:rel + PC
-a2 e0 2a e4 39 30 de fa        # e998 |   shr [0x3039], A*4 + B, 0xfade + A
-ee e0 1c f8 39 30 03 95 e6     # e9a0 |   jne [0x3039], 0x3, ${fail}:rel + PC
-8a fe 21 2a                    # e9a9 |   mul [G], A*2, A*4 + B
-ee e0 e0 f8 55 01 7c 7f 88 e6  # e9ad |   jne [0x155], 0x7f7c, ${fail}:rel + PC
-a2 3e 3e fe f6 f6              # e9b7 |   shr [A*4 + -10], A*4 + -10, G
-ee e0 1c f8 9e 02 14 78 e6     # e9bd |   jne [0x29e], 0x14, ${fail}:rel + PC
-8a 20 e0 e4 39 30 de fa        # e9c6 |   mul [A], 0x3039, 0xfade + A
-ee e0 e0 f8 aa 00 48 81 67 e6  # e9ce |   jne [0xaa], 0x8148, ${fail}:rel + PC
-8a 2a 1c 3e 85 f6              # e9d8 |   mul [A*4 + B], -123, A*4 + -10
-ee e0 e0 f8 63 03 16 be 57 e6  # e9de |   jne [0x363], 0xbe16, ${fail}:rel + PC
-ae 2a 1c fe 85                 # e9e8 |   and [A*4 + B], -123, G
-ee e0 e0 f8 63 03 05 01 48 e6  # e9ed |   jne [0x363], 0x105, ${fail}:rel + PC
-aa e0 e0 20 39 30 39 30        # e9f7 |   shl [0x3039], 0x3039, A
-ee e0 e0 f8 39 30 00 e4 36 e6  # e9ff |   jne [0x3039], 0xe400, ${fail}:rel + PC
-8e 20 fe 2a                    # ea09 |   imul [A], G, A*4 + B
-ee e0 e0 f8 aa 00 df 82 28 e6  # ea0d |   jne [0xaa], 0x82df, ${fail}:rel + PC
-86 3e 1c 3e f6 85 f6           # ea17 |   sub [A*4 + -10], -123, A*4 + -10
-ee e0 e0 f8 9e 02 e7 fc 17 e6  # ea1e |   jne [0x29e], 0xfce7, ${fail}:rel + PC
-aa 21 20 2a                    # ea28 |   shl [A*2], A, A*4 + B
-ee e0 e0 f8 54 01 50 05 09 e6  # ea2c |   jne [0x154], 0x550, ${fail}:rel + PC
-82 20 3e 21 f6                 # ea36 |   add [A], A*4 + -10, A*2
-ee e0 e0 f8 aa 00 f2 03 fa e5  # ea3b |   jne [0xaa], 0x3f2, ${fail}:rel + PC
-8a 21 fe 1c 85                 # ea45 |   mul [A*2], G, -123
-ee e0 e0 f8 54 01 29 5c eb e5  # ea4a |   jne [0x154], 0x5c29, ${fail}:rel + PC
-8a fe 1c e0 85 39 30           # ea54 |   mul [G], -123, 0x3039
-ee e0 e0 f8 55 01 9d d4 da e5  # ea5b |   jne [0x155], 0xd49d, ${fail}:rel + PC
-a6 e0 2a 2a 39 30              # ea65 |   ishr [0x3039], A*4 + B, A*4 + B
-ee e0 1c f8 39 30 6c ca e5     # ea6b |   jne [0x3039], 0x6c, ${fail}:rel + PC
-82 2a 1c 21 85                 # ea74 |   add [A*4 + B], -123, A*2
-ee e0 e0 f8 63 03 d9 00 bc e5  # ea79 |   jne [0x363], 0xd9, ${fail}:rel + PC
-8a e0 e0 fe 39 30 39 30        # ea83 |   mul [0x3039], 0x3039, G
-ee e0 e0 f8 39 30 ed 3b aa e5  # ea8b |   jne [0x3039], 0x3bed, ${fail}:rel + PC
-b2 e0 2a fe 39 30              # ea95 |   or [0x3039], A*4 + B, G
-ee e0 e0 f8 39 30 77 03 9a e5  # ea9b |   jne [0x3039], 0x377, ${fail}:rel + PC
-aa 2a 1c e0 85 39 30           # eaa5 |   shl [A*4 + B], -123, 0x3039
-ee e0 e0 f8 63 03 00 0a 89 e5  # eaac |   jne [0x363], 0xa00, ${fail}:rel + PC
-8a fe 1c 2a 85                 # eab6 |   mul [G], -123, A*4 + B
-ee e0 e0 f8 55 01 6f 5f 7a e5  # eabb |   jne [0x155], 0x5f6f, ${fail}:rel + PC
-ae 3e e0 fe f6 39 30           # eac5 |   and [A*4 + -10], 0x3039, G
-ee e0 1c f8 9e 02 11 69 e5     # eacc |   jne [0x29e], 0x11, ${fail}:rel + PC
-a6 2a 21 e4 de fa              # ead5 |   ishr [A*4 + B], A*2, 0xfade + A
-ee e0 1c f8 63 03 01 5a e5     # eadb |   jne [0x363], 0x1, ${fail}:rel + PC
-b2 21 21 2a                    # eae4 |   or [A*2], A*2, A*4 + B
-ee e0 e0 f8 54 01 77 03 4d e5  # eae8 |   jne [0x154], 0x377, ${fail}:rel + PC
-ae 2a fe fe                    # eaf2 |   and [A*4 + B], G, G
-ee e0 e0 f8 63 03 55 01 3f e5  # eaf6 |   jne [0x363], 0x155, ${fail}:rel + PC
-aa 2a 3e 3e f6 f6              # eb00 |   shl [A*4 + B], A*4 + -10, A*4 + -10
-ee e0 e0 f8 63 03 00 80 2f e5  # eb06 |   jne [0x363], 0x8000, ${fail}:rel + PC
-86 3e 2a 1c f6 85              # eb10 |   sub [A*4 + -10], A*4 + B, -123
-ee e0 e0 f8 9e 02 de 03 1f e5  # eb16 |   jne [0x29e], 0x3de, ${fail}:rel + PC
-ae fe fe 1c 85                 # eb20 |   and [G], G, -123
-ee e0 e0 f8 55 01 05 01 10 e5  # eb25 |   jne [0x155], 0x105, ${fail}:rel + PC
-a6 21 3e 1c f6 85              # eb2f |   ishr [A*2], A*4 + -10, -123
-ee e0 1c f8 54 01 14 00 e5     # eb35 |   jne [0x154], 0x14, ${fail}:rel + PC
-b2 e0 21 fe 39 30              # eb3e |   or [0x3039], A*2, G
-ee e0 e0 f8 39 30 55 01 f1 e4  # eb44 |   jne [0x3039], 0x155, ${fail}:rel + PC
-b2 2a 20 21                    # eb4e |   or [A*4 + B], A, A*2
-ee e0 e0 f8 63 03 fe 01 e3 e4  # eb52 |   jne [0x363], 0x1fe, ${fail}:rel + PC
-a2 21 20 e0 39 30              # eb5c |   shr [A*2], A, 0x3039
-ee e0 00 f8 54 01 d3 e4        # eb62 |   jne [0x154], 0, ${fail}:rel + PC
-8e 3e 3e e4 f6 f6 de fa        # eb6a |   imul [A*4 + -10], A*4 + -10, 0xfade + A
-ee e0 e0 f8 9e 02 f0 4d c3 e4  # eb72 |   jne [0x29e], 0x4df0, ${fail}:rel + PC
-a2 2a 3e fe f6                 # eb7c |   shr [A*4 + B], A*4 + -10, G
-ee e0 1c f8 63 03 14 b4 e4     # eb81 |   jne [0x363], 0x14, ${fail}:rel + PC
-aa e0 2a 1c 39 30 85           # eb8a |   shl [0x3039], A*4 + B, -123
-ee e0 e0 f8 39 30 60 6c a4 e4  # eb91 |   jne [0x3039], 0x6c60, ${fail}:rel + PC
-86 e0 3e 20 39 30 f6           # eb9b |   sub [0x3039], A*4 + -10, A
-ee e0 e0 f8 39 30 f4 01 93 e4  # eba2 |   jne [0x3039], 0x1f4, ${fail}:rel + PC
-86 fe 3e fe f6                 # ebac |   sub [G], A*4 + -10, G
-ee e0 e0 f8 55 01 49 01 84 e4  # ebb1 |   jne [0x155], 0x149, ${fail}:rel + PC
-b6 20 20 2a                    # ebbb |   xor [A], A, A*4 + B
-ee e0 e0 f8 aa 00 c9 03 76 e4  # ebbf |   jne [0xaa], 0x3c9, ${fail}:rel + PC
-a2 20 21 21                    # ebc9 |   shr [A], A*2, A*2
-ee e0 1c f8 aa 00 15 68 e4     # ebcd |   jne [0xaa], 0x15, ${fail}:rel + PC
-82 2a e0 21 39 30              # ebd6 |   add [A*4 + B], 0x3039, A*2
-ee e0 e0 f8 63 03 8d 31 59 e4  # ebdc |   jne [0x363], 0x318d, ${fail}:rel + PC
-82 fe 2a 2a                    # ebe6 |   add [G], A*4 + B, A*4 + B
-ee e0 e0 f8 55 01 c6 06 4b e4  # ebea |   jne [0x155], 0x6c6, ${fail}:rel + PC
-aa 2a 2a 3e f6                 # ebf4 |   shl [A*4 + B], A*4 + B, A*4 + -10
-ee e0 e0 f8 63 03 00 c0 3c e4  # ebf9 |   jne [0x363], 0xc000, ${fail}:rel + PC
-b6 3e 2a 20 f6                 # ec03 |   xor [A*4 + -10], A*4 + B, A
-ee e0 e0 f8 9e 02 c9 03 2d e4  # ec08 |   jne [0x29e], 0x3c9, ${fail}:rel + PC
-8a 20 e4 1c de fa 85           # ec12 |   mul [A], 0xfade + A, -123
-ee e0 e0 f8 aa 00 a8 25 1c e4  # ec19 |   jne [0xaa], 0x25a8, ${fail}:rel + PC
-ae 3e e0 e4 f6 39 30 de fa     # ec23 |   and [A*4 + -10], 0x3039, 0xfade + A
-ee e0 e0 f8 9e 02 08 30 09 e4  # ec2c |   jne [0x29e], 0x3008, ${fail}:rel + PC
-82 20 fe 21                    # ec36 |   add [A], G, A*2
-ee e0 e0 f8 aa 00 a9 02 fb e3  # ec3a |   jne [0xaa], 0x2a9, ${fail}:rel + PC
-86 fe e4 fe de fa              # ec44 |   sub [G], 0xfade + A, G
-ee e0 e0 f8 55 01 33 fa eb e3  # ec4a |   jne [0x155], 0xfa33, ${fail}:rel + PC
-a2 e0 3e e4 39 30 f6 de fa     # ec54 |   shr [0x3039], A*4 + -10, 0xfade + A
-ee e0 1c f8 39 30 02 d8 e3     # ec5d |   jne [0x3039], 0x2, ${fail}:rel + PC
-a2 3e 21 2a f6                 # ec66 |   shr [A*4 + -10], A*2, A*4 + B
-ee e0 1c f8 9e 02 2a ca e3     # ec6b |   jne [0x29e], 0x2a, ${fail}:rel + PC
-a2 fe 20 2a                    # ec74 |   shr [G], A, A*4 + B
-ee e0 1c f8 55 01 15 bd e3     # ec78 |   jne [0x155], 0x15, ${fail}:rel + PC
-8e 2a fe 21                    # ec81 |   imul [A*4 + B], G, A*2
-ee e0 e0 f8 63 03 e4 c4 b0 e3  # ec85 |   jne [0x363], 0xc4e4, ${fail}:rel + PC
-8a 3e e4 e4 f6 de fa de fa     # ec8f |   mul [A*4 + -10], 0xfade + A, 0xfade + A
-ee e0 e0 f8 9e 02 40 f8 9d e3  # ec98 |   jne [0x29e], 0xf840, ${fail}:rel + PC
-82 3e 2a e0 f6 39 30           # eca2 |   add [A*4 + -10], A*4 + B, 0x3039
-ee e0 e0 f8 9e 02 9c 33 8c e3  # eca9 |   jne [0x29e], 0x339c, ${fail}:rel + PC
-b6 2a fe 3e f6                 # ecb3 |   xor [A*4 + B], G, A*4 + -10
-ee e0 e0 f8 63 03 cb 03 7d e3  # ecb8 |   jne [0x363], 0x3cb, ${fail}:rel + PC
-b6 21 e4 20 de fa              # ecc2 |   xor [A*2], 0xfade + A, A
-ee e0 e0 f8 54 01 22 fb 6d e3  # ecc8 |   jne [0x154], 0xfb22, ${fail}:rel + PC
-a2 e0 e0 21 39 30 39 30        # ecd2 |   shr [0x3039], 0x3039, A*2
-ee e0 e0 f8 39 30 03 03 5b e3  # ecda |   jne [0x3039], 0x303, ${fail}:rel + PC
-8e 2a fe e0 39 30              # ece4 |   imul [A*4 + B], G, 0x3039
-ee e0 e0 f8 63 03 ed 3b 4b e3  # ecea |   jne [0x363], 0x3bed, ${fail}:rel + PC
-b6 e0 1c 21 39 30 85           # ecf4 |   xor [0x3039], -123, A*2
-ee e0 e0 f8 39 30 d1 fe 3a e3  # ecfb |   jne [0x3039], 0xfed1, ${fail}:rel + PC
-86 e0 fe e4 39 30 de fa        # ed05 |   sub [0x3039], G, 0xfade + A
-ee e0 e0 f8 39 30 cd 05 28 e3  # ed0d |   jne [0x3039], 0x5cd, ${fail}:rel + PC
-b6 20 21 e4 de fa              # ed17 |   xor [A], A*2, 0xfade + A
-ee e0 e0 f8 aa 00 dc fa 18 e3  # ed1d |   jne [0xaa], 0xfadc, ${fail}:rel + PC
-8a 21 3e e0 f6 39 30           # ed27 |   mul [A*2], A*4 + -10, 0x3039
-ee e0 e0 f8 54 01 2e 35 07 e3  # ed2e |   jne [0x154], 0x352e, ${fail}:rel + PC
-aa 2a 21 20                    # ed38 |   shl [A*4 + B], A*2, A
-ee e0 e0 f8 63 03 00 50 f9 e2  # ed3c |   jne [0x363], 0x5000, ${fail}:rel + PC
-ae fe 1c e4 85 de fa           # ed46 |   and [G], -123, 0xfade + A
-ee e0 e0 f8 55 01 80 fb e8 e2  # ed4d |   jne [0x155], 0xfb80, ${fail}:rel + PC
-a2 20 20 21                    # ed57 |   shr [A], A, A*2
-ee e0 1c f8 aa 00 0a da e2     # ed5b |   jne [0xaa], 0xa, ${fail}:rel + PC
-b6 3e 20 3e f6 f6              # ed64 |   xor [A*4 + -10], A, A*4 + -10
-ee e0 e0 f8 9e 02 34 02 cb e2  # ed6a |   jne [0x29e], 0x234, ${fail}:rel + PC
-aa 3e 3e 21 f6 f6              # ed74 |   shl [A*4 + -10], A*4 + -10, A*2
-ee e0 e0 f8 9e 02 e0 29 bb e2  # ed7a |   jne [0x29e], 0x29e0, ${fail}:rel + PC
-8a 20 3e 1c f6 85              # ed84 |   mul [A], A*4 + -10, -123
-ee e0 e0 f8 aa 00 16 be ab e2  # ed8a |   jne [0xaa], 0xbe16, ${fail}:rel + PC
-b2 fe fe e0 39 30              # ed94 |   or [G], G, 0x3039
-ee e0 e0 f8 55 01 7d 31 9b e2  # ed9a |   jne [0x155], 0x317d, ${fail}:rel + PC
-a2 2a e4 3e de fa f6           # eda4 |   shr [A*4 + B], 0xfade + A, A*4 + -10
-ee e0 1c f8 63 03 03 8a e2     # edab |   jne [0x363], 0x3, ${fail}:rel + PC
-8a 2a 20 e0 39 30              # edb4 |   mul [A*4 + B], A, 0x3039
-ee e0 e0 f8 63 03 da 05 7b e2  # edba |   jne [0x363], 0x5da, ${fail}:rel + PC
-ae 3e 21 e0 f6 39 30           # edc4 |   and [A*4 + -10], A*2, 0x3039
-ee e0 1c f8 9e 02 10 6a e2     # edcb |   jne [0x29e], 0x10, ${fail}:rel + PC
-ae e0 20 2a 39 30              # edd4 |   and [0x3039], A, A*4 + B
-ee e0 1c f8 39 30 22 5b e2     # edda |   jne [0x3039], 0x22, ${fail}:rel + PC
-8e fe 2a fe                    # ede3 |   imul [G], A*4 + B, G
-ee e0 e0 f8 55 01 df 82 4e e2  # ede7 |   jne [0x155], 0x82df, ${fail}:rel + PC
-86 e0 fe 2a 39 30              # edf1 |   sub [0x3039], G, A*4 + B
-ee e0 e0 f8 39 30 f2 fd 3e e2  # edf7 |   jne [0x3039], 0xfdf2, ${fail}:rel + PC
-a2 2a fe 2a                    # ee01 |   shr [A*4 + B], G, A*4 + B
-ee e0 1c f8 63 03 2a 30 e2     # ee05 |   jne [0x363], 0x2a, ${fail}:rel + PC
-b2 3e fe fe f6                 # ee0e |   or [A*4 + -10], G, G
-ee e0 e0 f8 9e 02 55 01 22 e2  # ee13 |   jne [0x29e], 0x155, ${fail}:rel + PC
-b6 21 20 fe                    # ee1d |   xor [A*2], A, G
-ee e0 e0 f8 54 01 ff 01 14 e2  # ee21 |   jne [0x154], 0x1ff, ${fail}:rel + PC
-a2 fe 3e 1c f6 85              # ee2b |   shr [G], A*4 + -10, -123
-ee e0 1c f8 55 01 14 04 e2     # ee31 |   jne [0x155], 0x14, ${fail}:rel + PC
-a6 e0 fe 20 39 30              # ee3a |   ishr [0x3039], G, A
-ee e0 00 f8 39 30 f5 e1        # ee40 |   jne [0x3039], 0, ${fail}:rel + PC
-8a 21 1c e4 85 de fa           # ee48 |   mul [A*2], -123, 0xfade + A
-ee e0 e0 f8 54 01 a8 25 e6 e1  # ee4f |   jne [0x154], 0x25a8, ${fail}:rel + PC
-b2 21 e4 e0 de fa 39 30        # ee59 |   or [A*2], 0xfade + A, 0x3039
-ee e0 e0 f8 54 01 b9 fb d4 e1  # ee61 |   jne [0x154], 0xfbb9, ${fail}:rel + PC
-8e 2a e0 e4 39 30 de fa        # ee6b |   imul [A*4 + B], 0x3039, 0xfade + A
-ee e0 e0 f8 63 03 48 81 c2 e1  # ee73 |   jne [0x363], 0x8148, ${fail}:rel + PC
-b2 3e fe 1c f6 85              # ee7d |   or [A*4 + -10], G, -123
-ee e0 1c f8 9e 02 d5 b2 e1     # ee83 |   jne [0x29e], 0xd5, ${fail}:rel + PC
-a6 3e 21 20 f6                 # ee8c |   ishr [A*4 + -10], A*2, A
-ee e0 00 f8 9e 02 a4 e1        # ee91 |   jne [0x29e], 0, ${fail}:rel + PC
-ae 21 2a 1c 85                 # ee99 |   and [A*2], A*4 + B, -123
-ee e0 e0 f8 54 01 01 03 97 e1  # ee9e |   jne [0x154], 0x301, ${fail}:rel + PC
-b2 20 21 3e f6                 # eea8 |   or [A], A*2, A*4 + -10
-ee e0 e0 f8 aa 00 de 03 88 e1  # eead |   jne [0xaa], 0x3de, ${fail}:rel + PC
-82 fe 3e 20 f6                 # eeb7 |   add [G], A*4 + -10, A
-ee e0 e0 f8 55 01 48 03 79 e1  # eebc |   jne [0x155], 0x348, ${fail}:rel + PC
-aa 3e 20 e0 f6 39 30           # eec6 |   shl [A*4 + -10], A, 0x3039
-ee e0 e0 f8 9e 02 00 54 68 e1  # eecd |   jne [0x29e], 0x5400, ${fail}:rel + PC
-aa 20 e4 e4 de fa de fa        # eed7 |   shl [A], 0xfade + A, 0xfade + A
-ee e0 e0 f8 aa 00 00 88 56 e1  # eedf |   jne [0xaa], 0x8800, ${fail}:rel + PC
-8e fe 3e e0 f6 39 30           # eee9 |   imul [G], A*4 + -10, 0x3039
-ee e0 e0 f8 55 01 2e 35 45 e1  # eef0 |   jne [0x155], 0x352e, ${fail}:rel + PC
-82 e0 1c 1c 39 30 85 85        # eefa |   add [0x3039], -123, -123
-ee e0 e0 f8 39 30 0a ff 33 e1  # ef02 |   jne [0x3039], 0xff0a, ${fail}:rel + PC
-86 21 3e fe f6                 # ef0c |   sub [A*2], A*4 + -10, G
-ee e0 e0 f8 54 01 49 01 24 e1  # ef11 |   jne [0x154], 0x149, ${fail}:rel + PC
-a6 20 e4 fe de fa              # ef1b |   ishr [A], 0xfade + A, G
-ee e0 1c f8 aa 00 dc 14 e1     # ef21 |   jne [0xaa], 0xdc, ${fail}:rel + PC
-b6 20 e4 e0 de fa 39 30        # ef2a |   xor [A], 0xfade + A, 0x3039
-ee e0 e0 f8 aa 00 b1 cb 03 e1  # ef32 |   jne [0xaa], 0xcbb1, ${fail}:rel + PC
-86 fe 21 e4 de fa              # ef3c |   sub [G], A*2, 0xfade + A
-ee e0 e0 f8 55 01 cc 05 f3 e0  # ef42 |   jne [0x155], 0x5cc, ${fail}:rel + PC
-82 2a e0 e0 39 30 39 30        # ef4c |   add [A*4 + B], 0x3039, 0x3039
-ee e0 e0 f8 63 03 72 60 e1 e0  # ef54 |   jne [0x363], 0x6072, ${fail}:rel + PC
-86 3e 1c e4 f6 85 de fa        # ef5e |   sub [A*4 + -10], -123, 0xfade + A
-ee e0 e0 f8 9e 02 fd 03 cf e0  # ef66 |   jne [0x29e], 0x3fd, ${fail}:rel + PC
-82 21 21 3e f6                 # ef70 |   add [A*2], A*2, A*4 + -10
-ee e0 e0 f8 54 01 f2 03 c0 e0  # ef75 |   jne [0x154], 0x3f2, ${fail}:rel + PC
-a2 20 e0 1c 39 30 85           # ef7f |   shr [A], 0x3039, -123
-ee e0 e0 f8 aa 00 81 01 af e0  # ef86 |   jne [0xaa], 0x181, ${fail}:rel + PC
-8e 21 20 3e f6                 # ef90 |   imul [A*2], A, A*4 + -10
-ee e0 e0 f8 54 01 ec bc a0 e0  # ef95 |   jne [0x154], 0xbcec, ${fail}:rel + PC
-b2 3e fe e4 f6 de fa           # ef9f |   or [A*4 + -10], G, 0xfade + A
-ee e0 e0 f8 9e 02 dd fb 8f e0  # efa6 |   jne [0x29e], 0xfbdd, ${fail}:rel + PC
-a6 fe 20 1c 85                 # efb0 |   ishr [G], A, -123
-ee e0 1c f8 55 01 05 80 e0     # efb5 |   jne [0x155], 0x5, ${fail}:rel + PC
-a6 21 20 e4 de fa              # efbe |   ishr [A*2], A, 0xfade + A
-ee e0 00 f8 54 01 71 e0        # efc4 |   jne [0x154], 0, ${fail}:rel + PC
-a2 e0 1c 20 39 30 85           # efcc |   shr [0x3039], -123, A
-ee e0 1c f8 39 30 3f 62 e0     # efd3 |   jne [0x3039], 0x3f, ${fail}:rel + PC
-8e 20 20 3e f6                 # efdc |   imul [A], A, A*4 + -10
-ee e0 e0 f8 aa 00 ec bc 54 e0  # efe1 |   jne [0xaa], 0xbcec, ${fail}:rel + PC
-82 2a e4 fe de fa              # efeb |   add [A*4 + B], 0xfade + A, G
-ee e0 e0 f8 63 03 dd fc 44 e0  # eff1 |   jne [0x363], 0xfcdd, ${fail}:rel + PC
-b6 fe e0 3e 39 30 f6           # effb |   xor [G], 0x3039, A*4 + -10
-ee e0 e0 f8 55 01 a7 32 33 e0  # f002 |   jne [0x155], 0x32a7, ${fail}:rel + PC
-8e 20 e0 2a 39 30              # f00c |   imul [A], 0x3039, A*4 + B
-ee e0 e0 f8 aa 00 0b 51 23 e0  # f012 |   jne [0xaa], 0x510b, ${fail}:rel + PC
-b2 3e e4 fe f6 de fa           # f01c |   or [A*4 + -10], 0xfade + A, G
-ee e0 e0 f8 9e 02 dd fb 12 e0  # f023 |   jne [0x29e], 0xfbdd, ${fail}:rel + PC
-86 21 1c 21 85                 # f02d |   sub [A*2], -123, A*2
-ee e0 e0 f8 54 01 31 fe 03 e0  # f032 |   jne [0x154], 0xfe31, ${fail}:rel + PC
-b2 2a 21 21                    # f03c |   or [A*4 + B], A*2, A*2
-ee e0 e0 f8 63 03 54 01 f5 df  # f040 |   jne [0x363], 0x154, ${fail}:rel + PC
-8e e0 20 3e 39 30 f6           # f04a |   imul [0x3039], A, A*4 + -10
-ee e0 e0 f8 39 30 ec bc e4 df  # f051 |   jne [0x3039], 0xbcec, ${fail}:rel + PC
-a6 3e e4 2a f6 de fa           # f05b |   ishr [A*4 + -10], 0xfade + A, A*4 + B
-ee e0 e0 f8 9e 02 71 ff d3 df  # f062 |   jne [0x29e], 0xff71, ${fail}:rel + PC
-ae e0 20 e4 39 30 de fa        # f06c |   and [0x3039], A, 0xfade + A
-ee e0 e0 f8 39 30 88 00 c1 df  # f074 |   jne [0x3039], 0x88, ${fail}:rel + PC
-a6 20 fe fe                    # f07e |   ishr [A], G, G
-ee e0 1c f8 aa 00 0a b3 df     # f082 |   jne [0xaa], 0xa, ${fail}:rel + PC
-8e 20 3e 20 f6                 # f08b |   imul [A], A*4 + -10, A
-ee e0 e0 f8 aa 00 ec bc a5 df  # f090 |   jne [0xaa], 0xbcec, ${fail}:rel + PC
-b2 e0 3e fe 39 30 f6           # f09a |   or [0x3039], A*4 + -10, G
-ee e0 e0 f8 39 30 df 03 94 df  # f0a1 |   jne [0x3039], 0x3df, ${fail}:rel + PC
-82 21 e0 e4 39 30 de fa        # f0ab |   add [A*2], 0x3039, 0xfade + A
-ee e0 e0 f8 54 01 c1 2b 82 df  # f0b3 |   jne [0x154], 0x2bc1, ${fail}:rel + PC
-82 e0 1c e4 39 30 85 de fa     # f0bd |   add [0x3039], -123, 0xfade + A
-ee e0 e0 f8 39 30 0d fb 6f df  # f0c6 |   jne [0x3039], 0xfb0d, ${fail}:rel + PC
-b2 fe 20 21                    # f0d0 |   or [G], A, A*2
-ee e0 e0 f8 55 01 fe 01 61 df  # f0d4 |   jne [0x155], 0x1fe, ${fail}:rel + PC
-aa 21 2a 21                    # f0de |   shl [A*2], A*4 + B, A*2
-ee e0 e0 f8 54 01 30 36 53 df  # f0e2 |   jne [0x154], 0x3630, ${fail}:rel + PC
-82 e0 2a e0 39 30 39 30        # f0ec |   add [0x3039], A*4 + B, 0x3039
-ee e0 e0 f8 39 30 9c 33 41 df  # f0f4 |   jne [0x3039], 0x339c, ${fail}:rel + PC
-ae 2a 20 1c 85                 # f0fe |   and [A*4 + B], A, -123
-ee e0 e0 f8 63 03 80 00 32 df  # f103 |   jne [0x363], 0x80, ${fail}:rel + PC
-b6 e0 20 1c 39 30 85           # f10d |   xor [0x3039], A, -123
-ee e0 e0 f8 39 30 2f ff 21 df  # f114 |   jne [0x3039], 0xff2f, ${fail}:rel + PC
-ae 21 fe e0 39 30              # f11e |   and [A*2], G, 0x3039
-ee e0 1c f8 54 01 11 11 df     # f124 |   jne [0x154], 0x11, ${fail}:rel + PC
-ae 3e fe 3e f6 f6              # f12d |   and [A*4 + -10], G, A*4 + -10
-ee e0 1c f8 9e 02 14 02 df     # f133 |   jne [0x29e], 0x14, ${fail}:rel + PC
-8a 3e 2a 2a f6                 # f13c |   mul [A*4 + -10], A*4 + B, A*4 + B
-ee e0 e0 f8 9e 02 49 78 f4 de  # f141 |   jne [0x29e], 0x7849, ${fail}:rel + PC
-82 20 3e e0 f6 39 30           # f14b |   add [A], A*4 + -10, 0x3039
-ee e0 e0 f8 aa 00 d7 32 e3 de  # f152 |   jne [0xaa], 0x32d7, ${fail}:rel + PC
-82 21 e0 3e 39 30 f6           # f15c |   add [A*2], 0x3039, A*4 + -10
-ee e0 e0 f8 54 01 d7 32 d2 de  # f163 |   jne [0x154], 0x32d7, ${fail}:rel + PC
-b6 21 3e 3e f6 f6              # f16d |   xor [A*2], A*4 + -10, A*4 + -10
-ee e0 00 f8 54 01 c2 de        # f173 |   jne [0x154], 0, ${fail}:rel + PC
-a6 e0 20 20 39 30              # f17b |   ishr [0x3039], A, A
-ee e0 00 f8 39 30 b4 de        # f181 |   jne [0x3039], 0, ${fail}:rel + PC
-a6 e0 e0 3e 39 30 39 30 f6     # f189 |   ishr [0x3039], 0x3039, A*4 + -10
-ee e0 00 f8 39 30 a3 de        # f192 |   jne [0x3039], 0, ${fail}:rel + PC
-aa 20 1c 21 85                 # f19a |   shl [A], -123, A*2
-ee e0 e0 f8 aa 00 50 f8 96 de  # f19f |   jne [0xaa], 0xf850, ${fail}:rel + PC
-ae e0 21 e4 39 30 de fa        # f1a9 |   and [0x3039], A*2, 0xfade + A
-ee e0 e0 f8 39 30 00 01 84 de  # f1b1 |   jne [0x3039], 0x100, ${fail}:rel + PC
-b2 3e 1c 20 f6 85              # f1bb |   or [A*4 + -10], -123, A
-ee e0 1c f8 9e 02 af 74 de     # f1c1 |   jne [0x29e], 0xaf, ${fail}:rel + PC
-8e 21 1c 20 85                 # f1ca |   imul [A*2], -123, A
-ee e0 e0 f8 54 01 52 ae 66 de  # f1cf |   jne [0x154], 0xae52, ${fail}:rel + PC
-8a 2a 2a 2a                    # f1d9 |   mul [A*4 + B], A*4 + B, A*4 + B
-ee e0 e0 f8 63 03 49 78 58 de  # f1dd |   jne [0x363], 0x7849, ${fail}:rel + PC
-86 2a 2a e0 39 30              # f1e7 |   sub [A*4 + B], A*4 + B, 0x3039
-ee e0 e0 f8 63 03 2a d3 48 de  # f1ed |   jne [0x363], 0xd32a, ${fail}:rel + PC
-ae fe 1c 21 85                 # f1f7 |   and [G], -123, A*2
-ee e0 e0 f8 55 01 04 01 39 de  # f1fc |   jne [0x155], 0x104, ${fail}:rel + PC
-8e 21 e4 1c de fa 85           # f206 |   imul [A*2], 0xfade + A, -123
-ee e0 e0 f8 54 01 a8 25 28 de  # f20d |   jne [0x154], 0x25a8, ${fail}:rel + PC
-8a 21 21 e4 de fa              # f217 |   mul [A*2], A*2, 0xfade + A
-ee e0 e0 f8 54 01 a0 10 18 de  # f21d |   jne [0x154], 0x10a0, ${fail}:rel + PC
-86 fe e0 fe 39 30              # f227 |   sub [G], 0x3039, G
-ee e0 e0 f8 55 01 e4 2e 08 de  # f22d |   jne [0x155], 0x2ee4, ${fail}:rel + PC
-62 20 1c 85                    # f237 |   mov [A], -123
-ee e0 1c f8 aa 00 85 fa dd     # f23b |   jne [0xaa], 0x85, ${fail}:rel + PC
-62 3e 3e f6 f6                 # f244 |   mov [A*4 + -10], A*4 + -10
-ee e0 e0 f8 9e 02 9e 02 ec dd  # f249 |   jne [0x29e], 0x29e, ${fail}:rel + PC
-62 21 2a                       # f253 |   mov [A*2], A*4 + B
-ee e0 e0 f8 54 01 63 03 df dd  # f256 |   jne [0x154], 0x363, ${fail}:rel + PC
-62 e0 1c 39 30 85              # f260 |   mov [0x3039], -123
-ee e0 1c f8 39 30 85 cf dd     # f266 |   jne [0x3039], 0x85, ${fail}:rel + PC
-62 fe 3e f6                    # f26f |   mov [G], A*4 + -10
-ee e0 e0 f8 55 01 9e 02 c2 dd  # f273 |   jne [0x155], 0x29e, ${fail}:rel + PC
-62 e0 fe 39 30                 # f27d |   mov [0x3039], G
-ee e0 e0 f8 39 30 55 01 b3 dd  # f282 |   jne [0x3039], 0x155, ${fail}:rel + PC
-62 fe 21                       # f28c |   mov [G], A*2
-ee e0 e0 f8 55 01 54 01 a6 dd  # f28f |   jne [0x155], 0x154, ${fail}:rel + PC
-62 3e e4 f6 de fa              # f299 |   mov [A*4 + -10], 0xfade + A
-ee e0 e0 f8 9e 02 88 fb 96 dd  # f29f |   jne [0x29e], 0xfb88, ${fail}:rel + PC
-62 e0 e0 39 30 39 30           # f2a9 |   mov [0x3039], 0x3039
-ee e0 e0 f8 39 30 39 30 85 dd  # f2b0 |   jne [0x3039], 0x3039, ${fail}:rel + PC
-62 3e fe f6                    # f2ba |   mov [A*4 + -10], G
-ee e0 e0 f8 9e 02 55 01 77 dd  # f2be |   jne [0x29e], 0x155, ${fail}:rel + PC
-62 20 fe                       # f2c8 |   mov [A], G
-ee e0 e0 f8 aa 00 55 01 6a dd  # f2cb |   jne [0xaa], 0x155, ${fail}:rel + PC
-62 2a 2a                       # f2d5 |   mov [A*4 + B], A*4 + B
-ee e0 e0 f8 63 03 63 03 5d dd  # f2d8 |   jne [0x363], 0x363, ${fail}:rel + PC
-62 3e 2a f6                    # f2e2 |   mov [A*4 + -10], A*4 + B
-ee e0 e0 f8 9e 02 63 03 4f dd  # f2e6 |   jne [0x29e], 0x363, ${fail}:rel + PC
-62 2a 20                       # f2f0 |   mov [A*4 + B], A
-ee e0 e0 f8 63 03 aa 00 42 dd  # f2f3 |   jne [0x363], 0xaa, ${fail}:rel + PC
-62 3e 20 f6                    # f2fd |   mov [A*4 + -10], A
-ee e0 e0 f8 9e 02 aa 00 34 dd  # f301 |   jne [0x29e], 0xaa, ${fail}:rel + PC
-62 20 20                       # f30b |   mov [A], A
-ee e0 e0 f8 aa 00 aa 00 27 dd  # f30e |   jne [0xaa], 0xaa, ${fail}:rel + PC
-62 2a e4 de fa                 # f318 |   mov [A*4 + B], 0xfade + A
-ee e0 e0 f8 63 03 88 fb 18 dd  # f31d |   jne [0x363], 0xfb88, ${fail}:rel + PC
-62 21 1c 85                    # f327 |   mov [A*2], -123
-ee e0 1c f8 54 01 85 0a dd     # f32b |   jne [0x154], 0x85, ${fail}:rel + PC
-62 2a e0 39 30                 # f334 |   mov [A*4 + B], 0x3039
-ee e0 e0 f8 63 03 39 30 fc dc  # f339 |   jne [0x363], 0x3039, ${fail}:rel + PC
-62 3e 1c f6 85                 # f343 |   mov [A*4 + -10], -123
-ee e0 1c f8 9e 02 85 ed dc     # f348 |   jne [0x29e], 0x85, ${fail}:rel + PC
-62 3e 21 f6                    # f351 |   mov [A*4 + -10], A*2
-ee e0 e0 f8 9e 02 54 01 e0 dc  # f355 |   jne [0x29e], 0x154, ${fail}:rel + PC
-62 21 3e f6                    # f35f |   mov [A*2], A*4 + -10
-ee e0 e0 f8 54 01 9e 02 d2 dc  # f363 |   jne [0x154], 0x29e, ${fail}:rel + PC
-62 e0 21 39 30                 # f36d |   mov [0x3039], A*2
-ee e0 e0 f8 39 30 54 01 c3 dc  # f372 |   jne [0x3039], 0x154, ${fail}:rel + PC
-62 21 fe                       # f37c |   mov [A*2], G
-ee e0 e0 f8 54 01 55 01 b6 dc  # f37f |   jne [0x154], 0x155, ${fail}:rel + PC
-62 2a fe                       # f389 |   mov [A*4 + B], G
-ee e0 e0 f8 63 03 55 01 a9 dc  # f38c |   jne [0x363], 0x155, ${fail}:rel + PC
-62 21 e4 de fa                 # f396 |   mov [A*2], 0xfade + A
-ee e0 e0 f8 54 01 88 fb 9a dc  # f39b |   jne [0x154], 0xfb88, ${fail}:rel + PC
-62 20 3e f6                    # f3a5 |   mov [A], A*4 + -10
-ee e0 e0 f8 aa 00 9e 02 8c dc  # f3a9 |   jne [0xaa], 0x29e, ${fail}:rel + PC
-62 e0 3e 39 30 f6              # f3b3 |   mov [0x3039], A*4 + -10
-ee e0 e0 f8 39 30 9e 02 7c dc  # f3b9 |   jne [0x3039], 0x29e, ${fail}:rel + PC
-62 2a 3e f6                    # f3c3 |   mov [A*4 + B], A*4 + -10
-ee e0 e0 f8 63 03 9e 02 6e dc  # f3c7 |   jne [0x363], 0x29e, ${fail}:rel + PC
-62 e0 e4 39 30 de fa           # f3d1 |   mov [0x3039], 0xfade + A
-ee e0 e0 f8 39 30 88 fb 5d dc  # f3d8 |   jne [0x3039], 0xfb88, ${fail}:rel + PC
-62 21 e0 39 30                 # f3e2 |   mov [A*2], 0x3039
-ee e0 e0 f8 54 01 39 30 4e dc  # f3e7 |   jne [0x154], 0x3039, ${fail}:rel + PC
-62 fe 1c 85                    # f3f1 |   mov [G], -123
-ee e0 1c f8 55 01 85 40 dc     # f3f5 |   jne [0x155], 0x85, ${fail}:rel + PC
-62 e0 2a 39 30                 # f3fe |   mov [0x3039], A*4 + B
-ee e0 e0 f8 39 30 63 03 32 dc  # f403 |   jne [0x3039], 0x363, ${fail}:rel + PC
-62 fe e4 de fa                 # f40d |   mov [G], 0xfade + A
-ee e0 e0 f8 55 01 88 fb 23 dc  # f412 |   jne [0x155], 0xfb88, ${fail}:rel + PC
-62 20 e0 39 30                 # f41c |   mov [A], 0x3039
-ee e0 e0 f8 aa 00 39 30 14 dc  # f421 |   jne [0xaa], 0x3039, ${fail}:rel + PC
-62 20 21                       # f42b |   mov [A], A*2
-ee e0 e0 f8 aa 00 54 01 07 dc  # f42e |   jne [0xaa], 0x154, ${fail}:rel + PC
-62 3e e0 f6 39 30              # f438 |   mov [A*4 + -10], 0x3039
-ee e0 e0 f8 9e 02 39 30 f7 db  # f43e |   jne [0x29e], 0x3039, ${fail}:rel + PC
-62 fe 20                       # f448 |   mov [G], A
-ee e0 e0 f8 55 01 aa 00 ea db  # f44b |   jne [0x155], 0xaa, ${fail}:rel + PC
-62 21 20                       # f455 |   mov [A*2], A
-ee e0 e0 f8 54 01 aa 00 dd db  # f458 |   jne [0x154], 0xaa, ${fail}:rel + PC
-62 fe fe                       # f462 |   mov [G], G
-ee e0 e0 f8 55 01 55 01 d0 db  # f465 |   jne [0x155], 0x155, ${fail}:rel + PC
-62 20 2a                       # f46f |   mov [A], A*4 + B
-ee e0 e0 f8 aa 00 63 03 c3 db  # f472 |   jne [0xaa], 0x363, ${fail}:rel + PC
-62 2a 1c 85                    # f47c |   mov [A*4 + B], -123
-ee e0 1c f8 63 03 85 b5 db     # f480 |   jne [0x363], 0x85, ${fail}:rel + PC
-62 2a 21                       # f489 |   mov [A*4 + B], A*2
-ee e0 e0 f8 63 03 54 01 a9 db  # f48c |   jne [0x363], 0x154, ${fail}:rel + PC
-62 e0 20 39 30                 # f496 |   mov [0x3039], A
-ee e0 e0 f8 39 30 aa 00 9a db  # f49b |   jne [0x3039], 0xaa, ${fail}:rel + PC
-62 fe e0 39 30                 # f4a5 |   mov [G], 0x3039
-ee e0 e0 f8 55 01 39 30 8b db  # f4aa |   jne [0x155], 0x3039, ${fail}:rel + PC
-62 21 21                       # f4b4 |   mov [A*2], A*2
-ee e0 e0 f8 54 01 54 01 7e db  # f4b7 |   jne [0x154], 0x154, ${fail}:rel + PC
-62 fe 2a                       # f4c1 |   mov [G], A*4 + B
-ee e0 e0 f8 55 01 63 03 71 db  # f4c4 |   jne [0x155], 0x363, ${fail}:rel + PC
-62 20 e4 de fa                 # f4ce |   mov [A], 0xfade + A
-ee e0 e0 f8 aa 00 88 fb 62 db  # f4d3 |   jne [0xaa], 0xfb88, ${fail}:rel + PC
-e0 2a                          # f4dd |   push A*4 + B
-e4 80                          # f4df |   pop D
-ec 80 e0 f8 63 03 54 db        # f4e1 |   jne D, 0x363, ${fail}:rel + PC
-e0 1c 85                       # f4e9 |   push -123
-e4 80                          # f4ec |   pop D
-ec 80 1c f8 85 47 db           # f4ee |   jne D, 0x85, ${fail}:rel + PC
-e0 fe                          # f4f5 |   push G
-e4 80                          # f4f7 |   pop D
-ec 80 e0 f8 55 01 3c db        # f4f9 |   jne D, 0x155, ${fail}:rel + PC
-e0 3e f6                       # f501 |   push A*4 + -10
-e4 80                          # f504 |   pop D
-ec 80 e0 f8 9e 02 2f db        # f506 |   jne D, 0x29e, ${fail}:rel + PC
-e0 20                          # f50e |   push A
-e4 80                          # f510 |   pop D
-ec 80 e0 f8 aa 00 23 db        # f512 |   jne D, 0xaa, ${fail}:rel + PC
-e0 e4 de fa                    # f51a |   push 0xfade + A
-e4 80                          # f51e |   pop D
-ec 80 e0 f8 88 fb 15 db        # f520 |   jne D, 0xfb88, ${fail}:rel + PC
-e0 21                          # f528 |   push A*2
-e4 80                          # f52a |   pop D
-ec 80 e0 f8 54 01 09 db        # f52c |   jne D, 0x154, ${fail}:rel + PC
-e0 e0 39 30                    # f534 |   push 0x3039
-e4 80                          # f538 |   pop D
-ec 80 e0 f8 39 30 fb da        # f53a |   jne D, 0x3039, ${fail}:rel + PC
-5c f8 10 00                    # f542 |   call ${_L_test_uop_get_arg_1}:rel + PC
-ec 60 e0 f8 fe ad ef da        # f546 |   jne C, 0xadfe, ${fail}:rel + PC
-58 f8 0e 00                    # f54e |   jmp ${_L_test_uop_get_arg_2}:rel + PC
+60 a0 e0 00 70                 # dad7 |   mov SP, 0x7000
+60 20 e0 aa 00                 # dadc |   mov A, 0xaa
+60 40 e0 bb 00                 # dae1 |   mov B, 0xbb
+60 fe e0 55 01                 # dae6 |   mov G, 0x155
+b6 e0 1c fe 39 30 85           # daeb |   xor [0x3039], -123, G
+ee e0 e0 f8 39 30 d0 fe 43 f5  # daf2 |   jne [0x3039], 0xfed0, ${fail}:rel + PC
+ae 3e fe 21 f6                 # dafc |   and [A*4 + -10], G, A*2
+ee e0 e0 f8 9e 02 54 01 34 f5  # db01 |   jne [0x29e], 0x154, ${fail}:rel + PC
+86 21 e4 3e de fa f6           # db0b |   sub [A*2], 0xfade + A, A*4 + -10
+ee e0 e0 f8 54 01 ea f8 23 f5  # db12 |   jne [0x154], 0xf8ea, ${fail}:rel + PC
+a6 e0 20 21 39 30              # db1c |   ishr [0x3039], A, A*2
+ee e0 1c f8 39 30 0a 13 f5     # db22 |   jne [0x3039], 0xa, ${fail}:rel + PC
+aa fe 2a 3e f6                 # db2b |   shl [G], A*4 + B, A*4 + -10
+ee e0 e0 f8 55 01 00 c0 05 f5  # db30 |   jne [0x155], 0xc000, ${fail}:rel + PC
+b2 fe 1c fe 85                 # db3a |   or [G], -123, G
+ee e0 1c f8 55 01 d5 f6 f4     # db3f |   jne [0x155], 0xd5, ${fail}:rel + PC
+8a 2a 1c 20 85                 # db48 |   mul [A*4 + B], -123, A
+ee e0 e0 f8 63 03 52 ae e8 f4  # db4d |   jne [0x363], 0xae52, ${fail}:rel + PC
+a6 e0 e0 2a 39 30 39 30        # db57 |   ishr [0x3039], 0x3039, A*4 + B
+ee e0 e0 f8 39 30 07 06 d6 f4  # db5f |   jne [0x3039], 0x607, ${fail}:rel + PC
+a2 21 e4 21 de fa              # db69 |   shr [A*2], 0xfade + A, A*2
+ee e0 e0 f8 54 01 b8 0f c6 f4  # db6f |   jne [0x154], 0xfb8, ${fail}:rel + PC
+82 21 fe fe                    # db79 |   add [A*2], G, G
+ee e0 e0 f8 54 01 aa 02 b8 f4  # db7d |   jne [0x154], 0x2aa, ${fail}:rel + PC
+a6 fe e4 20 de fa              # db87 |   ishr [G], 0xfade + A, A
+ee e0 1c f8 55 01 fe a8 f4     # db8d |   jne [0x155], 0xfe, ${fail}:rel + PC
+82 e0 e4 2a 39 30 de fa        # db96 |   add [0x3039], 0xfade + A, A*4 + B
+ee e0 e0 f8 39 30 eb fe 97 f4  # db9e |   jne [0x3039], 0xfeeb, ${fail}:rel + PC
+a6 20 20 20                    # dba8 |   ishr [A], A, A
+ee e0 00 f8 aa 00 89 f4        # dbac |   jne [0xaa], 0, ${fail}:rel + PC
+82 fe 2a 20                    # dbb4 |   add [G], A*4 + B, A
+ee e0 e0 f8 55 01 0d 04 7d f4  # dbb8 |   jne [0x155], 0x40d, ${fail}:rel + PC
+b6 fe fe fe                    # dbc2 |   xor [G], G, G
+ee e0 00 f8 55 01 6f f4        # dbc6 |   jne [0x155], 0, ${fail}:rel + PC
+aa 21 fe 21                    # dbce |   shl [A*2], G, A*2
+ee e0 e0 f8 54 01 50 15 63 f4  # dbd2 |   jne [0x154], 0x1550, ${fail}:rel + PC
+a6 fe e0 21 39 30              # dbdc |   ishr [G], 0x3039, A*2
+ee e0 e0 f8 55 01 03 03 53 f4  # dbe2 |   jne [0x155], 0x303, ${fail}:rel + PC
+ae 21 2a e4 de fa              # dbec |   and [A*2], A*4 + B, 0xfade + A
+ee e0 e0 f8 54 01 00 03 43 f4  # dbf2 |   jne [0x154], 0x300, ${fail}:rel + PC
+82 20 3e 3e f6 f6              # dbfc |   add [A], A*4 + -10, A*4 + -10
+ee e0 e0 f8 aa 00 3c 05 33 f4  # dc02 |   jne [0xaa], 0x53c, ${fail}:rel + PC
+b2 e0 21 1c 39 30 85           # dc0c |   or [0x3039], A*2, -123
+ee e0 1c f8 39 30 d5 22 f4     # dc13 |   jne [0x3039], 0xd5, ${fail}:rel + PC
+82 e0 fe fe 39 30              # dc1c |   add [0x3039], G, G
+ee e0 e0 f8 39 30 aa 02 13 f4  # dc22 |   jne [0x3039], 0x2aa, ${fail}:rel + PC
+ae fe e0 e4 39 30 de fa        # dc2c |   and [G], 0x3039, 0xfade + A
+ee e0 e0 f8 55 01 08 30 01 f4  # dc34 |   jne [0x155], 0x3008, ${fail}:rel + PC
+8e e0 2a 3e 39 30 f6           # dc3e |   imul [0x3039], A*4 + B, A*4 + -10
+ee e0 e0 f8 39 30 1a dd f0 f3  # dc45 |   jne [0x3039], 0xdd1a, ${fail}:rel + PC
+b2 21 e0 20 39 30              # dc4f |   or [A*2], 0x3039, A
+ee e0 e0 f8 54 01 bb 30 e0 f3  # dc55 |   jne [0x154], 0x30bb, ${fail}:rel + PC
+8e 21 3e 21 f6                 # dc5f |   imul [A*2], A*4 + -10, A*2
+ee e0 e0 f8 54 01 d8 79 d1 f3  # dc64 |   jne [0x154], 0x79d8, ${fail}:rel + PC
+82 3e 1c 2a f6 85              # dc6e |   add [A*4 + -10], -123, A*4 + B
+ee e0 e0 f8 9e 02 e8 02 c1 f3  # dc74 |   jne [0x29e], 0x2e8, ${fail}:rel + PC
+86 fe e4 21 de fa              # dc7e |   sub [G], 0xfade + A, A*2
+ee e0 e0 f8 55 01 34 fa b1 f3  # dc84 |   jne [0x155], 0xfa34, ${fail}:rel + PC
+b2 2a e4 21 de fa              # dc8e |   or [A*4 + B], 0xfade + A, A*2
+ee e0 e0 f8 63 03 dc fb a1 f3  # dc94 |   jne [0x363], 0xfbdc, ${fail}:rel + PC
+ae 21 21 20                    # dc9e |   and [A*2], A*2, A
+ee e0 00 f8 54 01 93 f3        # dca2 |   jne [0x154], 0, ${fail}:rel + PC
+86 2a 2a fe                    # dcaa |   sub [A*4 + B], A*4 + B, G
+ee e0 e0 f8 63 03 0e 02 87 f3  # dcae |   jne [0x363], 0x20e, ${fail}:rel + PC
+82 3e 3e 20 f6 f6              # dcb8 |   add [A*4 + -10], A*4 + -10, A
+ee e0 e0 f8 9e 02 48 03 77 f3  # dcbe |   jne [0x29e], 0x348, ${fail}:rel + PC
+86 21 e0 e0 39 30 39 30        # dcc8 |   sub [A*2], 0x3039, 0x3039
+ee e0 00 f8 54 01 65 f3        # dcd0 |   jne [0x154], 0, ${fail}:rel + PC
+a2 20 1c fe 85                 # dcd8 |   shr [A], -123, G
+ee e0 e0 f8 aa 00 fc 07 58 f3  # dcdd |   jne [0xaa], 0x7fc, ${fail}:rel + PC
+aa 2a 1c 2a 85                 # dce7 |   shl [A*4 + B], -123, A*4 + B
+ee e0 e0 f8 63 03 28 fc 49 f3  # dcec |   jne [0x363], 0xfc28, ${fail}:rel + PC
+b2 2a 20 20                    # dcf6 |   or [A*4 + B], A, A
+ee e0 e0 f8 63 03 aa 00 3b f3  # dcfa |   jne [0x363], 0xaa, ${fail}:rel + PC
+86 20 20 1c 85                 # dd04 |   sub [A], A, -123
+ee e0 e0 f8 aa 00 25 01 2c f3  # dd09 |   jne [0xaa], 0x125, ${fail}:rel + PC
+a6 3e e4 21 f6 de fa           # dd13 |   ishr [A*4 + -10], 0xfade + A, A*2
+ee e0 1c f8 9e 02 b8 1b f3     # dd1a |   jne [0x29e], 0xb8, ${fail}:rel + PC
+86 20 e0 e0 39 30 39 30        # dd23 |   sub [A], 0x3039, 0x3039
+ee e0 00 f8 aa 00 0a f3        # dd2b |   jne [0xaa], 0, ${fail}:rel + PC
+82 fe e0 e0 39 30 39 30        # dd33 |   add [G], 0x3039, 0x3039
+ee e0 e0 f8 55 01 72 60 fa f2  # dd3b |   jne [0x155], 0x6072, ${fail}:rel + PC
+a2 2a e4 e4 de fa de fa        # dd45 |   shr [A*4 + B], 0xfade + A, 0xfade + A
+ee e0 e0 f8 63 03 fb 00 e8 f2  # dd4d |   jne [0x363], 0xfb, ${fail}:rel + PC
+8e 20 20 fe                    # dd57 |   imul [A], A, G
+ee e0 e0 f8 aa 00 72 e2 da f2  # dd5b |   jne [0xaa], 0xe272, ${fail}:rel + PC
+a2 21 e4 2a de fa              # dd65 |   shr [A*2], 0xfade + A, A*4 + B
+ee e0 e0 f8 54 01 71 1f ca f2  # dd6b |   jne [0x154], 0x1f71, ${fail}:rel + PC
+a2 2a 2a 1c 85                 # dd75 |   shr [A*4 + B], A*4 + B, -123
+ee e0 1c f8 63 03 1b bb f2     # dd7a |   jne [0x363], 0x1b, ${fail}:rel + PC
+a2 20 21 2a                    # dd83 |   shr [A], A*2, A*4 + B
+ee e0 1c f8 aa 00 2a ae f2     # dd87 |   jne [0xaa], 0x2a, ${fail}:rel + PC
+ae e0 2a 20 39 30              # dd90 |   and [0x3039], A*4 + B, A
+ee e0 1c f8 39 30 22 9f f2     # dd96 |   jne [0x3039], 0x22, ${fail}:rel + PC
+a2 e0 e0 e0 39 30 39 30 39 30  # dd9f |   shr [0x3039], 0x3039, 0x3039
+ee e0 1c f8 39 30 18 8c f2     # dda9 |   jne [0x3039], 0x18, ${fail}:rel + PC
+8a 20 fe 3e f6                 # ddb2 |   mul [A], G, A*4 + -10
+ee e0 e0 f8 aa 00 76 7c 7e f2  # ddb7 |   jne [0xaa], 0x7c76, ${fail}:rel + PC
+82 2a e0 2a 39 30              # ddc1 |   add [A*4 + B], 0x3039, A*4 + B
+ee e0 e0 f8 63 03 9c 33 6e f2  # ddc7 |   jne [0x363], 0x339c, ${fail}:rel + PC
+8e fe 3e 2a f6                 # ddd1 |   imul [G], A*4 + -10, A*4 + B
+ee e0 e0 f8 55 01 1a dd 5f f2  # ddd6 |   jne [0x155], 0xdd1a, ${fail}:rel + PC
+aa 20 21 e0 39 30              # dde0 |   shl [A], A*2, 0x3039
+ee e0 e0 f8 aa 00 00 a8 4f f2  # dde6 |   jne [0xaa], 0xa800, ${fail}:rel + PC
+82 21 fe 20                    # ddf0 |   add [A*2], G, A
+ee e0 e0 f8 54 01 ff 01 41 f2  # ddf4 |   jne [0x154], 0x1ff, ${fail}:rel + PC
+82 2a 2a 21                    # ddfe |   add [A*4 + B], A*4 + B, A*2
+ee e0 e0 f8 63 03 b7 04 33 f2  # de02 |   jne [0x363], 0x4b7, ${fail}:rel + PC
+a2 20 fe e4 de fa              # de0c |   shr [A], G, 0xfade + A
+ee e0 1c f8 aa 00 01 23 f2     # de12 |   jne [0xaa], 0x1, ${fail}:rel + PC
+82 fe 1c 20 85                 # de1b |   add [G], -123, A
+ee e0 1c f8 55 01 2f 15 f2     # de20 |   jne [0x155], 0x2f, ${fail}:rel + PC
+8e 3e fe e0 f6 39 30           # de29 |   imul [A*4 + -10], G, 0x3039
+ee e0 e0 f8 9e 02 ed 3b 05 f2  # de30 |   jne [0x29e], 0x3bed, ${fail}:rel + PC
+8a fe e4 2a de fa              # de3a |   mul [G], 0xfade + A, A*4 + B
+ee e0 e0 f8 55 01 98 dd f5 f1  # de40 |   jne [0x155], 0xdd98, ${fail}:rel + PC
+a2 fe fe 20                    # de4a |   shr [G], G, A
+ee e0 00 f8 55 01 e7 f1        # de4e |   jne [0x155], 0, ${fail}:rel + PC
+b2 21 20 20                    # de56 |   or [A*2], A, A
+ee e0 e0 f8 54 01 aa 00 db f1  # de5a |   jne [0x154], 0xaa, ${fail}:rel + PC
+b2 3e 1c 21 f6 85              # de64 |   or [A*4 + -10], -123, A*2
+ee e0 1c f8 9e 02 d5 cb f1     # de6a |   jne [0x29e], 0xd5, ${fail}:rel + PC
+8a 2a 1c 1c 85 85              # de73 |   mul [A*4 + B], -123, -123
+ee e0 e0 f8 63 03 19 3b bc f1  # de79 |   jne [0x363], 0x3b19, ${fail}:rel + PC
+8a e0 e4 21 39 30 de fa        # de83 |   mul [0x3039], 0xfade + A, A*2
+ee e0 e0 f8 39 30 a0 10 aa f1  # de8b |   jne [0x3039], 0x10a0, ${fail}:rel + PC
+86 fe 20 3e f6                 # de95 |   sub [G], A, A*4 + -10
+ee e0 e0 f8 55 01 0c fe 9b f1  # de9a |   jne [0x155], 0xfe0c, ${fail}:rel + PC
+aa 20 2a 21                    # dea4 |   shl [A], A*4 + B, A*2
+ee e0 e0 f8 aa 00 30 36 8d f1  # dea8 |   jne [0xaa], 0x3630, ${fail}:rel + PC
+b6 21 1c 2a 85                 # deb2 |   xor [A*2], -123, A*4 + B
+ee e0 e0 f8 54 01 e6 fc 7e f1  # deb7 |   jne [0x154], 0xfce6, ${fail}:rel + PC
+86 2a 3e 1c f6 85              # dec1 |   sub [A*4 + B], A*4 + -10, -123
+ee e0 e0 f8 63 03 19 03 6e f1  # dec7 |   jne [0x363], 0x319, ${fail}:rel + PC
+86 e0 e0 e4 39 30 39 30 de fa  # ded1 |   sub [0x3039], 0x3039, 0xfade + A
+ee e0 e0 f8 39 30 b1 34 5a f1  # dedb |   jne [0x3039], 0x34b1, ${fail}:rel + PC
+ae fe 2a e4 de fa              # dee5 |   and [G], A*4 + B, 0xfade + A
+ee e0 e0 f8 55 01 00 03 4a f1  # deeb |   jne [0x155], 0x300, ${fail}:rel + PC
+aa 20 3e fe f6                 # def5 |   shl [A], A*4 + -10, G
+ee e0 e0 f8 aa 00 c0 53 3b f1  # defa |   jne [0xaa], 0x53c0, ${fail}:rel + PC
+a6 fe fe e4 de fa              # df04 |   ishr [G], G, 0xfade + A
+ee e0 1c f8 55 01 01 2b f1     # df0a |   jne [0x155], 0x1, ${fail}:rel + PC
+ae 21 e0 2a 39 30              # df13 |   and [A*2], 0x3039, A*4 + B
+ee e0 1c f8 54 01 21 1c f1     # df19 |   jne [0x154], 0x21, ${fail}:rel + PC
+a6 21 21 1c 85                 # df22 |   ishr [A*2], A*2, -123
+ee e0 1c f8 54 01 0a 0e f1     # df27 |   jne [0x154], 0xa, ${fail}:rel + PC
+b6 fe 21 e0 39 30              # df30 |   xor [G], A*2, 0x3039
+ee e0 e0 f8 55 01 6d 31 ff f0  # df36 |   jne [0x155], 0x316d, ${fail}:rel + PC
+86 2a 3e 2a f6                 # df40 |   sub [A*4 + B], A*4 + -10, A*4 + B
+ee e0 e0 f8 63 03 3b ff f0 f0  # df45 |   jne [0x363], 0xff3b, ${fail}:rel + PC
+b2 e0 fe 1c 39 30 85           # df4f |   or [0x3039], G, -123
+ee e0 1c f8 39 30 d5 df f0     # df56 |   jne [0x3039], 0xd5, ${fail}:rel + PC
+aa 2a 3e 20 f6                 # df5f |   shl [A*4 + B], A*4 + -10, A
+ee e0 e0 f8 63 03 00 78 d1 f0  # df64 |   jne [0x363], 0x7800, ${fail}:rel + PC
+86 e0 21 20 39 30              # df6e |   sub [0x3039], A*2, A
+ee e0 e0 f8 39 30 aa 00 c1 f0  # df74 |   jne [0x3039], 0xaa, ${fail}:rel + PC
+b6 e0 2a 21 39 30              # df7e |   xor [0x3039], A*4 + B, A*2
+ee e0 e0 f8 39 30 37 02 b1 f0  # df84 |   jne [0x3039], 0x237, ${fail}:rel + PC
+ae 2a e0 1c 39 30 85           # df8e |   and [A*4 + B], 0x3039, -123
+ee e0 e0 f8 63 03 01 30 a0 f0  # df95 |   jne [0x363], 0x3001, ${fail}:rel + PC
+8e fe 2a e0 39 30              # df9f |   imul [G], A*4 + B, 0x3039
+ee e0 e0 f8 55 01 0b 51 90 f0  # dfa5 |   jne [0x155], 0x510b, ${fail}:rel + PC
+b2 2a 20 fe                    # dfaf |   or [A*4 + B], A, G
+ee e0 e0 f8 63 03 ff 01 82 f0  # dfb3 |   jne [0x363], 0x1ff, ${fail}:rel + PC
+a6 3e e0 20 f6 39 30           # dfbd |   ishr [A*4 + -10], 0x3039, A
+ee e0 1c f8 9e 02 0c 71 f0     # dfc4 |   jne [0x29e], 0xc, ${fail}:rel + PC
+aa e0 e4 e4 39 30 de fa de fa  # dfcd |   shl [0x3039], 0xfade + A, 0xfade + A
+ee e0 e0 f8 39 30 00 88 5e f0  # dfd7 |   jne [0x3039], 0x8800, ${fail}:rel + PC
+aa 20 e0 fe 39 30              # dfe1 |   shl [A], 0x3039, G
+ee e0 e0 f8 aa 00 20 07 4e f0  # dfe7 |   jne [0xaa], 0x720, ${fail}:rel + PC
+b6 fe 3e 21 f6                 # dff1 |   xor [G], A*4 + -10, A*2
+ee e0 e0 f8 55 01 ca 03 3f f0  # dff6 |   jne [0x155], 0x3ca, ${fail}:rel + PC
+b2 2a fe 1c 85                 # e000 |   or [A*4 + B], G, -123
+ee e0 1c f8 63 03 d5 30 f0     # e005 |   jne [0x363], 0xd5, ${fail}:rel + PC
+86 3e 1c e0 f6 85 39 30        # e00e |   sub [A*4 + -10], -123, 0x3039
+ee e0 e0 f8 9e 02 4c cf 1f f0  # e016 |   jne [0x29e], 0xcf4c, ${fail}:rel + PC
+aa 21 21 21                    # e020 |   shl [A*2], A*2, A*2
+ee e0 e0 f8 54 01 40 15 11 f0  # e024 |   jne [0x154], 0x1540, ${fail}:rel + PC
+86 e0 e4 e0 39 30 de fa 39 30  # e02e |   sub [0x3039], 0xfade + A, 0x3039
+ee e0 e0 f8 39 30 4f cb fd ef  # e038 |   jne [0x3039], 0xcb4f, ${fail}:rel + PC
+a2 21 e0 1c 39 30 85           # e042 |   shr [A*2], 0x3039, -123
+ee e0 e0 f8 54 01 81 01 ec ef  # e049 |   jne [0x154], 0x181, ${fail}:rel + PC
+a6 e0 e4 20 39 30 de fa        # e053 |   ishr [0x3039], 0xfade + A, A
+ee e0 1c f8 39 30 fe da ef     # e05b |   jne [0x3039], 0xfe, ${fail}:rel + PC
+b6 3e e4 e0 f6 de fa 39 30     # e064 |   xor [A*4 + -10], 0xfade + A, 0x3039
+ee e0 e0 f8 9e 02 b1 cb c8 ef  # e06d |   jne [0x29e], 0xcbb1, ${fail}:rel + PC
+86 3e 21 3e f6 f6              # e077 |   sub [A*4 + -10], A*2, A*4 + -10
+ee e0 e0 f8 9e 02 b6 fe b8 ef  # e07d |   jne [0x29e], 0xfeb6, ${fail}:rel + PC
+8e fe 1c 3e 85 f6              # e087 |   imul [G], -123, A*4 + -10
+ee e0 e0 f8 55 01 16 be a8 ef  # e08d |   jne [0x155], 0xbe16, ${fail}:rel + PC
+aa 20 2a 2a                    # e097 |   shl [A], A*4 + B, A*4 + B
+ee e0 e0 f8 aa 00 18 1b 9a ef  # e09b |   jne [0xaa], 0x1b18, ${fail}:rel + PC
+b6 e0 21 2a 39 30              # e0a5 |   xor [0x3039], A*2, A*4 + B
+ee e0 e0 f8 39 30 37 02 8a ef  # e0ab |   jne [0x3039], 0x237, ${fail}:rel + PC
+82 21 21 e0 39 30              # e0b5 |   add [A*2], A*2, 0x3039
+ee e0 e0 f8 54 01 8d 31 7a ef  # e0bb |   jne [0x154], 0x318d, ${fail}:rel + PC
+ae 21 2a 20                    # e0c5 |   and [A*2], A*4 + B, A
+ee e0 1c f8 54 01 22 6c ef     # e0c9 |   jne [0x154], 0x22, ${fail}:rel + PC
+aa 20 2a e4 de fa              # e0d2 |   shl [A], A*4 + B, 0xfade + A
+ee e0 e0 f8 aa 00 00 63 5d ef  # e0d8 |   jne [0xaa], 0x6300, ${fail}:rel + PC
+ae 2a fe 20                    # e0e2 |   and [A*4 + B], G, A
+ee e0 00 f8 63 03 4f ef        # e0e6 |   jne [0x363], 0, ${fail}:rel + PC
+b6 fe 21 1c 85                 # e0ee |   xor [G], A*2, -123
+ee e0 e0 f8 55 01 d1 fe 42 ef  # e0f3 |   jne [0x155], 0xfed1, ${fail}:rel + PC
+ae e0 fe 21 39 30              # e0fd |   and [0x3039], G, A*2
+ee e0 e0 f8 39 30 54 01 32 ef  # e103 |   jne [0x3039], 0x154, ${fail}:rel + PC
+b2 3e e0 2a f6 39 30           # e10d |   or [A*4 + -10], 0x3039, A*4 + B
+ee e0 e0 f8 9e 02 7b 33 21 ef  # e114 |   jne [0x29e], 0x337b, ${fail}:rel + PC
+b6 fe e4 3e de fa f6           # e11e |   xor [G], 0xfade + A, A*4 + -10
+ee e0 e0 f8 55 01 16 f9 10 ef  # e125 |   jne [0x155], 0xf916, ${fail}:rel + PC
+8e 2a 21 2a                    # e12f |   imul [A*4 + B], A*2, A*4 + B
+ee e0 e0 f8 63 03 7c 7f 02 ef  # e133 |   jne [0x363], 0x7f7c, ${fail}:rel + PC
+a6 fe 21 fe                    # e13d |   ishr [G], A*2, G
+ee e0 1c f8 55 01 0a f4 ee     # e141 |   jne [0x155], 0xa, ${fail}:rel + PC
+8a 21 1c 1c 85 85              # e14a |   mul [A*2], -123, -123
+ee e0 e0 f8 54 01 19 3b e5 ee  # e150 |   jne [0x154], 0x3b19, ${fail}:rel + PC
+8e 2a e4 20 de fa              # e15a |   imul [A*4 + B], 0xfade + A, A
+ee e0 e0 f8 63 03 50 08 d5 ee  # e160 |   jne [0x363], 0x850, ${fail}:rel + PC
+a2 3e 3e 3e f6 f6 f6           # e16a |   shr [A*4 + -10], A*4 + -10, A*4 + -10
+ee e0 00 f8 9e 02 c4 ee        # e171 |   jne [0x29e], 0, ${fail}:rel + PC
+8a 20 1c e4 85 de fa           # e179 |   mul [A], -123, 0xfade + A
+ee e0 e0 f8 aa 00 a8 25 b5 ee  # e180 |   jne [0xaa], 0x25a8, ${fail}:rel + PC
+a6 3e 20 21 f6                 # e18a |   ishr [A*4 + -10], A, A*2
+ee e0 1c f8 9e 02 0a a6 ee     # e18f |   jne [0x29e], 0xa, ${fail}:rel + PC
+b2 3e 20 20 f6                 # e198 |   or [A*4 + -10], A, A
+ee e0 e0 f8 9e 02 aa 00 98 ee  # e19d |   jne [0x29e], 0xaa, ${fail}:rel + PC
+82 e0 fe e0 39 30 39 30        # e1a7 |   add [0x3039], G, 0x3039
+ee e0 e0 f8 39 30 8e 31 86 ee  # e1af |   jne [0x3039], 0x318e, ${fail}:rel + PC
+8e 3e e0 3e f6 39 30 f6        # e1b9 |   imul [A*4 + -10], 0x3039, A*4 + -10
+ee e0 e0 f8 9e 02 2e 35 74 ee  # e1c1 |   jne [0x29e], 0x352e, ${fail}:rel + PC
+a6 fe fe 21                    # e1cb |   ishr [G], G, A*2
+ee e0 1c f8 55 01 15 66 ee     # e1cf |   jne [0x155], 0x15, ${fail}:rel + PC
+8e 20 e4 3e de fa f6           # e1d8 |   imul [A], 0xfade + A, A*4 + -10
+ee e0 e0 f8 aa 00 f0 4d 56 ee  # e1df |   jne [0xaa], 0x4df0, ${fail}:rel + PC
+a6 fe 20 fe                    # e1e9 |   ishr [G], A, G
+ee e0 1c f8 55 01 05 48 ee     # e1ed |   jne [0x155], 0x5, ${fail}:rel + PC
+82 2a e0 3e 39 30 f6           # e1f6 |   add [A*4 + B], 0x3039, A*4 + -10
+ee e0 e0 f8 63 03 d7 32 38 ee  # e1fd |   jne [0x363], 0x32d7, ${fail}:rel + PC
+ae 3e 2a e4 f6 de fa           # e207 |   and [A*4 + -10], A*4 + B, 0xfade + A
+ee e0 e0 f8 9e 02 00 03 27 ee  # e20e |   jne [0x29e], 0x300, ${fail}:rel + PC
+8e 20 1c 2a 85                 # e218 |   imul [A], -123, A*4 + B
+ee e0 e0 f8 aa 00 6f 5f 18 ee  # e21d |   jne [0xaa], 0x5f6f, ${fail}:rel + PC
+a2 fe 3e e4 f6 de fa           # e227 |   shr [G], A*4 + -10, 0xfade + A
+ee e0 1c f8 55 01 02 07 ee     # e22e |   jne [0x155], 0x2, ${fail}:rel + PC
+b2 2a e0 20 39 30              # e237 |   or [A*4 + B], 0x3039, A
+ee e0 e0 f8 63 03 bb 30 f8 ed  # e23d |   jne [0x363], 0x30bb, ${fail}:rel + PC
+b6 2a e0 fe 39 30              # e247 |   xor [A*4 + B], 0x3039, G
+ee e0 e0 f8 63 03 6c 31 e8 ed  # e24d |   jne [0x363], 0x316c, ${fail}:rel + PC
+8e 20 20 e0 39 30              # e257 |   imul [A], A, 0x3039
+ee e0 e0 f8 aa 00 da 05 d8 ed  # e25d |   jne [0xaa], 0x5da, ${fail}:rel + PC
+b2 21 2a 3e f6                 # e267 |   or [A*2], A*4 + B, A*4 + -10
+ee e0 e0 f8 54 01 ff 03 c9 ed  # e26c |   jne [0x154], 0x3ff, ${fail}:rel + PC
+aa fe e4 e0 de fa 39 30        # e276 |   shl [G], 0xfade + A, 0x3039
+ee e0 e0 f8 55 01 00 10 b7 ed  # e27e |   jne [0x155], 0x1000, ${fail}:rel + PC
+a6 2a e4 2a de fa              # e288 |   ishr [A*4 + B], 0xfade + A, A*4 + B
+ee e0 e0 f8 63 03 71 ff a7 ed  # e28e |   jne [0x363], 0xff71, ${fail}:rel + PC
+aa 3e e4 1c f6 de fa 85        # e298 |   shl [A*4 + -10], 0xfade + A, -123
+ee e0 e0 f8 9e 02 00 71 95 ed  # e2a0 |   jne [0x29e], 0x7100, ${fail}:rel + PC
+a2 3e e4 20 f6 de fa           # e2aa |   shr [A*4 + -10], 0xfade + A, A
+ee e0 1c f8 9e 02 3e 84 ed     # e2b1 |   jne [0x29e], 0x3e, ${fail}:rel + PC
+8a 3e 20 2a f6                 # e2ba |   mul [A*4 + -10], A, A*4 + B
+ee e0 e0 f8 9e 02 be 3f 76 ed  # e2bf |   jne [0x29e], 0x3fbe, ${fail}:rel + PC
+b2 21 3e 2a f6                 # e2c9 |   or [A*2], A*4 + -10, A*4 + B
+ee e0 e0 f8 54 01 ff 03 67 ed  # e2ce |   jne [0x154], 0x3ff, ${fail}:rel + PC
+8e 3e 21 1c f6 85              # e2d8 |   imul [A*4 + -10], A*2, -123
+ee e0 e0 f8 9e 02 a4 5c 57 ed  # e2de |   jne [0x29e], 0x5ca4, ${fail}:rel + PC
+aa e0 3e 21 39 30 f6           # e2e8 |   shl [0x3039], A*4 + -10, A*2
+ee e0 e0 f8 39 30 e0 29 46 ed  # e2ef |   jne [0x3039], 0x29e0, ${fail}:rel + PC
+aa 21 e4 e4 de fa de fa        # e2f9 |   shl [A*2], 0xfade + A, 0xfade + A
+ee e0 e0 f8 54 01 00 88 34 ed  # e301 |   jne [0x154], 0x8800, ${fail}:rel + PC
+82 fe 21 21                    # e30b |   add [G], A*2, A*2
+ee e0 e0 f8 55 01 a8 02 26 ed  # e30f |   jne [0x155], 0x2a8, ${fail}:rel + PC
+ae 21 e4 fe de fa              # e319 |   and [A*2], 0xfade + A, G
+ee e0 e0 f8 54 01 00 01 16 ed  # e31f |   jne [0x154], 0x100, ${fail}:rel + PC
+ae 3e e0 e0 f6 39 30 39 30     # e329 |   and [A*4 + -10], 0x3039, 0x3039
+ee e0 e0 f8 9e 02 39 30 03 ed  # e332 |   jne [0x29e], 0x3039, ${fail}:rel + PC
+aa 3e 20 1c f6 85              # e33c |   shl [A*4 + -10], A, -123
+ee e0 e0 f8 9e 02 40 15 f3 ec  # e342 |   jne [0x29e], 0x1540, ${fail}:rel + PC
+ae 2a 3e e4 f6 de fa           # e34c |   and [A*4 + B], A*4 + -10, 0xfade + A
+ee e0 e0 f8 63 03 88 02 e2 ec  # e353 |   jne [0x363], 0x288, ${fail}:rel + PC
+82 fe 1c 1c 85 85              # e35d |   add [G], -123, -123
+ee e0 e0 f8 55 01 0a ff d2 ec  # e363 |   jne [0x155], 0xff0a, ${fail}:rel + PC
+8a 20 20 e4 de fa              # e36d |   mul [A], A, 0xfade + A
+ee e0 e0 f8 aa 00 50 08 c2 ec  # e373 |   jne [0xaa], 0x850, ${fail}:rel + PC
+b2 21 2a fe                    # e37d |   or [A*2], A*4 + B, G
+ee e0 e0 f8 54 01 77 03 b4 ec  # e381 |   jne [0x154], 0x377, ${fail}:rel + PC
+86 fe e4 e4 de fa de fa        # e38b |   sub [G], 0xfade + A, 0xfade + A
+ee e0 00 f8 55 01 a2 ec        # e393 |   jne [0x155], 0, ${fail}:rel + PC
+a2 2a fe e4 de fa              # e39b |   shr [A*4 + B], G, 0xfade + A
+ee e0 1c f8 63 03 01 94 ec     # e3a1 |   jne [0x363], 0x1, ${fail}:rel + PC
+86 21 1c fe 85                 # e3aa |   sub [A*2], -123, G
+ee e0 e0 f8 54 01 30 fe 86 ec  # e3af |   jne [0x154], 0xfe30, ${fail}:rel + PC
+aa 3e 21 fe f6                 # e3b9 |   shl [A*4 + -10], A*2, G
+ee e0 e0 f8 9e 02 80 2a 77 ec  # e3be |   jne [0x29e], 0x2a80, ${fail}:rel + PC
+aa 20 1c 3e 85 f6              # e3c8 |   shl [A], -123, A*4 + -10
+ee e0 e0 f8 aa 00 00 40 67 ec  # e3ce |   jne [0xaa], 0x4000, ${fail}:rel + PC
+8a 3e 2a 21 f6                 # e3d8 |   mul [A*4 + -10], A*4 + B, A*2
+ee e0 e0 f8 9e 02 7c 7f 58 ec  # e3dd |   jne [0x29e], 0x7f7c, ${fail}:rel + PC
+a2 20 2a fe                    # e3e7 |   shr [A], A*4 + B, G
+ee e0 1c f8 aa 00 1b 4a ec     # e3eb |   jne [0xaa], 0x1b, ${fail}:rel + PC
+82 20 2a e0 39 30              # e3f4 |   add [A], A*4 + B, 0x3039
+ee e0 e0 f8 aa 00 9c 33 3b ec  # e3fa |   jne [0xaa], 0x339c, ${fail}:rel + PC
+b6 fe e0 1c 39 30 85           # e404 |   xor [G], 0x3039, -123
+ee e0 e0 f8 55 01 bc cf 2a ec  # e40b |   jne [0x155], 0xcfbc, ${fail}:rel + PC
+86 20 e4 2a de fa              # e415 |   sub [A], 0xfade + A, A*4 + B
+ee e0 e0 f8 aa 00 25 f8 1a ec  # e41b |   jne [0xaa], 0xf825, ${fail}:rel + PC
+a6 2a 21 fe                    # e425 |   ishr [A*4 + B], A*2, G
+ee e0 1c f8 63 03 0a 0c ec     # e429 |   jne [0x363], 0xa, ${fail}:rel + PC
+b2 21 fe e4 de fa              # e432 |   or [A*2], G, 0xfade + A
+ee e0 e0 f8 54 01 dd fb fd eb  # e438 |   jne [0x154], 0xfbdd, ${fail}:rel + PC
+8a e0 e4 fe 39 30 de fa        # e442 |   mul [0x3039], 0xfade + A, G
+ee e0 e0 f8 39 30 28 0c eb eb  # e44a |   jne [0x3039], 0xc28, ${fail}:rel + PC
+8e 2a 2a e4 de fa              # e454 |   imul [A*4 + B], A*4 + B, 0xfade + A
+ee e0 e0 f8 63 03 98 dd db eb  # e45a |   jne [0x363], 0xdd98, ${fail}:rel + PC
+ae e0 20 fe 39 30              # e464 |   and [0x3039], A, G
+ee e0 00 f8 39 30 cb eb        # e46a |   jne [0x3039], 0, ${fail}:rel + PC
+8e fe fe 2a                    # e472 |   imul [G], G, A*4 + B
+ee e0 e0 f8 55 01 df 82 bf eb  # e476 |   jne [0x155], 0x82df, ${fail}:rel + PC
+8e 3e 21 21 f6                 # e480 |   imul [A*4 + -10], A*2, A*2
+ee e0 e0 f8 9e 02 90 c3 b0 eb  # e485 |   jne [0x29e], 0xc390, ${fail}:rel + PC
+b2 fe e4 1c de fa 85           # e48f |   or [G], 0xfade + A, -123
+ee e0 1c f8 55 01 8d 9f eb     # e496 |   jne [0x155], 0x8d, ${fail}:rel + PC
+8e 2a 20 3e f6                 # e49f |   imul [A*4 + B], A, A*4 + -10
+ee e0 e0 f8 63 03 ec bc 91 eb  # e4a4 |   jne [0x363], 0xbcec, ${fail}:rel + PC
+a2 2a 3e e0 f6 39 30           # e4ae |   shr [A*4 + B], A*4 + -10, 0x3039
+ee e0 1c f8 63 03 01 80 eb     # e4b5 |   jne [0x363], 0x1, ${fail}:rel + PC
+b6 2a 21 e0 39 30              # e4be |   xor [A*4 + B], A*2, 0x3039
+ee e0 e0 f8 63 03 6d 31 71 eb  # e4c4 |   jne [0x363], 0x316d, ${fail}:rel + PC
+a2 e0 3e e0 39 30 f6 39 30     # e4ce |   shr [0x3039], A*4 + -10, 0x3039
+ee e0 1c f8 39 30 01 5e eb     # e4d7 |   jne [0x3039], 0x1, ${fail}:rel + PC
+a2 21 1c 3e 85 f6              # e4e0 |   shr [A*2], -123, A*4 + -10
+ee e0 1c f8 54 01 03 4f eb     # e4e6 |   jne [0x154], 0x3, ${fail}:rel + PC
+b2 21 20 21                    # e4ef |   or [A*2], A, A*2
+ee e0 e0 f8 54 01 fe 01 42 eb  # e4f3 |   jne [0x154], 0x1fe, ${fail}:rel + PC
+a2 fe 2a 21                    # e4fd |   shr [G], A*4 + B, A*2
+ee e0 1c f8 55 01 36 34 eb     # e501 |   jne [0x155], 0x36, ${fail}:rel + PC
+b6 e0 3e 2a 39 30 f6           # e50a |   xor [0x3039], A*4 + -10, A*4 + B
+ee e0 e0 f8 39 30 fd 01 24 eb  # e511 |   jne [0x3039], 0x1fd, ${fail}:rel + PC
+8a 3e e4 3e f6 de fa f6        # e51b |   mul [A*4 + -10], 0xfade + A, A*4 + -10
+ee e0 e0 f8 9e 02 f0 4d 12 eb  # e523 |   jne [0x29e], 0x4df0, ${fail}:rel + PC
+8e 2a 21 3e f6                 # e52d |   imul [A*4 + B], A*2, A*4 + -10
+ee e0 e0 f8 63 03 d8 79 03 eb  # e532 |   jne [0x363], 0x79d8, ${fail}:rel + PC
+a2 e0 e4 3e 39 30 de fa f6     # e53c |   shr [0x3039], 0xfade + A, A*4 + -10
+ee e0 1c f8 39 30 03 f0 ea     # e545 |   jne [0x3039], 0x3, ${fail}:rel + PC
+82 3e 20 fe f6                 # e54e |   add [A*4 + -10], A, G
+ee e0 e0 f8 9e 02 ff 01 e2 ea  # e553 |   jne [0x29e], 0x1ff, ${fail}:rel + PC
+a2 2a e4 e0 de fa 39 30        # e55d |   shr [A*4 + B], 0xfade + A, 0x3039
+ee e0 1c f8 63 03 7d d0 ea     # e565 |   jne [0x363], 0x7d, ${fail}:rel + PC
+a2 3e 1c 1c f6 85 85           # e56e |   shr [A*4 + -10], -123, -123
+ee e0 e0 f8 9e 02 fc 07 c0 ea  # e575 |   jne [0x29e], 0x7fc, ${fail}:rel + PC
+8e 20 1c e0 85 39 30           # e57f |   imul [A], -123, 0x3039
+ee e0 e0 f8 aa 00 9d d4 af ea  # e586 |   jne [0xaa], 0xd49d, ${fail}:rel + PC
+aa 2a 3e 21 f6                 # e590 |   shl [A*4 + B], A*4 + -10, A*2
+ee e0 e0 f8 63 03 e0 29 a0 ea  # e595 |   jne [0x363], 0x29e0, ${fail}:rel + PC
+b6 21 e0 fe 39 30              # e59f |   xor [A*2], 0x3039, G
+ee e0 e0 f8 54 01 6c 31 90 ea  # e5a5 |   jne [0x154], 0x316c, ${fail}:rel + PC
+b6 e0 3e 3e 39 30 f6 f6        # e5af |   xor [0x3039], A*4 + -10, A*4 + -10
+ee e0 00 f8 39 30 7e ea        # e5b7 |   jne [0x3039], 0, ${fail}:rel + PC
+b6 20 21 1c 85                 # e5bf |   xor [A], A*2, -123
+ee e0 e0 f8 aa 00 d1 fe 71 ea  # e5c4 |   jne [0xaa], 0xfed1, ${fail}:rel + PC
+b6 21 21 fe                    # e5ce |   xor [A*2], A*2, G
+ee e0 1c f8 54 01 01 63 ea     # e5d2 |   jne [0x154], 0x1, ${fail}:rel + PC
+8a fe e0 20 39 30              # e5db |   mul [G], 0x3039, A
+ee e0 e0 f8 55 01 da 05 54 ea  # e5e1 |   jne [0x155], 0x5da, ${fail}:rel + PC
+b6 21 e0 21 39 30              # e5eb |   xor [A*2], 0x3039, A*2
+ee e0 e0 f8 54 01 6d 31 44 ea  # e5f1 |   jne [0x154], 0x316d, ${fail}:rel + PC
+8a 21 2a e0 39 30              # e5fb |   mul [A*2], A*4 + B, 0x3039
+ee e0 e0 f8 54 01 0b 51 34 ea  # e601 |   jne [0x154], 0x510b, ${fail}:rel + PC
+ae 3e e0 1c f6 39 30 85        # e60b |   and [A*4 + -10], 0x3039, -123
+ee e0 e0 f8 9e 02 01 30 22 ea  # e613 |   jne [0x29e], 0x3001, ${fail}:rel + PC
+aa fe 21 20                    # e61d |   shl [G], A*2, A
+ee e0 e0 f8 55 01 00 50 14 ea  # e621 |   jne [0x155], 0x5000, ${fail}:rel + PC
+ae 20 e4 20 de fa              # e62b |   and [A], 0xfade + A, A
+ee e0 e0 f8 aa 00 88 00 04 ea  # e631 |   jne [0xaa], 0x88, ${fail}:rel + PC
+aa 21 3e e4 f6 de fa           # e63b |   shl [A*2], A*4 + -10, 0xfade + A
+ee e0 e0 f8 54 01 00 9e f3 e9  # e642 |   jne [0x154], 0x9e00, ${fail}:rel + PC
+b6 e0 e0 1c 39 30 39 30 85     # e64c |   xor [0x3039], 0x3039, -123
+ee e0 e0 f8 39 30 bc cf e0 e9  # e655 |   jne [0x3039], 0xcfbc, ${fail}:rel + PC
+8a 3e 3e 1c f6 f6 85           # e65f |   mul [A*4 + -10], A*4 + -10, -123
+ee e0 e0 f8 9e 02 16 be cf e9  # e666 |   jne [0x29e], 0xbe16, ${fail}:rel + PC
+86 fe 21 3e f6                 # e670 |   sub [G], A*2, A*4 + -10
+ee e0 e0 f8 55 01 b6 fe c0 e9  # e675 |   jne [0x155], 0xfeb6, ${fail}:rel + PC
+86 3e 2a fe f6                 # e67f |   sub [A*4 + -10], A*4 + B, G
+ee e0 e0 f8 9e 02 0e 02 b1 e9  # e684 |   jne [0x29e], 0x20e, ${fail}:rel + PC
+b6 3e 1c fe f6 85              # e68e |   xor [A*4 + -10], -123, G
+ee e0 e0 f8 9e 02 d0 fe a1 e9  # e694 |   jne [0x29e], 0xfed0, ${fail}:rel + PC
+86 20 2a 1c 85                 # e69e |   sub [A], A*4 + B, -123
+ee e0 e0 f8 aa 00 de 03 92 e9  # e6a3 |   jne [0xaa], 0x3de, ${fail}:rel + PC
+86 20 21 fe                    # e6ad |   sub [A], A*2, G
+ee e0 1c f8 aa 00 ff 84 e9     # e6b1 |   jne [0xaa], 0xff, ${fail}:rel + PC
+86 2a 20 e4 de fa              # e6ba |   sub [A*4 + B], A, 0xfade + A
+ee e0 e0 f8 63 03 22 05 75 e9  # e6c0 |   jne [0x363], 0x522, ${fail}:rel + PC
+aa e0 fe 3e 39 30 f6           # e6ca |   shl [0x3039], G, A*4 + -10
+ee e0 e0 f8 39 30 00 40 64 e9  # e6d1 |   jne [0x3039], 0x4000, ${fail}:rel + PC
+ae 20 1c 1c 85 85              # e6db |   and [A], -123, -123
+ee e0 1c f8 aa 00 85 54 e9     # e6e1 |   jne [0xaa], 0x85, ${fail}:rel + PC
+b6 20 fe e0 39 30              # e6ea |   xor [A], G, 0x3039
+ee e0 e0 f8 aa 00 6c 31 45 e9  # e6f0 |   jne [0xaa], 0x316c, ${fail}:rel + PC
+b2 e0 21 3e 39 30 f6           # e6fa |   or [0x3039], A*2, A*4 + -10
+ee e0 e0 f8 39 30 de 03 34 e9  # e701 |   jne [0x3039], 0x3de, ${fail}:rel + PC
+b2 20 e4 21 de fa              # e70b |   or [A], 0xfade + A, A*2
+ee e0 e0 f8 aa 00 dc fb 24 e9  # e711 |   jne [0xaa], 0xfbdc, ${fail}:rel + PC
+b6 fe 3e 3e f6 f6              # e71b |   xor [G], A*4 + -10, A*4 + -10
+ee e0 00 f8 55 01 14 e9        # e721 |   jne [0x155], 0, ${fail}:rel + PC
+b6 3e 20 e4 f6 de fa           # e729 |   xor [A*4 + -10], A, 0xfade + A
+ee e0 e0 f8 9e 02 22 fb 05 e9  # e730 |   jne [0x29e], 0xfb22, ${fail}:rel + PC
+b6 e0 1c e0 39 30 85 39 30     # e73a |   xor [0x3039], -123, 0x3039
+ee e0 e0 f8 39 30 bc cf f2 e8  # e743 |   jne [0x3039], 0xcfbc, ${fail}:rel + PC
+a2 3e fe 2a f6                 # e74d |   shr [A*4 + -10], G, A*4 + B
+ee e0 1c f8 9e 02 2a e3 e8     # e752 |   jne [0x29e], 0x2a, ${fail}:rel + PC
+ae 20 fe 20                    # e75b |   and [A], G, A
+ee e0 00 f8 aa 00 d6 e8        # e75f |   jne [0xaa], 0, ${fail}:rel + PC
+86 2a e4 1c de fa 85           # e767 |   sub [A*4 + B], 0xfade + A, -123
+ee e0 e0 f8 63 03 03 fc c7 e8  # e76e |   jne [0x363], 0xfc03, ${fail}:rel + PC
+ae e0 21 21 39 30              # e778 |   and [0x3039], A*2, A*2
+ee e0 e0 f8 39 30 54 01 b7 e8  # e77e |   jne [0x3039], 0x154, ${fail}:rel + PC
+a2 e0 20 e0 39 30 39 30        # e788 |   shr [0x3039], A, 0x3039
+ee e0 00 f8 39 30 a5 e8        # e790 |   jne [0x3039], 0, ${fail}:rel + PC
+8e 3e 2a 3e f6 f6              # e798 |   imul [A*4 + -10], A*4 + B, A*4 + -10
+ee e0 e0 f8 9e 02 1a dd 97 e8  # e79e |   jne [0x29e], 0xdd1a, ${fail}:rel + PC
+a2 e0 3e 1c 39 30 f6 85        # e7a8 |   shr [0x3039], A*4 + -10, -123
+ee e0 1c f8 39 30 14 85 e8     # e7b0 |   jne [0x3039], 0x14, ${fail}:rel + PC
+82 fe 20 e0 39 30              # e7b9 |   add [G], A, 0x3039
+ee e0 e0 f8 55 01 e3 30 76 e8  # e7bf |   jne [0x155], 0x30e3, ${fail}:rel + PC
+a6 e0 21 e0 39 30 39 30        # e7c9 |   ishr [0x3039], A*2, 0x3039
+ee e0 00 f8 39 30 64 e8        # e7d1 |   jne [0x3039], 0, ${fail}:rel + PC
+a6 e0 e4 1c 39 30 de fa 85     # e7d9 |   ishr [0x3039], 0xfade + A, -123
+ee e0 1c f8 39 30 dc 53 e8     # e7e2 |   jne [0x3039], 0xdc, ${fail}:rel + PC
+b2 3e fe 20 f6                 # e7eb |   or [A*4 + -10], G, A
+ee e0 e0 f8 9e 02 ff 01 45 e8  # e7f0 |   jne [0x29e], 0x1ff, ${fail}:rel + PC
+a6 2a 2a 20                    # e7fa |   ishr [A*4 + B], A*4 + B, A
+ee e0 00 f8 63 03 37 e8        # e7fe |   jne [0x363], 0, ${fail}:rel + PC
+aa fe e0 2a 39 30              # e806 |   shl [G], 0x3039, A*4 + B
+ee e0 e0 f8 55 01 c8 81 29 e8  # e80c |   jne [0x155], 0x81c8, ${fail}:rel + PC
+8a 21 3e 20 f6                 # e816 |   mul [A*2], A*4 + -10, A
+ee e0 e0 f8 54 01 ec bc 1a e8  # e81b |   jne [0x154], 0xbcec, ${fail}:rel + PC
+8e 3e 3e e0 f6 f6 39 30        # e825 |   imul [A*4 + -10], A*4 + -10, 0x3039
+ee e0 e0 f8 9e 02 2e 35 08 e8  # e82d |   jne [0x29e], 0x352e, ${fail}:rel + PC
+b6 e0 1c 3e 39 30 85 f6        # e837 |   xor [0x3039], -123, A*4 + -10
+ee e0 e0 f8 39 30 1b fd f6 e7  # e83f |   jne [0x3039], 0xfd1b, ${fail}:rel + PC
+b2 fe 20 e4 de fa              # e849 |   or [G], A, 0xfade + A
+ee e0 e0 f8 55 01 aa fb e6 e7  # e84f |   jne [0x155], 0xfbaa, ${fail}:rel + PC
+8e fe fe 3e f6                 # e859 |   imul [G], G, A*4 + -10
+ee e0 e0 f8 55 01 76 7c d7 e7  # e85e |   jne [0x155], 0x7c76, ${fail}:rel + PC
+8a 20 e0 3e 39 30 f6           # e868 |   mul [A], 0x3039, A*4 + -10
+ee e0 e0 f8 aa 00 2e 35 c6 e7  # e86f |   jne [0xaa], 0x352e, ${fail}:rel + PC
+b2 fe 20 20                    # e879 |   or [G], A, A
+ee e0 e0 f8 55 01 aa 00 b8 e7  # e87d |   jne [0x155], 0xaa, ${fail}:rel + PC
+a2 3e 21 e4 f6 de fa           # e887 |   shr [A*4 + -10], A*2, 0xfade + A
+ee e0 1c f8 9e 02 01 a7 e7     # e88e |   jne [0x29e], 0x1, ${fail}:rel + PC
+a6 20 3e 2a f6                 # e897 |   ishr [A], A*4 + -10, A*4 + B
+ee e0 1c f8 aa 00 53 99 e7     # e89c |   jne [0xaa], 0x53, ${fail}:rel + PC
+82 20 e0 20 39 30              # e8a5 |   add [A], 0x3039, A
+ee e0 e0 f8 aa 00 e3 30 8a e7  # e8ab |   jne [0xaa], 0x30e3, ${fail}:rel + PC
+a6 20 1c 20 85                 # e8b5 |   ishr [A], -123, A
+ee e0 1c f8 aa 00 ff 7b e7     # e8ba |   jne [0xaa], 0xff, ${fail}:rel + PC
+ae 21 20 1c 85                 # e8c3 |   and [A*2], A, -123
+ee e0 e0 f8 54 01 80 00 6d e7  # e8c8 |   jne [0x154], 0x80, ${fail}:rel + PC
+b6 2a 1c e4 85 de fa           # e8d2 |   xor [A*4 + B], -123, 0xfade + A
+ee e0 e0 f8 63 03 0d 04 5c e7  # e8d9 |   jne [0x363], 0x40d, ${fail}:rel + PC
+82 20 e0 21 39 30              # e8e3 |   add [A], 0x3039, A*2
+ee e0 e0 f8 aa 00 8d 31 4c e7  # e8e9 |   jne [0xaa], 0x318d, ${fail}:rel + PC
+82 21 fe 2a                    # e8f3 |   add [A*2], G, A*4 + B
+ee e0 e0 f8 54 01 b8 04 3e e7  # e8f7 |   jne [0x154], 0x4b8, ${fail}:rel + PC
+b2 20 2a 20                    # e901 |   or [A], A*4 + B, A
+ee e0 e0 f8 aa 00 eb 03 30 e7  # e905 |   jne [0xaa], 0x3eb, ${fail}:rel + PC
+82 21 1c e0 85 39 30           # e90f |   add [A*2], -123, 0x3039
+ee e0 e0 f8 54 01 be 2f 1f e7  # e916 |   jne [0x154], 0x2fbe, ${fail}:rel + PC
+aa fe 2a 1c 85                 # e920 |   shl [G], A*4 + B, -123
+ee e0 e0 f8 55 01 60 6c 10 e7  # e925 |   jne [0x155], 0x6c60, ${fail}:rel + PC
+82 3e 3e 2a f6 f6              # e92f |   add [A*4 + -10], A*4 + -10, A*4 + B
+ee e0 e0 f8 9e 02 01 06 00 e7  # e935 |   jne [0x29e], 0x601, ${fail}:rel + PC
+b2 20 3e e4 f6 de fa           # e93f |   or [A], A*4 + -10, 0xfade + A
+ee e0 e0 f8 aa 00 9e fb ef e6  # e946 |   jne [0xaa], 0xfb9e, ${fail}:rel + PC
+aa 2a 21 1c 85                 # e950 |   shl [A*4 + B], A*2, -123
+ee e0 e0 f8 63 03 80 2a e0 e6  # e955 |   jne [0x363], 0x2a80, ${fail}:rel + PC
+b2 e0 1c 2a 39 30 85           # e95f |   or [0x3039], -123, A*4 + B
+ee e0 1c f8 39 30 e7 cf e6     # e966 |   jne [0x3039], 0xe7, ${fail}:rel + PC
+82 21 2a 2a                    # e96f |   add [A*2], A*4 + B, A*4 + B
+ee e0 e0 f8 54 01 c6 06 c2 e6  # e973 |   jne [0x154], 0x6c6, ${fail}:rel + PC
+ae 20 21 20                    # e97d |   and [A], A*2, A
+ee e0 00 f8 aa 00 b4 e6        # e981 |   jne [0xaa], 0, ${fail}:rel + PC
+86 20 fe 1c 85                 # e989 |   sub [A], G, -123
+ee e0 e0 f8 aa 00 d0 01 a7 e6  # e98e |   jne [0xaa], 0x1d0, ${fail}:rel + PC
+b2 20 2a 3e f6                 # e998 |   or [A], A*4 + B, A*4 + -10
+ee e0 e0 f8 aa 00 ff 03 98 e6  # e99d |   jne [0xaa], 0x3ff, ${fail}:rel + PC
+b6 2a 20 2a                    # e9a7 |   xor [A*4 + B], A, A*4 + B
+ee e0 e0 f8 63 03 c9 03 8a e6  # e9ab |   jne [0x363], 0x3c9, ${fail}:rel + PC
+aa 21 fe 3e f6                 # e9b5 |   shl [A*2], G, A*4 + -10
+ee e0 e0 f8 54 01 00 40 7b e6  # e9ba |   jne [0x154], 0x4000, ${fail}:rel + PC
+ae 3e e0 21 f6 39 30           # e9c4 |   and [A*4 + -10], 0x3039, A*2
+ee e0 1c f8 9e 02 10 6a e6     # e9cb |   jne [0x29e], 0x10, ${fail}:rel + PC
+a2 e0 2a e4 39 30 de fa        # e9d4 |   shr [0x3039], A*4 + B, 0xfade + A
+ee e0 1c f8 39 30 03 59 e6     # e9dc |   jne [0x3039], 0x3, ${fail}:rel + PC
+8a fe 21 2a                    # e9e5 |   mul [G], A*2, A*4 + B
+ee e0 e0 f8 55 01 7c 7f 4c e6  # e9e9 |   jne [0x155], 0x7f7c, ${fail}:rel + PC
+a2 3e 3e fe f6 f6              # e9f3 |   shr [A*4 + -10], A*4 + -10, G
+ee e0 1c f8 9e 02 14 3c e6     # e9f9 |   jne [0x29e], 0x14, ${fail}:rel + PC
+8a 20 e0 e4 39 30 de fa        # ea02 |   mul [A], 0x3039, 0xfade + A
+ee e0 e0 f8 aa 00 48 81 2b e6  # ea0a |   jne [0xaa], 0x8148, ${fail}:rel + PC
+8a 2a 1c 3e 85 f6              # ea14 |   mul [A*4 + B], -123, A*4 + -10
+ee e0 e0 f8 63 03 16 be 1b e6  # ea1a |   jne [0x363], 0xbe16, ${fail}:rel + PC
+ae 2a 1c fe 85                 # ea24 |   and [A*4 + B], -123, G
+ee e0 e0 f8 63 03 05 01 0c e6  # ea29 |   jne [0x363], 0x105, ${fail}:rel + PC
+aa e0 e0 20 39 30 39 30        # ea33 |   shl [0x3039], 0x3039, A
+ee e0 e0 f8 39 30 00 e4 fa e5  # ea3b |   jne [0x3039], 0xe400, ${fail}:rel + PC
+8e 20 fe 2a                    # ea45 |   imul [A], G, A*4 + B
+ee e0 e0 f8 aa 00 df 82 ec e5  # ea49 |   jne [0xaa], 0x82df, ${fail}:rel + PC
+86 3e 1c 3e f6 85 f6           # ea53 |   sub [A*4 + -10], -123, A*4 + -10
+ee e0 e0 f8 9e 02 e7 fc db e5  # ea5a |   jne [0x29e], 0xfce7, ${fail}:rel + PC
+aa 21 20 2a                    # ea64 |   shl [A*2], A, A*4 + B
+ee e0 e0 f8 54 01 50 05 cd e5  # ea68 |   jne [0x154], 0x550, ${fail}:rel + PC
+82 20 3e 21 f6                 # ea72 |   add [A], A*4 + -10, A*2
+ee e0 e0 f8 aa 00 f2 03 be e5  # ea77 |   jne [0xaa], 0x3f2, ${fail}:rel + PC
+8a 21 fe 1c 85                 # ea81 |   mul [A*2], G, -123
+ee e0 e0 f8 54 01 29 5c af e5  # ea86 |   jne [0x154], 0x5c29, ${fail}:rel + PC
+8a fe 1c e0 85 39 30           # ea90 |   mul [G], -123, 0x3039
+ee e0 e0 f8 55 01 9d d4 9e e5  # ea97 |   jne [0x155], 0xd49d, ${fail}:rel + PC
+a6 e0 2a 2a 39 30              # eaa1 |   ishr [0x3039], A*4 + B, A*4 + B
+ee e0 1c f8 39 30 6c 8e e5     # eaa7 |   jne [0x3039], 0x6c, ${fail}:rel + PC
+82 2a 1c 21 85                 # eab0 |   add [A*4 + B], -123, A*2
+ee e0 e0 f8 63 03 d9 00 80 e5  # eab5 |   jne [0x363], 0xd9, ${fail}:rel + PC
+8a e0 e0 fe 39 30 39 30        # eabf |   mul [0x3039], 0x3039, G
+ee e0 e0 f8 39 30 ed 3b 6e e5  # eac7 |   jne [0x3039], 0x3bed, ${fail}:rel + PC
+b2 e0 2a fe 39 30              # ead1 |   or [0x3039], A*4 + B, G
+ee e0 e0 f8 39 30 77 03 5e e5  # ead7 |   jne [0x3039], 0x377, ${fail}:rel + PC
+aa 2a 1c e0 85 39 30           # eae1 |   shl [A*4 + B], -123, 0x3039
+ee e0 e0 f8 63 03 00 0a 4d e5  # eae8 |   jne [0x363], 0xa00, ${fail}:rel + PC
+8a fe 1c 2a 85                 # eaf2 |   mul [G], -123, A*4 + B
+ee e0 e0 f8 55 01 6f 5f 3e e5  # eaf7 |   jne [0x155], 0x5f6f, ${fail}:rel + PC
+ae 3e e0 fe f6 39 30           # eb01 |   and [A*4 + -10], 0x3039, G
+ee e0 1c f8 9e 02 11 2d e5     # eb08 |   jne [0x29e], 0x11, ${fail}:rel + PC
+a6 2a 21 e4 de fa              # eb11 |   ishr [A*4 + B], A*2, 0xfade + A
+ee e0 1c f8 63 03 01 1e e5     # eb17 |   jne [0x363], 0x1, ${fail}:rel + PC
+b2 21 21 2a                    # eb20 |   or [A*2], A*2, A*4 + B
+ee e0 e0 f8 54 01 77 03 11 e5  # eb24 |   jne [0x154], 0x377, ${fail}:rel + PC
+ae 2a fe fe                    # eb2e |   and [A*4 + B], G, G
+ee e0 e0 f8 63 03 55 01 03 e5  # eb32 |   jne [0x363], 0x155, ${fail}:rel + PC
+aa 2a 3e 3e f6 f6              # eb3c |   shl [A*4 + B], A*4 + -10, A*4 + -10
+ee e0 e0 f8 63 03 00 80 f3 e4  # eb42 |   jne [0x363], 0x8000, ${fail}:rel + PC
+86 3e 2a 1c f6 85              # eb4c |   sub [A*4 + -10], A*4 + B, -123
+ee e0 e0 f8 9e 02 de 03 e3 e4  # eb52 |   jne [0x29e], 0x3de, ${fail}:rel + PC
+ae fe fe 1c 85                 # eb5c |   and [G], G, -123
+ee e0 e0 f8 55 01 05 01 d4 e4  # eb61 |   jne [0x155], 0x105, ${fail}:rel + PC
+a6 21 3e 1c f6 85              # eb6b |   ishr [A*2], A*4 + -10, -123
+ee e0 1c f8 54 01 14 c4 e4     # eb71 |   jne [0x154], 0x14, ${fail}:rel + PC
+b2 e0 21 fe 39 30              # eb7a |   or [0x3039], A*2, G
+ee e0 e0 f8 39 30 55 01 b5 e4  # eb80 |   jne [0x3039], 0x155, ${fail}:rel + PC
+b2 2a 20 21                    # eb8a |   or [A*4 + B], A, A*2
+ee e0 e0 f8 63 03 fe 01 a7 e4  # eb8e |   jne [0x363], 0x1fe, ${fail}:rel + PC
+a2 21 20 e0 39 30              # eb98 |   shr [A*2], A, 0x3039
+ee e0 00 f8 54 01 97 e4        # eb9e |   jne [0x154], 0, ${fail}:rel + PC
+8e 3e 3e e4 f6 f6 de fa        # eba6 |   imul [A*4 + -10], A*4 + -10, 0xfade + A
+ee e0 e0 f8 9e 02 f0 4d 87 e4  # ebae |   jne [0x29e], 0x4df0, ${fail}:rel + PC
+a2 2a 3e fe f6                 # ebb8 |   shr [A*4 + B], A*4 + -10, G
+ee e0 1c f8 63 03 14 78 e4     # ebbd |   jne [0x363], 0x14, ${fail}:rel + PC
+aa e0 2a 1c 39 30 85           # ebc6 |   shl [0x3039], A*4 + B, -123
+ee e0 e0 f8 39 30 60 6c 68 e4  # ebcd |   jne [0x3039], 0x6c60, ${fail}:rel + PC
+86 e0 3e 20 39 30 f6           # ebd7 |   sub [0x3039], A*4 + -10, A
+ee e0 e0 f8 39 30 f4 01 57 e4  # ebde |   jne [0x3039], 0x1f4, ${fail}:rel + PC
+86 fe 3e fe f6                 # ebe8 |   sub [G], A*4 + -10, G
+ee e0 e0 f8 55 01 49 01 48 e4  # ebed |   jne [0x155], 0x149, ${fail}:rel + PC
+b6 20 20 2a                    # ebf7 |   xor [A], A, A*4 + B
+ee e0 e0 f8 aa 00 c9 03 3a e4  # ebfb |   jne [0xaa], 0x3c9, ${fail}:rel + PC
+a2 20 21 21                    # ec05 |   shr [A], A*2, A*2
+ee e0 1c f8 aa 00 15 2c e4     # ec09 |   jne [0xaa], 0x15, ${fail}:rel + PC
+82 2a e0 21 39 30              # ec12 |   add [A*4 + B], 0x3039, A*2
+ee e0 e0 f8 63 03 8d 31 1d e4  # ec18 |   jne [0x363], 0x318d, ${fail}:rel + PC
+82 fe 2a 2a                    # ec22 |   add [G], A*4 + B, A*4 + B
+ee e0 e0 f8 55 01 c6 06 0f e4  # ec26 |   jne [0x155], 0x6c6, ${fail}:rel + PC
+aa 2a 2a 3e f6                 # ec30 |   shl [A*4 + B], A*4 + B, A*4 + -10
+ee e0 e0 f8 63 03 00 c0 00 e4  # ec35 |   jne [0x363], 0xc000, ${fail}:rel + PC
+b6 3e 2a 20 f6                 # ec3f |   xor [A*4 + -10], A*4 + B, A
+ee e0 e0 f8 9e 02 c9 03 f1 e3  # ec44 |   jne [0x29e], 0x3c9, ${fail}:rel + PC
+8a 20 e4 1c de fa 85           # ec4e |   mul [A], 0xfade + A, -123
+ee e0 e0 f8 aa 00 a8 25 e0 e3  # ec55 |   jne [0xaa], 0x25a8, ${fail}:rel + PC
+ae 3e e0 e4 f6 39 30 de fa     # ec5f |   and [A*4 + -10], 0x3039, 0xfade + A
+ee e0 e0 f8 9e 02 08 30 cd e3  # ec68 |   jne [0x29e], 0x3008, ${fail}:rel + PC
+82 20 fe 21                    # ec72 |   add [A], G, A*2
+ee e0 e0 f8 aa 00 a9 02 bf e3  # ec76 |   jne [0xaa], 0x2a9, ${fail}:rel + PC
+86 fe e4 fe de fa              # ec80 |   sub [G], 0xfade + A, G
+ee e0 e0 f8 55 01 33 fa af e3  # ec86 |   jne [0x155], 0xfa33, ${fail}:rel + PC
+a2 e0 3e e4 39 30 f6 de fa     # ec90 |   shr [0x3039], A*4 + -10, 0xfade + A
+ee e0 1c f8 39 30 02 9c e3     # ec99 |   jne [0x3039], 0x2, ${fail}:rel + PC
+a2 3e 21 2a f6                 # eca2 |   shr [A*4 + -10], A*2, A*4 + B
+ee e0 1c f8 9e 02 2a 8e e3     # eca7 |   jne [0x29e], 0x2a, ${fail}:rel + PC
+a2 fe 20 2a                    # ecb0 |   shr [G], A, A*4 + B
+ee e0 1c f8 55 01 15 81 e3     # ecb4 |   jne [0x155], 0x15, ${fail}:rel + PC
+8e 2a fe 21                    # ecbd |   imul [A*4 + B], G, A*2
+ee e0 e0 f8 63 03 e4 c4 74 e3  # ecc1 |   jne [0x363], 0xc4e4, ${fail}:rel + PC
+8a 3e e4 e4 f6 de fa de fa     # eccb |   mul [A*4 + -10], 0xfade + A, 0xfade + A
+ee e0 e0 f8 9e 02 40 f8 61 e3  # ecd4 |   jne [0x29e], 0xf840, ${fail}:rel + PC
+82 3e 2a e0 f6 39 30           # ecde |   add [A*4 + -10], A*4 + B, 0x3039
+ee e0 e0 f8 9e 02 9c 33 50 e3  # ece5 |   jne [0x29e], 0x339c, ${fail}:rel + PC
+b6 2a fe 3e f6                 # ecef |   xor [A*4 + B], G, A*4 + -10
+ee e0 e0 f8 63 03 cb 03 41 e3  # ecf4 |   jne [0x363], 0x3cb, ${fail}:rel + PC
+b6 21 e4 20 de fa              # ecfe |   xor [A*2], 0xfade + A, A
+ee e0 e0 f8 54 01 22 fb 31 e3  # ed04 |   jne [0x154], 0xfb22, ${fail}:rel + PC
+a2 e0 e0 21 39 30 39 30        # ed0e |   shr [0x3039], 0x3039, A*2
+ee e0 e0 f8 39 30 03 03 1f e3  # ed16 |   jne [0x3039], 0x303, ${fail}:rel + PC
+8e 2a fe e0 39 30              # ed20 |   imul [A*4 + B], G, 0x3039
+ee e0 e0 f8 63 03 ed 3b 0f e3  # ed26 |   jne [0x363], 0x3bed, ${fail}:rel + PC
+b6 e0 1c 21 39 30 85           # ed30 |   xor [0x3039], -123, A*2
+ee e0 e0 f8 39 30 d1 fe fe e2  # ed37 |   jne [0x3039], 0xfed1, ${fail}:rel + PC
+86 e0 fe e4 39 30 de fa        # ed41 |   sub [0x3039], G, 0xfade + A
+ee e0 e0 f8 39 30 cd 05 ec e2  # ed49 |   jne [0x3039], 0x5cd, ${fail}:rel + PC
+b6 20 21 e4 de fa              # ed53 |   xor [A], A*2, 0xfade + A
+ee e0 e0 f8 aa 00 dc fa dc e2  # ed59 |   jne [0xaa], 0xfadc, ${fail}:rel + PC
+8a 21 3e e0 f6 39 30           # ed63 |   mul [A*2], A*4 + -10, 0x3039
+ee e0 e0 f8 54 01 2e 35 cb e2  # ed6a |   jne [0x154], 0x352e, ${fail}:rel + PC
+aa 2a 21 20                    # ed74 |   shl [A*4 + B], A*2, A
+ee e0 e0 f8 63 03 00 50 bd e2  # ed78 |   jne [0x363], 0x5000, ${fail}:rel + PC
+ae fe 1c e4 85 de fa           # ed82 |   and [G], -123, 0xfade + A
+ee e0 e0 f8 55 01 80 fb ac e2  # ed89 |   jne [0x155], 0xfb80, ${fail}:rel + PC
+a2 20 20 21                    # ed93 |   shr [A], A, A*2
+ee e0 1c f8 aa 00 0a 9e e2     # ed97 |   jne [0xaa], 0xa, ${fail}:rel + PC
+b6 3e 20 3e f6 f6              # eda0 |   xor [A*4 + -10], A, A*4 + -10
+ee e0 e0 f8 9e 02 34 02 8f e2  # eda6 |   jne [0x29e], 0x234, ${fail}:rel + PC
+aa 3e 3e 21 f6 f6              # edb0 |   shl [A*4 + -10], A*4 + -10, A*2
+ee e0 e0 f8 9e 02 e0 29 7f e2  # edb6 |   jne [0x29e], 0x29e0, ${fail}:rel + PC
+8a 20 3e 1c f6 85              # edc0 |   mul [A], A*4 + -10, -123
+ee e0 e0 f8 aa 00 16 be 6f e2  # edc6 |   jne [0xaa], 0xbe16, ${fail}:rel + PC
+b2 fe fe e0 39 30              # edd0 |   or [G], G, 0x3039
+ee e0 e0 f8 55 01 7d 31 5f e2  # edd6 |   jne [0x155], 0x317d, ${fail}:rel + PC
+a2 2a e4 3e de fa f6           # ede0 |   shr [A*4 + B], 0xfade + A, A*4 + -10
+ee e0 1c f8 63 03 03 4e e2     # ede7 |   jne [0x363], 0x3, ${fail}:rel + PC
+8a 2a 20 e0 39 30              # edf0 |   mul [A*4 + B], A, 0x3039
+ee e0 e0 f8 63 03 da 05 3f e2  # edf6 |   jne [0x363], 0x5da, ${fail}:rel + PC
+ae 3e 21 e0 f6 39 30           # ee00 |   and [A*4 + -10], A*2, 0x3039
+ee e0 1c f8 9e 02 10 2e e2     # ee07 |   jne [0x29e], 0x10, ${fail}:rel + PC
+ae e0 20 2a 39 30              # ee10 |   and [0x3039], A, A*4 + B
+ee e0 1c f8 39 30 22 1f e2     # ee16 |   jne [0x3039], 0x22, ${fail}:rel + PC
+8e fe 2a fe                    # ee1f |   imul [G], A*4 + B, G
+ee e0 e0 f8 55 01 df 82 12 e2  # ee23 |   jne [0x155], 0x82df, ${fail}:rel + PC
+86 e0 fe 2a 39 30              # ee2d |   sub [0x3039], G, A*4 + B
+ee e0 e0 f8 39 30 f2 fd 02 e2  # ee33 |   jne [0x3039], 0xfdf2, ${fail}:rel + PC
+a2 2a fe 2a                    # ee3d |   shr [A*4 + B], G, A*4 + B
+ee e0 1c f8 63 03 2a f4 e1     # ee41 |   jne [0x363], 0x2a, ${fail}:rel + PC
+b2 3e fe fe f6                 # ee4a |   or [A*4 + -10], G, G
+ee e0 e0 f8 9e 02 55 01 e6 e1  # ee4f |   jne [0x29e], 0x155, ${fail}:rel + PC
+b6 21 20 fe                    # ee59 |   xor [A*2], A, G
+ee e0 e0 f8 54 01 ff 01 d8 e1  # ee5d |   jne [0x154], 0x1ff, ${fail}:rel + PC
+a2 fe 3e 1c f6 85              # ee67 |   shr [G], A*4 + -10, -123
+ee e0 1c f8 55 01 14 c8 e1     # ee6d |   jne [0x155], 0x14, ${fail}:rel + PC
+a6 e0 fe 20 39 30              # ee76 |   ishr [0x3039], G, A
+ee e0 00 f8 39 30 b9 e1        # ee7c |   jne [0x3039], 0, ${fail}:rel + PC
+8a 21 1c e4 85 de fa           # ee84 |   mul [A*2], -123, 0xfade + A
+ee e0 e0 f8 54 01 a8 25 aa e1  # ee8b |   jne [0x154], 0x25a8, ${fail}:rel + PC
+b2 21 e4 e0 de fa 39 30        # ee95 |   or [A*2], 0xfade + A, 0x3039
+ee e0 e0 f8 54 01 b9 fb 98 e1  # ee9d |   jne [0x154], 0xfbb9, ${fail}:rel + PC
+8e 2a e0 e4 39 30 de fa        # eea7 |   imul [A*4 + B], 0x3039, 0xfade + A
+ee e0 e0 f8 63 03 48 81 86 e1  # eeaf |   jne [0x363], 0x8148, ${fail}:rel + PC
+b2 3e fe 1c f6 85              # eeb9 |   or [A*4 + -10], G, -123
+ee e0 1c f8 9e 02 d5 76 e1     # eebf |   jne [0x29e], 0xd5, ${fail}:rel + PC
+a6 3e 21 20 f6                 # eec8 |   ishr [A*4 + -10], A*2, A
+ee e0 00 f8 9e 02 68 e1        # eecd |   jne [0x29e], 0, ${fail}:rel + PC
+ae 21 2a 1c 85                 # eed5 |   and [A*2], A*4 + B, -123
+ee e0 e0 f8 54 01 01 03 5b e1  # eeda |   jne [0x154], 0x301, ${fail}:rel + PC
+b2 20 21 3e f6                 # eee4 |   or [A], A*2, A*4 + -10
+ee e0 e0 f8 aa 00 de 03 4c e1  # eee9 |   jne [0xaa], 0x3de, ${fail}:rel + PC
+82 fe 3e 20 f6                 # eef3 |   add [G], A*4 + -10, A
+ee e0 e0 f8 55 01 48 03 3d e1  # eef8 |   jne [0x155], 0x348, ${fail}:rel + PC
+aa 3e 20 e0 f6 39 30           # ef02 |   shl [A*4 + -10], A, 0x3039
+ee e0 e0 f8 9e 02 00 54 2c e1  # ef09 |   jne [0x29e], 0x5400, ${fail}:rel + PC
+aa 20 e4 e4 de fa de fa        # ef13 |   shl [A], 0xfade + A, 0xfade + A
+ee e0 e0 f8 aa 00 00 88 1a e1  # ef1b |   jne [0xaa], 0x8800, ${fail}:rel + PC
+8e fe 3e e0 f6 39 30           # ef25 |   imul [G], A*4 + -10, 0x3039
+ee e0 e0 f8 55 01 2e 35 09 e1  # ef2c |   jne [0x155], 0x352e, ${fail}:rel + PC
+82 e0 1c 1c 39 30 85 85        # ef36 |   add [0x3039], -123, -123
+ee e0 e0 f8 39 30 0a ff f7 e0  # ef3e |   jne [0x3039], 0xff0a, ${fail}:rel + PC
+86 21 3e fe f6                 # ef48 |   sub [A*2], A*4 + -10, G
+ee e0 e0 f8 54 01 49 01 e8 e0  # ef4d |   jne [0x154], 0x149, ${fail}:rel + PC
+a6 20 e4 fe de fa              # ef57 |   ishr [A], 0xfade + A, G
+ee e0 1c f8 aa 00 dc d8 e0     # ef5d |   jne [0xaa], 0xdc, ${fail}:rel + PC
+b6 20 e4 e0 de fa 39 30        # ef66 |   xor [A], 0xfade + A, 0x3039
+ee e0 e0 f8 aa 00 b1 cb c7 e0  # ef6e |   jne [0xaa], 0xcbb1, ${fail}:rel + PC
+86 fe 21 e4 de fa              # ef78 |   sub [G], A*2, 0xfade + A
+ee e0 e0 f8 55 01 cc 05 b7 e0  # ef7e |   jne [0x155], 0x5cc, ${fail}:rel + PC
+82 2a e0 e0 39 30 39 30        # ef88 |   add [A*4 + B], 0x3039, 0x3039
+ee e0 e0 f8 63 03 72 60 a5 e0  # ef90 |   jne [0x363], 0x6072, ${fail}:rel + PC
+86 3e 1c e4 f6 85 de fa        # ef9a |   sub [A*4 + -10], -123, 0xfade + A
+ee e0 e0 f8 9e 02 fd 03 93 e0  # efa2 |   jne [0x29e], 0x3fd, ${fail}:rel + PC
+82 21 21 3e f6                 # efac |   add [A*2], A*2, A*4 + -10
+ee e0 e0 f8 54 01 f2 03 84 e0  # efb1 |   jne [0x154], 0x3f2, ${fail}:rel + PC
+a2 20 e0 1c 39 30 85           # efbb |   shr [A], 0x3039, -123
+ee e0 e0 f8 aa 00 81 01 73 e0  # efc2 |   jne [0xaa], 0x181, ${fail}:rel + PC
+8e 21 20 3e f6                 # efcc |   imul [A*2], A, A*4 + -10
+ee e0 e0 f8 54 01 ec bc 64 e0  # efd1 |   jne [0x154], 0xbcec, ${fail}:rel + PC
+b2 3e fe e4 f6 de fa           # efdb |   or [A*4 + -10], G, 0xfade + A
+ee e0 e0 f8 9e 02 dd fb 53 e0  # efe2 |   jne [0x29e], 0xfbdd, ${fail}:rel + PC
+a6 fe 20 1c 85                 # efec |   ishr [G], A, -123
+ee e0 1c f8 55 01 05 44 e0     # eff1 |   jne [0x155], 0x5, ${fail}:rel + PC
+a6 21 20 e4 de fa              # effa |   ishr [A*2], A, 0xfade + A
+ee e0 00 f8 54 01 35 e0        # f000 |   jne [0x154], 0, ${fail}:rel + PC
+a2 e0 1c 20 39 30 85           # f008 |   shr [0x3039], -123, A
+ee e0 1c f8 39 30 3f 26 e0     # f00f |   jne [0x3039], 0x3f, ${fail}:rel + PC
+8e 20 20 3e f6                 # f018 |   imul [A], A, A*4 + -10
+ee e0 e0 f8 aa 00 ec bc 18 e0  # f01d |   jne [0xaa], 0xbcec, ${fail}:rel + PC
+82 2a e4 fe de fa              # f027 |   add [A*4 + B], 0xfade + A, G
+ee e0 e0 f8 63 03 dd fc 08 e0  # f02d |   jne [0x363], 0xfcdd, ${fail}:rel + PC
+b6 fe e0 3e 39 30 f6           # f037 |   xor [G], 0x3039, A*4 + -10
+ee e0 e0 f8 55 01 a7 32 f7 df  # f03e |   jne [0x155], 0x32a7, ${fail}:rel + PC
+8e 20 e0 2a 39 30              # f048 |   imul [A], 0x3039, A*4 + B
+ee e0 e0 f8 aa 00 0b 51 e7 df  # f04e |   jne [0xaa], 0x510b, ${fail}:rel + PC
+b2 3e e4 fe f6 de fa           # f058 |   or [A*4 + -10], 0xfade + A, G
+ee e0 e0 f8 9e 02 dd fb d6 df  # f05f |   jne [0x29e], 0xfbdd, ${fail}:rel + PC
+86 21 1c 21 85                 # f069 |   sub [A*2], -123, A*2
+ee e0 e0 f8 54 01 31 fe c7 df  # f06e |   jne [0x154], 0xfe31, ${fail}:rel + PC
+b2 2a 21 21                    # f078 |   or [A*4 + B], A*2, A*2
+ee e0 e0 f8 63 03 54 01 b9 df  # f07c |   jne [0x363], 0x154, ${fail}:rel + PC
+8e e0 20 3e 39 30 f6           # f086 |   imul [0x3039], A, A*4 + -10
+ee e0 e0 f8 39 30 ec bc a8 df  # f08d |   jne [0x3039], 0xbcec, ${fail}:rel + PC
+a6 3e e4 2a f6 de fa           # f097 |   ishr [A*4 + -10], 0xfade + A, A*4 + B
+ee e0 e0 f8 9e 02 71 ff 97 df  # f09e |   jne [0x29e], 0xff71, ${fail}:rel + PC
+ae e0 20 e4 39 30 de fa        # f0a8 |   and [0x3039], A, 0xfade + A
+ee e0 e0 f8 39 30 88 00 85 df  # f0b0 |   jne [0x3039], 0x88, ${fail}:rel + PC
+a6 20 fe fe                    # f0ba |   ishr [A], G, G
+ee e0 1c f8 aa 00 0a 77 df     # f0be |   jne [0xaa], 0xa, ${fail}:rel + PC
+8e 20 3e 20 f6                 # f0c7 |   imul [A], A*4 + -10, A
+ee e0 e0 f8 aa 00 ec bc 69 df  # f0cc |   jne [0xaa], 0xbcec, ${fail}:rel + PC
+b2 e0 3e fe 39 30 f6           # f0d6 |   or [0x3039], A*4 + -10, G
+ee e0 e0 f8 39 30 df 03 58 df  # f0dd |   jne [0x3039], 0x3df, ${fail}:rel + PC
+82 21 e0 e4 39 30 de fa        # f0e7 |   add [A*2], 0x3039, 0xfade + A
+ee e0 e0 f8 54 01 c1 2b 46 df  # f0ef |   jne [0x154], 0x2bc1, ${fail}:rel + PC
+82 e0 1c e4 39 30 85 de fa     # f0f9 |   add [0x3039], -123, 0xfade + A
+ee e0 e0 f8 39 30 0d fb 33 df  # f102 |   jne [0x3039], 0xfb0d, ${fail}:rel + PC
+b2 fe 20 21                    # f10c |   or [G], A, A*2
+ee e0 e0 f8 55 01 fe 01 25 df  # f110 |   jne [0x155], 0x1fe, ${fail}:rel + PC
+aa 21 2a 21                    # f11a |   shl [A*2], A*4 + B, A*2
+ee e0 e0 f8 54 01 30 36 17 df  # f11e |   jne [0x154], 0x3630, ${fail}:rel + PC
+82 e0 2a e0 39 30 39 30        # f128 |   add [0x3039], A*4 + B, 0x3039
+ee e0 e0 f8 39 30 9c 33 05 df  # f130 |   jne [0x3039], 0x339c, ${fail}:rel + PC
+ae 2a 20 1c 85                 # f13a |   and [A*4 + B], A, -123
+ee e0 e0 f8 63 03 80 00 f6 de  # f13f |   jne [0x363], 0x80, ${fail}:rel + PC
+b6 e0 20 1c 39 30 85           # f149 |   xor [0x3039], A, -123
+ee e0 e0 f8 39 30 2f ff e5 de  # f150 |   jne [0x3039], 0xff2f, ${fail}:rel + PC
+ae 21 fe e0 39 30              # f15a |   and [A*2], G, 0x3039
+ee e0 1c f8 54 01 11 d5 de     # f160 |   jne [0x154], 0x11, ${fail}:rel + PC
+ae 3e fe 3e f6 f6              # f169 |   and [A*4 + -10], G, A*4 + -10
+ee e0 1c f8 9e 02 14 c6 de     # f16f |   jne [0x29e], 0x14, ${fail}:rel + PC
+8a 3e 2a 2a f6                 # f178 |   mul [A*4 + -10], A*4 + B, A*4 + B
+ee e0 e0 f8 9e 02 49 78 b8 de  # f17d |   jne [0x29e], 0x7849, ${fail}:rel + PC
+82 20 3e e0 f6 39 30           # f187 |   add [A], A*4 + -10, 0x3039
+ee e0 e0 f8 aa 00 d7 32 a7 de  # f18e |   jne [0xaa], 0x32d7, ${fail}:rel + PC
+82 21 e0 3e 39 30 f6           # f198 |   add [A*2], 0x3039, A*4 + -10
+ee e0 e0 f8 54 01 d7 32 96 de  # f19f |   jne [0x154], 0x32d7, ${fail}:rel + PC
+b6 21 3e 3e f6 f6              # f1a9 |   xor [A*2], A*4 + -10, A*4 + -10
+ee e0 00 f8 54 01 86 de        # f1af |   jne [0x154], 0, ${fail}:rel + PC
+a6 e0 20 20 39 30              # f1b7 |   ishr [0x3039], A, A
+ee e0 00 f8 39 30 78 de        # f1bd |   jne [0x3039], 0, ${fail}:rel + PC
+a6 e0 e0 3e 39 30 39 30 f6     # f1c5 |   ishr [0x3039], 0x3039, A*4 + -10
+ee e0 00 f8 39 30 67 de        # f1ce |   jne [0x3039], 0, ${fail}:rel + PC
+aa 20 1c 21 85                 # f1d6 |   shl [A], -123, A*2
+ee e0 e0 f8 aa 00 50 f8 5a de  # f1db |   jne [0xaa], 0xf850, ${fail}:rel + PC
+ae e0 21 e4 39 30 de fa        # f1e5 |   and [0x3039], A*2, 0xfade + A
+ee e0 e0 f8 39 30 00 01 48 de  # f1ed |   jne [0x3039], 0x100, ${fail}:rel + PC
+b2 3e 1c 20 f6 85              # f1f7 |   or [A*4 + -10], -123, A
+ee e0 1c f8 9e 02 af 38 de     # f1fd |   jne [0x29e], 0xaf, ${fail}:rel + PC
+8e 21 1c 20 85                 # f206 |   imul [A*2], -123, A
+ee e0 e0 f8 54 01 52 ae 2a de  # f20b |   jne [0x154], 0xae52, ${fail}:rel + PC
+8a 2a 2a 2a                    # f215 |   mul [A*4 + B], A*4 + B, A*4 + B
+ee e0 e0 f8 63 03 49 78 1c de  # f219 |   jne [0x363], 0x7849, ${fail}:rel + PC
+86 2a 2a e0 39 30              # f223 |   sub [A*4 + B], A*4 + B, 0x3039
+ee e0 e0 f8 63 03 2a d3 0c de  # f229 |   jne [0x363], 0xd32a, ${fail}:rel + PC
+ae fe 1c 21 85                 # f233 |   and [G], -123, A*2
+ee e0 e0 f8 55 01 04 01 fd dd  # f238 |   jne [0x155], 0x104, ${fail}:rel + PC
+8e 21 e4 1c de fa 85           # f242 |   imul [A*2], 0xfade + A, -123
+ee e0 e0 f8 54 01 a8 25 ec dd  # f249 |   jne [0x154], 0x25a8, ${fail}:rel + PC
+8a 21 21 e4 de fa              # f253 |   mul [A*2], A*2, 0xfade + A
+ee e0 e0 f8 54 01 a0 10 dc dd  # f259 |   jne [0x154], 0x10a0, ${fail}:rel + PC
+86 fe e0 fe 39 30              # f263 |   sub [G], 0x3039, G
+ee e0 e0 f8 55 01 e4 2e cc dd  # f269 |   jne [0x155], 0x2ee4, ${fail}:rel + PC
+62 20 1c 85                    # f273 |   mov [A], -123
+ee e0 1c f8 aa 00 85 be dd     # f277 |   jne [0xaa], 0x85, ${fail}:rel + PC
+62 3e 3e f6 f6                 # f280 |   mov [A*4 + -10], A*4 + -10
+ee e0 e0 f8 9e 02 9e 02 b0 dd  # f285 |   jne [0x29e], 0x29e, ${fail}:rel + PC
+62 21 2a                       # f28f |   mov [A*2], A*4 + B
+ee e0 e0 f8 54 01 63 03 a3 dd  # f292 |   jne [0x154], 0x363, ${fail}:rel + PC
+62 e0 1c 39 30 85              # f29c |   mov [0x3039], -123
+ee e0 1c f8 39 30 85 93 dd     # f2a2 |   jne [0x3039], 0x85, ${fail}:rel + PC
+62 fe 3e f6                    # f2ab |   mov [G], A*4 + -10
+ee e0 e0 f8 55 01 9e 02 86 dd  # f2af |   jne [0x155], 0x29e, ${fail}:rel + PC
+62 e0 fe 39 30                 # f2b9 |   mov [0x3039], G
+ee e0 e0 f8 39 30 55 01 77 dd  # f2be |   jne [0x3039], 0x155, ${fail}:rel + PC
+62 fe 21                       # f2c8 |   mov [G], A*2
+ee e0 e0 f8 55 01 54 01 6a dd  # f2cb |   jne [0x155], 0x154, ${fail}:rel + PC
+62 3e e4 f6 de fa              # f2d5 |   mov [A*4 + -10], 0xfade + A
+ee e0 e0 f8 9e 02 88 fb 5a dd  # f2db |   jne [0x29e], 0xfb88, ${fail}:rel + PC
+62 e0 e0 39 30 39 30           # f2e5 |   mov [0x3039], 0x3039
+ee e0 e0 f8 39 30 39 30 49 dd  # f2ec |   jne [0x3039], 0x3039, ${fail}:rel + PC
+62 3e fe f6                    # f2f6 |   mov [A*4 + -10], G
+ee e0 e0 f8 9e 02 55 01 3b dd  # f2fa |   jne [0x29e], 0x155, ${fail}:rel + PC
+62 20 fe                       # f304 |   mov [A], G
+ee e0 e0 f8 aa 00 55 01 2e dd  # f307 |   jne [0xaa], 0x155, ${fail}:rel + PC
+62 2a 2a                       # f311 |   mov [A*4 + B], A*4 + B
+ee e0 e0 f8 63 03 63 03 21 dd  # f314 |   jne [0x363], 0x363, ${fail}:rel + PC
+62 3e 2a f6                    # f31e |   mov [A*4 + -10], A*4 + B
+ee e0 e0 f8 9e 02 63 03 13 dd  # f322 |   jne [0x29e], 0x363, ${fail}:rel + PC
+62 2a 20                       # f32c |   mov [A*4 + B], A
+ee e0 e0 f8 63 03 aa 00 06 dd  # f32f |   jne [0x363], 0xaa, ${fail}:rel + PC
+62 3e 20 f6                    # f339 |   mov [A*4 + -10], A
+ee e0 e0 f8 9e 02 aa 00 f8 dc  # f33d |   jne [0x29e], 0xaa, ${fail}:rel + PC
+62 20 20                       # f347 |   mov [A], A
+ee e0 e0 f8 aa 00 aa 00 eb dc  # f34a |   jne [0xaa], 0xaa, ${fail}:rel + PC
+62 2a e4 de fa                 # f354 |   mov [A*4 + B], 0xfade + A
+ee e0 e0 f8 63 03 88 fb dc dc  # f359 |   jne [0x363], 0xfb88, ${fail}:rel + PC
+62 21 1c 85                    # f363 |   mov [A*2], -123
+ee e0 1c f8 54 01 85 ce dc     # f367 |   jne [0x154], 0x85, ${fail}:rel + PC
+62 2a e0 39 30                 # f370 |   mov [A*4 + B], 0x3039
+ee e0 e0 f8 63 03 39 30 c0 dc  # f375 |   jne [0x363], 0x3039, ${fail}:rel + PC
+62 3e 1c f6 85                 # f37f |   mov [A*4 + -10], -123
+ee e0 1c f8 9e 02 85 b1 dc     # f384 |   jne [0x29e], 0x85, ${fail}:rel + PC
+62 3e 21 f6                    # f38d |   mov [A*4 + -10], A*2
+ee e0 e0 f8 9e 02 54 01 a4 dc  # f391 |   jne [0x29e], 0x154, ${fail}:rel + PC
+62 21 3e f6                    # f39b |   mov [A*2], A*4 + -10
+ee e0 e0 f8 54 01 9e 02 96 dc  # f39f |   jne [0x154], 0x29e, ${fail}:rel + PC
+62 e0 21 39 30                 # f3a9 |   mov [0x3039], A*2
+ee e0 e0 f8 39 30 54 01 87 dc  # f3ae |   jne [0x3039], 0x154, ${fail}:rel + PC
+62 21 fe                       # f3b8 |   mov [A*2], G
+ee e0 e0 f8 54 01 55 01 7a dc  # f3bb |   jne [0x154], 0x155, ${fail}:rel + PC
+62 2a fe                       # f3c5 |   mov [A*4 + B], G
+ee e0 e0 f8 63 03 55 01 6d dc  # f3c8 |   jne [0x363], 0x155, ${fail}:rel + PC
+62 21 e4 de fa                 # f3d2 |   mov [A*2], 0xfade + A
+ee e0 e0 f8 54 01 88 fb 5e dc  # f3d7 |   jne [0x154], 0xfb88, ${fail}:rel + PC
+62 20 3e f6                    # f3e1 |   mov [A], A*4 + -10
+ee e0 e0 f8 aa 00 9e 02 50 dc  # f3e5 |   jne [0xaa], 0x29e, ${fail}:rel + PC
+62 e0 3e 39 30 f6              # f3ef |   mov [0x3039], A*4 + -10
+ee e0 e0 f8 39 30 9e 02 40 dc  # f3f5 |   jne [0x3039], 0x29e, ${fail}:rel + PC
+62 2a 3e f6                    # f3ff |   mov [A*4 + B], A*4 + -10
+ee e0 e0 f8 63 03 9e 02 32 dc  # f403 |   jne [0x363], 0x29e, ${fail}:rel + PC
+62 e0 e4 39 30 de fa           # f40d |   mov [0x3039], 0xfade + A
+ee e0 e0 f8 39 30 88 fb 21 dc  # f414 |   jne [0x3039], 0xfb88, ${fail}:rel + PC
+62 21 e0 39 30                 # f41e |   mov [A*2], 0x3039
+ee e0 e0 f8 54 01 39 30 12 dc  # f423 |   jne [0x154], 0x3039, ${fail}:rel + PC
+62 fe 1c 85                    # f42d |   mov [G], -123
+ee e0 1c f8 55 01 85 04 dc     # f431 |   jne [0x155], 0x85, ${fail}:rel + PC
+62 e0 2a 39 30                 # f43a |   mov [0x3039], A*4 + B
+ee e0 e0 f8 39 30 63 03 f6 db  # f43f |   jne [0x3039], 0x363, ${fail}:rel + PC
+62 fe e4 de fa                 # f449 |   mov [G], 0xfade + A
+ee e0 e0 f8 55 01 88 fb e7 db  # f44e |   jne [0x155], 0xfb88, ${fail}:rel + PC
+62 20 e0 39 30                 # f458 |   mov [A], 0x3039
+ee e0 e0 f8 aa 00 39 30 d8 db  # f45d |   jne [0xaa], 0x3039, ${fail}:rel + PC
+62 20 21                       # f467 |   mov [A], A*2
+ee e0 e0 f8 aa 00 54 01 cb db  # f46a |   jne [0xaa], 0x154, ${fail}:rel + PC
+62 3e e0 f6 39 30              # f474 |   mov [A*4 + -10], 0x3039
+ee e0 e0 f8 9e 02 39 30 bb db  # f47a |   jne [0x29e], 0x3039, ${fail}:rel + PC
+62 fe 20                       # f484 |   mov [G], A
+ee e0 e0 f8 55 01 aa 00 ae db  # f487 |   jne [0x155], 0xaa, ${fail}:rel + PC
+62 21 20                       # f491 |   mov [A*2], A
+ee e0 e0 f8 54 01 aa 00 a1 db  # f494 |   jne [0x154], 0xaa, ${fail}:rel + PC
+62 fe fe                       # f49e |   mov [G], G
+ee e0 e0 f8 55 01 55 01 94 db  # f4a1 |   jne [0x155], 0x155, ${fail}:rel + PC
+62 20 2a                       # f4ab |   mov [A], A*4 + B
+ee e0 e0 f8 aa 00 63 03 87 db  # f4ae |   jne [0xaa], 0x363, ${fail}:rel + PC
+62 2a 1c 85                    # f4b8 |   mov [A*4 + B], -123
+ee e0 1c f8 63 03 85 79 db     # f4bc |   jne [0x363], 0x85, ${fail}:rel + PC
+62 2a 21                       # f4c5 |   mov [A*4 + B], A*2
+ee e0 e0 f8 63 03 54 01 6d db  # f4c8 |   jne [0x363], 0x154, ${fail}:rel + PC
+62 e0 20 39 30                 # f4d2 |   mov [0x3039], A
+ee e0 e0 f8 39 30 aa 00 5e db  # f4d7 |   jne [0x3039], 0xaa, ${fail}:rel + PC
+62 fe e0 39 30                 # f4e1 |   mov [G], 0x3039
+ee e0 e0 f8 55 01 39 30 4f db  # f4e6 |   jne [0x155], 0x3039, ${fail}:rel + PC
+62 21 21                       # f4f0 |   mov [A*2], A*2
+ee e0 e0 f8 54 01 54 01 42 db  # f4f3 |   jne [0x154], 0x154, ${fail}:rel + PC
+62 fe 2a                       # f4fd |   mov [G], A*4 + B
+ee e0 e0 f8 55 01 63 03 35 db  # f500 |   jne [0x155], 0x363, ${fail}:rel + PC
+62 20 e4 de fa                 # f50a |   mov [A], 0xfade + A
+ee e0 e0 f8 aa 00 88 fb 26 db  # f50f |   jne [0xaa], 0xfb88, ${fail}:rel + PC
+e0 2a                          # f519 |   push A*4 + B
+e4 80                          # f51b |   pop D
+ec 80 e0 f8 63 03 18 db        # f51d |   jne D, 0x363, ${fail}:rel + PC
+e0 1c 85                       # f525 |   push -123
+e4 80                          # f528 |   pop D
+ec 80 1c f8 85 0b db           # f52a |   jne D, 0x85, ${fail}:rel + PC
+e0 fe                          # f531 |   push G
+e4 80                          # f533 |   pop D
+ec 80 e0 f8 55 01 00 db        # f535 |   jne D, 0x155, ${fail}:rel + PC
+e0 3e f6                       # f53d |   push A*4 + -10
+e4 80                          # f540 |   pop D
+ec 80 e0 f8 9e 02 f3 da        # f542 |   jne D, 0x29e, ${fail}:rel + PC
+e0 20                          # f54a |   push A
+e4 80                          # f54c |   pop D
+ec 80 e0 f8 aa 00 e7 da        # f54e |   jne D, 0xaa, ${fail}:rel + PC
+e0 e4 de fa                    # f556 |   push 0xfade + A
+e4 80                          # f55a |   pop D
+ec 80 e0 f8 88 fb d9 da        # f55c |   jne D, 0xfb88, ${fail}:rel + PC
+e0 21                          # f564 |   push A*2
+e4 80                          # f566 |   pop D
+ec 80 e0 f8 54 01 cd da        # f568 |   jne D, 0x154, ${fail}:rel + PC
+e0 e0 39 30                    # f570 |   push 0x3039
+e4 80                          # f574 |   pop D
+ec 80 e0 f8 39 30 bf da        # f576 |   jne D, 0x3039, ${fail}:rel + PC
+5c f8 10 00                    # f57e |   call ${_L_test_uop_get_arg_1}:rel + PC
+ec 60 e0 f8 fe ad b3 da        # f582 |   jne C, 0xadfe, ${fail}:rel + PC
+58 f8 0e 00                    # f58a |   jmp ${_L_test_uop_get_arg_2}:rel + PC
                                #      | _L_test_uop_get_arg_1:
-60 60 e0 fe ad                 # f552 |   mov C, 0xadfe
-dc                             # f557 |   ret
-58 f8 dd da                    # f558 |   jmp ${fail}:rel + PC
+60 60 e0 fe ad                 # f58e |   mov C, 0xadfe
+dc                             # f593 |   ret
+58 f8 a1 da                    # f594 |   jmp ${fail}:rel + PC
                                #      | _L_test_uop_get_arg_2:
                                #      | test_uop_alu_2dd:
-60 20 e0 cd ab                 # f55c |   mov A, 0xabcd
-00 20 e0 ab cd                 # f561 |   add A, 0xcdab
-ec 20 e0 f8 78 79 cf da        # f566 |   jne A, 0x7978, ${fail}:rel + PC
+60 20 e0 cd ab                 # f598 |   mov A, 0xabcd
+00 20 e0 ab cd                 # f59d |   add A, 0xcdab
+ec 20 e0 f8 78 79 93 da        # f5a2 |   jne A, 0x7978, ${fail}:rel + PC
                                #      | test_uop_alu_2di:
-60 20 e0 00 10                 # f56e |   mov A, 0x1000
-62 e0 e0 00 10 bc 0a           # f573 |   mov [0x1000], 0xabc
-01 20 20                       # f57a |   add A, [A]
-ec 20 e0 f8 bc 1a b8 da        # f57d |   jne A, 0x1abc, ${fail}:rel + PC
+60 20 e0 00 10                 # f5aa |   mov A, 0x1000
+62 e0 e0 00 10 bc 0a           # f5af |   mov [0x1000], 0xabc
+01 20 20                       # f5b6 |   add A, [A]
+ec 20 e0 f8 bc 1a 7c da        # f5b9 |   jne A, 0x1abc, ${fail}:rel + PC
                                #      | test_uop_alu_2id:
-62 e0 e0 00 10 34 12           # f585 |   mov [0x1000], 0x1234
-02 e0 e0 00 10 21 43           # f58c |   add [0x1000], 0x4321
-61 20 e0 00 10                 # f593 |   mov A, [0x1000]
-ec 20 e0 f8 55 55 9d da        # f598 |   jne A, 0x5555, ${fail}:rel + PC
+62 e0 e0 00 10 34 12           # f5c1 |   mov [0x1000], 0x1234
+02 e0 e0 00 10 21 43           # f5c8 |   add [0x1000], 0x4321
+61 20 e0 00 10                 # f5cf |   mov A, [0x1000]
+ec 20 e0 f8 55 55 61 da        # f5d4 |   jne A, 0x5555, ${fail}:rel + PC
                                #      | test_uop_alu_2ii:
-62 e0 e0 00 10 34 12           # f5a0 |   mov [0x1000], 0x1234
-62 e0 e0 05 10 aa aa           # f5a7 |   mov [0x1005], 0xaaaa
-03 e0 e0 05 10 00 10           # f5ae |   add [0x1005], [0x1000]
-ee e0 e0 f8 05 10 de bc 80 da  # f5b5 |   jne [0x1005], 0xbcde, ${fail}:rel + PC
+62 e0 e0 00 10 34 12           # f5dc |   mov [0x1000], 0x1234
+62 e0 e0 05 10 aa aa           # f5e3 |   mov [0x1005], 0xaaaa
+03 e0 e0 05 10 00 10           # f5ea |   add [0x1005], [0x1000]
+ee e0 e0 f8 05 10 de bc 44 da  # f5f1 |   jne [0x1005], 0xbcde, ${fail}:rel + PC
                                #      | test_uop_alu_3dd:
-60 20 e0 fe ab                 # f5bf |   mov A, 0xabfe
-60 40 e0 55 55                 # f5c4 |   mov B, 0x5555
-80 60 20 40                    # f5c9 |   add C, A, B
-ec 20 e0 f8 fe ab 68 da        # f5cd |   jne A, 0xabfe, ${fail}:rel + PC
-ec 40 e0 f8 55 55 60 da        # f5d5 |   jne B, 0x5555, ${fail}:rel + PC
-ec 60 e0 f8 53 01 58 da        # f5dd |   jne C, 0x153, ${fail}:rel + PC
+60 20 e0 fe ab                 # f5fb |   mov A, 0xabfe
+60 40 e0 55 55                 # f600 |   mov B, 0x5555
+80 60 20 40                    # f605 |   add C, A, B
+ec 20 e0 f8 fe ab 2c da        # f609 |   jne A, 0xabfe, ${fail}:rel + PC
+ec 40 e0 f8 55 55 24 da        # f611 |   jne B, 0x5555, ${fail}:rel + PC
+ec 60 e0 f8 53 01 1c da        # f619 |   jne C, 0x153, ${fail}:rel + PC
                                #      | test_uop_alu_3di:
-62 e0 e0 00 10 aa 12           # f5e5 |   mov [0x1000], 0x12aa
-60 40 e0 de fa                 # f5ec |   mov B, 0xfade
-b5 20 e0 40 00 10              # f5f1 |   xor A, [0x1000], B
-ee e0 e0 f8 00 10 aa 12 3e da  # f5f7 |   jne [0x1000], 0x12aa, ${fail}:rel + PC
-ec 40 e0 f8 de fa 34 da        # f601 |   jne B, 0xfade, ${fail}:rel + PC
-ec 20 e0 f8 74 e8 2c da        # f609 |   jne A, 0xe874, ${fail}:rel + PC
+62 e0 e0 00 10 aa 12           # f621 |   mov [0x1000], 0x12aa
+60 40 e0 de fa                 # f628 |   mov B, 0xfade
+b5 20 e0 40 00 10              # f62d |   xor A, [0x1000], B
+ee e0 e0 f8 00 10 aa 12 02 da  # f633 |   jne [0x1000], 0x12aa, ${fail}:rel + PC
+ec 40 e0 f8 de fa f8 d9        # f63d |   jne B, 0xfade, ${fail}:rel + PC
+ec 20 e0 f8 74 e8 f0 d9        # f645 |   jne A, 0xe874, ${fail}:rel + PC
                                #      | test_uop_alu_3id:
-60 20 e0 fe ab                 # f611 |   mov A, 0xabfe
-60 40 e0 55 55                 # f616 |   mov B, 0x5555
-86 e0 20 40 00 10              # f61b |   sub [0x1000], A, B
-ec 20 e0 f8 fe ab 14 da        # f621 |   jne A, 0xabfe, ${fail}:rel + PC
-ec 40 e0 f8 55 55 0c da        # f629 |   jne B, 0x5555, ${fail}:rel + PC
-ee e0 e0 f8 00 10 a9 56 04 da  # f631 |   jne [0x1000], 0x56a9, ${fail}:rel + PC
+60 20 e0 fe ab                 # f64d |   mov A, 0xabfe
+60 40 e0 55 55                 # f652 |   mov B, 0x5555
+86 e0 20 40 00 10              # f657 |   sub [0x1000], A, B
+ec 20 e0 f8 fe ab d8 d9        # f65d |   jne A, 0xabfe, ${fail}:rel + PC
+ec 40 e0 f8 55 55 d0 d9        # f665 |   jne B, 0x5555, ${fail}:rel + PC
+ee e0 e0 f8 00 10 a9 56 c8 d9  # f66d |   jne [0x1000], 0x56a9, ${fail}:rel + PC
                                #      | test_uop_alu_3ii:
-62 e0 e0 00 10 fe ab           # f63b |   mov [0x1000], 0xabfe
-60 40 e0 55 55                 # f642 |   mov B, 0x5555
-af e0 e0 40 02 10 00 10        # f647 |   and [0x1002], [0x1000], B
-ee e0 e0 f8 00 10 fe ab e6 d9  # f64f |   jne [0x1000], 0xabfe, ${fail}:rel + PC
-ec 40 e0 f8 55 55 dc d9        # f659 |   jne B, 0x5555, ${fail}:rel + PC
-ee e0 e0 f8 02 10 54 01 d4 d9  # f661 |   jne [0x1002], 0x154, ${fail}:rel + PC
+62 e0 e0 00 10 fe ab           # f677 |   mov [0x1000], 0xabfe
+60 40 e0 55 55                 # f67e |   mov B, 0x5555
+af e0 e0 40 02 10 00 10        # f683 |   and [0x1002], [0x1000], B
+ee e0 e0 f8 00 10 fe ab aa d9  # f68b |   jne [0x1000], 0xabfe, ${fail}:rel + PC
+ec 40 e0 f8 55 55 a0 d9        # f695 |   jne B, 0x5555, ${fail}:rel + PC
+ee e0 e0 f8 02 10 54 01 98 d9  # f69d |   jne [0x1002], 0x154, ${fail}:rel + PC
                                #      | test_uop_alu_single_1dx:
-60 20 e0 00 ff                 # f66b |   mov A, 0xff00
-3c 20                          # f670 |   not A
-ec 20 e0 f8 ff 00 c3 d9        # f672 |   jne A, 0xff, ${fail}:rel + PC
+60 20 e0 00 ff                 # f6a7 |   mov A, 0xff00
+3c 20                          # f6ac |   not A
+ec 20 e0 f8 ff 00 87 d9        # f6ae |   jne A, 0xff, ${fail}:rel + PC
                                #      | test_uop_alu_single_1ix:
-62 1c e0 64 34 12              # f67a |   mov [0x64], 0x1234
-3a 1c 64                       # f680 |   neg [0x64]
-ee 1c e0 f8 64 cc ed b2 d9     # f683 |   jne [0x64], 0xedcc, ${fail}:rel + PC
+62 1c e0 64 34 12              # f6b6 |   mov [0x64], 0x1234
+3a 1c 64                       # f6bc |   neg [0x64]
+ee 1c e0 f8 64 cc ed 76 d9     # f6bf |   jne [0x64], 0xedcc, ${fail}:rel + PC
                                #      | test_uop_alu_single_2dd:
-60 40 e0 ff 00                 # f68c |   mov B, 0xff
-bc 20 40                       # f691 |   not A, B
-ec 40 e0 f8 ff 00 a1 d9        # f694 |   jne B, 0xff, ${fail}:rel + PC
-ec 20 e0 f8 00 ff 99 d9        # f69c |   jne A, 0xff00, ${fail}:rel + PC
+60 40 e0 ff 00                 # f6c8 |   mov B, 0xff
+bc 20 40                       # f6cd |   not A, B
+ec 40 e0 f8 ff 00 65 d9        # f6d0 |   jne B, 0xff, ${fail}:rel + PC
+ec 20 e0 f8 00 ff 5d d9        # f6d8 |   jne A, 0xff00, ${fail}:rel + PC
                                #      | test_uop_alu_single_2di:
-62 1c e0 64 34 12              # f6a4 |   mov [0x64], 0x1234
-bd 20 1c 64                    # f6aa |   not A, [0x64]
-ee 1c e0 f8 64 34 12 87 d9     # f6ae |   jne [0x64], 0x1234, ${fail}:rel + PC
-ec 20 e0 f8 cb ed 7e d9        # f6b7 |   jne A, 0xedcb, ${fail}:rel + PC
+62 1c e0 64 34 12              # f6e0 |   mov [0x64], 0x1234
+bd 20 1c 64                    # f6e6 |   not A, [0x64]
+ee 1c e0 f8 64 34 12 4b d9     # f6ea |   jne [0x64], 0x1234, ${fail}:rel + PC
+ec 20 e0 f8 cb ed 42 d9        # f6f3 |   jne A, 0xedcb, ${fail}:rel + PC
                                #      | test_uop_alu_single_2id:
-60 40 e0 ff 00                 # f6bf |   mov B, 0xff
-be 1c 40 64                    # f6c4 |   not [0x64], B
-ec 40 e0 f8 ff 00 6d d9        # f6c8 |   jne B, 0xff, ${fail}:rel + PC
-ee 1c e0 f8 64 00 ff 65 d9     # f6d0 |   jne [0x64], 0xff00, ${fail}:rel + PC
+60 40 e0 ff 00                 # f6fb |   mov B, 0xff
+be 1c 40 64                    # f700 |   not [0x64], B
+ec 40 e0 f8 ff 00 31 d9        # f704 |   jne B, 0xff, ${fail}:rel + PC
+ee 1c e0 f8 64 00 ff 29 d9     # f70c |   jne [0x64], 0xff00, ${fail}:rel + PC
                                #      | test_uop_alu_single_2ii:
-62 1c e0 66 ff 00              # f6d9 |   mov [0x66], 0xff
-bf 1c 1c 64 66                 # f6df |   not [0x64], [0x66]
-ee 1c e0 f8 66 ff 00 51 d9     # f6e4 |   jne [0x66], 0xff, ${fail}:rel + PC
-ee 1c e0 f8 64 00 ff 48 d9     # f6ed |   jne [0x64], 0xff00, ${fail}:rel + PC
+62 1c e0 66 ff 00              # f715 |   mov [0x66], 0xff
+bf 1c 1c 64 66                 # f71b |   not [0x64], [0x66]
+ee 1c e0 f8 66 ff 00 15 d9     # f720 |   jne [0x66], 0xff, ${fail}:rel + PC
+ee 1c e0 f8 64 00 ff 0c d9     # f729 |   jne [0x64], 0xff00, ${fail}:rel + PC
                                #      | test_uop_cmp_dd:
-60 40 1c 7b                    # f6f6 |   mov B, 0x7b
-50 40 e0 c8 01                 # f6fa |   cmp B, 0x1c8
-4c 20                          # f6ff |   getf A
-ec 40 1c f8 7b 34 d9           # f701 |   jne B, 0x7b, ${fail}:rel + PC
-ec 20 1c f8 0e 2d d9           # f708 |   jne A, 0xe, ${fail}:rel + PC
+60 40 1c 7b                    # f732 |   mov B, 0x7b
+50 40 e0 c8 01                 # f736 |   cmp B, 0x1c8
+4c 20                          # f73b |   getf A
+ec 40 1c f8 7b f8 d8           # f73d |   jne B, 0x7b, ${fail}:rel + PC
+ec 20 1c f8 0e f1 d8           # f744 |   jne A, 0xe, ${fail}:rel + PC
                                #      | test_uop_cmp_di:
-62 1c 1c 64 85                 # f70f |   mov [0x64], -123
-60 40 e0 c8 01                 # f714 |   mov B, 0x1c8
-d1 40 1c 64                    # f719 |   icmp B, [0x64]
-4c 20                          # f71d |   getf A
-ec 40 e0 f8 c8 01 16 d9        # f71f |   jne B, 0x1c8, ${fail}:rel + PC
-ec 20 1c f8 32 0e d9           # f727 |   jne A, 0x32, ${fail}:rel + PC
+62 1c 1c 64 85                 # f74b |   mov [0x64], -123
+60 40 e0 c8 01                 # f750 |   mov B, 0x1c8
+d1 40 1c 64                    # f755 |   icmp B, [0x64]
+4c 20                          # f759 |   getf A
+ec 40 e0 f8 c8 01 da d8        # f75b |   jne B, 0x1c8, ${fail}:rel + PC
+ec 20 1c f8 32 d2 d8           # f763 |   jne A, 0x32, ${fail}:rel + PC
                                #      | test_uop_cmp_id:
-62 1c 1c 64 85                 # f72e |   mov [0x64], -123
-60 40 e0 c8 01                 # f733 |   mov B, 0x1c8
-d2 1c 40 64                    # f738 |   icmp [0x64], B
-4c 20                          # f73c |   getf A
-ec 40 e0 f8 c8 01 f7 d8        # f73e |   jne B, 0x1c8, ${fail}:rel + PC
-ec 20 1c f8 0e ef d8           # f746 |   jne A, 0xe, ${fail}:rel + PC
+62 1c 1c 64 85                 # f76a |   mov [0x64], -123
+60 40 e0 c8 01                 # f76f |   mov B, 0x1c8
+d2 1c 40 64                    # f774 |   icmp [0x64], B
+4c 20                          # f778 |   getf A
+ec 40 e0 f8 c8 01 bb d8        # f77a |   jne B, 0x1c8, ${fail}:rel + PC
+ec 20 1c f8 0e b3 d8           # f782 |   jne A, 0xe, ${fail}:rel + PC
                                #      | test_uop_cmp_ii:
-62 1c 1c 64 85                 # f74d |   mov [0x64], -123
-62 1c e0 66 38 fe              # f752 |   mov [0x66], 0xfe38
-d3 1c 1c 64 66                 # f758 |   icmp [0x64], [0x66]
-4c 20                          # f75d |   getf A
-ee 1c 1c f8 64 85 d6 d8        # f75f |   jne [0x64], -123, ${fail}:rel + PC
-ee 1c e0 f8 66 38 fe ce d8     # f767 |   jne [0x66], 0xfe38, ${fail}:rel + PC
-ec 20 1c f8 32 c5 d8           # f770 |   jne A, 0x32, ${fail}:rel + PC
+62 1c 1c 64 85                 # f789 |   mov [0x64], -123
+62 1c e0 66 38 fe              # f78e |   mov [0x66], 0xfe38
+d3 1c 1c 64 66                 # f794 |   icmp [0x64], [0x66]
+4c 20                          # f799 |   getf A
+ee 1c 1c f8 64 85 9a d8        # f79b |   jne [0x64], -123, ${fail}:rel + PC
+ee 1c e0 f8 66 38 fe 92 d8     # f7a3 |   jne [0x66], 0xfe38, ${fail}:rel + PC
+ec 20 1c f8 32 89 d8           # f7ac |   jne A, 0x32, ${fail}:rel + PC
                                #      | test_uop_jmp_d:
-60 20 e0 82 f7                 # f777 |   mov A, ${_L_test_uop_jmp_d_okay}
-58 20                          # f77c |   jmp A
-58 f8 b7 d8                    # f77e |   jmp ${fail}:rel + PC
+60 20 e0 be f7                 # f7b3 |   mov A, ${_L_test_uop_jmp_d_okay}
+58 20                          # f7b8 |   jmp A
+58 f8 7b d8                    # f7ba |   jmp ${fail}:rel + PC
                                #      | _L_test_uop_jmp_d_okay:
                                #      | test_uop_jmp_i:
-62 1c e0 64 8f f7              # f782 |   mov [0x64], ${_L_test_uop_jmp_i_okay}
-5a 1c 64                       # f788 |   jmp [0x64]
-58 f8 aa d8                    # f78b |   jmp ${fail}:rel + PC
-                               #      | _L_test_uop_jmp_i_okay:
-ee 1c e0 f8 64 8f f7 a6 d8     # f78f |   jne [0x64], ${_L_test_uop_jmp_i_okay}, ${fail}:rel + PC
-                               #      | test_uop_jmp_cond_i:
-62 1c e0 64 ae f7              # f798 |   mov [0x64], ${_L_test_uop_jmp_cond_i_okay}
-50 1c 1c 01 02                 # f79e |   cmp 0x1, 0x2
-68 f8 92 d8                    # f7a3 |   jeq ${fail}:rel + PC
-6e 1c 64                       # f7a7 |   jne [0x64]
-58 f8 8b d8                    # f7aa |   jmp ${fail}:rel + PC
-                               #      | _L_test_uop_jmp_cond_i_okay:
-ee 1c e0 f8 64 ae f7 87 d8     # f7ae |   jne [0x64], ${_L_test_uop_jmp_cond_i_okay}, ${fail}:rel + PC
-                               #      | test_uop_jmp_cond_d:
-60 20 e0 cb f7                 # f7b7 |   mov A, ${_L_test_uop_jmp_cond_d_okay}
-50 1c 1c 01 01                 # f7bc |   cmp 0x1, 0x1
-6c f8 74 d8                    # f7c1 |   jne ${fail}:rel + PC
-68 20                          # f7c5 |   jeq A
+62 1c e0 64 cb f7              # f7be |   mov [0x64], ${_L_test_uop_jmp_i_okay}
+5a 1c 64                       # f7c4 |   jmp [0x64]
 58 f8 6e d8                    # f7c7 |   jmp ${fail}:rel + PC
+                               #      | _L_test_uop_jmp_i_okay:
+ee 1c e0 f8 64 cb f7 6a d8     # f7cb |   jne [0x64], ${_L_test_uop_jmp_i_okay}, ${fail}:rel + PC
+                               #      | test_uop_jmp_cond_i:
+62 1c e0 64 ea f7              # f7d4 |   mov [0x64], ${_L_test_uop_jmp_cond_i_okay}
+50 1c 1c 01 02                 # f7da |   cmp 0x1, 0x2
+68 f8 56 d8                    # f7df |   jeq ${fail}:rel + PC
+6e 1c 64                       # f7e3 |   jne [0x64]
+58 f8 4f d8                    # f7e6 |   jmp ${fail}:rel + PC
+                               #      | _L_test_uop_jmp_cond_i_okay:
+ee 1c e0 f8 64 ea f7 4b d8     # f7ea |   jne [0x64], ${_L_test_uop_jmp_cond_i_okay}, ${fail}:rel + PC
+                               #      | test_uop_jmp_cond_d:
+60 20 e0 07 f8                 # f7f3 |   mov A, ${_L_test_uop_jmp_cond_d_okay}
+50 1c 1c 01 01                 # f7f8 |   cmp 0x1, 0x1
+6c f8 38 d8                    # f7fd |   jne ${fail}:rel + PC
+68 20                          # f801 |   jeq A
+58 f8 32 d8                    # f803 |   jmp ${fail}:rel + PC
                                #      | _L_test_uop_jmp_cond_d_okay:
-ec 20 e0 f8 cb f7 6a d8        # f7cb |   jne A, ${_L_test_uop_jmp_cond_d_okay}, ${fail}:rel + PC
+ec 20 e0 f8 07 f8 2e d8        # f807 |   jne A, ${_L_test_uop_jmp_cond_d_okay}, ${fail}:rel + PC
                                #      | test_uop_jmp_3dd:
-60 20 1c 7b                    # f7d3 |   mov A, 0x7b
-ec 20 1c f8 7b 5e d8           # f7d7 |   jne A, 0x7b, ${fail}:rel + PC
-e8 20 1c f8 7b 0b 00           # f7de |   jeq A, 0x7b, ${_test_uop_jmp_3dd_okay}:rel + PC
-58 f8 50 d8                    # f7e5 |   jmp ${fail}:rel + PC
+60 20 1c 7b                    # f80f |   mov A, 0x7b
+ec 20 1c f8 7b 22 d8           # f813 |   jne A, 0x7b, ${fail}:rel + PC
+e8 20 1c f8 7b 0b 00           # f81a |   jeq A, 0x7b, ${_test_uop_jmp_3dd_okay}:rel + PC
+58 f8 14 d8                    # f821 |   jmp ${fail}:rel + PC
                                #      | _test_uop_jmp_3dd_okay:
-ec 20 1c f8 7b 4c d8           # f7e9 |   jne A, 0x7b, ${fail}:rel + PC
+ec 20 1c f8 7b 10 d8           # f825 |   jne A, 0x7b, ${fail}:rel + PC
                                #      | test_uop_jmp_3di:
-60 20 1c 7b                    # f7f0 |   mov A, 0x7b
-62 1c e0 64 41 01              # f7f4 |   mov [0x64], 0x141
-e9 20 1c f8 64 3b d8           # f7fa |   jeq A, [0x64], ${fail}:rel + PC
-ed 20 1c f8 64 0b 00           # f801 |   jne A, [0x64], ${test_uop_jmp_3di_okay}:rel + PC
-58 f8 2d d8                    # f808 |   jmp ${fail}:rel + PC
+60 20 1c 7b                    # f82c |   mov A, 0x7b
+62 1c e0 64 41 01              # f830 |   mov [0x64], 0x141
+e9 20 1c f8 64 ff d7           # f836 |   jeq A, [0x64], ${fail}:rel + PC
+ed 20 1c f8 64 0b 00           # f83d |   jne A, [0x64], ${test_uop_jmp_3di_okay}:rel + PC
+58 f8 f1 d7                    # f844 |   jmp ${fail}:rel + PC
                                #      | test_uop_jmp_3di_okay:
-ec 20 1c f8 7b 29 d8           # f80c |   jne A, 0x7b, ${fail}:rel + PC
-ee 1c e0 f8 64 41 01 22 d8     # f813 |   jne [0x64], 0x141, ${fail}:rel + PC
+ec 20 1c f8 7b ed d7           # f848 |   jne A, 0x7b, ${fail}:rel + PC
+ee 1c e0 f8 64 41 01 e6 d7     # f84f |   jne [0x64], 0x141, ${fail}:rel + PC
                                #      | test_uop_jmp_3id:
-60 20 1c 7b                    # f81c |   mov A, 0x7b
-62 1c e0 64 41 01              # f820 |   mov [0x64], 0x141
-ea 1c 20 f8 64 0f d8           # f826 |   jeq [0x64], A, ${fail}:rel + PC
-ee 1c 20 f8 64 0b 00           # f82d |   jne [0x64], A, ${_test_uop_jmp_3id_okay}:rel + PC
-58 f8 01 d8                    # f834 |   jmp ${fail}:rel + PC
+60 20 1c 7b                    # f858 |   mov A, 0x7b
+62 1c e0 64 41 01              # f85c |   mov [0x64], 0x141
+ea 1c 20 f8 64 d3 d7           # f862 |   jeq [0x64], A, ${fail}:rel + PC
+ee 1c 20 f8 64 0b 00           # f869 |   jne [0x64], A, ${_test_uop_jmp_3id_okay}:rel + PC
+58 f8 c5 d7                    # f870 |   jmp ${fail}:rel + PC
                                #      | _test_uop_jmp_3id_okay:
-ec 20 1c f8 7b fd d7           # f838 |   jne A, 0x7b, ${fail}:rel + PC
-ee 1c e0 f8 64 41 01 f6 d7     # f83f |   jne [0x64], 0x141, ${fail}:rel + PC
+ec 20 1c f8 7b c1 d7           # f874 |   jne A, 0x7b, ${fail}:rel + PC
+ee 1c e0 f8 64 41 01 ba d7     # f87b |   jne [0x64], 0x141, ${fail}:rel + PC
                                #      | test_uop_jmp_3ii:
-62 e0 1c c8 00 7b              # f848 |   mov [0xc8], 0x7b
-62 1c e0 64 41 01              # f84e |   mov [0x64], 0x141
-eb 1c e0 f8 64 c8 00 e1 d7     # f854 |   jeq [0x64], [0xc8], ${fail}:rel + PC
-ef 1c e0 f8 64 c8 00 0d 00     # f85d |   jne [0x64], [0xc8], ${_test_uop_jmp_3ii_okay}:rel + PC
-58 f8 cf d7                    # f866 |   jmp ${fail}:rel + PC
+62 e0 1c c8 00 7b              # f884 |   mov [0xc8], 0x7b
+62 1c e0 64 41 01              # f88a |   mov [0x64], 0x141
+eb 1c e0 f8 64 c8 00 a5 d7     # f890 |   jeq [0x64], [0xc8], ${fail}:rel + PC
+ef 1c e0 f8 64 c8 00 0d 00     # f899 |   jne [0x64], [0xc8], ${_test_uop_jmp_3ii_okay}:rel + PC
+58 f8 93 d7                    # f8a2 |   jmp ${fail}:rel + PC
                                #      | _test_uop_jmp_3ii_okay:
-ee e0 1c f8 c8 00 7b cb d7     # f86a |   jne [0xc8], 0x7b, ${fail}:rel + PC
-ee 1c e0 f8 64 41 01 c2 d7     # f873 |   jne [0x64], 0x141, ${fail}:rel + PC
+ee e0 1c f8 c8 00 7b 8f d7     # f8a6 |   jne [0xc8], 0x7b, ${fail}:rel + PC
+ee 1c e0 f8 64 41 01 86 d7     # f8af |   jne [0x64], 0x141, ${fail}:rel + PC
                                #      | test_uop_mov_dd:
-60 20 1c 7b                    # f87c |   mov A, 0x7b
-ec 20 1c f8 7b b5 d7           # f880 |   jne A, 0x7b, ${fail}:rel + PC
+60 20 1c 7b                    # f8b8 |   mov A, 0x7b
+ec 20 1c f8 7b 79 d7           # f8bc |   jne A, 0x7b, ${fail}:rel + PC
                                #      | test_uop_mov_di:
-62 1c 1c 64 da                 # f887 |   mov [0x64], 0xda
-61 20 1c 64                    # f88c |   mov A, [0x64]
-ec 20 1c f8 da a5 d7           # f890 |   jne A, 0xda, ${fail}:rel + PC
+62 1c 1c 64 da                 # f8c3 |   mov [0x64], 0xda
+61 20 1c 64                    # f8c8 |   mov A, [0x64]
+ec 20 1c f8 da 69 d7           # f8cc |   jne A, 0xda, ${fail}:rel + PC
                                #      | test_uop_mov_id:
-62 1c 1c 64 ff                 # f897 |   mov [0x64], 0xff
-ee 1c 1c f8 64 ff 99 d7        # f89c |   jne [0x64], 0xff, ${fail}:rel + PC
+62 1c 1c 64 ff                 # f8d3 |   mov [0x64], 0xff
+ee 1c 1c f8 64 ff 5d d7        # f8d8 |   jne [0x64], 0xff, ${fail}:rel + PC
                                #      | test_uop_mov_ii:
-60 20 1c 14                    # f8a4 |   mov A, 0x14
-62 1c e0 78 fa fd              # f8a8 |   mov [0x78], 0xfdfa
-63 1c 3c 64 64                 # f8ae |   mov [0x64], [A + 0x64]
-ee 1c e0 f8 64 fa fd 82 d7     # f8b3 |   jne [0x64], 0xfdfa, ${fail}:rel + PC
+60 20 1c 14                    # f8e0 |   mov A, 0x14
+62 1c e0 78 fa fd              # f8e4 |   mov [0x78], 0xfdfa
+63 1c 3c 64 64                 # f8ea |   mov [0x64], [A + 0x64]
+ee 1c e0 f8 64 fa fd 46 d7     # f8ef |   jne [0x64], 0xfdfa, ${fail}:rel + PC
                                #      | test_uop_bmov_dd:
-64 20 e0 de af                 # f8bc |   bmov A, 0xafde
-ec 20 e0 f8 de 00 74 d7        # f8c1 |   jne A, 0xde, ${fail}:rel + PC
-64 20 e0 fa 00                 # f8c9 |   bmov A, 0xfa
-ec 20 e0 f8 fa 00 67 d7        # f8ce |   jne A, 0xfa, ${fail}:rel + PC
+64 20 e0 de af                 # f8f8 |   bmov A, 0xafde
+ec 20 e0 f8 de 00 38 d7        # f8fd |   jne A, 0xde, ${fail}:rel + PC
+64 20 e0 fa 00                 # f905 |   bmov A, 0xfa
+ec 20 e0 f8 fa 00 2b d7        # f90a |   jne A, 0xfa, ${fail}:rel + PC
                                #      | test_uop_bmov_di:
-62 1c 1c 64 da                 # f8d6 |   mov [0x64], 0xda
-65 20 1c 64                    # f8db |   bmov A, [0x64]
-ec 20 e0 f8 da 00 56 d7        # f8df |   jne A, 0xda, ${fail}:rel + PC
+62 1c 1c 64 da                 # f912 |   mov [0x64], 0xda
+65 20 1c 64                    # f917 |   bmov A, [0x64]
+ec 20 e0 f8 da 00 1a d7        # f91b |   jne A, 0xda, ${fail}:rel + PC
                                #      | test_uop_bmov_id:
-62 1c e0 64 cd ab              # f8e7 |   mov [0x64], 0xabcd
-62 1c e0 66 34 12              # f8ed |   mov [0x66], 0x1234
-62 1c e0 68 78 56              # f8f3 |   mov [0x68], 0x5678
-66 1c e0 66 df 00              # f8f9 |   bmov [0x66], 0xdf
-ee 1c e0 f8 64 cd ab 36 d7     # f8ff |   jne [0x64], 0xabcd, ${fail}:rel + PC
-ee 1c e0 f8 66 df 12 2d d7     # f908 |   jne [0x66], 0x12df, ${fail}:rel + PC
-ee 1c e0 f8 68 78 56 24 d7     # f911 |   jne [0x68], 0x5678, ${fail}:rel + PC
-66 1c e0 67 b8 00              # f91a |   bmov [0x67], 0xb8
-ee 1c e0 f8 64 cd ab 15 d7     # f920 |   jne [0x64], 0xabcd, ${fail}:rel + PC
-ee 1c e0 f8 66 df b8 0c d7     # f929 |   jne [0x66], 0xb8df, ${fail}:rel + PC
-ee 1c e0 f8 68 78 56 03 d7     # f932 |   jne [0x68], 0x5678, ${fail}:rel + PC
+62 1c e0 64 cd ab              # f923 |   mov [0x64], 0xabcd
+62 1c e0 66 34 12              # f929 |   mov [0x66], 0x1234
+62 1c e0 68 78 56              # f92f |   mov [0x68], 0x5678
+66 1c e0 66 df 00              # f935 |   bmov [0x66], 0xdf
+ee 1c e0 f8 64 cd ab fa d6     # f93b |   jne [0x64], 0xabcd, ${fail}:rel + PC
+ee 1c e0 f8 66 df 12 f1 d6     # f944 |   jne [0x66], 0x12df, ${fail}:rel + PC
+ee 1c e0 f8 68 78 56 e8 d6     # f94d |   jne [0x68], 0x5678, ${fail}:rel + PC
+66 1c e0 67 b8 00              # f956 |   bmov [0x67], 0xb8
+ee 1c e0 f8 64 cd ab d9 d6     # f95c |   jne [0x64], 0xabcd, ${fail}:rel + PC
+ee 1c e0 f8 66 df b8 d0 d6     # f965 |   jne [0x66], 0xb8df, ${fail}:rel + PC
+ee 1c e0 f8 68 78 56 c7 d6     # f96e |   jne [0x68], 0x5678, ${fail}:rel + PC
                                #      | test_uop_bmov_ii:
-62 e0 e0 2c 01 df 00           # f93b |   mov [0x12c], 0xdf
-62 e0 e0 2e 01 b8 00           # f942 |   mov [0x12e], 0xb8
-62 e0 e0 c8 00 cd ab           # f949 |   mov [0xc8], 0xabcd
-62 e0 e0 ca 00 34 12           # f950 |   mov [0xca], 0x1234
-62 e0 e0 cc 00 78 56           # f957 |   mov [0xcc], 0x5678
-67 e0 e0 ca 00 2c 01           # f95e |   bmov [0xca], [0x12c]
-ee e0 e0 f8 c8 00 cd ab d0 d6  # f965 |   jne [0xc8], 0xabcd, ${fail}:rel + PC
-ee e0 e0 f8 ca 00 df 12 c6 d6  # f96f |   jne [0xca], 0x12df, ${fail}:rel + PC
-ee e0 e0 f8 cc 00 78 56 bc d6  # f979 |   jne [0xcc], 0x5678, ${fail}:rel + PC
-ee e0 e0 f8 2c 01 df 00 b2 d6  # f983 |   jne [0x12c], 0xdf, ${fail}:rel + PC
-ee e0 e0 f8 2e 01 b8 00 a8 d6  # f98d |   jne [0x12e], 0xb8, ${fail}:rel + PC
-67 e0 e0 cb 00 2e 01           # f997 |   bmov [0xcb], [0x12e]
-ee e0 e0 f8 c8 00 cd ab 97 d6  # f99e |   jne [0xc8], 0xabcd, ${fail}:rel + PC
-ee e0 e0 f8 ca 00 df b8 8d d6  # f9a8 |   jne [0xca], 0xb8df, ${fail}:rel + PC
-ee e0 e0 f8 cc 00 78 56 83 d6  # f9b2 |   jne [0xcc], 0x5678, ${fail}:rel + PC
-ee e0 e0 f8 2c 01 df 00 79 d6  # f9bc |   jne [0x12c], 0xdf, ${fail}:rel + PC
-ee e0 e0 f8 2e 01 b8 00 6f d6  # f9c6 |   jne [0x12e], 0xb8, ${fail}:rel + PC
+62 e0 e0 2c 01 df 00           # f977 |   mov [0x12c], 0xdf
+62 e0 e0 2e 01 b8 00           # f97e |   mov [0x12e], 0xb8
+62 e0 e0 c8 00 cd ab           # f985 |   mov [0xc8], 0xabcd
+62 e0 e0 ca 00 34 12           # f98c |   mov [0xca], 0x1234
+62 e0 e0 cc 00 78 56           # f993 |   mov [0xcc], 0x5678
+67 e0 e0 ca 00 2c 01           # f99a |   bmov [0xca], [0x12c]
+ee e0 e0 f8 c8 00 cd ab 94 d6  # f9a1 |   jne [0xc8], 0xabcd, ${fail}:rel + PC
+ee e0 e0 f8 ca 00 df 12 8a d6  # f9ab |   jne [0xca], 0x12df, ${fail}:rel + PC
+ee e0 e0 f8 cc 00 78 56 80 d6  # f9b5 |   jne [0xcc], 0x5678, ${fail}:rel + PC
+ee e0 e0 f8 2c 01 df 00 76 d6  # f9bf |   jne [0x12c], 0xdf, ${fail}:rel + PC
+ee e0 e0 f8 2e 01 b8 00 6c d6  # f9c9 |   jne [0x12e], 0xb8, ${fail}:rel + PC
+67 e0 e0 cb 00 2e 01           # f9d3 |   bmov [0xcb], [0x12e]
+ee e0 e0 f8 c8 00 cd ab 5b d6  # f9da |   jne [0xc8], 0xabcd, ${fail}:rel + PC
+ee e0 e0 f8 ca 00 df b8 51 d6  # f9e4 |   jne [0xca], 0xb8df, ${fail}:rel + PC
+ee e0 e0 f8 cc 00 78 56 47 d6  # f9ee |   jne [0xcc], 0x5678, ${fail}:rel + PC
+ee e0 e0 f8 2c 01 df 00 3d d6  # f9f8 |   jne [0x12c], 0xdf, ${fail}:rel + PC
+ee e0 e0 f8 2e 01 b8 00 33 d6  # fa02 |   jne [0x12e], 0xb8, ${fail}:rel + PC
                                #      | test_uop_halt:
                                #      | test_uop_getf:
-50 1c 1c 7b 2d                 # f9d0 |   cmp 0x7b, 0x2d
-4c 20                          # f9d5 |   getf A
-ec 20 1c f8 32 5e d6           # f9d7 |   jne A, 0x32, ${fail}:rel + PC
+50 1c 1c 7b 2d                 # fa0c |   cmp 0x7b, 0x2d
+4c 20                          # fa11 |   getf A
+ec 20 1c f8 32 22 d6           # fa13 |   jne A, 0x32, ${fail}:rel + PC
                                #      | test_uop_setf:
-cc 1c ff                       # f9de |   setf 0xff
-4c 20                          # f9e1 |   getf A
-ec 20 1c f8 3f 52 d6           # f9e3 |   jne A, 0x3f, ${fail}:rel + PC
+cc 1c ff                       # fa1a |   setf 0xff
+4c 20                          # fa1d |   getf A
+ec 20 1c f8 3f 16 d6           # fa1f |   jne A, 0x3f, ${fail}:rel + PC
                                #      | test_uop_call_d:
-60 a0 e0 00 10                 # f9ea |   mov SP, 0x1000
-60 40 e0 0a fa                 # f9ef |   mov B, ${_L_test_uop_call_d_fn}
-5c 40                          # f9f4 |   call B
-ec 40 e0 f8 0a fa 3f d6        # f9f6 |   jne B, ${_L_test_uop_call_d_fn}, ${fail}:rel + PC
-ec 20 e0 f8 fa 34 37 d6        # f9fe |   jne A, 0x34fa, ${fail}:rel + PC
-58 f8 0a 00                    # fa06 |   jmp ${_L_test_uop_call_d_okay}:rel + PC
+60 a0 e0 00 10                 # fa26 |   mov SP, 0x1000
+60 40 e0 46 fa                 # fa2b |   mov B, ${_L_test_uop_call_d_fn}
+5c 40                          # fa30 |   call B
+ec 40 e0 f8 46 fa 03 d6        # fa32 |   jne B, ${_L_test_uop_call_d_fn}, ${fail}:rel + PC
+ec 20 e0 f8 fa 34 fb d5        # fa3a |   jne A, 0x34fa, ${fail}:rel + PC
+58 f8 0a 00                    # fa42 |   jmp ${_L_test_uop_call_d_okay}:rel + PC
                                #      | _L_test_uop_call_d_fn:
-60 20 e0 fa 34                 # fa0a |   mov A, 0x34fa
-dc                             # fa0f |   ret
+60 20 e0 fa 34                 # fa46 |   mov A, 0x34fa
+dc                             # fa4b |   ret
                                #      | _L_test_uop_call_d_okay:
                                #      | test_uop_call_i:
-60 a0 e0 00 10                 # fa10 |   mov SP, 0x1000
-60 40 1c 64                    # fa15 |   mov B, 0x64
-62 40 e0 34 fa                 # fa19 |   mov [B], ${_L_test_uop_call_i_fn}
-5e 40                          # fa1e |   call [B]
-ee 40 e0 f8 34 fa 15 d6        # fa20 |   jne [B], ${_L_test_uop_call_i_fn}, ${fail}:rel + PC
-ec 20 e0 f8 d4 aa 0d d6        # fa28 |   jne A, 0xaad4, ${fail}:rel + PC
-58 f8 0a 00                    # fa30 |   jmp ${_L_test_uop_call_i_okay}:rel + PC
+60 a0 e0 00 10                 # fa4c |   mov SP, 0x1000
+60 40 1c 64                    # fa51 |   mov B, 0x64
+62 40 e0 70 fa                 # fa55 |   mov [B], ${_L_test_uop_call_i_fn}
+5e 40                          # fa5a |   call [B]
+ee 40 e0 f8 70 fa d9 d5        # fa5c |   jne [B], ${_L_test_uop_call_i_fn}, ${fail}:rel + PC
+ec 20 e0 f8 d4 aa d1 d5        # fa64 |   jne A, 0xaad4, ${fail}:rel + PC
+58 f8 0a 00                    # fa6c |   jmp ${_L_test_uop_call_i_okay}:rel + PC
                                #      | _L_test_uop_call_i_fn:
-60 20 e0 d4 aa                 # fa34 |   mov A, 0xaad4
-dc                             # fa39 |   ret
+60 20 e0 d4 aa                 # fa70 |   mov A, 0xaad4
+dc                             # fa75 |   ret
                                #      | _L_test_uop_call_i_okay:
                                #      | test_uop_ret:
                                #      | test_uop_push_d:
-60 a0 e0 00 10                 # fa3a |   mov SP, 0x1000
-60 40 1c 64                    # fa3f |   mov B, 0x64
-e0 40                          # fa43 |   push B
-ec a0 e0 f8 fe 0f f0 d5        # fa45 |   jne SP, 0xffe, ${fail}:rel + PC
-ee e0 1c f8 fe 0f 64 e8 d5     # fa4d |   jne [0xffe], 0x64, ${fail}:rel + PC
-e4 60                          # fa56 |   pop C
-ec 60 1c f8 64 dd d5           # fa58 |   jne C, 0x64, ${fail}:rel + PC
+60 a0 e0 00 10                 # fa76 |   mov SP, 0x1000
+60 40 1c 64                    # fa7b |   mov B, 0x64
+e0 40                          # fa7f |   push B
+ec a0 e0 f8 fe 0f b4 d5        # fa81 |   jne SP, 0xffe, ${fail}:rel + PC
+ee e0 1c f8 fe 0f 64 ac d5     # fa89 |   jne [0xffe], 0x64, ${fail}:rel + PC
+e4 60                          # fa92 |   pop C
+ec 60 1c f8 64 a1 d5           # fa94 |   jne C, 0x64, ${fail}:rel + PC
                                #      | test_uop_push_i:
-60 a0 e0 00 10                 # fa5f |   mov SP, 0x1000
-60 40 1c 64                    # fa64 |   mov B, 0x64
-62 40 e0 90 01                 # fa68 |   mov [B], 0x190
-e2 40                          # fa6d |   push [B]
-ec a0 e0 f8 fe 0f c6 d5        # fa6f |   jne SP, 0xffe, ${fail}:rel + PC
-ee e0 e0 f8 fe 0f 90 01 be d5  # fa77 |   jne [0xffe], 0x190, ${fail}:rel + PC
-e4 60                          # fa81 |   pop C
-ec 60 e0 f8 90 01 b2 d5        # fa83 |   jne C, 0x190, ${fail}:rel + PC
+60 a0 e0 00 10                 # fa9b |   mov SP, 0x1000
+60 40 1c 64                    # faa0 |   mov B, 0x64
+62 40 e0 90 01                 # faa4 |   mov [B], 0x190
+e2 40                          # faa9 |   push [B]
+ec a0 e0 f8 fe 0f 8a d5        # faab |   jne SP, 0xffe, ${fail}:rel + PC
+ee e0 e0 f8 fe 0f 90 01 82 d5  # fab3 |   jne [0xffe], 0x190, ${fail}:rel + PC
+e4 60                          # fabd |   pop C
+ec 60 e0 f8 90 01 76 d5        # fabf |   jne C, 0x190, ${fail}:rel + PC
                                #      | test_uop_pop_d:
-60 a0 e0 00 10                 # fa8b |   mov SP, 0x1000
-e0 e0 da fa                    # fa90 |   push 0xfada
-e4 20                          # fa94 |   pop A
-ec 20 e0 f8 da fa 9f d5        # fa96 |   jne A, 0xfada, ${fail}:rel + PC
+60 a0 e0 00 10                 # fac7 |   mov SP, 0x1000
+e0 e0 da fa                    # facc |   push 0xfada
+e4 20                          # fad0 |   pop A
+ec 20 e0 f8 da fa 63 d5        # fad2 |   jne A, 0xfada, ${fail}:rel + PC
                                #      | test_uop_pop_i:
-60 a0 e0 00 10                 # fa9e |   mov SP, 0x1000
-e0 e0 da f2                    # faa3 |   push 0xf2da
-e6 1c 64                       # faa7 |   pop [0x64]
-ee 1c e0 f8 64 da f2 8b d5     # faaa |   jne [0x64], 0xf2da, ${fail}:rel + PC
+60 a0 e0 00 10                 # fada |   mov SP, 0x1000
+e0 e0 da f2                    # fadf |   push 0xf2da
+e6 1c 64                       # fae3 |   pop [0x64]
+ee 1c e0 f8 64 da f2 4f d5     # fae6 |   jne [0x64], 0xf2da, ${fail}:rel + PC
                                #      | test_uop_mmap:
-62 e0 e0 00 30 00 ff           # fab3 |   mov [0x3000], 0xff00
-62 e0 e0 00 31 01 ff           # faba |   mov [0x3100], 0xff01
-62 e0 e0 00 32 02 ff           # fac1 |   mov [0x3200], 0xff02
-62 e0 e0 00 40 00 dd           # fac8 |   mov [0x4000], 0xdd00
-62 e0 e0 00 41 01 dd           # facf |   mov [0x4100], 0xdd01
-62 e0 e0 00 42 02 dd           # fad6 |   mov [0x4200], 0xdd02
-62 e0 e0 00 50 00 ee           # fadd |   mov [0x5000], 0xee00
-62 e0 e0 00 51 01 ee           # fae4 |   mov [0x5100], 0xee01
-62 e0 e0 00 52 02 ee           # faeb |   mov [0x5200], 0xee02
-60 20 00                       # faf2 |   mov A, 0
-60 40 e0 00 41                 # faf5 |   mov B, 0x4100
-54 e0 e0 1c 00 31 ff 32 01     # fafa |   mmap 0x3100, 0x32ff, 0x1
-ee e0 e0 f8 00 31 01 dd 32 d5  # fb03 |   jne [0x3100], 0xdd01, ${fail}:rel + PC
-ee e0 e0 f8 00 32 02 dd 28 d5  # fb0d |   jne [0x3200], 0xdd02, ${fail}:rel + PC
-ee e0 e0 f8 00 30 00 ff 1e d5  # fb17 |   jne [0x3000], 0xff00, ${fail}:rel + PC
-60 40 e0 00 51                 # fb21 |   mov B, 0x5100
-54 e0 e0 1c 00 32 ff 32 02     # fb26 |   mmap 0x3200, 0x32ff, 0x2
-ee e0 e0 f8 00 32 01 ee 06 d5  # fb2f |   jne [0x3200], 0xee01, ${fail}:rel + PC
-ee e0 e0 f8 00 30 00 ff fc d4  # fb39 |   jne [0x3000], 0xff00, ${fail}:rel + PC
-ee e0 e0 f8 00 31 01 dd f2 d4  # fb43 |   jne [0x3100], 0xdd01, ${fail}:rel + PC
-d4 1c 01                       # fb4d |   umap 0x1
-ee e0 e0 f8 00 31 01 ff e5 d4  # fb50 |   jne [0x3100], 0xff01, ${fail}:rel + PC
-ee e0 e0 f8 00 32 01 ee db d4  # fb5a |   jne [0x3200], 0xee01, ${fail}:rel + PC
-ee e0 e0 f8 00 30 00 ff d1 d4  # fb64 |   jne [0x3000], 0xff00, ${fail}:rel + PC
-d4 1c 02                       # fb6e |   umap 0x2
-ee e0 e0 f8 00 30 00 ff c4 d4  # fb71 |   jne [0x3000], 0xff00, ${fail}:rel + PC
-ee e0 e0 f8 00 31 01 ff ba d4  # fb7b |   jne [0x3100], 0xff01, ${fail}:rel + PC
-ee e0 e0 f8 00 32 02 ff b0 d4  # fb85 |   jne [0x3200], 0xff02, ${fail}:rel + PC
+62 e0 e0 00 30 00 ff           # faef |   mov [0x3000], 0xff00
+62 e0 e0 00 31 01 ff           # faf6 |   mov [0x3100], 0xff01
+62 e0 e0 00 32 02 ff           # fafd |   mov [0x3200], 0xff02
+62 e0 e0 00 40 00 dd           # fb04 |   mov [0x4000], 0xdd00
+62 e0 e0 00 41 01 dd           # fb0b |   mov [0x4100], 0xdd01
+62 e0 e0 00 42 02 dd           # fb12 |   mov [0x4200], 0xdd02
+62 e0 e0 00 50 00 ee           # fb19 |   mov [0x5000], 0xee00
+62 e0 e0 00 51 01 ee           # fb20 |   mov [0x5100], 0xee01
+62 e0 e0 00 52 02 ee           # fb27 |   mov [0x5200], 0xee02
+60 20 00                       # fb2e |   mov A, 0
+60 40 e0 00 41                 # fb31 |   mov B, 0x4100
+54 e0 e0 1c 00 31 ff 32 01     # fb36 |   mmap 0x3100, 0x32ff, 0x1
+ee e0 e0 f8 00 31 01 dd f6 d4  # fb3f |   jne [0x3100], 0xdd01, ${fail}:rel + PC
+ee e0 e0 f8 00 32 02 dd ec d4  # fb49 |   jne [0x3200], 0xdd02, ${fail}:rel + PC
+ee e0 e0 f8 00 30 00 ff e2 d4  # fb53 |   jne [0x3000], 0xff00, ${fail}:rel + PC
+60 40 e0 00 51                 # fb5d |   mov B, 0x5100
+54 e0 e0 1c 00 32 ff 32 02     # fb62 |   mmap 0x3200, 0x32ff, 0x2
+ee e0 e0 f8 00 32 01 ee ca d4  # fb6b |   jne [0x3200], 0xee01, ${fail}:rel + PC
+ee e0 e0 f8 00 30 00 ff c0 d4  # fb75 |   jne [0x3000], 0xff00, ${fail}:rel + PC
+ee e0 e0 f8 00 31 01 dd b6 d4  # fb7f |   jne [0x3100], 0xdd01, ${fail}:rel + PC
+d4 1c 01                       # fb89 |   umap 0x1
+ee e0 e0 f8 00 31 01 ff a9 d4  # fb8c |   jne [0x3100], 0xff01, ${fail}:rel + PC
+ee e0 e0 f8 00 32 01 ee 9f d4  # fb96 |   jne [0x3200], 0xee01, ${fail}:rel + PC
+ee e0 e0 f8 00 30 00 ff 95 d4  # fba0 |   jne [0x3000], 0xff00, ${fail}:rel + PC
+d4 1c 02                       # fbaa |   umap 0x2
+ee e0 e0 f8 00 30 00 ff 88 d4  # fbad |   jne [0x3000], 0xff00, ${fail}:rel + PC
+ee e0 e0 f8 00 31 01 ff 7e d4  # fbb7 |   jne [0x3100], 0xff01, ${fail}:rel + PC
+ee e0 e0 f8 00 32 02 ff 74 d4  # fbc1 |   jne [0x3200], 0xff02, ${fail}:rel + PC
                                #      | test_uop_umap:
                                #      | test_aux_reg:
-60 20 1c 01                    # fb8f |   mov A, 0x1
-60 40 1c 02                    # fb93 |   mov B, 0x2
-60 60 1c 03                    # fb97 |   mov C, 0x3
-60 80 1c 04                    # fb9b |   mov D, 0x4
-60 fc 1c 05                    # fb9f |   mov E, 0x5
-60 fd 1c 06                    # fba3 |   mov F, 0x6
-60 fe 1c 07                    # fba7 |   mov G, 0x7
-60 ff 1c 08                    # fbab |   mov H, 0x8
-ec 20 1c f8 01 86 d4           # fbaf |   jne A, 0x1, ${fail}:rel + PC
-ec 40 1c f8 02 7f d4           # fbb6 |   jne B, 0x2, ${fail}:rel + PC
-ec 60 1c f8 03 78 d4           # fbbd |   jne C, 0x3, ${fail}:rel + PC
-ec 80 1c f8 04 71 d4           # fbc4 |   jne D, 0x4, ${fail}:rel + PC
-ec fc 1c f8 05 6a d4           # fbcb |   jne E, 0x5, ${fail}:rel + PC
-ec fd 1c f8 06 63 d4           # fbd2 |   jne F, 0x6, ${fail}:rel + PC
-ec fe 1c f8 07 5c d4           # fbd9 |   jne G, 0x7, ${fail}:rel + PC
-ec ff 1c f8 08 55 d4           # fbe0 |   jne H, 0x8, ${fail}:rel + PC
-34 ff e0 00 ff                 # fbe7 |   xor H, 0xff00
-ec ff e0 f8 08 ff 49 d4        # fbec |   jne H, 0xff08, ${fail}:rel + PC
-60 20 ff                       # fbf4 |   mov A, H
-ec 20 e0 f8 08 ff 3e d4        # fbf7 |   jne A, 0xff08, ${fail}:rel + PC
-60 fc fe                       # fbff |   mov E, G
-ec fc 1c f8 07 33 d4           # fc02 |   jne E, 0x7, ${fail}:rel + PC
-ec ff e0 f8 08 ff 2c d4        # fc09 |   jne H, 0xff08, ${fail}:rel + PC
+60 20 1c 01                    # fbcb |   mov A, 0x1
+60 40 1c 02                    # fbcf |   mov B, 0x2
+60 60 1c 03                    # fbd3 |   mov C, 0x3
+60 80 1c 04                    # fbd7 |   mov D, 0x4
+60 fc 1c 05                    # fbdb |   mov E, 0x5
+60 fd 1c 06                    # fbdf |   mov F, 0x6
+60 fe 1c 07                    # fbe3 |   mov G, 0x7
+60 ff 1c 08                    # fbe7 |   mov H, 0x8
+ec 20 1c f8 01 4a d4           # fbeb |   jne A, 0x1, ${fail}:rel + PC
+ec 40 1c f8 02 43 d4           # fbf2 |   jne B, 0x2, ${fail}:rel + PC
+ec 60 1c f8 03 3c d4           # fbf9 |   jne C, 0x3, ${fail}:rel + PC
+ec 80 1c f8 04 35 d4           # fc00 |   jne D, 0x4, ${fail}:rel + PC
+ec fc 1c f8 05 2e d4           # fc07 |   jne E, 0x5, ${fail}:rel + PC
+ec fd 1c f8 06 27 d4           # fc0e |   jne F, 0x6, ${fail}:rel + PC
+ec fe 1c f8 07 20 d4           # fc15 |   jne G, 0x7, ${fail}:rel + PC
+ec ff 1c f8 08 19 d4           # fc1c |   jne H, 0x8, ${fail}:rel + PC
+34 ff e0 00 ff                 # fc23 |   xor H, 0xff00
+ec ff e0 f8 08 ff 0d d4        # fc28 |   jne H, 0xff08, ${fail}:rel + PC
+60 20 ff                       # fc30 |   mov A, H
+ec 20 e0 f8 08 ff 02 d4        # fc33 |   jne A, 0xff08, ${fail}:rel + PC
+60 fc fe                       # fc3b |   mov E, G
+ec fc 1c f8 07 f7 d3           # fc3e |   jne E, 0x7, ${fail}:rel + PC
+ec ff e0 f8 08 ff f0 d3        # fc45 |   jne H, 0xff08, ${fail}:rel + PC
                                #      | test_call_ret:
-60 a0 e0 00 10                 # fc11 |   mov SP, 0x1000
-5c f8 77 00                    # fc16 |   call ${fn_test_target}:rel + PC
-ec a0 e0 f8 00 10 1b d4        # fc1a |   jne SP, 0x1000, ${fail}:rel + PC
-60 20 1c 0a                    # fc22 |   mov A, 0xa
-60 40 00                       # fc26 |   mov B, 0
-60 60 00                       # fc29 |   mov C, 0
-60 80 00                       # fc2c |   mov D, 0
-5c f8 2d 00                    # fc2f |   call ${fn_recursive}:rel + PC
-ec 20 00 f8 02 d4              # fc33 |   jne A, 0, ${fail}:rel + PC
-ec 40 e0 f8 3f cf fc d3        # fc39 |   jne B, 0xcf3f, ${fail}:rel + PC
-ec 60 1c f8 2d f4 d3           # fc41 |   jne C, 0x2d, ${fail}:rel + PC
-ec 80 e0 f8 97 45 ed d3        # fc48 |   jne D, 0x4597, ${fail}:rel + PC
-ec a0 e0 f8 00 10 e5 d3        # fc50 |   jne SP, 0x1000, ${fail}:rel + PC
-58 f8 42 00                    # fc58 |   jmp ${test_call_ret_end}:rel + PC
+60 a0 e0 00 10                 # fc4d |   mov SP, 0x1000
+5c f8 77 00                    # fc52 |   call ${fn_test_target}:rel + PC
+ec a0 e0 f8 00 10 df d3        # fc56 |   jne SP, 0x1000, ${fail}:rel + PC
+60 20 1c 0a                    # fc5e |   mov A, 0xa
+60 40 00                       # fc62 |   mov B, 0
+60 60 00                       # fc65 |   mov C, 0
+60 80 00                       # fc68 |   mov D, 0
+5c f8 2d 00                    # fc6b |   call ${fn_recursive}:rel + PC
+ec 20 00 f8 c6 d3              # fc6f |   jne A, 0, ${fail}:rel + PC
+ec 40 e0 f8 3f cf c0 d3        # fc75 |   jne B, 0xcf3f, ${fail}:rel + PC
+ec 60 1c f8 2d b8 d3           # fc7d |   jne C, 0x2d, ${fail}:rel + PC
+ec 80 e0 f8 97 45 b1 d3        # fc84 |   jne D, 0x4597, ${fail}:rel + PC
+ec a0 e0 f8 00 10 a9 d3        # fc8c |   jne SP, 0x1000, ${fail}:rel + PC
+58 f8 42 00                    # fc94 |   jmp ${test_call_ret_end}:rel + PC
                                #      | fn_recursive:
-04 20 1c 01                    # fc5c |   sub A, 0x1
-5c f8 25 00                    # fc60 |   call ${fn_process_c}:rel + PC
-e8 20 00 f8 1c 00              # fc64 |   jeq A, 0, ${fn_recursive_end}:rel + PC
-5c f8 f2 ff                    # fc6a |   call ${fn_recursive}:rel + PC
-00 80 60                       # fc6e |   add D, C
-08 80 1c 03                    # fc71 |   mul D, 0x3
-00 40 80                       # fc75 |   add B, D
-e0 80                          # fc78 |   push D
-08 40 1c 05                    # fc7a |   mul B, 0x5
-e4 80                          # fc7e |   pop D
+04 20 1c 01                    # fc98 |   sub A, 0x1
+5c f8 25 00                    # fc9c |   call ${fn_process_c}:rel + PC
+e8 20 00 f8 1c 00              # fca0 |   jeq A, 0, ${fn_recursive_end}:rel + PC
+5c f8 f2 ff                    # fca6 |   call ${fn_recursive}:rel + PC
+00 80 60                       # fcaa |   add D, C
+08 80 1c 03                    # fcad |   mul D, 0x3
+00 40 80                       # fcb1 |   add B, D
+e0 80                          # fcb4 |   push D
+08 40 1c 05                    # fcb6 |   mul B, 0x5
+e4 80                          # fcba |   pop D
                                #      | fn_recursive_end:
-dc                             # fc80 |   ret
-58 f8 b4 d3                    # fc81 |   jmp ${fail}:rel + PC
+dc                             # fcbc |   ret
+58 f8 78 d3                    # fcbd |   jmp ${fail}:rel + PC
                                #      | fn_process_c:
-00 60 20                       # fc85 |   add C, A
-dc                             # fc88 |   ret
-58 f8 ac d3                    # fc89 |   jmp ${fail}:rel + PC
+00 60 20                       # fcc1 |   add C, A
+dc                             # fcc4 |   ret
+58 f8 70 d3                    # fcc5 |   jmp ${fail}:rel + PC
                                #      | fn_test_target:
-ec a0 e0 f8 fe 0f a8 d3        # fc8d |   jne SP, 0xffe, ${fail}:rel + PC
-dc                             # fc95 |   ret
-58 f8 9f d3                    # fc96 |   jmp ${fail}:rel + PC
+ec a0 e0 f8 fe 0f 6c d3        # fcc9 |   jne SP, 0xffe, ${fail}:rel + PC
+dc                             # fcd1 |   ret
+58 f8 63 d3                    # fcd2 |   jmp ${fail}:rel + PC
                                #      | test_call_ret_end:
                                #      | test_mem_access:
-62 e0 1c 00 01 ed              # fc9a |   mov [0x100], 0xed
-ee e0 e0 f8 00 01 aa 00 0e 00  # fca0 |   jne [0x100], 0xaa, ${test_mem_access_check_jmp}:rel + PC
-58 f8 8b d3                    # fcaa |   jmp ${fail}:rel + PC
+62 e0 1c 00 01 ed              # fcd6 |   mov [0x100], 0xed
+ee e0 e0 f8 00 01 aa 00 0e 00  # fcdc |   jne [0x100], 0xaa, ${test_mem_access_check_jmp}:rel + PC
+58 f8 4f d3                    # fce6 |   jmp ${fail}:rel + PC
                                #      | test_mem_access_check_jmp:
-62 e0 00 00 10                 # fcae |   mov [0x1000], 0
-60 a0 e0 00 10                 # fcb3 |   mov SP, 0x1000
-ee a0 00 f8 7d d3              # fcb8 |   jne [SP], 0, ${fail}:rel + PC
-e0 00                          # fcbe |   push 0
-e0 00                          # fcc0 |   push 0
-e0 00                          # fcc2 |   push 0
-e4 20                          # fcc4 |   pop A
-e4 20                          # fcc6 |   pop A
-e4 20                          # fcc8 |   pop A
-ec a0 e0 f8 00 10 6b d3        # fcca |   jne SP, 0x1000, ${fail}:rel + PC
-ec 20 00 f8 63 d3              # fcd2 |   jne A, 0, ${fail}:rel + PC
-e0 e0 02 01                    # fcd8 |   push 0x102
-ec a0 e0 f8 fe 0f 59 d3        # fcdc |   jne SP, 0xffe, ${fail}:rel + PC
-e0 e0 04 03                    # fce4 |   push 0x304
-ec a0 e0 f8 fc 0f 4d d3        # fce8 |   jne SP, 0xffc, ${fail}:rel + PC
-ee e0 e0 f8 fe 0f 02 01 45 d3  # fcf0 |   jne [0xffe], 0x102, ${fail}:rel + PC
-ee e0 e0 f8 fc 0f 04 03 3b d3  # fcfa |   jne [0xffc], 0x304, ${fail}:rel + PC
-ee e0 e0 f8 fb 0f 00 04 31 d3  # fd04 |   jne [0xffb], 0x400, ${fail}:rel + PC
-ee e0 e0 f8 fd 0f 03 02 27 d3  # fd0e |   jne [0xffd], 0x203, ${fail}:rel + PC
-ee e0 1c f8 ff 0f 01 1d d3     # fd18 |   jne [0xfff], 0x1, ${fail}:rel + PC
-e4 20                          # fd21 |   pop A
-ec 20 e0 f8 04 03 12 d3        # fd23 |   jne A, 0x304, ${fail}:rel + PC
-ec a0 e0 f8 fe 0f 0a d3        # fd2b |   jne SP, 0xffe, ${fail}:rel + PC
-e4 20                          # fd33 |   pop A
-ec 20 e0 f8 02 01 00 d3        # fd35 |   jne A, 0x102, ${fail}:rel + PC
-ec a0 e0 f8 00 10 f8 d2        # fd3d |   jne SP, 0x1000, ${fail}:rel + PC
+62 e0 00 00 10                 # fcea |   mov [0x1000], 0
+60 a0 e0 00 10                 # fcef |   mov SP, 0x1000
+ee a0 00 f8 41 d3              # fcf4 |   jne [SP], 0, ${fail}:rel + PC
+e0 00                          # fcfa |   push 0
+e0 00                          # fcfc |   push 0
+e0 00                          # fcfe |   push 0
+e4 20                          # fd00 |   pop A
+e4 20                          # fd02 |   pop A
+e4 20                          # fd04 |   pop A
+ec a0 e0 f8 00 10 2f d3        # fd06 |   jne SP, 0x1000, ${fail}:rel + PC
+ec 20 00 f8 27 d3              # fd0e |   jne A, 0, ${fail}:rel + PC
+e0 e0 02 01                    # fd14 |   push 0x102
+ec a0 e0 f8 fe 0f 1d d3        # fd18 |   jne SP, 0xffe, ${fail}:rel + PC
+e0 e0 04 03                    # fd20 |   push 0x304
+ec a0 e0 f8 fc 0f 11 d3        # fd24 |   jne SP, 0xffc, ${fail}:rel + PC
+ee e0 e0 f8 fe 0f 02 01 09 d3  # fd2c |   jne [0xffe], 0x102, ${fail}:rel + PC
+ee e0 e0 f8 fc 0f 04 03 ff d2  # fd36 |   jne [0xffc], 0x304, ${fail}:rel + PC
+ee e0 e0 f8 fb 0f 00 04 f5 d2  # fd40 |   jne [0xffb], 0x400, ${fail}:rel + PC
+ee e0 e0 f8 fd 0f 03 02 eb d2  # fd4a |   jne [0xffd], 0x203, ${fail}:rel + PC
+ee e0 1c f8 ff 0f 01 e1 d2     # fd54 |   jne [0xfff], 0x1, ${fail}:rel + PC
+e4 20                          # fd5d |   pop A
+ec 20 e0 f8 04 03 d6 d2        # fd5f |   jne A, 0x304, ${fail}:rel + PC
+ec a0 e0 f8 fe 0f ce d2        # fd67 |   jne SP, 0xffe, ${fail}:rel + PC
+e4 20                          # fd6f |   pop A
+ec 20 e0 f8 02 01 c4 d2        # fd71 |   jne A, 0x102, ${fail}:rel + PC
+ec a0 e0 f8 00 10 bc d2        # fd79 |   jne SP, 0x1000, ${fail}:rel + PC
                                #      | test_cmp:
-cc 1c ff                       # fd45 |   setf 0xff
-4c 20                          # fd48 |   getf A
-ec 20 1c f8 3f eb d2           # fd4a |   jne A, 0x3f, ${fail}:rel + PC
-cc e0 ab ab                    # fd51 |   setf 0xabab
-4c 20                          # fd55 |   getf A
-ec 20 1c f8 2b de d2           # fd57 |   jne A, 0x2b, ${fail}:rel + PC
-50 1c 1c ab 2b                 # fd5e |   cmp 0xab, 0x2b
-4c 20                          # fd63 |   getf A
-ec 20 1c f8 32 d0 d2           # fd65 |   jne A, 0x32, ${fail}:rel + PC
-50 1c 1c 2b ab                 # fd6c |   cmp 0x2b, 0xab
-4c 20                          # fd71 |   getf A
-ec 20 1c f8 0e c2 d2           # fd73 |   jne A, 0xe, ${fail}:rel + PC
-50 1c 1c ab ab                 # fd7a |   cmp 0xab, 0xab
-4c 20                          # fd7f |   getf A
-ec 20 1c f8 29 b4 d2           # fd81 |   jne A, 0x29, ${fail}:rel + PC
-d0 1c 1c ab 2b                 # fd88 |   icmp 0xab, 0x2b
-4c 20                          # fd8d |   getf A
-ec 20 1c f8 0e a6 d2           # fd8f |   jne A, 0xe, ${fail}:rel + PC
-d0 1c 1c 2b ab                 # fd96 |   icmp 0x2b, 0xab
-4c 20                          # fd9b |   getf A
-ec 20 1c f8 32 98 d2           # fd9d |   jne A, 0x32, ${fail}:rel + PC
-d0 1c 1c ab ab                 # fda4 |   icmp 0xab, 0xab
-4c 20                          # fda9 |   getf A
-ec 20 1c f8 29 8a d2           # fdab |   jne A, 0x29, ${fail}:rel + PC
-                               #      | test_cmp_direct:
-60 60 1c ab                    # fdb2 |   mov C, 0xab
-60 80 1c 2b                    # fdb6 |   mov D, 0x2b
-50 60 80                       # fdba |   cmp C, D
-4c 20                          # fdbd |   getf A
-ec 20 1c f8 32 76 d2           # fdbf |   jne A, 0x32, ${fail}:rel + PC
-50 80 60                       # fdc6 |   cmp D, C
+cc 1c ff                       # fd81 |   setf 0xff
+4c 20                          # fd84 |   getf A
+ec 20 1c f8 3f af d2           # fd86 |   jne A, 0x3f, ${fail}:rel + PC
+cc e0 ab ab                    # fd8d |   setf 0xabab
+4c 20                          # fd91 |   getf A
+ec 20 1c f8 2b a2 d2           # fd93 |   jne A, 0x2b, ${fail}:rel + PC
+50 1c 1c ab 2b                 # fd9a |   cmp 0xab, 0x2b
+4c 20                          # fd9f |   getf A
+ec 20 1c f8 32 94 d2           # fda1 |   jne A, 0x32, ${fail}:rel + PC
+50 1c 1c 2b ab                 # fda8 |   cmp 0x2b, 0xab
+4c 20                          # fdad |   getf A
+ec 20 1c f8 0e 86 d2           # fdaf |   jne A, 0xe, ${fail}:rel + PC
+50 1c 1c ab ab                 # fdb6 |   cmp 0xab, 0xab
+4c 20                          # fdbb |   getf A
+ec 20 1c f8 29 78 d2           # fdbd |   jne A, 0x29, ${fail}:rel + PC
+d0 1c 1c ab 2b                 # fdc4 |   icmp 0xab, 0x2b
 4c 20                          # fdc9 |   getf A
 ec 20 1c f8 0e 6a d2           # fdcb |   jne A, 0xe, ${fail}:rel + PC
-50 60 60                       # fdd2 |   cmp C, C
-4c 20                          # fdd5 |   getf A
-ec 20 1c f8 29 5e d2           # fdd7 |   jne A, 0x29, ${fail}:rel + PC
-d0 60 80                       # fdde |   icmp C, D
-4c 20                          # fde1 |   getf A
-ec 20 1c f8 0e 52 d2           # fde3 |   jne A, 0xe, ${fail}:rel + PC
-d0 80 60                       # fdea |   icmp D, C
-4c 20                          # fded |   getf A
-ec 20 1c f8 32 46 d2           # fdef |   jne A, 0x32, ${fail}:rel + PC
-d0 60 60                       # fdf6 |   icmp C, C
+d0 1c 1c 2b ab                 # fdd2 |   icmp 0x2b, 0xab
+4c 20                          # fdd7 |   getf A
+ec 20 1c f8 32 5c d2           # fdd9 |   jne A, 0x32, ${fail}:rel + PC
+d0 1c 1c ab ab                 # fde0 |   icmp 0xab, 0xab
+4c 20                          # fde5 |   getf A
+ec 20 1c f8 29 4e d2           # fde7 |   jne A, 0x29, ${fail}:rel + PC
+                               #      | test_cmp_direct:
+60 60 1c ab                    # fdee |   mov C, 0xab
+60 80 1c 2b                    # fdf2 |   mov D, 0x2b
+50 60 80                       # fdf6 |   cmp C, D
 4c 20                          # fdf9 |   getf A
-ec 20 1c f8 29 3a d2           # fdfb |   jne A, 0x29, ${fail}:rel + PC
+ec 20 1c f8 32 3a d2           # fdfb |   jne A, 0x32, ${fail}:rel + PC
+50 80 60                       # fe02 |   cmp D, C
+4c 20                          # fe05 |   getf A
+ec 20 1c f8 0e 2e d2           # fe07 |   jne A, 0xe, ${fail}:rel + PC
+50 60 60                       # fe0e |   cmp C, C
+4c 20                          # fe11 |   getf A
+ec 20 1c f8 29 22 d2           # fe13 |   jne A, 0x29, ${fail}:rel + PC
+d0 60 80                       # fe1a |   icmp C, D
+4c 20                          # fe1d |   getf A
+ec 20 1c f8 0e 16 d2           # fe1f |   jne A, 0xe, ${fail}:rel + PC
+d0 80 60                       # fe26 |   icmp D, C
+4c 20                          # fe29 |   getf A
+ec 20 1c f8 32 0a d2           # fe2b |   jne A, 0x32, ${fail}:rel + PC
+d0 60 60                       # fe32 |   icmp C, C
+4c 20                          # fe35 |   getf A
+ec 20 1c f8 29 fe d1           # fe37 |   jne A, 0x29, ${fail}:rel + PC
                                #      | end_of_test:
-60 20 e0 ad de                 # fe02 |   mov A, 0xdead
-60 40 e0 ef be                 # fe07 |   mov B, 0xbeef
-88 60 20 40                    # fe0c |   mul C, A, B
-58 f8 2a d2                    # fe10 |   jmp ${success}:rel + PC
-dc                             # fe14 |   ret
+60 20 e0 ad de                 # fe3e |   mov A, 0xdead
+60 40 e0 ef be                 # fe43 |   mov B, 0xbeef
+88 60 20 40                    # fe48 |   mul C, A, B
+58 f8 ee d1                    # fe4c |   jmp ${success}:rel + PC
+dc                             # fe50 |   ret
                                #      | end_fn_self_test:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
