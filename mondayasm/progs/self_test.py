@@ -4,7 +4,7 @@ from mondayasm import *
 def self_test():
     #
     # # BEGIN preamble.asm
-
+    # .OFFSET(0xD000)  # .offset 0xD000
     Label('.boot')  # .boot:
     MOV(A, 0xFFFA)  # mov A, 0xFFFA
     JNE(A, 0x00FA, ConstLabel('start_test'))  # jne A, 0x00FA, $start_test
@@ -235,6 +235,309 @@ def self_test():
     #
     MOV(B, 0x0000)  # mov B, 0x0000
     XOR(B, 0xdead)  # xor B, 0xdead
+    JNE(B, 0xdead, ConstLabel('fail'))  # jne B, 0xdead, $fail
+    #
+    MOV(B, 0x0000)  # mov B, 0x0000
+    NEG(B)  # neg B
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(B, 0x0000)  # mov B, 0x0000
+    NOT(B)  # not B
+    JNE(B, 0xffff, ConstLabel('fail'))  # jne B, 0xffff, $fail
+    #
+    MOV(B, 0x0000)  # mov B, 0x0000
+    BOOL(B)  # bool B
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(B, 0x0000)  # mov B, 0x0000
+    INC(B)  # inc B
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    MOV(B, 0x0000)  # mov B, 0x0000
+    DEC(B)  # dec B
+    JNE(B, 0xffff, ConstLabel('fail'))  # jne B, 0xffff, $fail
+    #
+    Label('alu_test_direct_reg')  # alu_test_direct_reg:
+    #      # (direct) t=True, a=d230, b=a012
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    ADD(B, C, D)  # add B, C, D
+    JNE(B, 0x7242, ConstLabel('fail'))  # jne B, 0x7242, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    SUB(B, C, D)  # sub B, C, D
+    JNE(B, 0x321e, ConstLabel('fail'))  # jne B, 0x321e, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    MUL(B, C, D)  # mul B, C, D
+    JNE(B, 0xc760, ConstLabel('fail'))  # jne B, 0xc760, $fail
+    JNE(H, 0x836c, ConstLabel('fail'))  # jne H, 0x836c, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    IMUL(B, C, D)  # imul B, C, D
+    JNE(B, 0xc760, ConstLabel('fail'))  # jne B, 0xc760, $fail
+    JNE(H, 0x112a, ConstLabel('fail'))  # jne H, 0x112a, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    SHR(B, C, D)  # shr B, C, D
+    JNE(B, 0x348c, ConstLabel('fail'))  # jne B, 0x348c, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    ISHR(B, C, D)  # ishr B, C, D
+    JNE(B, 0xf48c, ConstLabel('fail'))  # jne B, 0xf48c, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    SHL(B, C, D)  # shl B, C, D
+    JNE(B, 0x48c0, ConstLabel('fail'))  # jne B, 0x48c0, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    AND(B, C, D)  # and B, C, D
+    JNE(B, 0x8010, ConstLabel('fail'))  # jne B, 0x8010, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    OR(B, C, D)  # or B, C, D
+    JNE(B, 0xf232, ConstLabel('fail'))  # jne B, 0xf232, $fail
+    #
+    MOV(C, 0xd230)  # mov C, 0xd230
+    MOV(D, 0xa012)  # mov D, 0xa012
+    XOR(B, C, D)  # xor B, C, D
+    JNE(B, 0x7222, ConstLabel('fail'))  # jne B, 0x7222, $fail
+    #
+    NEG(B, 0xd230)  # neg B, 0xd230
+    JNE(B, 0x2dd0, ConstLabel('fail'))  # jne B, 0x2dd0, $fail
+    #
+    NOT(B, 0xd230)  # not B, 0xd230
+    JNE(B, 0x2dcf, ConstLabel('fail'))  # jne B, 0x2dcf, $fail
+    #
+    BOOL(B, 0xd230)  # bool B, 0xd230
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    INC(B, 0xd230)  # inc B, 0xd230
+    JNE(B, 0xd231, ConstLabel('fail'))  # jne B, 0xd231, $fail
+    #
+    DEC(B, 0xd230)  # dec B, 0xd230
+    JNE(B, 0xd22f, ConstLabel('fail'))  # jne B, 0xd22f, $fail
+    #
+    #      # (direct) t=True, a=00ad, b=da37
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    ADD(B, C, D)  # add B, C, D
+    JNE(B, 0xdae4, ConstLabel('fail'))  # jne B, 0xdae4, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    SUB(B, C, D)  # sub B, C, D
+    JNE(B, 0x2676, ConstLabel('fail'))  # jne B, 0x2676, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    MUL(B, C, D)  # mul B, C, D
+    JNE(B, 0x772b, ConstLabel('fail'))  # jne B, 0x772b, $fail
+    JNE(H, 0x0093, ConstLabel('fail'))  # jne H, 0x0093, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    IMUL(B, C, D)  # imul B, C, D
+    JNE(B, 0x772b, ConstLabel('fail'))  # jne B, 0x772b, $fail
+    JNE(H, 0xffe6, ConstLabel('fail'))  # jne H, 0xffe6, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    SHR(B, C, D)  # shr B, C, D
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    ISHR(B, C, D)  # ishr B, C, D
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    SHL(B, C, D)  # shl B, C, D
+    JNE(B, 0x5680, ConstLabel('fail'))  # jne B, 0x5680, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    AND(B, C, D)  # and B, C, D
+    JNE(B, 0x0025, ConstLabel('fail'))  # jne B, 0x0025, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    OR(B, C, D)  # or B, C, D
+    JNE(B, 0xdabf, ConstLabel('fail'))  # jne B, 0xdabf, $fail
+    #
+    MOV(C, 0x00ad)  # mov C, 0x00ad
+    MOV(D, 0xda37)  # mov D, 0xda37
+    XOR(B, C, D)  # xor B, C, D
+    JNE(B, 0xda9a, ConstLabel('fail'))  # jne B, 0xda9a, $fail
+    #
+    NEG(B, 0x00ad)  # neg B, 0x00ad
+    JNE(B, 0xff53, ConstLabel('fail'))  # jne B, 0xff53, $fail
+    #
+    NOT(B, 0x00ad)  # not B, 0x00ad
+    JNE(B, 0xff52, ConstLabel('fail'))  # jne B, 0xff52, $fail
+    #
+    BOOL(B, 0x00ad)  # bool B, 0x00ad
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    INC(B, 0x00ad)  # inc B, 0x00ad
+    JNE(B, 0x00ae, ConstLabel('fail'))  # jne B, 0x00ae, $fail
+    #
+    DEC(B, 0x00ad)  # dec B, 0x00ad
+    JNE(B, 0x00ac, ConstLabel('fail'))  # jne B, 0x00ac, $fail
+    #
+    #      # (direct) t=False, a=f0ad, b=2a3f
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    ADD(B, D)  # add B, D
+    JNE(B, 0x1aec, ConstLabel('fail'))  # jne B, 0x1aec, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    SUB(B, D)  # sub B, D
+    JNE(B, 0xc66e, ConstLabel('fail'))  # jne B, 0xc66e, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    MUL(B, D)  # mul B, D
+    JNE(B, 0x9c93, ConstLabel('fail'))  # jne B, 0x9c93, $fail
+    JNE(H, 0x27b7, ConstLabel('fail'))  # jne H, 0x27b7, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    IMUL(B, D)  # imul B, D
+    JNE(B, 0x9c93, ConstLabel('fail'))  # jne B, 0x9c93, $fail
+    JNE(H, 0xfd78, ConstLabel('fail'))  # jne H, 0xfd78, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    SHR(B, D)  # shr B, D
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    ISHR(B, D)  # ishr B, D
+    JNE(B, 0xffff, ConstLabel('fail'))  # jne B, 0xffff, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    SHL(B, D)  # shl B, D
+    JNE(B, 0x8000, ConstLabel('fail'))  # jne B, 0x8000, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    AND(B, D)  # and B, D
+    JNE(B, 0x202d, ConstLabel('fail'))  # jne B, 0x202d, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    OR(B, D)  # or B, D
+    JNE(B, 0xfabf, ConstLabel('fail'))  # jne B, 0xfabf, $fail
+    #
+    MOV(C, 0xf0ad)  # mov C, 0xf0ad
+    MOV(D, 0x2a3f)  # mov D, 0x2a3f
+    MOV(B, C)  # mov B, C
+    XOR(B, D)  # xor B, D
+    JNE(B, 0xda92, ConstLabel('fail'))  # jne B, 0xda92, $fail
+    #
+    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    NEG(B)  # neg B
+    JNE(B, 0x0f53, ConstLabel('fail'))  # jne B, 0x0f53, $fail
+    #
+    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    NOT(B)  # not B
+    JNE(B, 0x0f52, ConstLabel('fail'))  # jne B, 0x0f52, $fail
+    #
+    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    BOOL(B)  # bool B
+    JNE(B, 0x0001, ConstLabel('fail'))  # jne B, 0x0001, $fail
+    #
+    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    INC(B)  # inc B
+    JNE(B, 0xf0ae, ConstLabel('fail'))  # jne B, 0xf0ae, $fail
+    #
+    MOV(B, 0xf0ad)  # mov B, 0xf0ad
+    DEC(B)  # dec B
+    JNE(B, 0xf0ac, ConstLabel('fail'))  # jne B, 0xf0ac, $fail
+    #
+    #      # (direct) t=False, a=0000, b=dead
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    ADD(B, D)  # add B, D
+    JNE(B, 0xdead, ConstLabel('fail'))  # jne B, 0xdead, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    SUB(B, D)  # sub B, D
+    JNE(B, 0x2153, ConstLabel('fail'))  # jne B, 0x2153, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    MUL(B, D)  # mul B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    JNE(H, 0x0000, ConstLabel('fail'))  # jne H, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    IMUL(B, D)  # imul B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    JNE(H, 0x0000, ConstLabel('fail'))  # jne H, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    SHR(B, D)  # shr B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    ISHR(B, D)  # ishr B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    SHL(B, D)  # shl B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    AND(B, D)  # and B, D
+    JNE(B, 0x0000, ConstLabel('fail'))  # jne B, 0x0000, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    OR(B, D)  # or B, D
+    JNE(B, 0xdead, ConstLabel('fail'))  # jne B, 0xdead, $fail
+    #
+    MOV(C, 0x0000)  # mov C, 0x0000
+    MOV(D, 0xdead)  # mov D, 0xdead
+    MOV(B, C)  # mov B, C
+    XOR(B, D)  # xor B, D
     JNE(B, 0xdead, ConstLabel('fail'))  # jne B, 0xdead, $fail
     #
     MOV(B, 0x0000)  # mov B, 0x0000
@@ -1804,6 +2107,39 @@ def self_test():
     JNE(A, 0b110010, ConstLabel('fail'))  # jne A, 0b110010, $fail
     #
     ICMP(0xFFAB, 0xFFAB)  # icmp 0xFFAB, 0xFFAB
+    GETF(A)  # getf A
+    JNE(A, 0b101001, ConstLabel('fail'))  # jne A, 0b101001, $fail
+    #
+    #
+    #
+    Label('test_cmp_direct')  # test_cmp_direct:
+    #     # unsigned
+    MOV(C, 0xFFAB)  # mov C, 0xFFAB
+    MOV(D, 0x2B)  # mov D, 0x2B
+    CMP(C, D)  # cmp C, D
+    GETF(A)  # getf A
+    #     # GE GT LE LT NE EQ
+    JNE(A, 0b110010, ConstLabel('fail'))  # jne A, 0b110010, $fail
+    #
+    CMP(D, C)  # cmp D, C
+    GETF(A)  # getf A
+    JNE(A, 0b001110, ConstLabel('fail'))  # jne A, 0b001110, $fail
+    #
+    CMP(C, C)  # cmp C, C
+    GETF(A)  # getf A
+    JNE(A, 0b101001, ConstLabel('fail'))  # jne A, 0b101001, $fail
+    #
+    #     # signed
+    ICMP(C, D)  # icmp C, D
+    GETF(A)  # getf A
+    #     # GE GT LE LT NE EQ
+    JNE(A, 0b001110, ConstLabel('fail'))  # jne A, 0b001110, $fail
+    #
+    ICMP(D, C)  # icmp D, C
+    GETF(A)  # getf A
+    JNE(A, 0b110010, ConstLabel('fail'))  # jne A, 0b110010, $fail
+    #
+    ICMP(C, C)  # icmp C, C
     GETF(A)  # getf A
     JNE(A, 0b101001, ConstLabel('fail'))  # jne A, 0b101001, $fail
     # # END test_cmp.asm

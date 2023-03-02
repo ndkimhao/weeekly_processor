@@ -253,6 +253,309 @@ alu_test:
     dec B
     jne B, 0xffff, $fail
 
+alu_test_direct_reg:
+     # (direct) t=True, a=d230, b=a012
+    mov C, 0xd230
+    mov D, 0xa012
+    add B, C, D
+    jne B, 0x7242, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    sub B, C, D
+    jne B, 0x321e, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    mul B, C, D
+    jne B, 0xc760, $fail
+    jne H, 0x836c, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    imul B, C, D
+    jne B, 0xc760, $fail
+    jne H, 0x112a, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    shr B, C, D
+    jne B, 0x348c, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    ishr B, C, D
+    jne B, 0xf48c, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    shl B, C, D
+    jne B, 0x48c0, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    and B, C, D
+    jne B, 0x8010, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    or B, C, D
+    jne B, 0xf232, $fail
+
+    mov C, 0xd230
+    mov D, 0xa012
+    xor B, C, D
+    jne B, 0x7222, $fail
+
+    neg B, 0xd230
+    jne B, 0x2dd0, $fail
+
+    not B, 0xd230
+    jne B, 0x2dcf, $fail
+
+    bool B, 0xd230
+    jne B, 0x0001, $fail
+
+    inc B, 0xd230
+    jne B, 0xd231, $fail
+
+    dec B, 0xd230
+    jne B, 0xd22f, $fail
+
+     # (direct) t=True, a=00ad, b=da37
+    mov C, 0x00ad
+    mov D, 0xda37
+    add B, C, D
+    jne B, 0xdae4, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    sub B, C, D
+    jne B, 0x2676, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    mul B, C, D
+    jne B, 0x772b, $fail
+    jne H, 0x0093, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    imul B, C, D
+    jne B, 0x772b, $fail
+    jne H, 0xffe6, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    shr B, C, D
+    jne B, 0x0001, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    ishr B, C, D
+    jne B, 0x0001, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    shl B, C, D
+    jne B, 0x5680, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    and B, C, D
+    jne B, 0x0025, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    or B, C, D
+    jne B, 0xdabf, $fail
+
+    mov C, 0x00ad
+    mov D, 0xda37
+    xor B, C, D
+    jne B, 0xda9a, $fail
+
+    neg B, 0x00ad
+    jne B, 0xff53, $fail
+
+    not B, 0x00ad
+    jne B, 0xff52, $fail
+
+    bool B, 0x00ad
+    jne B, 0x0001, $fail
+
+    inc B, 0x00ad
+    jne B, 0x00ae, $fail
+
+    dec B, 0x00ad
+    jne B, 0x00ac, $fail
+
+     # (direct) t=False, a=f0ad, b=2a3f
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    add B, D
+    jne B, 0x1aec, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    sub B, D
+    jne B, 0xc66e, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    mul B, D
+    jne B, 0x9c93, $fail
+    jne H, 0x27b7, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    imul B, D
+    jne B, 0x9c93, $fail
+    jne H, 0xfd78, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    shr B, D
+    jne B, 0x0001, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    ishr B, D
+    jne B, 0xffff, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    shl B, D
+    jne B, 0x8000, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    and B, D
+    jne B, 0x202d, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    or B, D
+    jne B, 0xfabf, $fail
+
+    mov C, 0xf0ad
+    mov D, 0x2a3f
+    mov B, C
+    xor B, D
+    jne B, 0xda92, $fail
+
+    mov B, 0xf0ad
+    neg B
+    jne B, 0x0f53, $fail
+
+    mov B, 0xf0ad
+    not B
+    jne B, 0x0f52, $fail
+
+    mov B, 0xf0ad
+    bool B
+    jne B, 0x0001, $fail
+
+    mov B, 0xf0ad
+    inc B
+    jne B, 0xf0ae, $fail
+
+    mov B, 0xf0ad
+    dec B
+    jne B, 0xf0ac, $fail
+
+     # (direct) t=False, a=0000, b=dead
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    add B, D
+    jne B, 0xdead, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    sub B, D
+    jne B, 0x2153, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    mul B, D
+    jne B, 0x0000, $fail
+    jne H, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    imul B, D
+    jne B, 0x0000, $fail
+    jne H, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    shr B, D
+    jne B, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    ishr B, D
+    jne B, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    shl B, D
+    jne B, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    and B, D
+    jne B, 0x0000, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    or B, D
+    jne B, 0xdead, $fail
+
+    mov C, 0x0000
+    mov D, 0xdead
+    mov B, C
+    xor B, D
+    jne B, 0xdead, $fail
+
+    mov B, 0x0000
+    neg B
+    jne B, 0x0000, $fail
+
+    mov B, 0x0000
+    not B
+    jne B, 0xffff, $fail
+
+    mov B, 0x0000
+    bool B
+    jne B, 0x0000, $fail
+
+    mov B, 0x0000
+    inc B
+    jne B, 0x0001, $fail
+
+    mov B, 0x0000
+    dec B
+    jne B, 0xffff, $fail
+
 jmp_test:
     jeq 0xffab, 0x002b, $fail
     jne 0xffab, 0x002b, $_L_test_jmp_1
@@ -1799,6 +2102,39 @@ test_cmp:
     jne A, 0b110010, $fail
 
     icmp 0xFFAB, 0xFFAB
+    getf A
+    jne A, 0b101001, $fail
+
+
+
+test_cmp_direct:
+    # unsigned
+    mov C, 0xFFAB
+    mov D, 0x2B
+    cmp C, D
+    getf A
+    # GE GT LE LT NE EQ
+    jne A, 0b110010, $fail
+
+    cmp D, C
+    getf A
+    jne A, 0b001110, $fail
+
+    cmp C, C
+    getf A
+    jne A, 0b101001, $fail
+
+    # signed
+    icmp C, D
+    getf A
+    # GE GT LE LT NE EQ
+    jne A, 0b001110, $fail
+
+    icmp D, C
+    getf A
+    jne A, 0b110010, $fail
+
+    icmp C, C
     getf A
     jne A, 0b101001, $fail
 # END test_cmp.asm

@@ -55,13 +55,23 @@ append_snippet('preamble.asm')
 
 gen_section('start_test')
 
+ALU_DIRECT_REG = False
 
 def gen_test_alu2_op(t, op, a, b, expected, expected_aux=None):
-    if t:  # separate dest variant
-        gen_cmd(f'{op} B, 0x{a:04x}, 0x{b:04x}')
+    if ALU_DIRECT_REG:
+        gen_cmd(f'mov C, 0x{a:04x}')
+        gen_cmd(f'mov D, 0x{b:04x}')
+        if t:  # separate dest variant
+            gen_cmd(f'{op} B, C, D')
+        else:
+            gen_cmd(f'mov B, C')
+            gen_cmd(f'{op} B, D')
     else:
-        gen_cmd(f'mov B, 0x{a:04x}')
-        gen_cmd(f'{op} B, 0x{b:04x}')
+        if t:  # separate dest variant
+            gen_cmd(f'{op} B, 0x{a:04x}, 0x{b:04x}')
+        else:
+            gen_cmd(f'mov B, 0x{a:04x}')
+            gen_cmd(f'{op} B, 0x{b:04x}')
     gen_cmd(f'jne B, 0x{expected:04x}, $fail')
     if expected_aux is not None:
         gen_cmd(f'jne H, 0x{expected_aux:04x}, $fail')
@@ -106,10 +116,16 @@ ALU_TESTCASES = [
     (True, 0xD230, 0xA012), (True, 0x00AD, 0xDA37), (False, 0xF0AD, 0x2A3F), (False, 0, 0xDEAD)
 ]
 gen_section('alu_test')
+ALU_DIRECT_REG = False
 for t, a, b in ALU_TESTCASES:
     gen_cmd('', comment=f't={t}, a={a:04x}, b={b:04x}')
     gen_test_alu2(t, a, b)
 
+gen_section('alu_test_direct_reg')
+ALU_DIRECT_REG = True
+for t, a, b in ALU_TESTCASES:
+    gen_cmd('', comment=f'(direct) t={t}, a={a:04x}, b={b:04x}')
+    gen_test_alu2(t, a, b)
 
 #########################################################################
 
