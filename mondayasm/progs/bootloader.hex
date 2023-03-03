@@ -231,7 +231,7 @@ e8 fe 00 f8 70 00              # f770 |   jeq G, 0, ${_L_fn_handle_read_2}:rel +
 62 3c 1c 04 20                 # f795 |   mov [A + 0x4], 0x20
 60 20 3c 05                    # f79a |   mov A, A + 0x5
                                #      | _B_fn_handle_read_3:
-fc 20 e0 f8 95 fb 42 00        # f79e |   jge A, ${var_uart_recv_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
+fc 20 e0 f8 2d fc 42 00        # f79e |   jge A, ${var_uart_send_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
 fc 60 80 f8 25 00              # f7a6 |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
 61 fc 60                       # f7ac |   mov E, [C]
 a8 40 fc 1c 08                 # f7af |   shl B, E, 0x8

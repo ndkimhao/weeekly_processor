@@ -299,7 +299,7 @@ def handle_read():
 
     MOV(A, A + 5)
     with Block() as loop_cd:
-        JGE(A, recv_buf + UART_BUFSZ - 1, lb_ret_fail)  # overflow, -1 for \n char
+        JGE(A, send_buf + UART_BUFSZ - 1, lb_ret_fail)  # overflow, -1 for \n char
         JGE(C, D, loop_cd.end)
 
         MOV(E, [C])

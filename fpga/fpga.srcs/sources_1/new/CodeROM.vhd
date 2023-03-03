@@ -248,7 +248,7 @@ constant arr_rom : TArrROM := (
     x"62",x"3c",x"1c",x"04",x"20",                   -- f795 |   mov [A + 0x4], 0x20
     x"60",x"20",x"3c",x"05",                         -- f79a |   mov A, A + 0x5
                                                      --      | _B_fn_handle_read_3:
-    x"fc",x"20",x"e0",x"f8",x"95",x"fb",x"42",x"00", -- f79e |   jge A, ${var_uart_recv_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
+    x"fc",x"20",x"e0",x"f8",x"2d",x"fc",x"42",x"00", -- f79e |   jge A, ${var_uart_send_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
     x"fc",x"60",x"80",x"f8",x"25",x"00",             -- f7a6 |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
     x"61",x"fc",x"60",                               -- f7ac |   mov E, [C]
     x"a8",x"40",x"fc",x"1c",x"08",                   -- f7af |   shl B, E, 0x8
