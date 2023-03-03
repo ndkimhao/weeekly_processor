@@ -20,7 +20,7 @@ class Communicator:
     def send_cmd(self, cmd: bytes | str, expected=None, no_wait=False):
         if isinstance(cmd, str):
             cmd = cmd.encode()
-        print(f'-- {cmd.decode()}', end='')
+        print(f'{cmd.decode()}', end='')
         self.ser.write(cmd + b'\n')
         echoed = self._read_line()
         assert echoed == cmd, (echoed, cmd)
@@ -33,6 +33,9 @@ class Communicator:
         if expected is not None:
             assert resp == expected, (resp, expected)
         return resp
+
+
+SEP = '============================================================'
 
 
 def main():
@@ -71,14 +74,14 @@ def main():
     code_offset = int(configs['CODE_OFFSET'][2:], 16)
     print(f'data len = {len(data)}')
     print(f'code offset = 0x{code_offset:04x}')
-    print()
+    print(f'\nLoaded hex code at {args.file}\n\n{SEP}\n')
 
     CHUNK_SIZE = 64  # bytes
 
     with serial.Serial(args.port, 115200, timeout=1) as ser:
         comm = Communicator(ser)
         comm.send_cmd('PING', 'PONG')
-        print(f'Pinged device at {args.port}')
+        print(f'\nPinged device at {args.port}\n\n{SEP}\n')
 
         for i in range(0, len(data), CHUNK_SIZE):
             chunk = data[i: i + CHUNK_SIZE]
@@ -87,6 +90,8 @@ def main():
             comm.send_cmd(f'WRITE {chunk_start:04x} {chunk.hex()}',
                           f'OK {chunk_start:04x} {chunk_end:04x}')
 
+        print(f'\nUploaded\n\n{SEP}\n')
+
         if args.verify:
             for i in range(0, len(data), CHUNK_SIZE):
                 chunk = data[i: i + CHUNK_SIZE]
@@ -94,6 +99,8 @@ def main():
                 chunk_end = chunk_start + len(chunk)
                 comm.send_cmd(f'READ {chunk_start:04x} {chunk_end:04x}',
                               f'{chunk_start:04x} {chunk_end:04x} {chunk.hex()}')
+
+        print(f'\nVerified\n\n{SEP}\n')
 
         if args.jmp:
             comm.send_cmd(f'JMP {code_offset:04x}', no_wait=True)
