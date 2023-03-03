@@ -391,6 +391,40 @@ def handle_write():
     POP(stash)
 
 
+def clear_state():
+    # clear memory
+    MOV(A, 0)
+    MOV(B, 2)
+    with Block() as loop:
+        JGE(A, DEV_ADDR, loop.end)
+        MOV([A], 0)
+        ADD(A, B)
+        JMP(loop.begin)
+
+    # clear registers, except H
+    for reg in [A, B, C, D, E, F, G, SP]:
+        MOV(reg, 0)
+
+    # clear LED
+    MOV(M_LED, 0)
+
+
+def handle_jmp():
+    lb_ret_fail = DeclAnonLabel()
+    stash = PUSH(A, G)
+
+    # parse first argument
+    CALL(_parse_hex_arg)
+    JEQ(G, 0, lb_ret_fail)
+
+    CALL(clear_state)
+    JMP(H)
+
+    EmitLabel(lb_ret_fail)
+    MOV(H, 0)  # fail
+    POP(stash)
+
+
 # A => PTR string
 def parse_command():
     lb_ret_ok = DeclAnonLabel()
@@ -422,6 +456,7 @@ def parse_command():
     check_cmd("PING", handle_ping, False)
     check_cmd("READ", handle_read, True)
     check_cmd("WRITE", handle_write, True)
+    check_cmd("JMP", handle_jmp, True)
 
     # lb_ret_fail:
     EmitLabel(lb_ret_fail)
@@ -475,24 +510,26 @@ def start():
         JMP(while_true.begin)
 
 
-START_ADDR = 0xE000
+START_ADDR = 0xF500
+END_ADDR = 0xFAFF
 
 if __name__ == '__main__':
     with Block() as check_mmap:
         JEQ(PC, START_ADDR, check_mmap.end)  # MUST be the first instruction
         MOV(A, 0xFF)
         MOV(B, 0)
-        MMAP(START_ADDR, 0xFEFF, 2)  # tmp slot 2
+        MMAP(START_ADDR, END_ADDR, 2)  # tmp slot 2
         JMP(START_ADDR)
 
     # PC == START_ADDR
-    MMAP(START_ADDR, 0xFEFF, 3)
+    MMAP(START_ADDR, END_ADDR, 3)
     UMAP(2)
 
-    MOV(SP, 0x500)
+    MOV(SP, DEV_ADDR)
     CALL(start)
     HALT()
 
     cg = CodeGen()
     cg.code_offset = START_ADDR
+    cg.var_offset = (END_ADDR + 0xF) & 0xFFF0
     cg.compile().write('bootloader.hex').write_vhd('bootloader.vhd')

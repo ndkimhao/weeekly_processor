@@ -1,448 +1,496 @@
                                #      | SECTION_BEGIN_boot:
                                #      | _B_boot_1:
-e8 c0 e0 f8 00 e0 1d 00        # e000 |   jeq PC, 0xe000, ${_E_boot_1}:rel + PC
-60 20 e0 ff 00                 # e008 |   mov A, 0xff
-60 40 00                       # e00d |   mov B, 0
-54 e0 e0 1c 00 e0 ff fe 02     # e010 |   mmap 0xe000, 0xfeff, 0x2
-58 e0 00 e0                    # e019 |   jmp 0xe000
+e8 c0 e0 f8 00 f5 1d 00        # f500 |   jeq PC, 0xf500, ${_E_boot_1}:rel + PC
+60 20 e0 ff 00                 # f508 |   mov A, 0xff
+60 40 00                       # f50d |   mov B, 0
+54 e0 e0 1c 00 f5 ff fa 02     # f510 |   mmap 0xf500, 0xfaff, 0x2
+58 e0 00 f5                    # f519 |   jmp 0xf500
                                #      | _E_boot_1:
-54 e0 e0 1c 00 e0 ff fe 03     # e01d |   mmap 0xe000, 0xfeff, 0x3
-d4 1c 02                       # e026 |   umap 0x2
-60 a0 e0 00 05                 # e029 |   mov SP, 0x500
-5c f8 05 00                    # e02e |   call ${fn_start}:rel + PC
-d8                             # e032 |   halt
+54 e0 e0 1c 00 f5 ff fa 03     # f51d |   mmap 0xf500, 0xfaff, 0x3
+d4 1c 02                       # f526 |   umap 0x2
+60 a0 e0 00 ff                 # f529 |   mov SP, 0xff00
+5c f8 05 00                    # f52e |   call ${fn_start}:rel + PC
+d8                             # f532 |   halt
                                #      | SECTION_END_boot:
                                #      | 
                                #      | fn_start:
-60 20 e0 fd 00                 # e033 |   mov A, 0xfd
-60 40 00                       # e038 |   mov B, 0
-54 e0 1c 1c 00 ff ff 02        # e03b |   mmap 0xff00, 0xff, 0x2
-60 20 e0 a2 e4                 # e043 |   mov A, ${const_data_1}
-5c f8 2a 00                    # e048 |   call ${fn_send_data}:rel + PC
-60 20 ff                       # e04c |   mov A, H
-62 e0 1c 30 01 01              # e04f |   mov [${var_led_status}], 0x1
-63 e0 e0 0a ff 30 01           # e055 |   mov [0xff0a], [${var_led_status}]
+60 20 e0 fd 00                 # f533 |   mov A, 0xfd
+60 40 00                       # f538 |   mov B, 0
+54 e0 1c 1c 00 ff ff 02        # f53b |   mmap 0xff00, 0xff, 0x2
+60 20 e0 1f fa                 # f543 |   mov A, ${const_data_1}
+5c f8 2a 00                    # f548 |   call ${fn_send_data}:rel + PC
+60 20 ff                       # f54c |   mov A, H
+62 e0 1c 30 fc 01              # f54f |   mov [${var_led_status}], 0x1
+63 e0 e0 0a ff 30 fc           # f555 |   mov [0xff0a], [${var_led_status}]
                                #      | _B_fn_start_1:
-5c f8 56 00                    # e05c |   call ${fn_recv_command}:rel + PC
-5c f8 bb 00                    # e060 |   call ${fn_led_activity}:rel + PC
-60 20 e0 00 00                 # e064 |   mov A, ${var_uart_recv_buf}
-5c f8 be 00                    # e069 |   call ${fn_parse_command}:rel + PC
-58 f8 ef ff                    # e06d |   jmp ${_B_fn_start_1}:rel + PC
+5c f8 56 00                    # f55c |   call ${fn_recv_command}:rel + PC
+5c f8 bb 00                    # f560 |   call ${fn_led_activity}:rel + PC
+60 20 e0 00 fb                 # f564 |   mov A, ${var_uart_recv_buf}
+5c f8 be 00                    # f569 |   call ${fn_parse_command}:rel + PC
+58 f8 ef ff                    # f56d |   jmp ${_B_fn_start_1}:rel + PC
                                #      | _E_fn_start_1:
-dc                             # e071 |   ret
+dc                             # f571 |   ret
                                #      | end_fn_start:
                                #      | 
                                #      | fn_send_data:
-e0 20                          # e072 |   push A
-e0 40                          # e074 |   push B
-e0 60                          # e076 |   push C
-60 60 1c 11                    # e078 |   mov C, 0x11
+e0 20                          # f572 |   push A
+e0 40                          # f574 |   push B
+e0 60                          # f576 |   push C
+60 60 1c 11                    # f578 |   mov C, 0x11
                                #      | _B_fn_send_data_1:
-61 40 20                       # e07c |   mov B, [A]
-2c 40 e0 ff 00                 # e07f |   and B, 0xff
-e8 40 00 f8 27 00              # e084 |   jeq B, 0, ${_E_fn_send_data_1}:rel + PC
+61 40 20                       # f57c |   mov B, [A]
+2c 40 e0 ff 00                 # f57f |   and B, 0xff
+e8 40 00 f8 27 00              # f584 |   jeq B, 0, ${_E_fn_send_data_1}:rel + PC
                                #      | _B_fn_send_data_2:
-f0 60 1c f8 10 14 00           # e08a |   jlt C, 0x10, ${_E_fn_send_data_2}:rel + PC
-61 60 e0 04 ff                 # e091 |   mov C, [0xff04]
-2c 60 1c 3f                    # e096 |   and C, 0x3f
-58 f8 f0 ff                    # e09a |   jmp ${_B_fn_send_data_2}:rel + PC
+f0 60 1c f8 10 14 00           # f58a |   jlt C, 0x10, ${_E_fn_send_data_2}:rel + PC
+61 60 e0 04 ff                 # f591 |   mov C, [0xff04]
+2c 60 1c 3f                    # f596 |   and C, 0x3f
+58 f8 f0 ff                    # f59a |   jmp ${_B_fn_send_data_2}:rel + PC
                                #      | _E_fn_send_data_2:
-62 e0 40 00 ff                 # e09e |   mov [0xff00], B
-44 20                          # e0a3 |   inc A
-44 60                          # e0a5 |   inc C
-58 f8 d5 ff                    # e0a7 |   jmp ${_B_fn_send_data_1}:rel + PC
+62 e0 40 00 ff                 # f59e |   mov [0xff00], B
+44 20                          # f5a3 |   inc A
+44 60                          # f5a5 |   inc C
+58 f8 d5 ff                    # f5a7 |   jmp ${_B_fn_send_data_1}:rel + PC
                                #      | _E_fn_send_data_1:
-e4 60                          # e0ab |   pop C
-e4 40                          # e0ad |   pop B
-e4 20                          # e0af |   pop A
-dc                             # e0b1 |   ret
+e4 60                          # f5ab |   pop C
+e4 40                          # f5ad |   pop B
+e4 20                          # f5af |   pop A
+dc                             # f5b1 |   ret
                                #      | end_fn_send_data:
                                #      | 
                                #      | fn_recv_command:
-e0 20                          # e0b2 |   push A
-e0 60                          # e0b4 |   push C
-e0 80                          # e0b6 |   push D
-e0 fe                          # e0b8 |   push G
-60 20 00                       # e0ba |   mov A, 0
+e0 20                          # f5b2 |   push A
+e0 60                          # f5b4 |   push C
+e0 80                          # f5b6 |   push D
+e0 fe                          # f5b8 |   push G
+60 20 00                       # f5ba |   mov A, 0
                                #      | _B_fn_recv_command_1:
                                #      | _B_fn_recv_command_2:
-f0 20 e0 f8 95 00 1b 00        # e0bd |   jlt A, 0x95, ${_E_fn_recv_command_2}:rel + PC
-60 fe 20                       # e0c5 |   mov G, A
-60 20 e0 a9 e4                 # e0c8 |   mov A, ${const_data_2}
-5c f8 a5 ff                    # e0cd |   call ${fn_send_data}:rel + PC
-60 20 fe                       # e0d1 |   mov A, G
-58 f8 38 00                    # e0d4 |   jmp ${_E_fn_recv_command_1}:rel + PC
+f0 20 e0 f8 95 00 1b 00        # f5bd |   jlt A, 0x95, ${_E_fn_recv_command_2}:rel + PC
+60 fe 20                       # f5c5 |   mov G, A
+60 20 e0 26 fa                 # f5c8 |   mov A, ${const_data_2}
+5c f8 a5 ff                    # f5cd |   call ${fn_send_data}:rel + PC
+60 20 fe                       # f5d1 |   mov A, G
+58 f8 38 00                    # f5d4 |   jmp ${_E_fn_recv_command_1}:rel + PC
                                #      | _E_fn_recv_command_2:
-61 60 e0 02 ff                 # e0d8 |   mov C, [0xff02]
-ac 80 60 e0 00 80              # e0dd |   and D, C, 0x8000
-e8 80 00 f8 da ff              # e0e3 |   jeq D, 0, ${_B_fn_recv_command_1}:rel + PC
-2c 60 e0 ff 00                 # e0e9 |   and C, 0xff
-62 e0 60 00 ff                 # e0ee |   mov [0xff00], C
-e8 60 1c f8 0a 19 00           # e0f3 |   jeq C, 0xa, ${_E_fn_recv_command_1}:rel + PC
-e8 60 1c f8 0d c3 ff           # e0fa |   jeq C, 0xd, ${_B_fn_recv_command_1}:rel + PC
-62 e4 60 00 00                 # e101 |   mov [${var_uart_recv_buf} + A], C
-44 20                          # e106 |   inc A
-58 f8 b5 ff                    # e108 |   jmp ${_B_fn_recv_command_1}:rel + PC
+61 60 e0 02 ff                 # f5d8 |   mov C, [0xff02]
+ac 80 60 e0 00 80              # f5dd |   and D, C, 0x8000
+e8 80 00 f8 da ff              # f5e3 |   jeq D, 0, ${_B_fn_recv_command_1}:rel + PC
+2c 60 e0 ff 00                 # f5e9 |   and C, 0xff
+62 e0 60 00 ff                 # f5ee |   mov [0xff00], C
+e8 60 1c f8 0a 19 00           # f5f3 |   jeq C, 0xa, ${_E_fn_recv_command_1}:rel + PC
+e8 60 1c f8 0d c3 ff           # f5fa |   jeq C, 0xd, ${_B_fn_recv_command_1}:rel + PC
+62 e4 60 00 fb                 # f601 |   mov [${var_uart_recv_buf} + A], C
+44 20                          # f606 |   inc A
+58 f8 b5 ff                    # f608 |   jmp ${_B_fn_recv_command_1}:rel + PC
                                #      | _E_fn_recv_command_1:
-66 20 00                       # e10c |   bmov [A], 0
-60 ff 20                       # e10f |   mov H, A
-e4 fe                          # e112 |   pop G
-e4 80                          # e114 |   pop D
-e4 60                          # e116 |   pop C
-e4 20                          # e118 |   pop A
-dc                             # e11a |   ret
+66 20 00                       # f60c |   bmov [A], 0
+60 ff 20                       # f60f |   mov H, A
+e4 fe                          # f612 |   pop G
+e4 80                          # f614 |   pop D
+e4 60                          # f616 |   pop C
+e4 20                          # f618 |   pop A
+dc                             # f61a |   ret
                                #      | end_fn_recv_command:
                                #      | 
                                #      | fn_led_activity:
-46 e0 30 01                    # e11b |   inc [${var_led_status}]
-63 e0 e0 0a ff 30 01           # e11f |   mov [0xff0a], [${var_led_status}]
-dc                             # e126 |   ret
+46 e0 30 fc                    # f61b |   inc [${var_led_status}]
+63 e0 e0 0a ff 30 fc           # f61f |   mov [0xff0a], [${var_led_status}]
+dc                             # f626 |   ret
                                #      | end_fn_led_activity:
                                #      | 
                                #      | fn_parse_command:
-e0 40                          # e127 |   push B
-e0 60                          # e129 |   push C
-5c f8 8a 00                    # e12b |   call ${fn_split_command}:rel + PC
-60 40 ff                       # e12f |   mov B, H
-60 60 e0 b3 e4                 # e132 |   mov C, ${const_data_3}
-5c f8 9c 00                    # e137 |   call ${fn_string_cmp}:rel + PC
+e0 40                          # f627 |   push B
+e0 60                          # f629 |   push C
+5c f8 b4 00                    # f62b |   call ${fn_split_command}:rel + PC
+60 40 ff                       # f62f |   mov B, H
+60 60 e0 30 fa                 # f632 |   mov C, ${const_data_3}
+5c f8 c6 00                    # f637 |   call ${fn_string_cmp}:rel + PC
                                #      | _B_fn_parse_command_3:
-e8 ff 00 f8 18 00              # e13b |   jeq H, 0, ${_E_fn_parse_command_3}:rel + PC
-60 20 5c 01                    # e141 |   mov A, B + 0x1
-5c f8 d0 00                    # e145 |   call ${fn_handle_ping}:rel + PC
-e8 ff 00 f8 5e 00              # e149 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
-58 f8 61 00                    # e14f |   jmp ${_L_fn_parse_command_1}:rel + PC
+e8 ff 00 f8 18 00              # f63b |   jeq H, 0, ${_E_fn_parse_command_3}:rel + PC
+60 20 5c 01                    # f641 |   mov A, B + 0x1
+5c f8 fa 00                    # f645 |   call ${fn_handle_ping}:rel + PC
+e8 ff 00 f8 88 00              # f649 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+58 f8 8b 00                    # f64f |   jmp ${_L_fn_parse_command_1}:rel + PC
                                #      | _E_fn_parse_command_3:
-60 60 e0 be e4                 # e153 |   mov C, ${const_data_5}
-5c f8 7b 00                    # e158 |   call ${fn_string_cmp}:rel + PC
+60 60 e0 3b fa                 # f653 |   mov C, ${const_data_5}
+5c f8 a5 00                    # f658 |   call ${fn_string_cmp}:rel + PC
                                #      | _B_fn_parse_command_4:
-e8 ff 00 f8 21 00              # e15c |   jeq H, 0, ${_E_fn_parse_command_4}:rel + PC
-65 ff 40                       # e162 |   bmov H, [B]
-e8 ff 00 f8 42 00              # e165 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
-60 20 5c 01                    # e16b |   mov A, B + 0x1
-5c f8 b8 00                    # e16f |   call ${fn_handle_read}:rel + PC
-e8 ff 00 f8 34 00              # e173 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
-58 f8 37 00                    # e179 |   jmp ${_L_fn_parse_command_1}:rel + PC
+e8 ff 00 f8 21 00              # f65c |   jeq H, 0, ${_E_fn_parse_command_4}:rel + PC
+65 ff 40                       # f662 |   bmov H, [B]
+e8 ff 00 f8 6c 00              # f665 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+60 20 5c 01                    # f66b |   mov A, B + 0x1
+5c f8 e2 00                    # f66f |   call ${fn_handle_read}:rel + PC
+e8 ff 00 f8 5e 00              # f673 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+58 f8 61 00                    # f679 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                #      | _E_fn_parse_command_4:
-60 60 e0 c3 e4                 # e17d |   mov C, ${const_data_6}
-5c f8 51 00                    # e182 |   call ${fn_string_cmp}:rel + PC
+60 60 e0 40 fa                 # f67d |   mov C, ${const_data_6}
+5c f8 7b 00                    # f682 |   call ${fn_string_cmp}:rel + PC
                                #      | _B_fn_parse_command_5:
-e8 ff 00 f8 21 00              # e186 |   jeq H, 0, ${_E_fn_parse_command_5}:rel + PC
-65 ff 40                       # e18c |   bmov H, [B]
-e8 ff 00 f8 18 00              # e18f |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
-60 20 5c 01                    # e195 |   mov A, B + 0x1
-5c f8 60 02                    # e199 |   call ${fn_handle_write}:rel + PC
-e8 ff 00 f8 0a 00              # e19d |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
-58 f8 0d 00                    # e1a3 |   jmp ${_L_fn_parse_command_1}:rel + PC
+e8 ff 00 f8 21 00              # f686 |   jeq H, 0, ${_E_fn_parse_command_5}:rel + PC
+65 ff 40                       # f68c |   bmov H, [B]
+e8 ff 00 f8 42 00              # f68f |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+60 20 5c 01                    # f695 |   mov A, B + 0x1
+5c f8 8a 02                    # f699 |   call ${fn_handle_write}:rel + PC
+e8 ff 00 f8 34 00              # f69d |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+58 f8 37 00                    # f6a3 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                #      | _E_fn_parse_command_5:
+60 60 e0 46 fa                 # f6a7 |   mov C, ${const_data_7}
+5c f8 51 00                    # f6ac |   call ${fn_string_cmp}:rel + PC
+                               #      | _B_fn_parse_command_6:
+e8 ff 00 f8 21 00              # f6b0 |   jeq H, 0, ${_E_fn_parse_command_6}:rel + PC
+65 ff 40                       # f6b6 |   bmov H, [B]
+e8 ff 00 f8 18 00              # f6b9 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+60 20 5c 01                    # f6bf |   mov A, B + 0x1
+5c f8 09 03                    # f6c3 |   call ${fn_handle_jmp}:rel + PC
+e8 ff 00 f8 0a 00              # f6c7 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
+58 f8 0d 00                    # f6cd |   jmp ${_L_fn_parse_command_1}:rel + PC
+                               #      | _E_fn_parse_command_6:
                                #      | _L_fn_parse_command_2:
-60 20 e0 c9 e4                 # e1a7 |   mov A, ${const_data_7}
-5c f8 c6 fe                    # e1ac |   call ${fn_send_data}:rel + PC
+60 20 e0 4a fa                 # f6d1 |   mov A, ${const_data_8}
+5c f8 9c fe                    # f6d6 |   call ${fn_send_data}:rel + PC
                                #      | _L_fn_parse_command_1:
-e4 60                          # e1b0 |   pop C
-e4 40                          # e1b2 |   pop B
-dc                             # e1b4 |   ret
+e4 60                          # f6da |   pop C
+e4 40                          # f6dc |   pop B
+dc                             # f6de |   ret
                                #      | end_fn_parse_command:
                                #      | 
                                #      | fn_split_command:
-e0 60                          # e1b5 |   push C
-60 ff 20                       # e1b7 |   mov H, A
+e0 60                          # f6df |   push C
+60 ff 20                       # f6e1 |   mov H, A
                                #      | _B_fn_split_command_1:
-65 60 ff                       # e1ba |   bmov C, [H]
-e8 60 1c f8 20 13 00           # e1bd |   jeq C, 0x20, ${_E_fn_split_command_1}:rel + PC
-e8 60 00 f8 0c 00              # e1c4 |   jeq C, 0, ${_E_fn_split_command_1}:rel + PC
-44 ff                          # e1ca |   inc H
-58 f8 ee ff                    # e1cc |   jmp ${_B_fn_split_command_1}:rel + PC
+65 60 ff                       # f6e4 |   bmov C, [H]
+e8 60 1c f8 20 13 00           # f6e7 |   jeq C, 0x20, ${_E_fn_split_command_1}:rel + PC
+e8 60 00 f8 0c 00              # f6ee |   jeq C, 0, ${_E_fn_split_command_1}:rel + PC
+44 ff                          # f6f4 |   inc H
+58 f8 ee ff                    # f6f6 |   jmp ${_B_fn_split_command_1}:rel + PC
                                #      | _E_fn_split_command_1:
-e4 60                          # e1d0 |   pop C
-dc                             # e1d2 |   ret
+e4 60                          # f6fa |   pop C
+dc                             # f6fc |   ret
                                #      | end_fn_split_command:
                                #      | 
                                #      | fn_string_cmp:
-e0 20                          # e1d3 |   push A
-e0 40                          # e1d5 |   push B
-e0 60                          # e1d7 |   push C
-e0 fd                          # e1d9 |   push F
-e0 fe                          # e1db |   push G
-60 ff 00                       # e1dd |   mov H, 0
+e0 20                          # f6fd |   push A
+e0 40                          # f6ff |   push B
+e0 60                          # f701 |   push C
+e0 fd                          # f703 |   push F
+e0 fe                          # f705 |   push G
+60 ff 00                       # f707 |   mov H, 0
                                #      | _B_fn_string_cmp_3:
-65 fd 20                       # e1e0 |   bmov F, [A]
-65 fe 60                       # e1e3 |   bmov G, [C]
-e8 20 40 f8 1a 00              # e1e6 |   jeq A, B, ${_L_fn_string_cmp_2}:rel + PC
-e8 fe 00 f8 1e 00              # e1ec |   jeq G, 0, ${_L_fn_string_cmp_1}:rel + PC
-ec fd fe f8 18 00              # e1f2 |   jne F, G, ${_L_fn_string_cmp_1}:rel + PC
-44 20                          # e1f8 |   inc A
-44 60                          # e1fa |   inc C
-58 f8 e4 ff                    # e1fc |   jmp ${_B_fn_string_cmp_3}:rel + PC
+65 fd 20                       # f70a |   bmov F, [A]
+65 fe 60                       # f70d |   bmov G, [C]
+e8 20 40 f8 1a 00              # f710 |   jeq A, B, ${_L_fn_string_cmp_2}:rel + PC
+e8 fe 00 f8 1e 00              # f716 |   jeq G, 0, ${_L_fn_string_cmp_1}:rel + PC
+ec fd fe f8 18 00              # f71c |   jne F, G, ${_L_fn_string_cmp_1}:rel + PC
+44 20                          # f722 |   inc A
+44 60                          # f724 |   inc C
+58 f8 e4 ff                    # f726 |   jmp ${_B_fn_string_cmp_3}:rel + PC
                                #      | _E_fn_string_cmp_3:
                                #      | _L_fn_string_cmp_2:
-ec fe 00 f8 0a 00              # e200 |   jne G, 0, ${_L_fn_string_cmp_1}:rel + PC
-60 ff 1c 01                    # e206 |   mov H, 0x1
+ec fe 00 f8 0a 00              # f72a |   jne G, 0, ${_L_fn_string_cmp_1}:rel + PC
+60 ff 1c 01                    # f730 |   mov H, 0x1
                                #      | _L_fn_string_cmp_1:
-e4 fe                          # e20a |   pop G
-e4 fd                          # e20c |   pop F
-e4 60                          # e20e |   pop C
-e4 40                          # e210 |   pop B
-e4 20                          # e212 |   pop A
-dc                             # e214 |   ret
+e4 fe                          # f734 |   pop G
+e4 fd                          # f736 |   pop F
+e4 60                          # f738 |   pop C
+e4 40                          # f73a |   pop B
+e4 20                          # f73c |   pop A
+dc                             # f73e |   ret
                                #      | end_fn_string_cmp:
                                #      | 
                                #      | fn_handle_ping:
-e0 20                          # e215 |   push A
-60 20 e0 b8 e4                 # e217 |   mov A, ${const_data_4}
-5c f8 56 fe                    # e21c |   call ${fn_send_data}:rel + PC
-60 ff 1c 01                    # e220 |   mov H, 0x1
-e4 20                          # e224 |   pop A
-dc                             # e226 |   ret
+e0 20                          # f73f |   push A
+60 20 e0 35 fa                 # f741 |   mov A, ${const_data_4}
+5c f8 2c fe                    # f746 |   call ${fn_send_data}:rel + PC
+60 ff 1c 01                    # f74a |   mov H, 0x1
+e4 20                          # f74e |   pop A
+dc                             # f750 |   ret
                                #      | end_fn_handle_ping:
                                #      | 
                                #      | fn_handle_read:
-e0 20                          # e227 |   push A
-e0 40                          # e229 |   push B
-e0 60                          # e22b |   push C
-e0 80                          # e22d |   push D
-e0 fc                          # e22f |   push E
-e0 fd                          # e231 |   push F
-e0 fe                          # e233 |   push G
-5c f8 93 00                    # e235 |   call ${fn__parse_hex_arg}:rel + PC
-e8 fe 00 f8 7d 00              # e239 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
-60 60 ff                       # e23f |   mov C, H
-5c f8 86 00                    # e242 |   call ${fn__parse_hex_arg}:rel + PC
-e8 fe 00 f8 70 00              # e246 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
-60 80 ff                       # e24c |   mov D, H
-60 20 e0 98 00                 # e24f |   mov A, ${var_uart_send_buf}
-60 40 60                       # e254 |   mov B, C
-5c f8 3d 01                    # e257 |   call ${fn_put_hex_16}:rel + PC
-62 3c 1c 04 20                 # e25b |   mov [A + 0x4], 0x20
-60 20 3c 05                    # e260 |   mov A, A + 0x5
-60 40 80                       # e264 |   mov B, D
-5c f8 2d 01                    # e267 |   call ${fn_put_hex_16}:rel + PC
-62 3c 1c 04 20                 # e26b |   mov [A + 0x4], 0x20
-60 20 3c 05                    # e270 |   mov A, A + 0x5
+e0 20                          # f751 |   push A
+e0 40                          # f753 |   push B
+e0 60                          # f755 |   push C
+e0 80                          # f757 |   push D
+e0 fc                          # f759 |   push E
+e0 fd                          # f75b |   push F
+e0 fe                          # f75d |   push G
+5c f8 93 00                    # f75f |   call ${fn__parse_hex_arg}:rel + PC
+e8 fe 00 f8 7d 00              # f763 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
+60 60 ff                       # f769 |   mov C, H
+5c f8 86 00                    # f76c |   call ${fn__parse_hex_arg}:rel + PC
+e8 fe 00 f8 70 00              # f770 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
+60 80 ff                       # f776 |   mov D, H
+60 20 e0 98 fb                 # f779 |   mov A, ${var_uart_send_buf}
+60 40 60                       # f77e |   mov B, C
+5c f8 3d 01                    # f781 |   call ${fn_put_hex_16}:rel + PC
+62 3c 1c 04 20                 # f785 |   mov [A + 0x4], 0x20
+60 20 3c 05                    # f78a |   mov A, A + 0x5
+60 40 80                       # f78e |   mov B, D
+5c f8 2d 01                    # f791 |   call ${fn_put_hex_16}:rel + PC
+62 3c 1c 04 20                 # f795 |   mov [A + 0x4], 0x20
+60 20 3c 05                    # f79a |   mov A, A + 0x5
                                #      | _B_fn_handle_read_3:
-fc 20 e0 f8 95 00 42 00        # e274 |   jge A, ${var_uart_recv_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
-fc 60 80 f8 25 00              # e27c |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
-61 fc 60                       # e282 |   mov E, [C]
-a8 40 fc 1c 08                 # e285 |   shl B, E, 0x8
-20 fc 1c 08                    # e28a |   shr E, 0x8
-30 40 fc                       # e28e |   or B, E
-5c f8 03 01                    # e291 |   call ${fn_put_hex_16}:rel + PC
-60 20 3c 04                    # e295 |   mov A, A + 0x4
-60 60 7c 02                    # e299 |   mov C, C + 0x2
-58 f8 d7 ff                    # e29d |   jmp ${_B_fn_handle_read_3}:rel + PC
+fc 20 e0 f8 95 fb 42 00        # f79e |   jge A, ${var_uart_recv_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
+fc 60 80 f8 25 00              # f7a6 |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
+61 fc 60                       # f7ac |   mov E, [C]
+a8 40 fc 1c 08                 # f7af |   shl B, E, 0x8
+20 fc 1c 08                    # f7b4 |   shr E, 0x8
+30 40 fc                       # f7b8 |   or B, E
+5c f8 03 01                    # f7bb |   call ${fn_put_hex_16}:rel + PC
+60 20 3c 04                    # f7bf |   mov A, A + 0x4
+60 60 7c 02                    # f7c3 |   mov C, C + 0x2
+58 f8 d7 ff                    # f7c7 |   jmp ${_B_fn_handle_read_3}:rel + PC
                                #      | _E_fn_handle_read_3:
-62 20 1c 0a                    # e2a1 |   mov [A], 0xa
-60 20 e0 98 00                 # e2a5 |   mov A, ${var_uart_send_buf}
-5c f8 c8 fd                    # e2aa |   call ${fn_send_data}:rel + PC
+62 20 1c 0a                    # f7cb |   mov [A], 0xa
+60 20 e0 98 fb                 # f7cf |   mov A, ${var_uart_send_buf}
+5c f8 9e fd                    # f7d4 |   call ${fn_send_data}:rel + PC
                                #      | _B_fn_handle_read_4:
                                #      | _L_fn_handle_read_1:
-60 ff 1c 01                    # e2ae |   mov H, 0x1
-58 f8 07 00                    # e2b2 |   jmp ${_E_fn_handle_read_4}:rel + PC
+60 ff 1c 01                    # f7d8 |   mov H, 0x1
+58 f8 07 00                    # f7dc |   jmp ${_E_fn_handle_read_4}:rel + PC
                                #      | _L_fn_handle_read_2:
-60 ff 00                       # e2b6 |   mov H, 0
+60 ff 00                       # f7e0 |   mov H, 0
                                #      | _E_fn_handle_read_4:
-e4 fe                          # e2b9 |   pop G
-e4 fd                          # e2bb |   pop F
-e4 fc                          # e2bd |   pop E
-e4 80                          # e2bf |   pop D
-e4 60                          # e2c1 |   pop C
-e4 40                          # e2c3 |   pop B
-e4 20                          # e2c5 |   pop A
-dc                             # e2c7 |   ret
+e4 fe                          # f7e3 |   pop G
+e4 fd                          # f7e5 |   pop F
+e4 fc                          # f7e7 |   pop E
+e4 80                          # f7e9 |   pop D
+e4 60                          # f7eb |   pop C
+e4 40                          # f7ed |   pop B
+e4 20                          # f7ef |   pop A
+dc                             # f7f1 |   ret
                                #      | end_fn_handle_read:
                                #      | 
                                #      | fn__parse_hex_arg:
                                #      | _B_fn__parse_hex_arg_2:
-65 ff 20                       # e2c8 |   bmov H, [A]
-ec ff 1c f8 20 09 00           # e2cb |   jne H, 0x20, ${_E_fn__parse_hex_arg_2}:rel + PC
-44 20                          # e2d2 |   inc A
+65 ff 20                       # f7f2 |   bmov H, [A]
+ec ff 1c f8 20 09 00           # f7f5 |   jne H, 0x20, ${_E_fn__parse_hex_arg_2}:rel + PC
+44 20                          # f7fc |   inc A
                                #      | _E_fn__parse_hex_arg_2:
-5c f8 e1 fe                    # e2d4 |   call ${fn_split_command}:rel + PC
-60 fe 00                       # e2d8 |   mov G, 0
-ec 3c ff f8 04 19 00           # e2db |   jne A + 0x4, H, ${_L_fn__parse_hex_arg_1}:rel + PC
-5c f8 13 00                    # e2e2 |   call ${fn_parse_hex_16}:rel + PC
-e8 fe 00 f8 0e 00              # e2e6 |   jeq G, 0, ${_L_fn__parse_hex_arg_1}:rel + PC
-60 fe 1c 01                    # e2ec |   mov G, 0x1
-60 20 3c 04                    # e2f0 |   mov A, A + 0x4
+5c f8 e1 fe                    # f7fe |   call ${fn_split_command}:rel + PC
+60 fe 00                       # f802 |   mov G, 0
+ec 3c ff f8 04 19 00           # f805 |   jne A + 0x4, H, ${_L_fn__parse_hex_arg_1}:rel + PC
+5c f8 13 00                    # f80c |   call ${fn_parse_hex_16}:rel + PC
+e8 fe 00 f8 0e 00              # f810 |   jeq G, 0, ${_L_fn__parse_hex_arg_1}:rel + PC
+60 fe 1c 01                    # f816 |   mov G, 0x1
+60 20 3c 04                    # f81a |   mov A, A + 0x4
                                #      | _L_fn__parse_hex_arg_1:
-dc                             # e2f4 |   ret
+dc                             # f81e |   ret
                                #      | end_fn__parse_hex_arg:
                                #      | 
                                #      | fn_parse_hex_16:
-e0 20                          # e2f5 |   push A
-e0 60                          # e2f7 |   push C
-5c f8 58 00                    # e2f9 |   call ${fn_parse_hex_4}:rel + PC
-e8 fe 00 f8 4f 00              # e2fd |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-28 60 1c 04                    # e303 |   shl C, 0x4
-30 60 ff                       # e307 |   or C, H
-44 20                          # e30a |   inc A
-5c f8 45 00                    # e30c |   call ${fn_parse_hex_4}:rel + PC
-e8 fe 00 f8 3c 00              # e310 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-28 60 1c 04                    # e316 |   shl C, 0x4
-30 60 ff                       # e31a |   or C, H
-44 20                          # e31d |   inc A
-5c f8 32 00                    # e31f |   call ${fn_parse_hex_4}:rel + PC
-e8 fe 00 f8 29 00              # e323 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-28 60 1c 04                    # e329 |   shl C, 0x4
-30 60 ff                       # e32d |   or C, H
-44 20                          # e330 |   inc A
-5c f8 1f 00                    # e332 |   call ${fn_parse_hex_4}:rel + PC
-e8 fe 00 f8 16 00              # e336 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
-28 60 1c 04                    # e33c |   shl C, 0x4
-30 60 ff                       # e340 |   or C, H
-44 20                          # e343 |   inc A
-60 ff 60                       # e345 |   mov H, C
-60 fe 1c 01                    # e348 |   mov G, 0x1
+e0 20                          # f81f |   push A
+e0 60                          # f821 |   push C
+5c f8 58 00                    # f823 |   call ${fn_parse_hex_4}:rel + PC
+e8 fe 00 f8 4f 00              # f827 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+28 60 1c 04                    # f82d |   shl C, 0x4
+30 60 ff                       # f831 |   or C, H
+44 20                          # f834 |   inc A
+5c f8 45 00                    # f836 |   call ${fn_parse_hex_4}:rel + PC
+e8 fe 00 f8 3c 00              # f83a |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+28 60 1c 04                    # f840 |   shl C, 0x4
+30 60 ff                       # f844 |   or C, H
+44 20                          # f847 |   inc A
+5c f8 32 00                    # f849 |   call ${fn_parse_hex_4}:rel + PC
+e8 fe 00 f8 29 00              # f84d |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+28 60 1c 04                    # f853 |   shl C, 0x4
+30 60 ff                       # f857 |   or C, H
+44 20                          # f85a |   inc A
+5c f8 1f 00                    # f85c |   call ${fn_parse_hex_4}:rel + PC
+e8 fe 00 f8 16 00              # f860 |   jeq G, 0, ${_L_fn_parse_hex_16_1}:rel + PC
+28 60 1c 04                    # f866 |   shl C, 0x4
+30 60 ff                       # f86a |   or C, H
+44 20                          # f86d |   inc A
+60 ff 60                       # f86f |   mov H, C
+60 fe 1c 01                    # f872 |   mov G, 0x1
                                #      | _L_fn_parse_hex_16_1:
-e4 60                          # e34c |   pop C
-e4 20                          # e34e |   pop A
-dc                             # e350 |   ret
+e4 60                          # f876 |   pop C
+e4 20                          # f878 |   pop A
+dc                             # f87a |   ret
                                #      | end_fn_parse_hex_16:
                                #      | 
                                #      | fn_parse_hex_4:
-65 ff 20                       # e351 |   bmov H, [A]
-30 ff 1c 20                    # e354 |   or H, 0x20
-f0 ff 1c f8 30 38 00           # e358 |   jlt H, 0x30, ${_L_fn_parse_hex_4_2}:rel + PC
-f8 ff 1c f8 66 31 00           # e35f |   jgt H, 0x66, ${_L_fn_parse_hex_4_2}:rel + PC
+65 ff 20                       # f87b |   bmov H, [A]
+30 ff 1c 20                    # f87e |   or H, 0x20
+f0 ff 1c f8 30 38 00           # f882 |   jlt H, 0x30, ${_L_fn_parse_hex_4_2}:rel + PC
+f8 ff 1c f8 66 31 00           # f889 |   jgt H, 0x66, ${_L_fn_parse_hex_4_2}:rel + PC
                                #      | _B_fn_parse_hex_4_3:
-f4 ff 1c f8 39 12 00           # e366 |   jle H, 0x39, ${_E_fn_parse_hex_4_3}:rel + PC
-fc ff 1c f8 61 0b 00           # e36d |   jge H, 0x61, ${_E_fn_parse_hex_4_3}:rel + PC
-58 f8 1c 00                    # e374 |   jmp ${_L_fn_parse_hex_4_2}:rel + PC
+f4 ff 1c f8 39 12 00           # f890 |   jle H, 0x39, ${_E_fn_parse_hex_4_3}:rel + PC
+fc ff 1c f8 61 0b 00           # f897 |   jge H, 0x61, ${_E_fn_parse_hex_4_3}:rel + PC
+58 f8 1c 00                    # f89e |   jmp ${_L_fn_parse_hex_4_2}:rel + PC
                                #      | _E_fn_parse_hex_4_3:
                                #      | _B_fn_parse_hex_4_4:
-f8 ff 1c f8 39 0f 00           # e378 |   jgt H, 0x39, ${_E_fn_parse_hex_4_4}:rel + PC
-04 ff 1c 30                    # e37f |   sub H, 0x30
-58 f8 08 00                    # e383 |   jmp ${_L_fn_parse_hex_4_1}:rel + PC
+f8 ff 1c f8 39 0f 00           # f8a2 |   jgt H, 0x39, ${_E_fn_parse_hex_4_4}:rel + PC
+04 ff 1c 30                    # f8a9 |   sub H, 0x30
+58 f8 08 00                    # f8ad |   jmp ${_L_fn_parse_hex_4_1}:rel + PC
                                #      | _E_fn_parse_hex_4_4:
-04 ff 1c 57                    # e387 |   sub H, 0x57
+04 ff 1c 57                    # f8b1 |   sub H, 0x57
                                #      | _L_fn_parse_hex_4_1:
-60 fe 1c 01                    # e38b |   mov G, 0x1
-dc                             # e38f |   ret
+60 fe 1c 01                    # f8b5 |   mov G, 0x1
+dc                             # f8b9 |   ret
                                #      | _L_fn_parse_hex_4_2:
-60 fe 00                       # e390 |   mov G, 0
-dc                             # e393 |   ret
+60 fe 00                       # f8ba |   mov G, 0
+dc                             # f8bd |   ret
                                #      | end_fn_parse_hex_4:
                                #      | 
                                #      | fn_put_hex_16:
-e0 20                          # e394 |   push A
-e0 40                          # e396 |   push B
-e0 60                          # e398 |   push C
-60 60 40                       # e39a |   mov C, B
-a0 40 60 1c 0c                 # e39d |   shr B, C, 0xc
-2c 40 1c 0f                    # e3a2 |   and B, 0xf
-5c f8 39 00                    # e3a6 |   call ${fn_put_hex_4}:rel + PC
-44 20                          # e3aa |   inc A
-a0 40 60 1c 08                 # e3ac |   shr B, C, 0x8
-2c 40 1c 0f                    # e3b1 |   and B, 0xf
-5c f8 2a 00                    # e3b5 |   call ${fn_put_hex_4}:rel + PC
-44 20                          # e3b9 |   inc A
-a0 40 60 1c 04                 # e3bb |   shr B, C, 0x4
-2c 40 1c 0f                    # e3c0 |   and B, 0xf
-5c f8 1b 00                    # e3c4 |   call ${fn_put_hex_4}:rel + PC
-44 20                          # e3c8 |   inc A
-a0 40 60 00                    # e3ca |   shr B, C, 0
-2c 40 1c 0f                    # e3ce |   and B, 0xf
-5c f8 0d 00                    # e3d2 |   call ${fn_put_hex_4}:rel + PC
-44 20                          # e3d6 |   inc A
-e4 60                          # e3d8 |   pop C
-e4 40                          # e3da |   pop B
-e4 20                          # e3dc |   pop A
-dc                             # e3de |   ret
+e0 20                          # f8be |   push A
+e0 40                          # f8c0 |   push B
+e0 60                          # f8c2 |   push C
+60 60 40                       # f8c4 |   mov C, B
+a0 40 60 1c 0c                 # f8c7 |   shr B, C, 0xc
+2c 40 1c 0f                    # f8cc |   and B, 0xf
+5c f8 39 00                    # f8d0 |   call ${fn_put_hex_4}:rel + PC
+44 20                          # f8d4 |   inc A
+a0 40 60 1c 08                 # f8d6 |   shr B, C, 0x8
+2c 40 1c 0f                    # f8db |   and B, 0xf
+5c f8 2a 00                    # f8df |   call ${fn_put_hex_4}:rel + PC
+44 20                          # f8e3 |   inc A
+a0 40 60 1c 04                 # f8e5 |   shr B, C, 0x4
+2c 40 1c 0f                    # f8ea |   and B, 0xf
+5c f8 1b 00                    # f8ee |   call ${fn_put_hex_4}:rel + PC
+44 20                          # f8f2 |   inc A
+a0 40 60 00                    # f8f4 |   shr B, C, 0
+2c 40 1c 0f                    # f8f8 |   and B, 0xf
+5c f8 0d 00                    # f8fc |   call ${fn_put_hex_4}:rel + PC
+44 20                          # f900 |   inc A
+e4 60                          # f902 |   pop C
+e4 40                          # f904 |   pop B
+e4 20                          # f906 |   pop A
+dc                             # f908 |   ret
                                #      | end_fn_put_hex_16:
                                #      | 
                                #      | fn_put_hex_4:
-60 ff 40                       # e3df |   mov H, B
+60 ff 40                       # f909 |   mov H, B
                                #      | _B_fn_put_hex_4_2:
-f8 ff 1c f8 09 0f 00           # e3e2 |   jgt H, 0x9, ${_E_fn_put_hex_4_2}:rel + PC
-00 ff 1c 30                    # e3e9 |   add H, 0x30
-58 f8 08 00                    # e3ed |   jmp ${_L_fn_put_hex_4_1}:rel + PC
+f8 ff 1c f8 09 0f 00           # f90c |   jgt H, 0x9, ${_E_fn_put_hex_4_2}:rel + PC
+00 ff 1c 30                    # f913 |   add H, 0x30
+58 f8 08 00                    # f917 |   jmp ${_L_fn_put_hex_4_1}:rel + PC
                                #      | _E_fn_put_hex_4_2:
-00 ff 1c 57                    # e3f1 |   add H, 0x57
+00 ff 1c 57                    # f91b |   add H, 0x57
                                #      | _L_fn_put_hex_4_1:
-62 20 ff                       # e3f5 |   mov [A], H
-dc                             # e3f8 |   ret
+62 20 ff                       # f91f |   mov [A], H
+dc                             # f922 |   ret
                                #      | end_fn_put_hex_4:
                                #      | 
                                #      | fn_handle_write:
-e0 20                          # e3f9 |   push A
-e0 40                          # e3fb |   push B
-e0 60                          # e3fd |   push C
-e0 fc                          # e3ff |   push E
-e0 fd                          # e401 |   push F
-e0 fe                          # e403 |   push G
-5c f8 c3 fe                    # e405 |   call ${fn__parse_hex_arg}:rel + PC
-e8 fe 00 f8 89 00              # e409 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
-60 60 ff                       # e40f |   mov C, H
-60 fd ff                       # e412 |   mov F, H
-65 ff 20                       # e415 |   bmov H, [A]
-e8 ff 00 f8 7a 00              # e418 |   jeq H, 0, ${_L_fn_handle_write_1}:rel + PC
-44 20                          # e41e |   inc A
-5c f8 95 fd                    # e420 |   call ${fn_split_command}:rel + PC
-60 40 ff                       # e424 |   mov B, H
+e0 20                          # f923 |   push A
+e0 40                          # f925 |   push B
+e0 60                          # f927 |   push C
+e0 fc                          # f929 |   push E
+e0 fd                          # f92b |   push F
+e0 fe                          # f92d |   push G
+5c f8 c3 fe                    # f92f |   call ${fn__parse_hex_arg}:rel + PC
+e8 fe 00 f8 89 00              # f933 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
+60 60 ff                       # f939 |   mov C, H
+60 fd ff                       # f93c |   mov F, H
+65 ff 20                       # f93f |   bmov H, [A]
+e8 ff 00 f8 7a 00              # f942 |   jeq H, 0, ${_L_fn_handle_write_1}:rel + PC
+44 20                          # f948 |   inc A
+5c f8 95 fd                    # f94a |   call ${fn_split_command}:rel + PC
+60 40 ff                       # f94e |   mov B, H
                                #      | _B_fn_handle_write_2:
-fc 20 40 f8 2b 00              # e427 |   jge A, B, ${_E_fn_handle_write_2}:rel + PC
-5c f8 c8 fe                    # e42d |   call ${fn_parse_hex_16}:rel + PC
-e8 fe 00 f8 61 00              # e431 |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
-a8 fc ff 1c 08                 # e437 |   shl E, H, 0x8
-20 ff 1c 08                    # e43c |   shr H, 0x8
-30 fc ff                       # e440 |   or E, H
-62 60 fc                       # e443 |   mov [C], E
-60 20 3c 04                    # e446 |   mov A, A + 0x4
-60 60 7c 02                    # e44a |   mov C, C + 0x2
-58 f8 d9 ff                    # e44e |   jmp ${_B_fn_handle_write_2}:rel + PC
+fc 20 40 f8 2b 00              # f951 |   jge A, B, ${_E_fn_handle_write_2}:rel + PC
+5c f8 c8 fe                    # f957 |   call ${fn_parse_hex_16}:rel + PC
+e8 fe 00 f8 61 00              # f95b |   jeq G, 0, ${_L_fn_handle_write_1}:rel + PC
+a8 fc ff 1c 08                 # f961 |   shl E, H, 0x8
+20 ff 1c 08                    # f966 |   shr H, 0x8
+30 fc ff                       # f96a |   or E, H
+62 60 fc                       # f96d |   mov [C], E
+60 20 3c 04                    # f970 |   mov A, A + 0x4
+60 60 7c 02                    # f974 |   mov C, C + 0x2
+58 f8 d9 ff                    # f978 |   jmp ${_B_fn_handle_write_2}:rel + PC
                                #      | _E_fn_handle_write_2:
                                #      | _B_fn_handle_write_3:
-60 20 e0 98 00                 # e452 |   mov A, ${var_uart_send_buf}
-62 20 e0 4f 4b                 # e457 |   mov [A], 0x4b4f
-62 3c 1c 02 20                 # e45c |   mov [A + 0x2], 0x20
-60 20 3c 03                    # e461 |   mov A, A + 0x3
-60 40 fd                       # e465 |   mov B, F
-5c f8 2c ff                    # e468 |   call ${fn_put_hex_16}:rel + PC
-62 3c 1c 04 20                 # e46c |   mov [A + 0x4], 0x20
-60 20 3c 05                    # e471 |   mov A, A + 0x5
-60 40 60                       # e475 |   mov B, C
-5c f8 1c ff                    # e478 |   call ${fn_put_hex_16}:rel + PC
-62 3c 1c 04 0a                 # e47c |   mov [A + 0x4], 0xa
-60 20 e0 98 00                 # e481 |   mov A, ${var_uart_send_buf}
-5c f8 ec fb                    # e486 |   call ${fn_send_data}:rel + PC
-60 ff 1c 01                    # e48a |   mov H, 0x1
-58 f8 07 00                    # e48e |   jmp ${_E_fn_handle_write_3}:rel + PC
+60 20 e0 98 fb                 # f97c |   mov A, ${var_uart_send_buf}
+62 20 e0 4f 4b                 # f981 |   mov [A], 0x4b4f
+62 3c 1c 02 20                 # f986 |   mov [A + 0x2], 0x20
+60 20 3c 03                    # f98b |   mov A, A + 0x3
+60 40 fd                       # f98f |   mov B, F
+5c f8 2c ff                    # f992 |   call ${fn_put_hex_16}:rel + PC
+62 3c 1c 04 20                 # f996 |   mov [A + 0x4], 0x20
+60 20 3c 05                    # f99b |   mov A, A + 0x5
+60 40 60                       # f99f |   mov B, C
+5c f8 1c ff                    # f9a2 |   call ${fn_put_hex_16}:rel + PC
+62 3c 1c 04 0a                 # f9a6 |   mov [A + 0x4], 0xa
+60 20 e0 98 fb                 # f9ab |   mov A, ${var_uart_send_buf}
+5c f8 c2 fb                    # f9b0 |   call ${fn_send_data}:rel + PC
+60 ff 1c 01                    # f9b4 |   mov H, 0x1
+58 f8 07 00                    # f9b8 |   jmp ${_E_fn_handle_write_3}:rel + PC
                                #      | _L_fn_handle_write_1:
-60 ff 00                       # e492 |   mov H, 0
+60 ff 00                       # f9bc |   mov H, 0
                                #      | _E_fn_handle_write_3:
-e4 fe                          # e495 |   pop G
-e4 fd                          # e497 |   pop F
-e4 fc                          # e499 |   pop E
-e4 60                          # e49b |   pop C
-e4 40                          # e49d |   pop B
-e4 20                          # e49f |   pop A
-dc                             # e4a1 |   ret
+e4 fe                          # f9bf |   pop G
+e4 fd                          # f9c1 |   pop F
+e4 fc                          # f9c3 |   pop E
+e4 60                          # f9c5 |   pop C
+e4 40                          # f9c7 |   pop B
+e4 20                          # f9c9 |   pop A
+dc                             # f9cb |   ret
                                #      | end_fn_handle_write:
+                               #      | 
+                               #      | fn_handle_jmp:
+e0 20                          # f9cc |   push A
+e0 fe                          # f9ce |   push G
+5c f8 22 fe                    # f9d0 |   call ${fn__parse_hex_arg}:rel + PC
+e8 fe 00 f8 0c 00              # f9d4 |   jeq G, 0, ${_L_fn_handle_jmp_1}:rel + PC
+5c f8 0e 00                    # f9da |   call ${fn_clear_state}:rel + PC
+58 ff                          # f9de |   jmp H
+                               #      | _L_fn_handle_jmp_1:
+60 ff 00                       # f9e0 |   mov H, 0
+e4 fe                          # f9e3 |   pop G
+e4 20                          # f9e5 |   pop A
+dc                             # f9e7 |   ret
+                               #      | end_fn_handle_jmp:
+                               #      | 
+                               #      | fn_clear_state:
+60 20 00                       # f9e8 |   mov A, 0
+60 40 1c 02                    # f9eb |   mov B, 0x2
+                               #      | _B_fn_clear_state_1:
+fc 20 e0 f8 00 ff 12 00        # f9ef |   jge A, 0xff00, ${_E_fn_clear_state_1}:rel + PC
+62 20 00                       # f9f7 |   mov [A], 0
+00 20 40                       # f9fa |   add A, B
+58 f8 f2 ff                    # f9fd |   jmp ${_B_fn_clear_state_1}:rel + PC
+                               #      | _E_fn_clear_state_1:
+60 20 00                       # fa01 |   mov A, 0
+60 40 00                       # fa04 |   mov B, 0
+60 60 00                       # fa07 |   mov C, 0
+60 80 00                       # fa0a |   mov D, 0
+60 fc 00                       # fa0d |   mov E, 0
+60 fd 00                       # fa10 |   mov F, 0
+60 fe 00                       # fa13 |   mov G, 0
+60 a0 00                       # fa16 |   mov SP, 0
+62 e0 00 0a ff                 # fa19 |   mov [0xff0a], 0
+dc                             # fa1e |   ret
+                               #      | end_fn_clear_state:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const_data_1:
-52 45 41 44 59 0a 00           # e4a2 |   .data str:"READY\n"
+52 45 41 44 59 0a 00           # fa1f |   .data str:"READY\n"
                                #      | const_data_2:
-4f 56 45 52 46 4c 4f 57 0a 00  # e4a9 |   .data str:"OVERFLOW\n"
+4f 56 45 52 46 4c 4f 57 0a 00  # fa26 |   .data str:"OVERFLOW\n"
                                #      | const_data_3:
-50 49 4e 47 00                 # e4b3 |   .data str:"PING"
+50 49 4e 47 00                 # fa30 |   .data str:"PING"
                                #      | const_data_4:
-50 4f 4e 47 0a 00              # e4b8 |   .data str:"PONG\n"
+50 4f 4e 47 0a 00              # fa35 |   .data str:"PONG\n"
                                #      | const_data_5:
-52 45 41 44 00                 # e4be |   .data str:"READ"
+52 45 41 44 00                 # fa3b |   .data str:"READ"
                                #      | const_data_6:
-57 52 49 54 45 00              # e4c3 |   .data str:"WRITE"
+57 52 49 54 45 00              # fa40 |   .data str:"WRITE"
                                #      | const_data_7:
-49 4e 56 41 4c 49 44 0a 00     # e4c9 |   .data str:"INVALID\n"
+4a 4d 50 00                    # fa46 |   .data str:"JMP"
+                               #      | const_data_8:
+49 4e 56 41 4c 49 44 0a 00     # fa4a |   .data str:"INVALID\n"
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0x0000
+                               #      | .offset 0xfb00
                                #      | SECTION_BEGIN_static_data:
                                #      | var_uart_recv_buf:
-                               #    0 |   .bss size:152
+                               # fb00 |   .bss size:152
                                #      | var_uart_send_buf:
-                               #   98 |   .bss size:152
+                               # fb98 |   .bss size:152
                                #      | var_led_status:
-                               #  130 |   .bss size:2
+                               # fc30 |   .bss size:2
                                #      | SECTION_END_static_data:
                                #      | 

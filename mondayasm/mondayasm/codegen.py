@@ -15,7 +15,7 @@ class CodeGen:
         # idx, bin, command
         self.buf: list[tuple[int, str, str]] = []
         self.code_offset = 0xd000
-        self.var_offset = 0x0000
+        self.var_offset = None
 
         self.romlen = 0
         self.label_map: dict[str, int] = {}
