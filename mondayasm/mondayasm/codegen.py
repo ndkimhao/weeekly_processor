@@ -98,6 +98,8 @@ class CodeGen:
         self.buf = new_buf
 
     def compile(self) -> 'CodeGen':
+        self.buf.append((0, '', f'.config CODE_OFFSET 0x{self.code_offset:04x}'))
+        self.buf.append((0, '', ''))
         for blk in Global.blocks.values():
             if blk.name in self.label_map:
                 continue

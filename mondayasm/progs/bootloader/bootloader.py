@@ -392,15 +392,6 @@ def handle_write():
 
 
 def clear_state():
-    # clear memory
-    MOV(A, 0)
-    MOV(B, 2)
-    with Block() as loop:
-        JGE(A, DEV_ADDR, loop.end)
-        MOV([A], 0)
-        ADD(A, B)
-        JMP(loop.begin)
-
     # clear registers, except H
     for reg in [A, B, C, D, E, F, G, SP]:
         MOV(reg, 0)
@@ -417,7 +408,7 @@ def handle_jmp():
     CALL(_parse_hex_arg)
     JEQ(G, 0, lb_ret_fail)
 
-    CALL(clear_state)
+    clear_state()  # INLINED, SP was zeroed so can't use CALL here
     JMP(H)
 
     EmitLabel(lb_ret_fail)

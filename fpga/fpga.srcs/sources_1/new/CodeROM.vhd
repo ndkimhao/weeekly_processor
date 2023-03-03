@@ -12,9 +12,11 @@ package CodeROM is
 -- ## BEGIN ROM
 -- ##############################################################
 
-constant ROMSize : integer := 1363;
+constant ROMSize : integer := 1333;
 type TArrROM is array (0 to ROMSize) of TByte;
 constant arr_rom : TArrROM := (
+                                                     --      | .config CODE_OFFSET 0xf500
+                                                     --      | 
                                                      --      | SECTION_BEGIN_boot:
                                                      --      | _B_boot_1:
     x"e8",x"c0",x"e0",x"f8",x"00",x"f5",x"1d",x"00", -- f500 |   jeq PC, 0xf500, ${_E_boot_1}:rel + PC
@@ -34,7 +36,7 @@ constant arr_rom : TArrROM := (
     x"60",x"20",x"e0",x"fd",x"00",                   -- f533 |   mov A, 0xfd
     x"60",x"40",x"00",                               -- f538 |   mov B, 0
     x"54",x"e0",x"1c",x"1c",x"00",x"ff",x"ff",x"02", -- f53b |   mmap 0xff00, 0xff, 0x2
-    x"60",x"20",x"e0",x"1f",x"fa",                   -- f543 |   mov A, ${const_data_1}
+    x"60",x"20",x"e0",x"01",x"fa",                   -- f543 |   mov A, ${const_data_1}
     x"5c",x"f8",x"2a",x"00",                         -- f548 |   call ${fn_send_data}:rel + PC
     x"60",x"20",x"ff",                               -- f54c |   mov A, H
     x"62",x"e0",x"1c",x"30",x"fc",x"01",             -- f54f |   mov [${var_led_status}], 0x1
@@ -85,7 +87,7 @@ constant arr_rom : TArrROM := (
                                                      --      | _B_fn_recv_command_2:
     x"f0",x"20",x"e0",x"f8",x"95",x"00",x"1b",x"00", -- f5bd |   jlt A, 0x95, ${_E_fn_recv_command_2}:rel + PC
     x"60",x"fe",x"20",                               -- f5c5 |   mov G, A
-    x"60",x"20",x"e0",x"26",x"fa",                   -- f5c8 |   mov A, ${const_data_2}
+    x"60",x"20",x"e0",x"08",x"fa",                   -- f5c8 |   mov A, ${const_data_2}
     x"5c",x"f8",x"a5",x"ff",                         -- f5cd |   call ${fn_send_data}:rel + PC
     x"60",x"20",x"fe",                               -- f5d1 |   mov A, G
     x"58",x"f8",x"38",x"00",                         -- f5d4 |   jmp ${_E_fn_recv_command_1}:rel + PC
@@ -121,7 +123,7 @@ constant arr_rom : TArrROM := (
     x"e0",x"60",                                     -- f629 |   push C
     x"5c",x"f8",x"b4",x"00",                         -- f62b |   call ${fn_split_command}:rel + PC
     x"60",x"40",x"ff",                               -- f62f |   mov B, H
-    x"60",x"60",x"e0",x"30",x"fa",                   -- f632 |   mov C, ${const_data_3}
+    x"60",x"60",x"e0",x"12",x"fa",                   -- f632 |   mov C, ${const_data_3}
     x"5c",x"f8",x"c6",x"00",                         -- f637 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_3:
     x"e8",x"ff",x"00",x"f8",x"18",x"00",             -- f63b |   jeq H, 0, ${_E_fn_parse_command_3}:rel + PC
@@ -130,7 +132,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"88",x"00",             -- f649 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"8b",x"00",                         -- f64f |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_3:
-    x"60",x"60",x"e0",x"3b",x"fa",                   -- f653 |   mov C, ${const_data_5}
+    x"60",x"60",x"e0",x"1d",x"fa",                   -- f653 |   mov C, ${const_data_5}
     x"5c",x"f8",x"a5",x"00",                         -- f658 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_4:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f65c |   jeq H, 0, ${_E_fn_parse_command_4}:rel + PC
@@ -141,7 +143,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"5e",x"00",             -- f673 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"61",x"00",                         -- f679 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_4:
-    x"60",x"60",x"e0",x"40",x"fa",                   -- f67d |   mov C, ${const_data_6}
+    x"60",x"60",x"e0",x"22",x"fa",                   -- f67d |   mov C, ${const_data_6}
     x"5c",x"f8",x"7b",x"00",                         -- f682 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_5:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f686 |   jeq H, 0, ${_E_fn_parse_command_5}:rel + PC
@@ -152,7 +154,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"34",x"00",             -- f69d |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"37",x"00",                         -- f6a3 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_5:
-    x"60",x"60",x"e0",x"46",x"fa",                   -- f6a7 |   mov C, ${const_data_7}
+    x"60",x"60",x"e0",x"28",x"fa",                   -- f6a7 |   mov C, ${const_data_7}
     x"5c",x"f8",x"51",x"00",                         -- f6ac |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_6:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f6b0 |   jeq H, 0, ${_E_fn_parse_command_6}:rel + PC
@@ -164,7 +166,7 @@ constant arr_rom : TArrROM := (
     x"58",x"f8",x"0d",x"00",                         -- f6cd |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_6:
                                                      --      | _L_fn_parse_command_2:
-    x"60",x"20",x"e0",x"4a",x"fa",                   -- f6d1 |   mov A, ${const_data_8}
+    x"60",x"20",x"e0",x"2c",x"fa",                   -- f6d1 |   mov A, ${const_data_8}
     x"5c",x"f8",x"9c",x"fe",                         -- f6d6 |   call ${fn_send_data}:rel + PC
                                                      --      | _L_fn_parse_command_1:
     x"e4",x"60",                                     -- f6da |   pop C
@@ -217,7 +219,7 @@ constant arr_rom : TArrROM := (
                                                      --      | 
                                                      --      | fn_handle_ping:
     x"e0",x"20",                                     -- f73f |   push A
-    x"60",x"20",x"e0",x"35",x"fa",                   -- f741 |   mov A, ${const_data_4}
+    x"60",x"20",x"e0",x"17",x"fa",                   -- f741 |   mov A, ${const_data_4}
     x"5c",x"f8",x"2c",x"fe",                         -- f746 |   call ${fn_send_data}:rel + PC
     x"60",x"ff",x"1c",x"01",                         -- f74a |   mov H, 0x1
     x"e4",x"20",                                     -- f74e |   pop A
@@ -451,54 +453,41 @@ constant arr_rom : TArrROM := (
     x"e0",x"20",                                     -- f9cc |   push A
     x"e0",x"fe",                                     -- f9ce |   push G
     x"5c",x"f8",x"22",x"fe",                         -- f9d0 |   call ${fn__parse_hex_arg}:rel + PC
-    x"e8",x"fe",x"00",x"f8",x"0c",x"00",             -- f9d4 |   jeq G, 0, ${_L_fn_handle_jmp_1}:rel + PC
-    x"5c",x"f8",x"0e",x"00",                         -- f9da |   call ${fn_clear_state}:rel + PC
-    x"58",x"ff",                                     -- f9de |   jmp H
+    x"e8",x"fe",x"00",x"f8",x"25",x"00",             -- f9d4 |   jeq G, 0, ${_L_fn_handle_jmp_1}:rel + PC
+    x"60",x"20",x"00",                               -- f9da |   mov A, 0
+    x"60",x"40",x"00",                               -- f9dd |   mov B, 0
+    x"60",x"60",x"00",                               -- f9e0 |   mov C, 0
+    x"60",x"80",x"00",                               -- f9e3 |   mov D, 0
+    x"60",x"fc",x"00",                               -- f9e6 |   mov E, 0
+    x"60",x"fd",x"00",                               -- f9e9 |   mov F, 0
+    x"60",x"fe",x"00",                               -- f9ec |   mov G, 0
+    x"60",x"a0",x"00",                               -- f9ef |   mov SP, 0
+    x"62",x"e0",x"00",x"0a",x"ff",                   -- f9f2 |   mov [0xff0a], 0
+    x"58",x"ff",                                     -- f9f7 |   jmp H
                                                      --      | _L_fn_handle_jmp_1:
-    x"60",x"ff",x"00",                               -- f9e0 |   mov H, 0
-    x"e4",x"fe",                                     -- f9e3 |   pop G
-    x"e4",x"20",                                     -- f9e5 |   pop A
-    x"dc",                                           -- f9e7 |   ret
+    x"60",x"ff",x"00",                               -- f9f9 |   mov H, 0
+    x"e4",x"fe",                                     -- f9fc |   pop G
+    x"e4",x"20",                                     -- f9fe |   pop A
+    x"dc",                                           -- fa00 |   ret
                                                      --      | end_fn_handle_jmp:
-                                                     --      | 
-                                                     --      | fn_clear_state:
-    x"60",x"20",x"00",                               -- f9e8 |   mov A, 0
-    x"60",x"40",x"1c",x"02",                         -- f9eb |   mov B, 0x2
-                                                     --      | _B_fn_clear_state_1:
-    x"fc",x"20",x"e0",x"f8",x"00",x"ff",x"12",x"00", -- f9ef |   jge A, 0xff00, ${_E_fn_clear_state_1}:rel + PC
-    x"62",x"20",x"00",                               -- f9f7 |   mov [A], 0
-    x"00",x"20",x"40",                               -- f9fa |   add A, B
-    x"58",x"f8",x"f2",x"ff",                         -- f9fd |   jmp ${_B_fn_clear_state_1}:rel + PC
-                                                     --      | _E_fn_clear_state_1:
-    x"60",x"20",x"00",                               -- fa01 |   mov A, 0
-    x"60",x"40",x"00",                               -- fa04 |   mov B, 0
-    x"60",x"60",x"00",                               -- fa07 |   mov C, 0
-    x"60",x"80",x"00",                               -- fa0a |   mov D, 0
-    x"60",x"fc",x"00",                               -- fa0d |   mov E, 0
-    x"60",x"fd",x"00",                               -- fa10 |   mov F, 0
-    x"60",x"fe",x"00",                               -- fa13 |   mov G, 0
-    x"60",x"a0",x"00",                               -- fa16 |   mov SP, 0
-    x"62",x"e0",x"00",x"0a",x"ff",                   -- fa19 |   mov [0xff0a], 0
-    x"dc",                                           -- fa1e |   ret
-                                                     --      | end_fn_clear_state:
                                                      --      | 
                                                      --      | SECTION_BEGIN_const_data:
                                                      --      | const_data_1:
-    x"52",x"45",x"41",x"44",x"59",x"0a",x"00",       -- fa1f |   .data str:"READY\n"
+    x"52",x"45",x"41",x"44",x"59",x"0a",x"00",       -- fa01 |   .data str:"READY\n"
                                                      --      | const_data_2:
-    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- fa26 |   .data str:"OVERFLOW\n"
+    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- fa08 |   .data str:"OVERFLOW\n"
                                                      --      | const_data_3:
-    x"50",x"49",x"4e",x"47",x"00",                   -- fa30 |   .data str:"PING"
+    x"50",x"49",x"4e",x"47",x"00",                   -- fa12 |   .data str:"PING"
                                                      --      | const_data_4:
-    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- fa35 |   .data str:"PONG\n"
+    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- fa17 |   .data str:"PONG\n"
                                                      --      | const_data_5:
-    x"52",x"45",x"41",x"44",x"00",                   -- fa3b |   .data str:"READ"
+    x"52",x"45",x"41",x"44",x"00",                   -- fa1d |   .data str:"READ"
                                                      --      | const_data_6:
-    x"57",x"52",x"49",x"54",x"45",x"00",             -- fa40 |   .data str:"WRITE"
+    x"57",x"52",x"49",x"54",x"45",x"00",             -- fa22 |   .data str:"WRITE"
                                                      --      | const_data_7:
-    x"4a",x"4d",x"50",x"00",                         -- fa46 |   .data str:"JMP"
+    x"4a",x"4d",x"50",x"00",                         -- fa28 |   .data str:"JMP"
                                                      --      | const_data_8:
-    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- fa4a |   .data str:"INVALID\n"
+    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- fa2c |   .data str:"INVALID\n"
                                                      --      | SECTION_END_const_data:
                                                      --      | 
                                                      --      | .offset 0xfb00
