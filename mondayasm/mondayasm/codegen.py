@@ -117,14 +117,14 @@ class CodeGen:
             return ''
 
     def write(self, file) -> 'CodeGen':
-        with open(file, 'w') as f:
+        with open(file, 'w', newline='\n') as f:
             for idx, hexcode, cmd in self.buf:
                 idxstr = self.get_idxstr(idx, hexcode, cmd)
                 f.write(f'{hexcode:<30} # {idxstr:>4} | {cmd}\n')
         return self
 
     def write_vhd(self, file) -> 'CodeGen':
-        with open(file, 'w') as f:
+        with open(file, 'w', newline='\n') as f:
             f.write(vhd_header(self.romlen))
 
             for idx, hexcode, cmd in self.buf:

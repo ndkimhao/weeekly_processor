@@ -108,6 +108,25 @@ def dec(val):
     return val.dec()
 
 
+def byte(val):
+    val = Expr.to_expr(val)
+    return val.byte()
+
+
+# Statements
+
+def mov(lhs, rhs):
+    lhs = Expr.to_expr(lhs)
+    rhs = Expr.to_expr(rhs)
+    return lhs @ rhs
+
+
+def bmov(lhs, rhs):
+    lhs = Expr.to_expr(lhs).byte()
+    rhs = Expr.to_expr(rhs).byte()
+    return lhs @ rhs
+
+
 # Comparators
 
 def eq(lhs, rhs):

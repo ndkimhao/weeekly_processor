@@ -67,6 +67,9 @@ class ExprOp(Enum):
     INC = auto()
     DEC = auto()
 
+    # special
+    BYTE = auto()
+
 
 class CmpOp(Enum):
     EQ = auto()

@@ -59,7 +59,7 @@ class Expr:
                     obj = RawIndirect(obj[0].a)
                 elif isinstance(obj[0], RawExpr):
                     obj = RawIndirect(obj[0])
-            if not isinstance(obj, RawIndirect):
+            if not isinstance(obj, (RawExpr, RawIndirect, PseudoExpr)):
                 obj = RawExpr.to_expr(obj)
             obj = Expr(ExprOp.NONE, obj)
         return obj
@@ -97,6 +97,43 @@ class Expr:
         assert rhs.op == ExprOp.NONE
 
         return CmpExpr(op, lhs.a, rhs.a)
+
+    @classmethod
+    def _assign(cls, lhs: Any, rhs: Any):
+        lhs = cls.to_expr(lhs)
+        rhs = cls.to_expr(rhs)
+
+        if lhs.op == ExprOp.BYTE or rhs.op == ExprOp.BYTE:
+            assert lhs.op in (ExprOp.BYTE, ExprOp.NONE)
+            assert rhs.op in (ExprOp.BYTE, ExprOp.NONE)
+            return so.Statement(so.StmOp.BMOV, lhs.a, rhs.a)
+
+        assert lhs.op == ExprOp.NONE
+
+        if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
+                isinstance(rhs.a, RawIndirect) and \
+                rhs.b.is_pure_const and abs(rhs.b.const_value) == 1:
+            add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
+            if lhs.a == rhs.a:  # same dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a)
+            else:  # different dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a, rhs.a)
+
+        if rhs.op == ExprOp.NONE and abs(rhs.a.const_value) == 1:
+            add_val = rhs.a.const_value
+            if lhs.a == rhs.a.without_const_value:  # same dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a)
+            else:  # different dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a, rhs.a.without_const_value)
+
+        if rhs.op == ExprOp.NONE:
+            return so.Statement(so.StmOp.MOV, lhs.a, rhs.a)
+
+        stm_op = EXPR_STM_OP_MAP[rhs.op]
+        if lhs.a == rhs.a:  # same dest variant
+            return so.Statement(stm_op, lhs.a, rhs.b)
+        else:  # different dest variant
+            return so.Statement(stm_op, lhs.a, rhs.a, rhs.b)
 
     # Operators of Expr
 
@@ -154,6 +191,9 @@ class Expr:
     def dec(self):
         return self._combine(ExprOp.DEC, self)
 
+    def byte(self):
+        return self._combine(ExprOp.BYTE, self)
+
     def __radd__(self, lhs):
         return self._combine(ExprOp.ADD, lhs, self)
 
@@ -186,36 +226,10 @@ class Expr:
 
     # Statement generators
     def __matmul__(self, rhs):
-        rhs = self.to_expr(rhs)
-        assert self.op == ExprOp.NONE
-
-        if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
-                isinstance(rhs.a, RawIndirect) and \
-                rhs.b.is_pure_const and abs(rhs.b.const_value) == 1:
-            add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
-            if self.a == rhs.a:  # same dest variant
-                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a)
-            else:  # different dest variant
-                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a, rhs.a)
-
-        if rhs.op == ExprOp.NONE and abs(rhs.a.const_value) == 1:
-            add_val = rhs.a.const_value
-            if self.a == rhs.a.without_const_value:  # same dest variant
-                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a)
-            else:  # different dest variant
-                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a, rhs.a.without_const_value)
-
-        if rhs.op == ExprOp.NONE:
-            return so.Statement(so.StmOp.MOV, self.a, rhs.a)
-
-        stm_op = EXPR_STM_OP_MAP[rhs.op]
-        if self.a == rhs.a:  # same dest variant
-            return so.Statement(stm_op, self.a, rhs.b)
-        else:  # different dest variant
-            return so.Statement(stm_op, self.a, rhs.a, rhs.b)
+        return self._assign(self, rhs)
 
     def __contains__(self, lhs):
-        return lhs @ self
+        return self._assign(lhs, self)
 
     def __rmatmul__(self, lhs):
         lhs = self.to_expr(lhs)

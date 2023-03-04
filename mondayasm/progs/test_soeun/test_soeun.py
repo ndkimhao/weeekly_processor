@@ -25,6 +25,11 @@ def main():
 
     A @ (B * (C + 1))
 
+    mabyte = expr([A])
+    mabyte @= B.byte()
+
+    print(A < B)
+
 
 if __name__ == '__main__':
     main()
