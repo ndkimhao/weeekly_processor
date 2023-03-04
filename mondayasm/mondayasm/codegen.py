@@ -4,7 +4,7 @@ from typing import Optional
 import re
 
 from mondayasm.builder import ScopeBuilder, Directive, Global, Instruction
-from mondayasm.expr import LABEL_REL_PC
+from mondayasm.raw_expr import LABEL_REL_PC
 from mondayasm.vhd import vhd_header, vhd_footer
 
 

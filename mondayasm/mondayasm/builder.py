@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Union, Callable, Optional
 
-from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel, REGISTER_0
+from mondayasm.raw_expr import RawExpr, RawIndirect, AsmArg, ConstLabel, REGISTER_0
 from mondayasm.data import CMDS_MAP
 from mondayasm.types import CmdEncode, DataEncode
 
@@ -121,7 +121,7 @@ class Global:
         return blk_name
 
     @classmethod
-    def add_static_data(cls, d: StaticData) -> Expr:
+    def add_static_data(cls, d: StaticData) -> RawExpr:
         assert d.name not in cls.static_data
         cls.static_data[d.name] = d
         scope = cls.const_data_scope if d.readonly else cls.static_var_scope
@@ -134,11 +134,11 @@ class Global:
 
 def unwrap_indirect(a):
     indirect = False
-    if isinstance(a, (IndirectExpr, list)):
+    if isinstance(a, (RawIndirect, list)):
         indirect = True
         if isinstance(a, list):
             assert len(a) == 1
-            a = Expr.to_expr(a[0])
+            a = RawExpr.to_expr(a[0])
         else:
             a = a.expr
     return a, indirect
@@ -154,11 +154,11 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
 
     if ADDR_RELATIVE and name in ('call', 'jmp', 'jeq', 'jne', 'jlt', 'jle', 'jgt', 'jge'):
         if c is not None:
-            if Expr.to_expr(c).is_pure_label:
-                c = Expr.to_expr(c).relative
+            if RawExpr.to_expr(c).is_pure_label:
+                c = RawExpr.to_expr(c).relative
         else:
-            if Expr.to_expr(a).is_pure_label:
-                a = Expr.to_expr(a).relative
+            if RawExpr.to_expr(a).is_pure_label:
+                a = RawExpr.to_expr(a).relative
 
     if name in ('add', 'sub', 'mul', 'imul', 'div', 'idiv', 'shr', 'ishr', 'shl', 'and',
                 'or', 'xor', 'neg', 'not', 'bool', 'inc', 'dec', 'getf', 'mov', 'bmov', 'pop'):
@@ -166,14 +166,14 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
 
     args: list[AsmArg] = []
     if a is not None:
-        a = Expr.to_expr(a)
+        a = RawExpr.to_expr(a)
         args.append(a.assemble())
     if b is not None:
-        b = Expr.to_expr(b)
+        b = RawExpr.to_expr(b)
         assert len(args) == 1
         args.append(b.assemble())
     if c is not None:
-        c = Expr.to_expr(c)
+        c = RawExpr.to_expr(c)
         assert len(args) == 2
         args.append(c.assemble())
 
@@ -206,7 +206,7 @@ def emit_command_call(op_name, target, emit_call: bool):
         target()
 
     if emit_call:
-        emit_command(op_name, Expr.to_expr(ConstLabel(lbl_start)), emit_to=caller_scope)
+        emit_command(op_name, RawExpr.to_expr(ConstLabel(lbl_start)), emit_to=caller_scope)
 
     if visit_fn:
         emit_command('ret')
@@ -215,7 +215,7 @@ def emit_command_call(op_name, target, emit_call: bool):
 
 
 def Label(name: str = '', anon: bool = False,
-          emit: bool = True, emit_to: Optional[ScopeBuilder] = None) -> Expr:
+          emit: bool = True, emit_to: Optional[ScopeBuilder] = None) -> RawExpr:
     if name == '':
         name = Global.gen_label_name(Global.current_scope().name)
     elif anon:
@@ -224,30 +224,30 @@ def Label(name: str = '', anon: bool = False,
         if emit_to is None:
             emit_to = Global.current_scope()
         emit_to.add(Directive('.label', (name,)))
-    return Expr.to_expr(ConstLabel(name))
+    return RawExpr.to_expr(ConstLabel(name))
 
 
-def DeclLabel(name: str = '', anon: bool = False) -> Expr:
+def DeclLabel(name: str = '', anon: bool = False) -> RawExpr:
     return Label(name, anon=anon, emit=False)
 
 
-def DeclAnonLabel(name: str = '') -> Expr:
+def DeclAnonLabel(name: str = '') -> RawExpr:
     return Label(name, anon=True, emit=False)
 
 
-def EmitLabel(lbl: Expr):
-    assert isinstance(lbl, Expr)
+def EmitLabel(lbl: RawExpr):
+    assert isinstance(lbl, RawExpr)
     assert len(lbl.terms) == 1 and lbl.terms[0].factor == 1
     val = lbl.terms[0].value
     assert isinstance(val, ConstLabel)
     Label(val.name)
 
 
-def AnonLabel(name: str = '', emit_label: bool = True) -> Expr:
+def AnonLabel(name: str = '', emit_label: bool = True) -> RawExpr:
     return Label(name, anon=True, emit=emit_label)
 
 
-def ConstData(name, obj=None) -> Expr:
+def ConstData(name, obj=None) -> RawExpr:
     if obj is None:
         obj = name
         name = Global.gen_label_name('data', '')
@@ -269,7 +269,7 @@ def ConstData(name, obj=None) -> Expr:
     ))
 
 
-def StaticVar(name: Union[str, int], size=None) -> Expr:
+def StaticVar(name: Union[str, int], size=None) -> RawExpr:
     if size is None:
         size = name
         assert isinstance(size, int)
@@ -299,7 +299,7 @@ class BlockContextManager:
         for v in self.stash:
             emit_command('push', v)
         self.label_start = Label(self.name_start, anon=False)
-        self.label_end = Expr.to_expr(ConstLabel(self.name_end))
+        self.label_end = RawExpr.to_expr(ConstLabel(self.name_end))
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -308,19 +308,19 @@ class BlockContextManager:
             emit_command('pop', v)
 
     @property
-    def start(self) -> Expr:
+    def start(self) -> RawExpr:
         return self.label_start
 
     @property
-    def begin(self) -> Expr:
+    def begin(self) -> RawExpr:
         return self.label_start
 
     @property
-    def end(self) -> Expr:
+    def end(self) -> RawExpr:
         return self.label_end
 
     @property
-    def stop(self) -> Expr:
+    def stop(self) -> RawExpr:
         return self.label_end
 
 

@@ -1,9 +1,8 @@
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Callable
 
-import mondayasm as mon
 import soeunasm as so
+from mondayasm import RawExpr, RawIndirect
 from soeunasm.enums import ExprOp, StmOp
 
 EXPR_STM_OP_MAP = {
@@ -36,38 +35,38 @@ class PseudoExpr(Enum):
 
 
 @dataclass(frozen=True, slots=True)
-class SoExpr:
-    a: mon.Expr | mon.IndirectExpr | PseudoExpr = field(default=PseudoExpr.NULL)
-    b: mon.Expr | mon.IndirectExpr | PseudoExpr = field(default=PseudoExpr.NULL)
+class Expr:
+    a: RawExpr | RawIndirect | PseudoExpr = field(default=PseudoExpr.NULL)
+    b: RawExpr | RawIndirect | PseudoExpr = field(default=PseudoExpr.NULL)
     op: ExprOp = field(default=ExprOp.NONE)
 
     def __post_init__(self):
-        assert isinstance(self.a, (mon.Expr, mon.IndirectExpr, PseudoExpr))
-        assert isinstance(self.b, (mon.Expr, mon.IndirectExpr, PseudoExpr))
+        assert isinstance(self.a, (RawExpr, RawIndirect, PseudoExpr))
+        assert isinstance(self.b, (RawExpr, RawIndirect, PseudoExpr))
         assert isinstance(self.op, ExprOp)
 
     @classmethod
     def to_so_expr(cls, obj):
-        if not isinstance(obj, SoExpr):
+        if not isinstance(obj, Expr):
             if isinstance(obj, list) and len(obj) == 1:
-                if isinstance(obj[0], SoExpr):
-                    assert isinstance(obj[0].a, mon.Expr)
+                if isinstance(obj[0], Expr):
+                    assert isinstance(obj[0].a, RawExpr)
                     assert obj[0].op == ExprOp.NONE
-                    obj = mon.IndirectExpr(obj[0].a)
-                elif isinstance(obj[0], mon.Expr):
-                    obj = mon.IndirectExpr(obj[0])
-            if not isinstance(obj, mon.IndirectExpr):
-                obj = mon.Expr.to_expr(obj)
-            obj = SoExpr(obj)
+                    obj = RawIndirect(obj[0].a)
+                elif isinstance(obj[0], RawExpr):
+                    obj = RawIndirect(obj[0])
+            if not isinstance(obj, RawIndirect):
+                obj = RawExpr.to_expr(obj)
+            obj = Expr(obj)
         return obj
 
-    def _binary_op(self, rhs, op: ExprOp) -> 'SoExpr':
+    def _binary_op(self, rhs, op: ExprOp) -> 'Expr':
         rhs = self.to_so_expr(rhs)
         assert self.op == ExprOp.NONE
         assert rhs.op == ExprOp.NONE
 
         tmp = None
-        if isinstance(self.a, mon.Expr) and isinstance(rhs.a, mon.Expr):
+        if isinstance(self.a, RawExpr) and isinstance(rhs.a, RawExpr):
             if op == ExprOp.ADD:
                 tmp = self.a + rhs.a
             elif op == ExprOp.SUB:
@@ -78,17 +77,17 @@ class SoExpr:
         if tmp is not None:
             try:
                 tmp.assemble()
-                return SoExpr(tmp)
+                return Expr(tmp)
             except AssertionError:
                 ...
 
-        return SoExpr(self.a, rhs.a, op)
+        return Expr(self.a, rhs.a, op)
 
-    def _binary_op_r(self, lhs, op: ExprOp) -> 'SoExpr':
+    def _binary_op_r(self, lhs, op: ExprOp) -> 'Expr':
         lhs = self.to_so_expr(lhs)
         return lhs._binary_op(self, op)
 
-    def _unary_op(self, op: ExprOp) -> 'SoExpr':
+    def _unary_op(self, op: ExprOp) -> 'Expr':
         return self._binary_op(PseudoExpr.NULL, op)
 
     # Operators of Expr
@@ -183,7 +182,7 @@ class SoExpr:
         assert self.op == ExprOp.NONE
 
         if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
-                isinstance(rhs.a, mon.IndirectExpr) and \
+                isinstance(rhs.a, RawIndirect) and \
                 rhs.b.is_pure_const and abs(rhs.b.const_value) == 1:
             add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
             if self.a == rhs.a:  # same dest variant
@@ -206,6 +205,9 @@ class SoExpr:
             return so.Statement(stm_op, self.a, rhs.b)
         else:  # different dest variant
             return so.Statement(stm_op, self.a, rhs.a, rhs.b)
+
+    def __contains__(self, lhs):
+        return lhs @ self
 
     def __rmatmul__(self, lhs):
         lhs = self.to_so_expr(lhs)

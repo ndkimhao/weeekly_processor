@@ -1,10 +1,9 @@
 from dataclasses import dataclass, field
-from enum import Enum, auto
 from types import NoneType
 from typing import Optional
 
+from mondayasm import RawExpr, RawIndirect
 from soeunasm.enums import StmOp
-from soeunasm.so_expr import SoExpr
 import mondayasm as mon
 
 OP_MAP = {
@@ -63,17 +62,17 @@ class MutableFlag:
 @dataclass(frozen=True, slots=True)
 class Statement:
     op: StmOp
-    a: Optional[mon.Expr | mon.IndirectExpr] = field(default=None)
-    b: Optional[mon.Expr | mon.IndirectExpr] = field(default=None)
-    c: Optional[mon.Expr | mon.IndirectExpr] = field(default=None)
+    a: Optional[RawExpr | RawIndirect] = field(default=None)
+    b: Optional[RawExpr | RawIndirect] = field(default=None)
+    c: Optional[RawExpr | RawIndirect] = field(default=None)
 
     emitted: MutableFlag = field(default_factory=MutableFlag)
 
     def __post_init__(self):
         assert isinstance(self.op, StmOp)
-        assert isinstance(self.a, (mon.Expr | mon.IndirectExpr, NoneType))
-        assert isinstance(self.b, (mon.Expr | mon.IndirectExpr, NoneType))
-        assert isinstance(self.c, (mon.Expr | mon.IndirectExpr, NoneType))
+        assert isinstance(self.a, (RawExpr | RawIndirect, NoneType))
+        assert isinstance(self.b, (RawExpr | RawIndirect, NoneType))
+        assert isinstance(self.c, (RawExpr | RawIndirect, NoneType))
 
     def __del__(self):
         self.emit()

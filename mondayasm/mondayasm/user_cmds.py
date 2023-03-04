@@ -2,7 +2,7 @@ from mondayasm.builder import (
     emit_command as __emit_command,
     emit_command_call as __emit_command_call,
 )
-from mondayasm.expr import IndirectExpr
+from mondayasm.raw_expr import RawIndirect
 
 
 ##################################################
@@ -113,7 +113,7 @@ def JGE(a, b=None, c=None):
 ##################################################
 
 def GETF(a):
-    assert not isinstance(a, IndirectExpr)
+    assert not isinstance(a, RawIndirect)
     return __emit_command('getf', a)
 
 
@@ -122,9 +122,9 @@ def CMP(a, b):
 
 
 def MMAP(a, b, c):
-    assert not isinstance(a, IndirectExpr)
-    assert not isinstance(b, IndirectExpr)
-    assert not isinstance(c, IndirectExpr)
+    assert not isinstance(a, RawIndirect)
+    assert not isinstance(b, RawIndirect)
+    assert not isinstance(c, RawIndirect)
     return __emit_command('mmap', a, b, c)
 
 
@@ -145,7 +145,7 @@ def BMOV(a, b):
 
 
 def SETF(a):
-    assert not isinstance(a, IndirectExpr)
+    assert not isinstance(a, RawIndirect)
     return __emit_command('setf', a)
 
 
@@ -154,7 +154,7 @@ def ICMP(a, b):
 
 
 def UMAP(a):
-    assert not isinstance(a, IndirectExpr)
+    assert not isinstance(a, RawIndirect)
     return __emit_command('umap', a)
 
 

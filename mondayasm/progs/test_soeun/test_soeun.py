@@ -1,14 +1,14 @@
 import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
-from soeunasm import SoExpr
+from soeunasm import Expr
 from soeunasm.free_expr import mul, expr
 
 
 def main():
-    A = SoExpr(mon.A)
-    B = SoExpr(mon.B)
-    C = SoExpr(mon.C)
+    A = Expr(mon.A)
+    B = Expr(mon.B)
+    C = Expr(mon.C)
     tmp = A * 2 + B + 10
     [B] @ mul([B], [C])
     aa = expr([C + 100])

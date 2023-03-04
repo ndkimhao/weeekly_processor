@@ -14,6 +14,6 @@ class CmpOp(Enum):
 
 @dataclass(frozen=True, slots=True)
 class CmpExpr:
-    a: mon.Expr | mon.IndirectExpr
-    b: mon.Expr | mon.IndirectExpr
+    a: RawExpr | RawIndirect
+    b: RawExpr | RawIndirect
     op: CmpOp
