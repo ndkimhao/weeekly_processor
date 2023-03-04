@@ -1,61 +1,32 @@
 from dataclasses import dataclass, field
 from enum import Enum, auto
+from typing import Callable
 
 import mondayasm as mon
 import soeunasm as so
+from soeunasm.enums import ExprOp, StmOp
 
-
-class ExprOp(Enum):
-    NONE = auto()
-
-    # binary ALU
-    ADD = auto()
-    SUB = auto()
-    MUL = auto()
-    IMUL = auto()
-    DIV = auto()
-    IDIV = auto()
-
-    SHR = auto()
-    ISHR = auto()
-    SHL = auto()
-    AND = auto()
-    OR = auto()
-    XOR = auto()
-
-    # unary ALU
-    NEG = auto()
-    NOT = auto()
-    BOOL = auto()
-    INC = auto()
-    DEC = auto()
-
-
-EXPR_STM_OP_MAP = lambda: {
-    ExprOp.ADD: so.StmOp.ADD,
-    ExprOp.SUB: so.StmOp.SUB,
-    ExprOp.MUL: so.StmOp.MUL,
-    ExprOp.IMUL: so.StmOp.IMUL,
-    ExprOp.DIV: so.StmOp.DIV,
-    ExprOp.IDIV: so.StmOp.IDIV,
-    ExprOp.SHR: so.StmOp.SHR,
-    ExprOp.ISHR: so.StmOp.ISHR,
-    ExprOp.SHL: so.StmOp.SHL,
-    ExprOp.AND: so.StmOp.AND,
-    ExprOp.OR: so.StmOp.OR,
-    ExprOp.XOR: so.StmOp.XOR,
-    ExprOp.NEG: so.StmOp.NEG,
-    ExprOp.NOT: so.StmOp.NOT,
-    ExprOp.BOOL: so.StmOp.BOOL,
-    ExprOp.INC: so.StmOp.INC,
-    ExprOp.DEC: so.StmOp.DEC,
+EXPR_STM_OP_MAP = {
+    ExprOp.ADD: StmOp.ADD,
+    ExprOp.SUB: StmOp.SUB,
+    ExprOp.MUL: StmOp.MUL,
+    ExprOp.IMUL: StmOp.IMUL,
+    ExprOp.DIV: StmOp.DIV,
+    ExprOp.IDIV: StmOp.IDIV,
+    ExprOp.SHR: StmOp.SHR,
+    ExprOp.ISHR: StmOp.ISHR,
+    ExprOp.SHL: StmOp.SHL,
+    ExprOp.AND: StmOp.AND,
+    ExprOp.OR: StmOp.OR,
+    ExprOp.XOR: StmOp.XOR,
+    ExprOp.NEG: StmOp.NEG,
+    ExprOp.NOT: StmOp.NOT,
+    ExprOp.BOOL: StmOp.BOOL,
+    ExprOp.INC: StmOp.INC,
+    ExprOp.DEC: StmOp.DEC,
 }
 
-
-def _ensure_expr_stm_map():
-    global EXPR_STM_OP_MAP
-    if not isinstance(EXPR_STM_OP_MAP, dict):
-        EXPR_STM_OP_MAP = EXPR_STM_OP_MAP()
+CONST_ADD_VAL_OP_MAP = {1: StmOp.INC, -1: StmOp.DEC}
 
 
 class PseudoExpr(Enum):
@@ -208,12 +179,28 @@ class SoExpr:
 
     # Statement generators
     def __matmul__(self, rhs):
-        _ensure_expr_stm_map()
-
         rhs = self.to_so_expr(rhs)
         assert self.op == ExprOp.NONE
+
+        if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
+                isinstance(rhs.a, mon.IndirectExpr) and \
+                rhs.b.is_pure_const and abs(rhs.b.const_value) == 1:
+            add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
+            if self.a == rhs.a:  # same dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a)
+            else:  # different dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a, rhs.a)
+
+        if rhs.op == ExprOp.NONE and abs(rhs.a.const_value) == 1:
+            add_val = rhs.a.const_value
+            if self.a == rhs.a.without_const_value:  # same dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a)
+            else:  # different dest variant
+                return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], self.a, rhs.a.without_const_value)
+
         if rhs.op == ExprOp.NONE:
             return so.Statement(so.StmOp.MOV, self.a, rhs.a)
+
         stm_op = EXPR_STM_OP_MAP[rhs.op]
         if self.a == rhs.a:  # same dest variant
             return so.Statement(stm_op, self.a, rhs.b)
@@ -228,3 +215,42 @@ class SoExpr:
         self @ rhs
         return self
 
+    def __iadd__(self, rhs):
+        self @ (self + rhs)
+        return self
+
+    def __isub__(self, rhs):
+        self @ (self - rhs)
+        return self
+
+    def __imul__(self, rhs):
+        self @ (self * rhs)
+        return self
+
+    def __itruediv__(self, rhs):
+        self @ (self / rhs)
+        return self
+
+    def __ifloordiv__(self, rhs):
+        self @ (self // rhs)
+        return self
+
+    def __irshift__(self, rhs):
+        self @ (self >> rhs)
+        return self
+
+    def __ilshift__(self, rhs):
+        self @ (self << rhs)
+        return self
+
+    def __iand__(self, rhs):
+        self @ (self & rhs)
+        return self
+
+    def __ior__(self, rhs):
+        self @ (self | rhs)
+        return self
+
+    def __ixor__(self, rhs):
+        self @ (self ^ rhs)
+        return self

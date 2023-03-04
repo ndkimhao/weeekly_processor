@@ -3,50 +3,9 @@ from enum import Enum, auto
 from types import NoneType
 from typing import Optional
 
+from soeunasm.enums import StmOp
 from soeunasm.so_expr import SoExpr
 import mondayasm as mon
-
-
-class StmOp(Enum):
-    GETF = auto()
-    CMP = auto()
-    MMAP = auto()
-    JMP = auto()
-    CALL = auto()
-    MOV = auto()
-    BMOV = auto()
-    SETF = auto()
-    ICMP = auto()
-    UMAP = auto()
-    HALT = auto()
-    RET = auto()
-    PUSH = auto()
-    POP = auto()
-    JEQ = auto()
-    JNE = auto()
-    JLT = auto()
-    JLE = auto()
-    JGT = auto()
-    JGE = auto()
-
-    ADD = auto()
-    SUB = auto()
-    MUL = auto()
-    IMUL = auto()
-    DIV = auto()
-    IDIV = auto()
-    SHR = auto()
-    ISHR = auto()
-    SHL = auto()
-    AND = auto()
-    OR = auto()
-    XOR = auto()
-    NEG = auto()
-    NOT = auto()
-    BOOL = auto()
-    INC = auto()
-    DEC = auto()
-
 
 OP_MAP = {
     StmOp.GETF: mon.GETF,

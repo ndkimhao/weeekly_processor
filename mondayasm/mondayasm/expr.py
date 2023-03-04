@@ -216,8 +216,11 @@ class Expr:
 
     @property
     def const_value(self) -> int:
-        assert self.is_pure_const
-        return self.terms[0].value * self.terms[0].factor
+        return sum(t.value * t.factor for t in self.terms if isinstance(t.value, int))
+
+    @property
+    def without_const_value(self) -> 'Expr':
+        return Expr(tuple(t for t in self.terms if not isinstance(t.value, int)))
 
     def __str__(self) -> str:
         s = ''

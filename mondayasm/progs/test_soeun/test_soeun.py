@@ -2,7 +2,7 @@ import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
 from soeunasm import SoExpr
-from soeunasm.free_expr import mul
+from soeunasm.free_expr import mul, expr
 
 
 def main():
@@ -11,7 +11,17 @@ def main():
     C = SoExpr(mon.C)
     tmp = A * 2 + B + 10
     [B] @ mul([B], [C])
-    [C + 100] @ (B | A)
+    aa = expr([C + 100])
+    aa @= (B | A)
+    A += 1
+    B @= A + 1
+    aa += 1
+    C @= aa + 1
+
+    A -= 1
+    B @= A - 1
+    aa -= 1
+    C @= aa - 1
 
 
 if __name__ == '__main__':

@@ -1,2 +1,3 @@
-from soeunasm.so_expr import SoExpr, ExprOp
-from soeunasm.statement import Statement, StmOp
+from soeunasm.so_expr import SoExpr
+from soeunasm.statement import Statement
+from soeunasm.enums import ExprOp, StmOp
