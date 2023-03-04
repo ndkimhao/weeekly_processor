@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum, auto
+from typing import ClassVar, Any
 
 import soeunasm as so
 from mondayasm import RawExpr, RawIndirect
@@ -36,8 +37,10 @@ class PseudoExpr(Enum):
 
 @dataclass(frozen=True, slots=True)
 class Expr:
-    a: RawExpr | RawIndirect | PseudoExpr = field(default=PseudoExpr.NULL)
-    b: RawExpr | RawIndirect | PseudoExpr = field(default=PseudoExpr.NULL)
+    TInner: ClassVar = RawExpr | RawIndirect | PseudoExpr
+
+    a: TInner = field(default=PseudoExpr.NULL)
+    b: TInner = field(default=PseudoExpr.NULL)
     op: ExprOp = field(default=ExprOp.NONE)
 
     def __post_init__(self):
@@ -60,19 +63,21 @@ class Expr:
             obj = Expr(obj)
         return obj
 
-    def _binary_op(self, rhs, op: ExprOp) -> 'Expr':
-        rhs = self.to_so_expr(rhs)
-        assert self.op == ExprOp.NONE
+    @classmethod
+    def _combine(cls, op: ExprOp, lhs: Any = PseudoExpr.NULL, rhs: Any = PseudoExpr.NULL) -> 'Expr':
+        lhs = cls.to_so_expr(lhs)
+        rhs = cls.to_so_expr(rhs)
+        assert lhs.op == ExprOp.NONE
         assert rhs.op == ExprOp.NONE
 
         tmp = None
-        if isinstance(self.a, RawExpr) and isinstance(rhs.a, RawExpr):
+        if isinstance(lhs.a, RawExpr) and isinstance(rhs.a, RawExpr):
             if op == ExprOp.ADD:
-                tmp = self.a + rhs.a
+                tmp = lhs.a + rhs.a
             elif op == ExprOp.SUB:
-                tmp = self.a - rhs.a
+                tmp = lhs.a - rhs.a
             elif op == ExprOp.MUL and rhs.a.is_pure_const:
-                tmp = self.a * rhs.a.const_value
+                tmp = lhs.a * rhs.a.const_value
 
         if tmp is not None:
             try:
@@ -81,100 +86,93 @@ class Expr:
             except AssertionError:
                 ...
 
-        return Expr(self.a, rhs.a, op)
-
-    def _binary_op_r(self, lhs, op: ExprOp) -> 'Expr':
-        lhs = self.to_so_expr(lhs)
-        return lhs._binary_op(self, op)
-
-    def _unary_op(self, op: ExprOp) -> 'Expr':
-        return self._binary_op(PseudoExpr.NULL, op)
+        return Expr(lhs.a, rhs.a, op)
 
     # Operators of Expr
 
     def __add__(self, rhs):
-        return self._binary_op(rhs, ExprOp.ADD)
+        return self._combine(ExprOp.ADD, self, rhs)
 
     def __sub__(self, rhs):
-        return self._binary_op(rhs, ExprOp.SUB)
+        return self._combine(ExprOp.SUB, self, rhs)
 
     def __mul__(self, rhs):
-        return self._binary_op(rhs, ExprOp.MUL)
+        return self._combine(ExprOp.MUL, self, rhs)
 
     def imul(self, rhs):
-        return self._binary_op(rhs, ExprOp.IMUL)
+        return self._combine(ExprOp.IMUL, self, rhs)
 
     def __truediv__(self, rhs):
-        return self._binary_op(rhs, ExprOp.DIV)
+        return self._combine(ExprOp.DIV, self, rhs)
 
     def __floordiv__(self, rhs):
-        return self._binary_op(rhs, ExprOp.DIV)
+        return self._combine(ExprOp.DIV, self, rhs)
 
     def idiv(self, rhs):
-        return self._binary_op(rhs, ExprOp.IDIV)
+        return self._combine(ExprOp.IDIV, self, rhs)
 
     def __rshift__(self, rhs):
-        return self._binary_op(rhs, ExprOp.SHR)
+        return self._combine(ExprOp.SHR, self, rhs)
 
     def ishr(self, rhs):
-        return self._binary_op(rhs, ExprOp.ISHR)
+        return self._combine(ExprOp.ISHR, self, rhs)
 
     def __lshift__(self, rhs):
-        return self._binary_op(rhs, ExprOp.SHL)
+        return self._combine(ExprOp.SHL, self, rhs)
 
     def __and__(self, rhs):
-        return self._binary_op(rhs, ExprOp.AND)
+        return self._combine(ExprOp.AND, self, rhs)
 
     def __or__(self, rhs):
-        return self._binary_op(rhs, ExprOp.OR)
+        return self._combine(ExprOp.OR, self, rhs)
 
     def __xor__(self, rhs):
-        return self._binary_op(rhs, ExprOp.XOR)
+        return self._combine(ExprOp.XOR, self, rhs)
 
     def __neg__(self):
-        return self._unary_op(ExprOp.NEG)
+        return self._combine(ExprOp.NEG, self)
 
     def __invert__(self):
-        return self._unary_op(ExprOp.NOT)
+        return self._combine(ExprOp.NOT, self)
 
     def bool(self):
-        return self._unary_op(ExprOp.BOOL)
+        return self._combine(ExprOp.BOOL, self)
 
     def inc(self):
-        return self._unary_op(ExprOp.INC)
+        return self._combine(ExprOp.INC, self)
 
     def dec(self):
-        return self._unary_op(ExprOp.DEC)
+        return self._combine(ExprOp.DEC, self)
 
     def __radd__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.ADD)
+        return self._combine(ExprOp.ADD, lhs, self)
 
     def __rsub__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.SUB)
+        return self._combine(ExprOp.SUB, lhs, self)
 
     def __rmul__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.MUL)
+        return self._combine(ExprOp.MUL, lhs, self)
 
     def __rtruediv__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.DIV)
+        return self._combine(ExprOp.DIV, lhs, self)
 
     def __rfloordiv__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.DIV)
+        return self._combine(ExprOp.DIV, lhs, self)
 
     def __rrshift__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.SHR)
+        return self._combine(ExprOp.SHR, lhs, self)
 
     def __rlshift__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.SHL)
+        return self._combine(ExprOp.SHL, lhs, self)
 
     def __rand__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.AND)
+        return self._combine(ExprOp.AND, lhs, self)
 
     def __ror__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.OR)
+        return self._combine(ExprOp.OR, lhs, self)
 
     def __rxor__(self, lhs):
-        return self._binary_op_r(lhs, ExprOp.XOR)
+        return self._combine(ExprOp.XOR, lhs, self)
 
     # Statement generators
     def __matmul__(self, rhs):
