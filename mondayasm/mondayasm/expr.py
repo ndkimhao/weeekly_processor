@@ -74,6 +74,9 @@ LABEL_REL_PC = ConstLabel('__PC__')
 class Expr:
     terms: tuple[Term, ...] = field(default=())
 
+    def __post_init__(self):
+        assert all(isinstance(t, Term) for t in self.terms)
+
     def __add__(self, rhs) -> 'Expr':
         if isinstance(rhs, Expr):
             assert all(isinstance(t, Term) for t in rhs.terms)
@@ -207,6 +210,15 @@ class Expr:
     def is_pure_label(self):
         return len(self.terms) == 1 and self.terms[0].factor == 1 and isinstance(self.terms[0].value, ConstLabel)
 
+    @property
+    def is_pure_const(self):
+        return len(self.terms) == 1 and isinstance(self.terms[0].value, int)
+
+    @property
+    def const_value(self) -> int:
+        assert self.is_pure_const
+        return self.terms[0].value * self.terms[0].factor
+
     def __str__(self) -> str:
         s = ''
         for term, factor in self.terms:
@@ -230,9 +242,12 @@ class Expr:
             return Expr() + v
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class IndirectExpr:
     expr: Expr
+
+    def __post_init__(self):
+        assert isinstance(self.expr, Expr)
 
     def as_direct(self) -> Expr:
         return self.expr
@@ -256,3 +271,4 @@ E = Expr.to_expr(REGISTER_E)
 F = Expr.to_expr(REGISTER_F)
 G = Expr.to_expr(REGISTER_G)
 H = Expr.to_expr(REGISTER_H)
+ZERO = Expr.to_expr(REGISTER_0)

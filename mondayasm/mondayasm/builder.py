@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Union, Callable, Optional
 
-from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel
+from mondayasm.expr import Expr, IndirectExpr, AsmArg, ConstLabel, REGISTER_0
 from mondayasm.data import CMDS_MAP
 from mondayasm.types import CmdEncode, DataEncode
 
@@ -159,6 +159,10 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
         else:
             if Expr.to_expr(a).is_pure_label:
                 a = Expr.to_expr(a).relative
+
+    if name in ('add', 'sub', 'mul', 'imul', 'div', 'idiv', 'shr', 'ishr', 'shl', 'and',
+                'or', 'xor', 'neg', 'not', 'bool', 'inc', 'dec', 'getf', 'mov', 'bmov', 'pop'):
+        assert indirect_a or a != REGISTER_0
 
     args: list[AsmArg] = []
     if a is not None:

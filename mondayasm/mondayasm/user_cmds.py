@@ -145,6 +145,7 @@ def BMOV(a, b):
 
 
 def SETF(a):
+    assert not isinstance(a, IndirectExpr)
     return __emit_command('setf', a)
 
 

@@ -1,6 +1,6 @@
 from mondayasm.expr import (
     Expr,
-    A, B, C, D, SP, PC, E, F, G, H,
+    A, B, C, D, SP, PC, E, F, G, H, ZERO,
     MemoryMagicInstance as M,
     ConstLabel,
 )
