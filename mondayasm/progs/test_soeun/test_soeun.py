@@ -23,6 +23,8 @@ def main():
     aa -= 1
     C @= aa - 1
 
+    A @ (B * (C + 1))
+
 
 if __name__ == '__main__':
     main()

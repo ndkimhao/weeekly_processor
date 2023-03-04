@@ -11,6 +11,7 @@ c5 60 7c 64                    # d010 |   inc C, [C + 0x64]
 c8 40 20                       # d016 |   dec B, A
 4a 7c 64                       # d019 |   dec [C + 0x64]
 c9 60 7c 64                    # d01c |   dec C, [C + 0x64]
+88 20 40 7c 01                 # d020 |   mul A, B, C + 0x1
                                #      | SECTION_END_boot:
                                #      | 
                                #      | SECTION_BEGIN_const_data:

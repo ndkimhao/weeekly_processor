@@ -95,3 +95,6 @@ class Statement:
             cmd_args.append(self.c)
 
         OP_MAP[self.op](*cmd_args)
+
+    def do_not_emit(self):
+        self.emitted.set(True)
