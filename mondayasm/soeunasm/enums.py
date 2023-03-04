@@ -66,3 +66,12 @@ class ExprOp(Enum):
     BOOL = auto()
     INC = auto()
     DEC = auto()
+
+
+class CmpOp(Enum):
+    EQ = auto()
+    NE = auto()
+    LT = auto()
+    LE = auto()
+    GT = auto()
+    GE = auto()

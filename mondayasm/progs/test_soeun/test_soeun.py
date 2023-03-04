@@ -6,9 +6,9 @@ from soeunasm.free_expr import mul, expr
 
 
 def main():
-    A = Expr(mon.A)
-    B = Expr(mon.B)
-    C = Expr(mon.C)
+    A = expr(mon.A)
+    B = expr(mon.B)
+    C = expr(mon.C)
     tmp = A * 2 + B + 10
     [B] @ mul([B], [C])
     aa = expr([C + 100])

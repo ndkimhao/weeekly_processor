@@ -4,7 +4,8 @@ from typing import ClassVar, Any
 
 import soeunasm as so
 from mondayasm import RawExpr, RawIndirect
-from soeunasm.enums import ExprOp, StmOp
+from soeunasm.cmp_expr import CmpExpr
+from soeunasm.enums import ExprOp, StmOp, CmpOp
 
 EXPR_STM_OP_MAP = {
     ExprOp.ADD: StmOp.ADD,
@@ -39,17 +40,17 @@ class PseudoExpr(Enum):
 class Expr:
     TInner: ClassVar = RawExpr | RawIndirect | PseudoExpr
 
+    op: ExprOp = field(default=ExprOp.NONE)
     a: TInner = field(default=PseudoExpr.NULL)
     b: TInner = field(default=PseudoExpr.NULL)
-    op: ExprOp = field(default=ExprOp.NONE)
 
     def __post_init__(self):
+        assert isinstance(self.op, ExprOp)
         assert isinstance(self.a, (RawExpr, RawIndirect, PseudoExpr))
         assert isinstance(self.b, (RawExpr, RawIndirect, PseudoExpr))
-        assert isinstance(self.op, ExprOp)
 
     @classmethod
-    def to_so_expr(cls, obj):
+    def to_expr(cls, obj):
         if not isinstance(obj, Expr):
             if isinstance(obj, list) and len(obj) == 1:
                 if isinstance(obj[0], Expr):
@@ -60,13 +61,13 @@ class Expr:
                     obj = RawIndirect(obj[0])
             if not isinstance(obj, RawIndirect):
                 obj = RawExpr.to_expr(obj)
-            obj = Expr(obj)
+            obj = Expr(ExprOp.NONE, obj)
         return obj
 
     @classmethod
     def _combine(cls, op: ExprOp, lhs: Any = PseudoExpr.NULL, rhs: Any = PseudoExpr.NULL) -> 'Expr':
-        lhs = cls.to_so_expr(lhs)
-        rhs = cls.to_so_expr(rhs)
+        lhs = cls.to_expr(lhs)
+        rhs = cls.to_expr(rhs)
         assert lhs.op == ExprOp.NONE
         assert rhs.op == ExprOp.NONE
 
@@ -82,11 +83,20 @@ class Expr:
         if tmp is not None:
             try:
                 tmp.assemble()
-                return Expr(tmp)
+                return Expr(ExprOp.NONE, tmp)
             except AssertionError:
                 ...
 
-        return Expr(lhs.a, rhs.a, op)
+        return Expr(op, lhs.a, rhs.a)
+
+    @classmethod
+    def _compare(cls, op: CmpOp, lhs: Any, rhs: Any):
+        lhs = cls.to_expr(lhs)
+        rhs = cls.to_expr(rhs)
+        assert lhs.op == ExprOp.NONE
+        assert rhs.op == ExprOp.NONE
+
+        return CmpExpr(op, lhs.a, rhs.a)
 
     # Operators of Expr
 
@@ -176,7 +186,7 @@ class Expr:
 
     # Statement generators
     def __matmul__(self, rhs):
-        rhs = self.to_so_expr(rhs)
+        rhs = self.to_expr(rhs)
         assert self.op == ExprOp.NONE
 
         if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
@@ -208,7 +218,7 @@ class Expr:
         return lhs @ self
 
     def __rmatmul__(self, lhs):
-        lhs = self.to_so_expr(lhs)
+        lhs = self.to_expr(lhs)
         return lhs @ self
 
     def __imatmul__(self, rhs):
@@ -254,3 +264,22 @@ class Expr:
     def __ixor__(self, rhs):
         self @ (self ^ rhs)
         return self
+
+    # Comparators
+    def __eq__(self, rhs):
+        return self._compare(CmpOp.EQ, self, rhs)
+
+    def __ne__(self, rhs):
+        return self._compare(CmpOp.NE, self, rhs)
+
+    def __lt__(self, rhs):
+        return self._compare(CmpOp.LT, self, rhs)
+
+    def __le__(self, rhs):
+        return self._compare(CmpOp.LE, self, rhs)
+
+    def __gt__(self, rhs):
+        return self._compare(CmpOp.GT, self, rhs)
+
+    def __ge__(self, rhs):
+        return self._compare(CmpOp.GE, self, rhs)
