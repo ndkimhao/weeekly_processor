@@ -19,6 +19,7 @@ entity vga is
 		buf_clk : in  std_logic;
 		buf_en : in std_logic;
 		buf_wr : in std_logic;
+		buf_addr_bank : in std_logic_vector(1 downto 0); -- all/red/green/blue
 		buf_addr : in TAddr;
 		buf_din : in TData;
 		buf_dout : out TData
@@ -62,9 +63,23 @@ signal buf_row, buf_col: unsigned(9 downto 0);
 signal buf_idx: TIndex;
 
 signal maddr : std_logic_vector(14 downto 0);
-signal mdin : TData;
+signal mdin_r : TData;
+signal mdin_g : TData;
+signal mdin_b : TData;
 
-signal pixel_data : std_logic;
+signal pixel_data_r : std_logic;
+signal pixel_data_g : std_logic;
+signal pixel_data_b : std_logic;
+
+signal buf_wr_r : std_logic;
+signal buf_wr_g : std_logic;
+signal buf_wr_b : std_logic;
+
+signal buf_dout_r : TData;
+signal buf_dout_g : TData;
+signal buf_dout_b : TData;
+
+signal last_buf_addr_bank : std_logic_vector(1 downto 0);
 
 begin
 
@@ -108,28 +123,79 @@ begin
 	v_blank <= '1' when row >= 480 else '0';
 	blank <= h_blank or v_blank;
 
-	r <= x"FF" when pixel_data = '1' else x"00";
-	g <= r;
-	b <= r;
+	r <= x"FF" when pixel_data_r = '1' else x"00";
+	g <= x"FF" when pixel_data_g = '1' else x"00";
+	b <= x"FF" when pixel_data_b = '1' else x"00";
 
 	-- memory
+	
+	process(buf_clk)
+	begin
+		if rising_edge(buf_clk) then
+			last_buf_addr_bank <= buf_addr_bank;
+		end if; -- rising_edge(buf_clk)
+	end process;
+	
+	buf_dout <=
+		(buf_dout_r and buf_dout_g and buf_dout_b) when last_buf_addr_bank = "00" else
+		buf_dout_r when last_buf_addr_bank = "01" else
+		buf_dout_g when last_buf_addr_bank = "10" else
+		buf_dout_b when last_buf_addr_bank = "11" else
+		(others => '0');
+	
+	buf_wr_r <= '1' when buf_addr_bank = "00" or buf_addr_bank = "01" else '0';
+	buf_wr_g <= '1' when buf_addr_bank = "00" or buf_addr_bank = "10" else '0';
+	buf_wr_b <= '1' when buf_addr_bank = "00" or buf_addr_bank = "11" else '0';
+
 	maddr <= std_logic_vector(next_idx(19-1 downto 4));
 
-	pixel_data <= mdin(to_integer(idx(3 downto 0)));
+	pixel_data_r <= mdin_r(to_integer(idx(3 downto 0)));
+	pixel_data_g <= mdin_g(to_integer(idx(3 downto 0)));
+	pixel_data_b <= mdin_b(to_integer(idx(3 downto 0)));
 
-	video_buffer : blk_mem_gen_video_buffer port map (
+	video_buffer_r : blk_mem_gen_video_buffer port map (
 		clka => clk,
 		ena => '1',
 		wea => "0",
 		addra => maddr,
 		dina => (others => '0'),
-		douta => mdin,
+		douta => mdin_r,
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr & "",
+		web => buf_wr_r & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din,
-		doutb => buf_dout
+		doutb => buf_dout_r
+	);
+	video_buffer_g : blk_mem_gen_video_buffer port map (
+		clka => clk,
+		ena => '1',
+		wea => "0",
+		addra => maddr,
+		dina => (others => '0'),
+		douta => mdin_g,
+
+		clkb => buf_clk,
+		enb => buf_en,
+		web => buf_wr_g & "",
+		addrb => buf_addr(15 downto 1),
+		dinb => buf_din,
+		doutb => buf_dout_g
+	);
+	video_buffer_b : blk_mem_gen_video_buffer port map (
+		clka => clk,
+		ena => '1',
+		wea => "0",
+		addra => maddr,
+		dina => (others => '0'),
+		douta => mdin_b,
+
+		clkb => buf_clk,
+		enb => buf_en,
+		web => buf_wr_b & "",
+		addrb => buf_addr(15 downto 1),
+		dinb => buf_din,
+		doutb => buf_dout_b
 	);
 end structure;

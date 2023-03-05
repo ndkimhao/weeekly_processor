@@ -21,6 +21,7 @@ entity video is
 		buf_clk : in  std_logic;
 		buf_en : in std_logic;
 		buf_wr : in std_logic;
+		buf_addr_bank : in std_logic_vector(1 downto 0);
 		buf_addr : in TAddr;
 		buf_din : in TData;
 		buf_dout : out TData
@@ -50,6 +51,7 @@ begin
 		buf_clk  => buf_clk,
 		buf_en   => buf_en,
 		buf_wr   => buf_wr,
+		buf_addr_bank => buf_addr_bank,
 		buf_addr => buf_addr,
 		buf_din  => buf_din,
 		buf_dout => buf_dout

@@ -40,6 +40,7 @@ signal vga_clk, hdmi_clk1, hdmi_clk2 : std_logic;
 
 signal vbuf_en : std_logic;
 signal vbuf_wr : std_logic;
+signal vbuf_addr_bank : std_logic_vector(1 downto 0);
 signal vbuf_addr :  TAddr;
 signal vbuf_din : TData;
 signal vbuf_dout : TData;
@@ -69,6 +70,7 @@ begin
 
 		vbuf_en => vbuf_en,
 		vbuf_wr => vbuf_wr,
+		vbuf_addr_bank => vbuf_addr_bank,
 		vbuf_addr => vbuf_addr,
 		vbuf_dout => vbuf_din,
 		vbuf_din => vbuf_dout,
@@ -91,6 +93,7 @@ begin
 		buf_clk  => cpu_clk,
 		buf_en   => vbuf_en,
 		buf_wr   => vbuf_wr,
+		buf_addr_bank => vbuf_addr_bank,
 		buf_addr => vbuf_addr,
 		buf_din  => vbuf_din,
 		buf_dout => vbuf_dout

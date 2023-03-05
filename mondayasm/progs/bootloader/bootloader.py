@@ -474,6 +474,9 @@ def start():
 
     # check existing program
     with Block() as blk:
+        MOV(H, M_BTN_READ)
+        AND(H, 0x100)
+        JNE(H, 0, blk.end)  # run bootloader if center button is pressed
         MOV(H, M_JMP_TARGET)
         JEQ(H, 0, blk.end)
         JMP(H)

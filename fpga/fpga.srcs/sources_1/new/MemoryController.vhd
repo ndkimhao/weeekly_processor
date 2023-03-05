@@ -18,6 +18,7 @@ entity MemoryController is
 
 		vbuf_en : out std_logic;
 		vbuf_wr : out std_logic;
+		vbuf_addr_bank : out std_logic_vector(1 downto 0);
 		vbuf_addr : out TAddr;
 		vbuf_dout : out TData;
 		vbuf_din : in TData;
@@ -68,6 +69,8 @@ signal uart_recv_data_count : std_logic_vector(4 downto 0);
 ------
 
 signal ahigh : unsigned(PhyAddrWidth-8-1 downto 0);
+signal ahigh1 : unsigned(PhyAddrWidth-16-1 downto 0);
+signal ahigh2 : unsigned(8-1 downto 0);
 signal alow : unsigned(8-1 downto 0);
 
 type TMappedMemory is (
@@ -113,37 +116,40 @@ signal uart_send_buffer_en, uart_recv_buffer_en : std_logic;
 
 begin
 	ahigh <= unsigned(addr(PhyAddrWidth-1 downto 8));
+	ahigh1 <= ahigh(PhyAddrWidth-8-1 downto 8);
+	ahigh2 <= ahigh(8-1 downto 0);
 	alow <= unsigned(addr(7 downto 0));
 
-	dev_en <= '1' when addr(PhyAddrWidth-1 downto 8) = x"FD00" else '0';
+	dev_en <= '1' when ahigh1 = x"FD" else '0';
 
 	mtype <=
 		-- Memory
 		M_RAM when en = '1' and ahigh < (RAMSize / 256) else
-		M_ROM when en = '1' and x"FF00" <= ahigh else
-		M_VIDEO when en = '1' and x"FE00" <= ahigh and ahigh < x"FE96" else
+		M_ROM when en = '1' and x"FF" <= ahigh1 else
+		M_VIDEO when en = '1' and x"F8" <= ahigh1 and ahigh1 < x"FD"
+							  and x"00" <= ahigh2 and ahigh2 < x"96" else
 		
 		-- External devices
-		M_UART_SEND when dev_en = '1' and alow(7 downto 0) = x"00" else
-		M_UART_RECV when dev_en = '1' and alow(7 downto 0) = x"02" else
-		M_UART_STATUS when dev_en = '1' and alow(7 downto 0) = x"04" else
-		M_SPI_SEND when dev_en = '1' and alow(7 downto 0) = x"06" else
-		M_SPI_STATUS when dev_en = '1' and alow(7 downto 0) = x"08" else
-		M_LED_WRITE when dev_en = '1' and alow(7 downto 0) = x"0A" else
-		M_BTN_READ when dev_en = '1' and alow(7 downto 0) = x"0C" else
-		M_PS2_READ when dev_en = '1' and alow(7 downto 0) = x"0E" else
+		M_UART_SEND   when dev_en = '1' and alow = x"00" else
+		M_UART_RECV   when dev_en = '1' and alow = x"02" else
+		M_UART_STATUS when dev_en = '1' and alow = x"04" else
+		M_SPI_SEND    when dev_en = '1' and alow = x"06" else
+		M_SPI_STATUS  when dev_en = '1' and alow = x"08" else
+		M_LED_WRITE   when dev_en = '1' and alow = x"0A" else
+		M_BTN_READ    when dev_en = '1' and alow = x"0C" else
+		M_PS2_READ    when dev_en = '1' and alow = x"0E" else
 		
 		-- Counters
-		M_CLK_READ_0 when dev_en = '1' and alow(7 downto 0) = x"10" else
-		M_CLK_READ_1 when dev_en = '1' and alow(7 downto 0) = x"12" else
-		M_CLK_READ_2 when dev_en = '1' and alow(7 downto 0) = x"14" else
+		M_CLK_READ_0 when dev_en = '1' and alow = x"10" else
+		M_CLK_READ_1 when dev_en = '1' and alow = x"12" else
+		M_CLK_READ_2 when dev_en = '1' and alow = x"14" else
 
-		M_INSTCNT_READ_0 when dev_en = '1' and alow(7 downto 0) = x"16" else
-		M_INSTCNT_READ_1 when dev_en = '1' and alow(7 downto 0) = x"18" else
-		M_INSTCNT_READ_2 when dev_en = '1' and alow(7 downto 0) = x"1A" else
+		M_INSTCNT_READ_0 when dev_en = '1' and alow = x"16" else
+		M_INSTCNT_READ_1 when dev_en = '1' and alow = x"18" else
+		M_INSTCNT_READ_2 when dev_en = '1' and alow = x"1A" else
 
 		-- Miscs
-		M_JUMP_TARGET when dev_en = '1' and alow(7 downto 0) = x"1C" else
+		M_JUMP_TARGET when dev_en = '1' and alow = x"1C" else
 
 		--
 		M_NONE;
@@ -181,6 +187,7 @@ begin
 
 	rom_addr <= x"00" & addr(15 downto 0);
 	vbuf_addr <= addr(15 downto 0);
+	vbuf_addr_bank <= addr(17 downto 16);
 
 	vbuf_wr <= wr;
 	vbuf_en <= '1' when mtype = M_VIDEO else '0';
