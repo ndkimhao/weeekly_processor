@@ -58,6 +58,8 @@ def main():
         A += B
         BreakIf(deref(A + 1) > 1000)
         B @= [A] + (A + C)
+        Continue()
+        Break()
 
         Cleanup()
         A @= 0
@@ -79,6 +81,11 @@ def main():
         BreakIf(B == 100)
         Continue()
         A += 2
+
+    with While(True, preserve=[C]):
+        A += 1
+        Continue()
+        Break()
 
 
 if __name__ == '__main__':

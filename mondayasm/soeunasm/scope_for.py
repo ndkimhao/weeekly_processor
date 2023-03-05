@@ -23,25 +23,22 @@ class ForScopeCtxInner:
         return cond.then_jmp(self._blk.l_cleanup, signed=signed)
 
     def Continue(self):
-        if len(self._blk._incr) == 0:
-            return Statement(StmOp.JMP, self._blk.l_begin_body)
-        else:
-            return Statement(StmOp.JMP, self._blk.l_end_body)
+        return Statement(StmOp.JMP, self._blk.l_continue)
 
     def ContinueIf(self, cond: CmpExpr, *, signed: bool = False):
         assert isinstance(cond, CmpExpr)
-        return cond.then_jmp(self._blk.l_end_body, signed=signed)
+        return cond.then_jmp(self._blk.l_continue, signed=signed)
 
     def Cleanup(self):
         self._blk._emit_cleanup()
 
 
 class ForScopeCtx:
-    def __init__(self, init: BlockStmArg, cond: CmpExpr, incr: BlockStmArg,
+    def __init__(self, init: BlockStmArg, cond: CmpExpr | bool, incr: BlockStmArg,
                  signed: bool, preserve: Iterable[Expr], loop_name):
         assert all(e.is_pure_register for e in preserve)
         assert isinstance(init, BlockStmArg)
-        assert isinstance(cond, CmpExpr)
+        assert isinstance(cond, CmpExpr | bool)
         assert isinstance(incr, BlockStmArg)
         self._init = Block.create(init).do_not_emit()
         self._cond = cond
@@ -57,6 +54,7 @@ class ForScopeCtx:
 
         self.l_begin_body = mon.DeclLabel('_BA_' + name)
         self.l_end_body = mon.DeclLabel('_BZ_' + name)
+        self.l_continue = self.l_begin_body if len(self._incr) == 0 else self.l_end_body
 
         self.inner_ctx = ForScopeCtxInner(self)
 
@@ -67,7 +65,8 @@ class ForScopeCtx:
             mon.PUSH(v.a)
 
         mon.EmitLabel(self.l_begin_body)
-        self._cond.then_jmp(self.l_cleanup, negated=True, signed=self._signed)
+        if self._cond is not True:
+            self._cond.then_jmp(self.l_cleanup, negated=True, signed=self._signed)
 
         g_for_stack.append(self)
         push_global_scope(self)
@@ -100,5 +99,7 @@ def For(init: BlockStmArg, cond: CmpExpr, incr: BlockStmArg,
     return ForScopeCtx(init, cond, incr, signed, preserve, 'for')
 
 
-def While(cond: CmpExpr, *, signed: bool = False, preserve: Iterable[Expr] = ()):
-    return ForScopeCtx((), cond, (), signed, preserve, 'while')
+def While(cond: CmpExpr | bool, *, signed: bool = False, preserve: Iterable[Expr] = ()):
+    if isinstance(cond, bool):
+        assert cond is True
+    return ForScopeCtx((), cond, (), signed, preserve, 'while_true' if cond is True else 'while')

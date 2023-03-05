@@ -21,6 +21,13 @@ class ScopeCtxInner:
         assert isinstance(cond, CmpExpr)
         return cond.then_jmp(self._blk.l_cleanup, signed=signed)
 
+    def Continue(self):
+        return Statement(StmOp.JMP, self._blk.l_begin_body)
+
+    def ContinueIf(self, cond: CmpExpr, *, signed: bool = False):
+        assert isinstance(cond, CmpExpr)
+        return cond.then_jmp(self._blk.l_begin_body, signed=signed)
+
     def Cleanup(self):
         self._blk._emit_cleanup()
 
@@ -32,6 +39,7 @@ class ScopeCtx:
 
         name = monb.Global.gen_label_name('scope', prefix='')
         self.l_prepare = mon.DeclLabel('_A_' + name)
+        self.l_begin_body = mon.DeclLabel('_B_' + name)
         self.l_cleanup = mon.DeclLabel('_C_' + name)
         self.l_end = mon.DeclLabel('_Z_' + name)
         self._emitted_cleanup = False
@@ -43,6 +51,8 @@ class ScopeCtx:
         inc_stack_offset(len(self._preserve))
         for v in self._preserve:
             mon.PUSH(v.a)
+
+        mon.EmitLabel(self.l_begin_body)
 
         g_scope_stack.append(self)
         push_global_scope(self)

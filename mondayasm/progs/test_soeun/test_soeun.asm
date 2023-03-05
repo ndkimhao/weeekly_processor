@@ -25,6 +25,7 @@ fc 20 40 f8 25 00              # d039 |   jge A, B, ${_E_if_1}:rel + PC
 62 bc 1c 04 05                 # d044 |   mov [SP + 0x4], 0x5
                                #      | _A_scope_1:
 e0 60                          # d049 |   push C
+                               #      | _B_scope_1:
 62 bc 1c 08 06                 # d04b |   mov [SP + 0x8], 0x6
                                #      | _C_scope_1:
 e4 60                          # d050 |   pop C
@@ -54,48 +55,62 @@ e8 20 40 f8 f9 ff              # d085 |   jeq A, B, ${test}:rel + PC
                                #      | _A_scope_2:
 e0 40                          # d08b |   push B
 e0 60                          # d08d |   push C
+                               #      | _B_scope_2:
 60 20 28                       # d08f |   mov A, A + B
-fa 3c e0 f8 01 e8 03 0d 00     # d092 |   jgt [A + 0x1], 0x3e8, ${_C_scope_2}:rel + PC
+fa 3c e0 f8 01 e8 03 15 00     # d092 |   jgt [A + 0x1], 0x3e8, ${_C_scope_2}:rel + PC
 81 40 20 2c                    # d09b |   add B, [A], A + C
+58 f8 f0 ff                    # d09f |   jmp ${_B_scope_2}:rel + PC
+58 f8 04 00                    # d0a3 |   jmp ${_C_scope_2}:rel + PC
                                #      | _C_scope_2:
-60 20 00                       # d09f |   mov A, 0
-e4 60                          # d0a2 |   pop C
-e4 40                          # d0a4 |   pop B
+60 20 00                       # d0a7 |   mov A, 0
+e4 60                          # d0aa |   pop C
+e4 40                          # d0ac |   pop B
                                #      | _Z_scope_2:
                                #      | _A_for_1:
-e0 60                          # d0a6 |   push C
+e0 60                          # d0ae |   push C
                                #      | _BA_for_1:
-fc 20 1c f8 0a 28 00           # d0a8 |   jge A, 0xa, ${_C_for_1}:rel + PC
-60 40 41                       # d0af |   mov B, B*2
+fc 20 1c f8 0a 28 00           # d0b0 |   jge A, 0xa, ${_C_for_1}:rel + PC
+60 40 41                       # d0b7 |   mov B, B*2
                                #      | _A_if_5:
-ec 40 e0 f8 d2 04 10 00        # d0b2 |   jne B, 0x4d2, ${_E_if_5}:rel + PC
-60 60 1c 64                    # d0ba |   mov C, 0x64
-58 f8 12 00                    # d0be |   jmp ${_C_for_1}:rel + PC
+ec 40 e0 f8 d2 04 10 00        # d0ba |   jne B, 0x4d2, ${_E_if_5}:rel + PC
+60 60 1c 64                    # d0c2 |   mov C, 0x64
+58 f8 12 00                    # d0c6 |   jmp ${_C_for_1}:rel + PC
                                #      | _E_if_5:
                                #      | _Z_if_5:
-58 f8 08 00                    # d0c2 |   jmp ${_BZ_for_1}:rel + PC
-88 40 60 20                    # d0c6 |   mul B, C, A
+58 f8 08 00                    # d0ca |   jmp ${_BZ_for_1}:rel + PC
+88 40 60 20                    # d0ce |   mul B, C, A
                                #      |   # test comment
                                #      | _BZ_for_1:
-44 20                          # d0ca |   inc A
-58 f8 dc ff                    # d0cc |   jmp ${_BA_for_1}:rel + PC
+44 20                          # d0d2 |   inc A
+58 f8 dc ff                    # d0d4 |   jmp ${_BA_for_1}:rel + PC
                                #      | _C_for_1:
-c4 20 00                       # d0d0 |   inc A, 0
-e4 60                          # d0d3 |   pop C
+c4 20 00                       # d0d8 |   inc A, 0
+e4 60                          # d0db |   pop C
                                #      | _Z_for_1:
                                #      | _A_while_1:
-e0 60                          # d0d5 |   push C
+e0 60                          # d0dd |   push C
                                #      | _BA_while_1:
-fc 20 1c f8 0a 1c 00           # d0d7 |   jge A, 0xa, ${_C_while_1}:rel + PC
-44 20                          # d0de |   inc A
-e8 40 1c f8 64 13 00           # d0e0 |   jeq B, 0x64, ${_C_while_1}:rel + PC
-58 f8 f0 ff                    # d0e7 |   jmp ${_BA_while_1}:rel + PC
-60 20 3c 02                    # d0eb |   mov A, A + 0x2
+fc 20 1c f8 0a 1c 00           # d0df |   jge A, 0xa, ${_C_while_1}:rel + PC
+44 20                          # d0e6 |   inc A
+e8 40 1c f8 64 13 00           # d0e8 |   jeq B, 0x64, ${_C_while_1}:rel + PC
+58 f8 f0 ff                    # d0ef |   jmp ${_BA_while_1}:rel + PC
+60 20 3c 02                    # d0f3 |   mov A, A + 0x2
                                #      | _BZ_while_1:
-58 f8 e8 ff                    # d0ef |   jmp ${_BA_while_1}:rel + PC
+58 f8 e8 ff                    # d0f7 |   jmp ${_BA_while_1}:rel + PC
                                #      | _C_while_1:
-e4 60                          # d0f3 |   pop C
+e4 60                          # d0fb |   pop C
                                #      | _Z_while_1:
+                               #      | _A_while_true_1:
+e0 60                          # d0fd |   push C
+                               #      | _BA_while_true_1:
+44 20                          # d0ff |   inc A
+58 f8 fe ff                    # d101 |   jmp ${_BA_while_true_1}:rel + PC
+58 f8 08 00                    # d105 |   jmp ${_C_while_true_1}:rel + PC
+                               #      | _BZ_while_true_1:
+58 f8 f6 ff                    # d109 |   jmp ${_BA_while_true_1}:rel + PC
+                               #      | _C_while_true_1:
+e4 60                          # d10d |   pop C
+                               #      | _Z_while_true_1:
                                #      | SECTION_END_boot:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
