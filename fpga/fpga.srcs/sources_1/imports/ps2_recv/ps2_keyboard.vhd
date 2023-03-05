@@ -25,9 +25,10 @@ USE ieee.std_logic_1164.all;
 
 ENTITY ps2_keyboard IS
   GENERIC(
-    debounce_counter_size : INTEGER := 4);         --set such that (2^size)/clk_freq = 5us (size = 8 for 50MHz)
+    debounce_counter_size : INTEGER := 5);
   PORT(
     clk          : IN  STD_LOGIC;                     --system clock
+    reset        : IN  STD_LOGIC;
     ps2_clk      : IN  STD_LOGIC;                     --clock signal from PS/2 keyboard
     ps2_data     : IN  STD_LOGIC;                     --data signal from PS/2 keyboard
     ps2_code_new : OUT STD_LOGIC;                     --flag that new PS/2 code is available on ps2_code bus
@@ -35,12 +36,10 @@ ENTITY ps2_keyboard IS
 END ps2_keyboard;
 
 ARCHITECTURE logic OF ps2_keyboard IS
-  SIGNAL sync_ffs     : STD_LOGIC_VECTOR(1 DOWNTO 0);       --synchronizer flip-flops for PS/2 signals
   SIGNAL ps2_clk_int  : STD_LOGIC;                          --debounced clock signal from PS/2 keyboard
-  SIGNAL ps2_data_int : STD_LOGIC;                          --debounced data signal from PS/2 keyboard
   SIGNAL ps2_word     : STD_LOGIC_VECTOR(10 DOWNTO 0) := (others => '0');      --stores the ps2 data word
   SIGNAL error        : STD_LOGIC;                          --validate parity, start, and stop bits
-  SIGNAL count_bits   : INTEGER RANGE 0 TO 11;
+  SIGNAL count_bits   : INTEGER RANGE 0 TO 11 := 0;
   
   SIGNAL prev_ps2_clk_int  : STD_LOGIC;
 
@@ -55,22 +54,10 @@ ARCHITECTURE logic OF ps2_keyboard IS
   END COMPONENT;
 BEGIN
 
-  --synchronizer flip-flops
-  PROCESS(clk)
-  BEGIN
-    IF RISING_EDGE(CLK) THEN  --rising edge of system clock
-      sync_ffs(0) <= ps2_clk;           --synchronize PS/2 clock signal
-      sync_ffs(1) <= ps2_data;          --synchronize PS/2 data signal
-    END IF;
-  END PROCESS;
-
   --debounce PS2 input signals
   debounce_ps2_clk: debounce
     GENERIC MAP(counter_size => debounce_counter_size)
-    PORT MAP(clk => clk, button => sync_ffs(0), result => ps2_clk_int);
-  debounce_ps2_data: debounce
-    GENERIC MAP(counter_size => debounce_counter_size)
-    PORT MAP(clk => clk, button => sync_ffs(1), result => ps2_data_int);
+    PORT MAP(clk => clk, button => ps2_clk, result => ps2_clk_int);
     
   --verify that parity, start, and stop bits are all correct
   error <= NOT (NOT ps2_word(0) AND ps2_word(10) AND (ps2_word(9) XOR ps2_word(8) XOR
@@ -81,20 +68,26 @@ BEGIN
   PROCESS(clk)
   BEGIN
     IF RISING_EDGE(CLK) THEN           --rising edge of system clock
-      prev_ps2_clk_int <= ps2_clk_int;
-      ps2_code_new <= '0';
-
-      IF(ps2_clk_int = '0') THEN                 --low PS2 clock, PS/2 is active
-        IF prev_ps2_clk_int = '1' THEN     -- PS2 clock falling edge
-          ps2_word <= ps2_data_int & ps2_word(10 DOWNTO 1);   --shift in PS2 data bit
-          count_bits <= count_bits + 1;
-        END IF;
-      ELSIF(count_bits = 11 and error = '0') THEN  --idle threshold reached and no errors detected
-        ps2_code_new <= '1';                             --set flag that new PS/2 code is available
-        ps2_code <= ps2_word(8 DOWNTO 1);              --output new PS/2 code
+      IF reset = '1' then
         count_bits <= 0;
-      END IF;
-    END IF;
+        prev_ps2_clk_int <= '0';
+        ps2_code_new <= '0';
+      ELSE
+        prev_ps2_clk_int <= ps2_clk_int;
+        ps2_code_new <= '0';
+
+        IF(ps2_clk_int = '0') THEN                 --low PS2 clock, PS/2 is active
+          IF prev_ps2_clk_int = '1' THEN     -- PS2 clock falling edge
+            ps2_word <= ps2_data & ps2_word(10 DOWNTO 1);   --shift in PS2 data bit
+            count_bits <= count_bits + 1;
+          END IF;
+        ELSIF(count_bits = 11 and error = '0') THEN  --idle threshold reached and no errors detected
+          ps2_code_new <= '1';                             --set flag that new PS/2 code is available
+          ps2_code <= ps2_word(8 DOWNTO 1);              --output new PS/2 code
+          count_bits <= 0;
+        END IF;
+      END IF; -- if reset
+    END IF; -- if rising_edge(clk)
   END PROCESS;
  
 END logic;

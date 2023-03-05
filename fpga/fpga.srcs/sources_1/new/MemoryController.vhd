@@ -331,6 +331,7 @@ begin
 
 	ps2_receiver : entity work.ps2_keyboard port map (
 		clk => clk,
+		reset => reset,
 		ps2_clk => ps2_clk,
 		ps2_data => ps2_data,
 		ps2_code_new => ps2_recv_wr_en,
