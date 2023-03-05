@@ -88,6 +88,7 @@ type TMappedMemory is (
 	M_INSTCNT_READ_0,
 	M_INSTCNT_READ_1,
 	M_INSTCNT_READ_2,
+	M_JUMP_TARGET,
 	M_NONE
 );
 
@@ -102,6 +103,8 @@ signal rom_addr : TPhyAddr;
 
 signal clk_counter : unsigned(48-1 downto 0) := (others => '0');
 signal inst_counter : unsigned(48-1 downto 0) := (others => '0');
+
+signal mem_jump_target : TData := (others => '0');
 
 -----
 signal ram_en : std_logic;
@@ -139,6 +142,9 @@ begin
 		M_INSTCNT_READ_1 when dev_en = '1' and alow(7 downto 0) = x"18" else
 		M_INSTCNT_READ_2 when dev_en = '1' and alow(7 downto 0) = x"1A" else
 
+		-- Miscs
+		M_JUMP_TARGET when dev_en = '1' and alow(7 downto 0) = x"1C" else
+
 		--
 		M_NONE;
 
@@ -156,7 +162,8 @@ begin
 			when last_mtype = M_UART_STATUS else
 		"000" & btn_in
 			when last_mtype = M_BTN_READ else
-		
+		x"00" & s_led_out when last_mtype = M_LED_WRITE else
+
 		-- Counters
 		std_logic_vector(clk_counter(15 downto  0)) when last_mtype = M_CLK_READ_0 else
 		std_logic_vector(clk_counter(31 downto 16)) when last_mtype = M_CLK_READ_1 else
@@ -166,6 +173,9 @@ begin
 		std_logic_vector(inst_counter(31 downto 16)) when last_mtype = M_INSTCNT_READ_1 else
 		std_logic_vector(inst_counter(47 downto 32)) when last_mtype = M_INSTCNT_READ_2 else
 
+		-- Miscs
+		mem_jump_target when last_mtype = M_JUMP_TARGET else
+		
 		--
 		(others => '0'); -- M_NONE
 
@@ -198,8 +208,15 @@ begin
 		if rising_edge(clk) then
 			last_mtype <= mtype;
 
-			if mtype = M_LED_WRITE then
-				s_led_out <= din(7 downto 0);
+			if wr = '1' then
+				case mtype is
+					when M_LED_WRITE =>
+						s_led_out <= din(7 downto 0);
+					when M_JUMP_TARGET =>
+						mem_jump_target <= din;
+					when others =>
+						null;
+				end case;
 			end if;
 		end if;
 	end process;

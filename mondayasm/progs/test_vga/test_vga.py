@@ -31,7 +31,16 @@ CODE_OFFSET = 0x5000
 ###
 
 def start():
-    MOV(M_LED, 0xf0f0)
+    MOV(M_LED, 0x00f0)
+    with Block() as while_true:
+        MOV(A, 0)
+        with Block() as loop:
+            JEQ(A, 0xFFFF, loop.end)
+            INC(A)
+            MUL(B, B)
+            JMP(loop.begin)
+        INC(M_LED)
+        JMP(while_true.begin)
     HALT()
 
 

@@ -21,6 +21,8 @@ M_BTN_READ = M[DEV_ADDR + 0x0C]
 
 M_PS2_READ = M[DEV_ADDR + 0x0E]
 
+M_JMP_TARGET = M[DEV_ADDR + 0x1C]
+
 FLAG_UART_RECV_VALID = 0x8000
 FLAG_UART_RECV_EMPTY = 0x4000
 FLAG_UART_RECV_FULL = 0x2000
@@ -36,7 +38,6 @@ UART_HW_BUFSZ = 16
 UART_BUFSZ = 150
 recv_buf = StaticVar('uart_recv_buf', UART_BUFSZ + 2)
 send_buf = StaticVar('uart_send_buf', UART_BUFSZ + 2)
-m_led_stt = M[StaticVar('led_status', 2)]
 
 
 def send_data():
@@ -99,7 +100,7 @@ def recv_command():
         INC(A)
         JMP(loop_recv.start)
     # loop_recv.end
-    BMOV([A], 0)  # null terminate
+    BMOV([recv_buf + A], 0)  # null terminate
     MOV(H, A)
     POP(stash)
 
@@ -409,6 +410,7 @@ def handle_jmp():
     JEQ(G, 0, lb_ret_fail)
 
     clear_state()  # INLINED, SP was zeroed so can't use CALL here
+    MOV(M_JMP_TARGET, H)
     JMP(H)
 
     EmitLabel(lb_ret_fail)
@@ -461,8 +463,7 @@ def parse_command():
 
 def led_activity():
     # M_LED is only writable, read always return 0
-    INC(m_led_stt)
-    MOV(M_LED, m_led_stt)
+    INC(M_LED)
 
 
 def start():
@@ -471,14 +472,19 @@ def start():
     MOV(B, 0)
     MMAP(DEV_ADDR, DEV_ADDR + 0xFF, 2)
 
+    # check existing program
+    with Block() as blk:
+        MOV(H, M_JMP_TARGET)
+        JEQ(H, 0, blk.end)
+        JMP(H)
+
     # send hello
     MOV(A, ConstData('READY\n'))
     CALL(send_data)
     MOV(A, H)  # A = return result
 
     # wait for commands
-    MOV(m_led_stt, 0x01)
-    MOV(M_LED, m_led_stt)
+    MOV(M_LED, 0x01)
 
     with Block() as while_true:
         # recv command
