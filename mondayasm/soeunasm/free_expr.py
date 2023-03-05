@@ -2,7 +2,7 @@ from mondayasm import RawExpr, RawIndirect
 from soeunasm import ExprOp, Expr
 
 
-def expr(val):
+def expr(val) -> Expr:
     return Expr.to_expr(val)
 
 
@@ -174,3 +174,13 @@ def deref(val):
     assert val.op == ExprOp.NONE
     assert isinstance(val.a, RawExpr)
     return Expr.to_expr([val.a])
+
+
+def address_of(val):
+    if isinstance(val, list):
+        assert len(val) == 1
+        return Expr.to_expr(val[0])
+    assert isinstance(val, Expr)
+    assert val.op == ExprOp.NONE
+    assert isinstance(val.a, RawIndirect)
+    return val.a.as_direct()

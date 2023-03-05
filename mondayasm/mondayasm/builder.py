@@ -174,6 +174,7 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
         assert len(args) == 1
         args.append(b.assemble())
     if c is not None:
+        assert not isinstance(c, RawIndirect)
         c = RawExpr.to_expr(c)
         assert len(args) == 2
         args.append(c.assemble())

@@ -231,6 +231,11 @@ class RawExpr:
     def without_const_value(self) -> 'RawExpr':
         return RawExpr(tuple(t for t in self.terms if not isinstance(t.value, int)))
 
+    @property
+    def label_value(self) -> ConstLabel:
+        assert self.is_pure_label
+        return self.terms[0].value
+
     def __str__(self) -> str:
         s = ''
         for term, factor in self.terms:

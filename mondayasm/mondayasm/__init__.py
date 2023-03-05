@@ -1,3 +1,5 @@
+import mondayasm.types
+
 from mondayasm.raw_expr import (
     RawExpr,
     A, B, C, D, SP, PC, E, F, G, H, ZERO,

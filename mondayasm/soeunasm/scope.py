@@ -33,14 +33,15 @@ class ScopeCtxInner:
 
 
 class ScopeCtx:
-    def __init__(self, preserve: Iterable[Expr]):
+    def __init__(self, preserve: Iterable[Expr], simple: bool, base_name: str):
         assert all(e.is_pure_register for e in preserve)
         self._preserve = tuple(preserve)
+        self._simple = simple
 
-        name = monb.Global.gen_label_name('scope', prefix='')
+        name = monb.Global.gen_label_name(base_name, prefix='')
         self.l_prepare = mon.DeclLabel('_A_' + name)
         self.l_begin_body = mon.DeclLabel('_B_' + name)
-        self.l_cleanup = mon.DeclLabel('_C_' + name)
+        self.l_cleanup = mon.DeclLabel('_C_' + name) if not simple else None
         self.l_end = mon.DeclLabel('_Z_' + name)
         self._emitted_cleanup = False
 
@@ -52,7 +53,8 @@ class ScopeCtx:
         for v in self._preserve:
             mon.PUSH(v.a)
 
-        mon.EmitLabel(self.l_begin_body)
+        if not self._simple:
+            mon.EmitLabel(self.l_begin_body)
 
         g_scope_stack.append(self)
         push_global_scope(self)
@@ -71,11 +73,12 @@ class ScopeCtx:
         mon.EmitLabel(self.l_end)
 
     def _emit_cleanup(self):
-        assert not self._emitted_cleanup
-        self._emitted_cleanup = True
-        mon.EmitLabel(self.l_cleanup)
+        if not self._simple:
+            assert not self._emitted_cleanup
+            self._emitted_cleanup = True
+            mon.EmitLabel(self.l_cleanup)
 
 
 # noinspection PyPep8Naming
-def Scope(preserve: Iterable[Expr] = ()):
-    return ScopeCtx(preserve)
+def Scope(*, preserve: Iterable[Expr] = (), simple: bool = False, base_name: str = 'scope'):
+    return ScopeCtx(preserve, simple, base_name)

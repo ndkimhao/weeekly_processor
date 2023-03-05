@@ -1,10 +1,27 @@
 import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
-from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While
-from soeunasm.data import stack_vars
-from soeunasm.free_expr import mul, expr, deref
+from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While, call
+from soeunasm.data import stack_vars, stack_var
+from soeunasm.free_expr import mul, expr, deref, mov, address_of
 from soeunasm.miscs import Comment
+from soeunasm.scope_func import Return
+
+
+def memcpy(p_dest, p_src, size,
+           E, F, G):
+    a, b, end_a = E, F, G
+
+    a @= p_dest
+    b @= p_src
+
+    end_a @= a
+    end_a += size
+
+    with While(a < end_a):
+        mov([a], [b])
+        a += 2
+        b += 2
 
 
 def main():
@@ -87,9 +104,11 @@ def main():
         Continue()
         Break()
 
+    call(memcpy, A, B, 100)
+
 
 if __name__ == '__main__':
-    main()
+    call(main, preserve_registers=False)
 
     cg = CodeGen()
     cg.compile().write('test_soeun.asm')

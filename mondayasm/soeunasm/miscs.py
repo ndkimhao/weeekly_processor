@@ -3,7 +3,7 @@ from mondayasm import Block
 from soeunasm.free_expr import expr
 
 
-def _adjust_sp(n):
+def adjust_sp(n):
     if n == 0:
         return Block()
     SP = expr(mon.SP)

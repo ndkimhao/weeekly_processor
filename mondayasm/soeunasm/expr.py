@@ -50,7 +50,7 @@ class Expr:
         assert isinstance(self.b, (RawExpr, RawIndirect, PseudoExpr))
 
     @classmethod
-    def to_expr(cls, obj):
+    def to_expr(cls, obj) -> 'Expr':
         if not isinstance(obj, Expr):
             if isinstance(obj, list) and len(obj) == 1:
                 if isinstance(obj[0], Expr):
@@ -111,7 +111,8 @@ class Expr:
         assert lhs.op == ExprOp.NONE
 
         if (rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB) and \
-                isinstance(rhs.a, RawIndirect) and \
+                isinstance(rhs.a, (RawExpr, RawIndirect)) and \
+                isinstance(rhs.b, RawExpr) and \
                 rhs.b.is_pure_const and \
                 abs(rhs.b.const_value) == 1:
             add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
@@ -120,7 +121,7 @@ class Expr:
             else:  # different dest variant
                 return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a, rhs.a)
 
-        if rhs.op == ExprOp.NONE and abs(rhs.a.const_value) == 1:
+        if rhs.op == ExprOp.NONE and isinstance(rhs.a, RawExpr) and abs(rhs.a.const_value) == 1:
             add_val = rhs.a.const_value
             if lhs.a == rhs.a.without_const_value:  # same dest variant
                 return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a)

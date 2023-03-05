@@ -6,7 +6,7 @@ from soeunasm.free_expr import expr
 from soeunasm.scope_func import FuncScopeCtx
 
 
-def stack_vars(n: int = 1) -> tuple[Expr, ...]:
+def stack_vars(n: int) -> tuple[Expr, ...]:
     g_stack = scope_global.g_stack
     assert len(g_stack) == 0 or \
            (len(g_stack) == 1 and isinstance(g_stack[0], FuncScopeCtx))
@@ -19,3 +19,7 @@ def stack_vars(n: int = 1) -> tuple[Expr, ...]:
         ret.append(Expr.to_expr([mon.SP + sp_offset - cur_offset]))
     expr(mon.SP).__isub__(n * 2)
     return tuple(ret)
+
+
+def stack_var() -> Expr:
+    return stack_vars(1)[0]
