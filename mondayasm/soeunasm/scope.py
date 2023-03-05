@@ -4,6 +4,7 @@ from soeunasm import Expr, Statement, StmOp
 from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.cmp_expr import CmpExpr
+from soeunasm.global_stack import _push_global_scope, _pop_global_scope
 
 _g_scope_stack: list['ScopeCtx'] = []
 
@@ -20,7 +21,7 @@ class ScopeCtxInner:
         assert isinstance(cond, CmpExpr)
         return cond.then_jmp(self._blk.l_cleanup, signed=signed)
 
-    def ScopeCleanup(self):
+    def Cleanup(self):
         self._blk._emit_cleanup()
 
 
@@ -35,17 +36,21 @@ class ScopeCtx:
         self.l_end = mon.DeclLabel('_Z_' + name)
         self._emitted_cleanup = False
 
+        self.inner_ctx = ScopeCtxInner(self)
+
     def __enter__(self) -> ScopeCtxInner:
         _g_scope_stack.append(self)
+        _push_global_scope(self)
 
         mon.EmitLabel(self.l_prepare)
         for v in self._preserve:
             mon.PUSH(v.a)
-        return ScopeCtxInner(self)
+        return self.inner_ctx
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         assert _g_scope_stack[-1] is self
         _g_scope_stack.pop()
+        _pop_global_scope(self)
 
         if not self._emitted_cleanup:
             self._emit_cleanup()
@@ -62,9 +67,3 @@ class ScopeCtx:
 # noinspection PyPep8Naming
 def Scope(preserve: Iterable[Expr] = ()):
     return ScopeCtx(preserve)
-
-
-# noinspection PyPep8Naming, PyProtectedMember
-def ScopeCleanup():
-    blk = _g_scope_stack[-1]
-    blk._emit_cleanup()

@@ -11,6 +11,8 @@ class Block:
 
     @classmethod
     def create(cls, *v):
+        if isinstance(v[0], Block):
+            return v[0]
         if isinstance(v[0], list) or isinstance(v[0], tuple) or isinstance(v[0], GeneratorType):
             v = v[0]
         v = tuple(v)
@@ -20,10 +22,16 @@ class Block:
         assert isinstance(self.statements, tuple)
         assert all(isinstance(s, Statement) for s in self.statements)
 
-    def emit(self, forced: bool = False):
+    def emit(self, *, forced: bool = False):
         # ensure ordered emit
         for s in self.statements:
-            s.emit(forced)
+            s.emit(forced=forced)
+        return self
+
+    def do_not_emit(self):
+        for s in self.statements:
+            s.do_not_emit()
+        return self
 
     def __del__(self):
         self.emit()
@@ -36,3 +44,6 @@ class Block:
 
     def __bool__(self):
         return bool(self.statements)
+
+
+BlockStmArg = Block | Statement | tuple

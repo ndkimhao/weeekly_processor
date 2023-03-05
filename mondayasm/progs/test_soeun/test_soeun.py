@@ -1,8 +1,8 @@
 import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
-from soeunasm import Expr, If, Else, ElseIf, Scope, ScopeCleanup
-from soeunasm.free_expr import mul, expr
+from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While
+from soeunasm.free_expr import mul, expr, deref
 
 
 def main():
@@ -43,13 +43,28 @@ def main():
     If(A == B).jmp(['test'])
     If(A == B).jmp('test')
 
-    with Scope(preserve=[B, C]) as sc:
+    with Scope(preserve=[B, C]):
         A += B
-        sc.BreakIf(A > 1000)
+        BreakIf(deref(A + 1) > 1000)
         B @= [A] + (A + C)
 
-        sc.ScopeCleanup()
+        Cleanup()
         A @= 0
+
+    with For(A @ 0, A < 10, A @ (A + 1), preserve=[C]):
+        B *= 2
+        with If(B == 1234):
+            C @= 100
+            Break()
+        Continue()
+        B @= C * A
+
+        Cleanup()
+        A @= 1
+
+    with While(A < 10, preserve=[C]):
+        A += 1
+        BreakIf(B == 100)
 
 
 if __name__ == '__main__':

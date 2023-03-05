@@ -77,7 +77,7 @@ class Statement:
     def __del__(self):
         self.emit()
 
-    def emit(self, forced: bool = False):
+    def emit(self, *, forced: bool = False):
         if self.emitted and not forced:
             return
 
@@ -94,6 +94,8 @@ class Statement:
             cmd_args.append(self.c)
 
         OP_MAP[self.op](*cmd_args)
+        return self
 
     def do_not_emit(self):
         self.emitted.set(True)
+        return self

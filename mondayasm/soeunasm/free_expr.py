@@ -1,3 +1,4 @@
+from mondayasm import RawExpr, RawIndirect
 from soeunasm import ExprOp, Expr
 
 
@@ -163,3 +164,13 @@ def ge(lhs, rhs):
     lhs = Expr.to_expr(lhs)
     rhs = Expr.to_expr(rhs)
     return lhs >= rhs
+
+
+####
+
+def deref(val):
+    if not isinstance(val, Expr):
+        val = Expr.to_expr(val)
+    assert val.op == ExprOp.NONE
+    assert isinstance(val.a, RawExpr)
+    return Expr.to_expr([val.a])
