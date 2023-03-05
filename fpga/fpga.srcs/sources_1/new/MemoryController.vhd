@@ -54,6 +54,20 @@ component fifo_uart_buffer
 	);
 end component;
 
+component fifo_ps2_buffer
+	port (
+		clk : in std_logic;
+		srst : in std_logic;
+		din : in std_logic_vector(7 downto 0);
+		wr_en : in std_logic;
+		rd_en : in std_logic;
+		dout : out std_logic_vector(7 downto 0);
+		full : out std_logic;
+		empty : out std_logic;
+		valid : out std_logic 
+	);
+end component;
+
 signal uart_send_rd_en : std_logic;
 signal uart_send_dout : std_logic_vector(7 downto 0);
 signal uart_send_full : std_logic;
@@ -75,7 +89,6 @@ signal ps2_recv_dout : std_logic_vector(7 downto 0);
 signal ps2_recv_full : std_logic;
 signal ps2_recv_empty : std_logic;
 signal ps2_recv_valid : std_logic;
-signal ps2_recv_data_count : std_logic_vector(4 downto 0);
 signal ps2_recv_buffer_rd_en : std_logic;
 
 ------
@@ -304,7 +317,7 @@ begin
 
 	--- PS/2
 	ps2_recv_buffer_rd_en <= '1' when mtype = M_PS2_RECV else '0';
-	ps2_recv_buffer : fifo_uart_buffer port map (
+	ps2_recv_buffer : fifo_ps2_buffer port map (
 		clk => clk,
 		srst => reset,
 		din => ps2_recv_din,
@@ -313,8 +326,7 @@ begin
 		dout => ps2_recv_dout,
 		full => ps2_recv_full,
 		empty => ps2_recv_empty,
-		valid => ps2_recv_valid,
-		data_count => ps2_recv_data_count
+		valid => ps2_recv_valid
 	);
 
 	ps2_receiver : entity work.ps2_keyboard port map (
