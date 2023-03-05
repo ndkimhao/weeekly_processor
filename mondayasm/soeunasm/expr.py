@@ -110,9 +110,10 @@ class Expr:
 
         assert lhs.op == ExprOp.NONE
 
-        if rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB and \
+        if (rhs.op == ExprOp.ADD or rhs.op == ExprOp.SUB) and \
                 isinstance(rhs.a, RawIndirect) and \
-                rhs.b.is_pure_const and abs(rhs.b.const_value) == 1:
+                rhs.b.is_pure_const and \
+                abs(rhs.b.const_value) == 1:
             add_val = rhs.b.const_value if rhs.op == rhs.op.ADD else -rhs.b.const_value
             if lhs.a == rhs.a:  # same dest variant
                 return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a)
@@ -297,3 +298,16 @@ class Expr:
 
     def __ge__(self, rhs):
         return self._compare(CmpOp.GE, self, rhs)
+
+    # Properties
+    @property
+    def is_pure_register(self):
+        return self.op == ExprOp.NONE and self.a.is_pure_register
+
+    @property
+    def is_pure_const(self):
+        return self.op == ExprOp.NONE and self.a.is_pure_const
+
+    @property
+    def is_pure_label(self):
+        return self.op == ExprOp.NONE and self.a.is_pure_label

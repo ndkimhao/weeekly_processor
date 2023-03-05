@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Union
 
 from mondayasm.types import ArgEncode, Term
 from mondayasm.data import REGS_MAP, AUX_REGS_MAP, FACTORS_MAP
@@ -75,7 +76,10 @@ class RawExpr:
     terms: tuple[Term, ...] = field(default=())
 
     def __post_init__(self):
-        assert all(isinstance(t, Term) for t in self.terms)
+        assert all(isinstance(t, Term) and
+                   isinstance(t.value, (int, ConstLabel, Register)) and
+                   isinstance(t.factor, int)
+                   for t in self.terms)
 
     def __add__(self, rhs) -> 'RawExpr':
         if isinstance(rhs, RawExpr):
@@ -207,6 +211,10 @@ class RawExpr:
             return self
 
     @property
+    def is_pure_register(self):
+        return len(self.terms) == 1 and isinstance(self.terms[0].value, Register)
+
+    @property
     def is_pure_label(self):
         return len(self.terms) == 1 and self.terms[0].factor == 1 and isinstance(self.terms[0].value, ConstLabel)
 
@@ -241,7 +249,7 @@ class RawExpr:
         else:
             if isinstance(v, str):
                 v = ConstLabel(v)
-            assert isinstance(v, (Register, ConstLabel, int))
+            assert isinstance(v, (Register, ConstLabel, int)), v
             return RawExpr() + v
 
 
@@ -254,6 +262,14 @@ class RawIndirect:
 
     def as_direct(self) -> RawExpr:
         return self.expr
+
+    @classmethod
+    def to_expr_maybe_indirect(cls, v) -> Union['RawIndirect', RawExpr]:
+        if isinstance(v, list):
+            assert len(v) == 1
+            return RawIndirect(RawExpr.to_expr(v[0]))
+
+        return RawExpr.to_expr(v)
 
 
 class MemoryMagic:

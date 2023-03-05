@@ -154,6 +154,7 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
 
     if ADDR_RELATIVE and name in ('call', 'jmp', 'jeq', 'jne', 'jlt', 'jle', 'jgt', 'jge'):
         if c is not None:
+            assert not isinstance(c, RawIndirect) and not isinstance(c, list)
             if RawExpr.to_expr(c).is_pure_label:
                 c = RawExpr.to_expr(c).relative
         else:

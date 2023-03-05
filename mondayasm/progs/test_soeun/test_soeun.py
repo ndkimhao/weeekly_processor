@@ -1,7 +1,7 @@
 import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
-from soeunasm import Expr
+from soeunasm import Expr, If, Else, ElseIf, Scope, ScopeCleanup
 from soeunasm.free_expr import mul, expr
 
 
@@ -28,7 +28,28 @@ def main():
     mabyte = expr([A])
     mabyte @= B.byte()
 
-    print(A < B)
+    with If(A < B, preserve=(A, B)) as outer:
+        A @= B
+
+        ElseIf(B == 2)
+        A @= B * 2
+        with If(B == 3):
+            outer.Break()
+
+        Else()
+        A @= B + 1
+
+    mon.Label('test')
+    If(A == B).jmp(['test'])
+    If(A == B).jmp('test')
+
+    with Scope(preserve=[B, C]) as sc:
+        A += B
+        sc.BreakIf(A > 1000)
+        B @= [A] + (A + C)
+
+        sc.ScopeCleanup()
+        A @= 0
 
 
 if __name__ == '__main__':
