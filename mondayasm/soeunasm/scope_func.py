@@ -5,7 +5,7 @@ from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.free_expr import mov
 from soeunasm.miscs import _adjust_sp
-from soeunasm.scope_global import push_global_scope, pop_global_scope
+from soeunasm.scope_global import push_global_scope, pop_global_scope, dec_stack_offset, inc_stack_offset
 
 g_func_scope_stack: list['FuncScopeCtx'] = []
 
@@ -26,6 +26,7 @@ class FuncScopeCtx:
         self._swap_out_ctx_stacks()
 
         mon.EmitLabel(self.l_prepare)
+        inc_stack_offset(len(self._used_regs))
         for v in self._used_regs:
             mon.PUSH(v.a)
 
@@ -39,11 +40,17 @@ class FuncScopeCtx:
 
         if not self._emitted_cleanup:
             self._emit_cleanup()
-        _adjust_sp(scope_global.cur_stack_offset() * 2)
+
+        stack_offset = scope_global.cur_stack_offset()
+        _adjust_sp(stack_offset * 2)
+        dec_stack_offset(stack_offset)
+
+        dec_stack_offset(len(self._used_regs))
         for v in reversed(self._used_regs):
             mon.POP(v.a)
         mon.EmitLabel(self.l_end)
 
+        assert scope_global.cur_stack_offset() == 0
         self._restore_ctx_stacks()
 
     def _emit_cleanup(self):

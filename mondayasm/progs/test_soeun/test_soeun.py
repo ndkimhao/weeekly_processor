@@ -37,6 +37,9 @@ def main():
     with If(A < B, preserve=(A, B)) as outer:
         s1 @= 4
         s2 @= 5
+        with Scope(preserve=[C]):
+            s1 @= 6
+        s1 @= 6
         A @= B
 
         ElseIf(B == 2)

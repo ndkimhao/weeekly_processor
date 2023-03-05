@@ -4,7 +4,6 @@ from soeunasm import Expr, Statement, StmOp
 from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.cmp_expr import CmpExpr
-from soeunasm.miscs import _adjust_sp
 from soeunasm.scope_global import push_global_scope, pop_global_scope, inc_stack_offset, dec_stack_offset
 
 g_scope_stack: list['ScopeCtx'] = []
