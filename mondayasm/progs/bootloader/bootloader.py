@@ -35,9 +35,9 @@ MASK_UART_SEND_COUNT = 0x003F
 ###
 
 UART_HW_BUFSZ = 16
-UART_BUFSZ = 150
-recv_buf = StaticVar('uart_recv_buf', UART_BUFSZ + 2)
-send_buf = StaticVar('uart_send_buf', UART_BUFSZ + 2)
+UART_BUFSZ = 550
+recv_buf = StaticVar('uart_buf', UART_BUFSZ + 2)
+send_buf = recv_buf
 
 
 def send_data():

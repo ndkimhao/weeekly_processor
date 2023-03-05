@@ -3,6 +3,8 @@ import argparse
 
 import serial
 
+PRINT_MAX_LEN = 64
+
 
 class Communicator:
     def __init__(self, ser):
@@ -17,19 +19,24 @@ class Communicator:
             d = d[:-1]
         return d
 
+    def _print(self, msg='', end='\n'):
+        if len(msg) > PRINT_MAX_LEN:
+            msg = msg[:PRINT_MAX_LEN] + '...'
+        print(msg, end=end)
+
     def send_cmd(self, cmd: bytes | str, expected=None, no_wait=False):
         if isinstance(cmd, str):
             cmd = cmd.encode()
-        print(f'{cmd.decode()}', end='')
+        self._print(f'{cmd.decode()}', end='')
         self.ser.write(cmd + b'\n')
         echoed = self._read_line()
         assert echoed == cmd, (echoed, cmd)
         if no_wait:
-            print()
+            self._print()
             return
         resp = self._read_line()
         resp = resp.decode()
-        print(f' ==> {resp}')
+        self._print(f' ==> {resp}')
         if expected is not None:
             assert resp == expected, (resp, expected)
         return resp
@@ -43,7 +50,7 @@ def main():
     parser.add_argument('-p', '--port', help='COM port', required=True)
     parser.add_argument('-f', '--file', help='Hex file', required=True)
     parser.add_argument('-t', '--verify', help='Verify uploaded data',
-                        default=True, action=argparse.BooleanOptionalAction)
+                        default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('-j', '--jmp', help='Jump to code after uploading',
                         default=True, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
@@ -76,7 +83,7 @@ def main():
     print(f'code offset = 0x{code_offset:04x}')
     print(f'\nLoaded hex code at {args.file}\n\n{SEP}\n')
 
-    CHUNK_SIZE = 64  # bytes
+    CHUNK_SIZE = 256  # bytes
 
     with serial.Serial(args.port, 115200, timeout=1) as ser:
         comm = Communicator(ser)

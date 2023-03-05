@@ -31,7 +31,7 @@ CODE_OFFSET = 0x5000
 ###
 
 def start():
-    MOV(M_LED, 0x00f0)
+    MOV(M_LED, 0x000)
     with Block() as while_true:
         MOV(A, 0)
         with Block() as loop:

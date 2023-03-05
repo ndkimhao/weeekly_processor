@@ -4,20 +4,20 @@
                                #      | SECTION_END_boot:
                                #      | 
                                #      | fn_start:
-62 e0 e0 0a ff f0 00           # 5000 |   mov [0xff0a], 0xf0
+62 e0 00 0a ff                 # 5000 |   mov [0xff0a], 0
                                #      | _B_fn_start_1:
-60 20 00                       # 5007 |   mov A, 0
+60 20 00                       # 5005 |   mov A, 0
                                #      | _B_fn_start_2:
-e8 20 1c f8 ff 10 00           # 500a |   jeq A, 0xff, ${_E_fn_start_2}:rel + PC
-44 20                          # 5011 |   inc A
-08 40 40                       # 5013 |   mul B, B
-58 f8 f4 ff                    # 5016 |   jmp ${_B_fn_start_2}:rel + PC
+e8 20 1c f8 ff 10 00           # 5008 |   jeq A, 0xff, ${_E_fn_start_2}:rel + PC
+44 20                          # 500f |   inc A
+08 40 40                       # 5011 |   mul B, B
+58 f8 f4 ff                    # 5014 |   jmp ${_B_fn_start_2}:rel + PC
                                #      | _E_fn_start_2:
-46 e0 0a ff                    # 501a |   inc [0xff0a]
-58 f8 e9 ff                    # 501e |   jmp ${_B_fn_start_1}:rel + PC
+46 e0 0a ff                    # 5018 |   inc [0xff0a]
+58 f8 e9 ff                    # 501c |   jmp ${_B_fn_start_1}:rel + PC
                                #      | _E_fn_start_1:
-d8                             # 5022 |   halt
-dc                             # 5023 |   ret
+d8                             # 5020 |   halt
+dc                             # 5021 |   ret
                                #      | end_fn_start:
                                #      | 
                                #      | SECTION_BEGIN_const_data:

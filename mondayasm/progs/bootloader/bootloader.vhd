@@ -48,7 +48,7 @@ constant arr_rom : TArrROM := (
                                                      --      | _B_fn_start_2:
     x"5c",x"f8",x"56",x"00",                         -- f562 |   call ${fn_recv_command}:rel + PC
     x"5c",x"f8",x"bd",x"00",                         -- f566 |   call ${fn_led_activity}:rel + PC
-    x"60",x"20",x"e0",x"00",x"fb",                   -- f56a |   mov A, ${var_uart_recv_buf}
+    x"60",x"20",x"e0",x"00",x"fb",                   -- f56a |   mov A, ${var_uart_buf}
     x"5c",x"f8",x"b9",x"00",                         -- f56f |   call ${fn_parse_command}:rel + PC
     x"58",x"f8",x"ef",x"ff",                         -- f573 |   jmp ${_B_fn_start_2}:rel + PC
                                                      --      | _E_fn_start_2:
@@ -89,7 +89,7 @@ constant arr_rom : TArrROM := (
     x"60",x"20",x"00",                               -- f5c0 |   mov A, 0
                                                      --      | _B_fn_recv_command_1:
                                                      --      | _B_fn_recv_command_2:
-    x"f0",x"20",x"e0",x"f8",x"95",x"00",x"1b",x"00", -- f5c3 |   jlt A, 0x95, ${_E_fn_recv_command_2}:rel + PC
+    x"f0",x"20",x"e0",x"f8",x"25",x"02",x"1b",x"00", -- f5c3 |   jlt A, 0x225, ${_E_fn_recv_command_2}:rel + PC
     x"60",x"fe",x"20",                               -- f5cb |   mov G, A
     x"60",x"20",x"e0",x"0e",x"fa",                   -- f5ce |   mov A, ${const_data_2}
     x"5c",x"f8",x"a5",x"ff",                         -- f5d3 |   call ${fn_send_data}:rel + PC
@@ -103,11 +103,11 @@ constant arr_rom : TArrROM := (
     x"62",x"e0",x"60",x"00",x"ff",                   -- f5f4 |   mov [0xff00], C
     x"e8",x"60",x"1c",x"f8",x"0a",x"19",x"00",       -- f5f9 |   jeq C, 0xa, ${_E_fn_recv_command_1}:rel + PC
     x"e8",x"60",x"1c",x"f8",x"0d",x"c3",x"ff",       -- f600 |   jeq C, 0xd, ${_B_fn_recv_command_1}:rel + PC
-    x"62",x"e4",x"60",x"00",x"fb",                   -- f607 |   mov [${var_uart_recv_buf} + A], C
+    x"62",x"e4",x"60",x"00",x"fb",                   -- f607 |   mov [${var_uart_buf} + A], C
     x"44",x"20",                                     -- f60c |   inc A
     x"58",x"f8",x"b5",x"ff",                         -- f60e |   jmp ${_B_fn_recv_command_1}:rel + PC
                                                      --      | _E_fn_recv_command_1:
-    x"66",x"e4",x"00",x"00",x"fb",                   -- f612 |   bmov [${var_uart_recv_buf} + A], 0
+    x"66",x"e4",x"00",x"00",x"fb",                   -- f612 |   bmov [${var_uart_buf} + A], 0
     x"60",x"ff",x"20",                               -- f617 |   mov H, A
     x"e4",x"fe",                                     -- f61a |   pop G
     x"e4",x"80",                                     -- f61c |   pop D
@@ -243,7 +243,7 @@ constant arr_rom : TArrROM := (
     x"5c",x"f8",x"86",x"00",                         -- f76d |   call ${fn__parse_hex_arg}:rel + PC
     x"e8",x"fe",x"00",x"f8",x"70",x"00",             -- f771 |   jeq G, 0, ${_L_fn_handle_read_2}:rel + PC
     x"60",x"80",x"ff",                               -- f777 |   mov D, H
-    x"60",x"20",x"e0",x"98",x"fb",                   -- f77a |   mov A, ${var_uart_send_buf}
+    x"60",x"20",x"e0",x"00",x"fb",                   -- f77a |   mov A, ${var_uart_buf}
     x"60",x"40",x"60",                               -- f77f |   mov B, C
     x"5c",x"f8",x"3d",x"01",                         -- f782 |   call ${fn_put_hex_16}:rel + PC
     x"62",x"3c",x"1c",x"04",x"20",                   -- f786 |   mov [A + 0x4], 0x20
@@ -253,7 +253,7 @@ constant arr_rom : TArrROM := (
     x"62",x"3c",x"1c",x"04",x"20",                   -- f796 |   mov [A + 0x4], 0x20
     x"60",x"20",x"3c",x"05",                         -- f79b |   mov A, A + 0x5
                                                      --      | _B_fn_handle_read_3:
-    x"fc",x"20",x"e0",x"f8",x"2d",x"fc",x"42",x"00", -- f79f |   jge A, ${var_uart_send_buf} + 0095, ${_L_fn_handle_read_2}:rel + PC
+    x"fc",x"20",x"e0",x"f8",x"25",x"fd",x"42",x"00", -- f79f |   jge A, ${var_uart_buf} + 0225, ${_L_fn_handle_read_2}:rel + PC
     x"fc",x"60",x"80",x"f8",x"25",x"00",             -- f7a7 |   jge C, D, ${_E_fn_handle_read_3}:rel + PC
     x"61",x"fc",x"60",                               -- f7ad |   mov E, [C]
     x"a8",x"40",x"fc",x"1c",x"08",                   -- f7b0 |   shl B, E, 0x8
@@ -265,7 +265,7 @@ constant arr_rom : TArrROM := (
     x"58",x"f8",x"d7",x"ff",                         -- f7c8 |   jmp ${_B_fn_handle_read_3}:rel + PC
                                                      --      | _E_fn_handle_read_3:
     x"62",x"20",x"1c",x"0a",                         -- f7cc |   mov [A], 0xa
-    x"60",x"20",x"e0",x"98",x"fb",                   -- f7d0 |   mov A, ${var_uart_send_buf}
+    x"60",x"20",x"e0",x"00",x"fb",                   -- f7d0 |   mov A, ${var_uart_buf}
     x"5c",x"f8",x"a3",x"fd",                         -- f7d5 |   call ${fn_send_data}:rel + PC
                                                      --      | _B_fn_handle_read_4:
                                                      --      | _L_fn_handle_read_1:
@@ -425,7 +425,7 @@ constant arr_rom : TArrROM := (
     x"58",x"f8",x"d9",x"ff",                         -- f979 |   jmp ${_B_fn_handle_write_2}:rel + PC
                                                      --      | _E_fn_handle_write_2:
                                                      --      | _B_fn_handle_write_3:
-    x"60",x"20",x"e0",x"98",x"fb",                   -- f97d |   mov A, ${var_uart_send_buf}
+    x"60",x"20",x"e0",x"00",x"fb",                   -- f97d |   mov A, ${var_uart_buf}
     x"62",x"20",x"e0",x"4f",x"4b",                   -- f982 |   mov [A], 0x4b4f
     x"62",x"3c",x"1c",x"02",x"20",                   -- f987 |   mov [A + 0x2], 0x20
     x"60",x"20",x"3c",x"03",                         -- f98c |   mov A, A + 0x3
@@ -436,7 +436,7 @@ constant arr_rom : TArrROM := (
     x"60",x"40",x"60",                               -- f9a0 |   mov B, C
     x"5c",x"f8",x"1c",x"ff",                         -- f9a3 |   call ${fn_put_hex_16}:rel + PC
     x"62",x"3c",x"1c",x"04",x"0a",                   -- f9a7 |   mov [A + 0x4], 0xa
-    x"60",x"20",x"e0",x"98",x"fb",                   -- f9ac |   mov A, ${var_uart_send_buf}
+    x"60",x"20",x"e0",x"00",x"fb",                   -- f9ac |   mov A, ${var_uart_buf}
     x"5c",x"f8",x"c7",x"fb",                         -- f9b1 |   call ${fn_send_data}:rel + PC
     x"60",x"ff",x"1c",x"01",                         -- f9b5 |   mov H, 0x1
     x"58",x"f8",x"07",x"00",                         -- f9b9 |   jmp ${_E_fn_handle_write_3}:rel + PC
@@ -496,10 +496,8 @@ constant arr_rom : TArrROM := (
                                                      --      | 
                                                      --      | .offset 0xfb00
                                                      --      | SECTION_BEGIN_static_data:
-                                                     --      | var_uart_recv_buf:
-                                                     -- fb00 |   .bss size:152
-                                                     --      | var_uart_send_buf:
-                                                     -- fb98 |   .bss size:152
+                                                     --      | var_uart_buf:
+                                                     -- fb00 |   .bss size:552
                                                      --      | SECTION_END_static_data:
                                                      --      | 
 
