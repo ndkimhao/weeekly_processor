@@ -330,3 +330,12 @@ def Block(name: str = '', stash: Optional[list] = None) -> BlockContextManager:
 
 
 Global.internal_static_init()
+
+
+# noinspection PyPep8Naming
+def Comment(message, emit_to=None):
+    if emit_to is None:
+        emit_to = Global.current_scope()
+
+    inst = Directive('.comment', (str(message),))
+    emit_to.add(inst)

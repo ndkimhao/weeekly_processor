@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+import mondayasm as mon
+
 
 class StmOp(Enum):
     GETF = auto()
@@ -78,3 +80,6 @@ class CmpOp(Enum):
     LE = auto()
     GT = auto()
     GE = auto()
+
+
+placeholder_stack_offset = mon.ConstLabel('__placeholder_stack_offset__')

@@ -66,6 +66,8 @@ class CodeGen:
                     bss_size = inst.args[2]
                     self.buf.append((get_offset(), inst.args[1], f'  .bss size:{bss_size}'))
                     blocklen += bss_size
+                elif inst.name == '.comment':
+                    self.buf.append((get_offset(), '', f'  # {inst.args[0]}'))
                 else:
                     assert False, inst
             else:

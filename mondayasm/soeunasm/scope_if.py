@@ -4,8 +4,9 @@ from soeunasm.expr import Expr
 from soeunasm.cmp_expr import CmpExpr
 from mondayasm import builder as monb
 import mondayasm as mon
+from soeunasm.scope_global import inc_stack_offset, dec_stack_offset, push_global_scope, pop_global_scope
 
-_g_if_stack: list['IfCtx'] = []
+g_if_stack: list['IfCtx'] = []
 
 
 class IfCtxInner:
@@ -18,9 +19,9 @@ class IfCtxInner:
 
 # noinspection PyProtectedMember
 class IfCtx:
-    def __init__(self, cond: CmpExpr, preserve: Iterable[Expr]):
-        _g_if_stack.append(self)
+    FUNCTION_BYPASS = ['break', 'continue']
 
+    def __init__(self, cond: CmpExpr, preserve: Iterable[Expr]):
         assert all(e.is_pure_register for e in preserve)
         self._cond = cond
         self._preserve = tuple(preserve)
@@ -36,21 +37,27 @@ class IfCtx:
 
     def __enter__(self) -> IfCtxInner:
         mon.EmitLabel(self.l_prepare)
+        inc_stack_offset(len(self._preserve))
         for v in self._preserve:
             mon.PUSH(v.a)
 
         self._cond.then_jmp(self.l_elses[-1], negated=True)
+
+        g_if_stack.append(self)
+        push_global_scope(self)
         return IfCtxInner(self)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        assert _g_if_stack[-1] is self
-        _g_if_stack.pop()
+        assert g_if_stack[-1] is self
+        g_if_stack.pop()
+        pop_global_scope(self)
 
         if not self._emitted_else:
             mon.EmitLabel(self.l_elses[-1])
 
         if len(self._preserve) > 0:
             mon.EmitLabel(self.l_cleanup)
+            dec_stack_offset(len(self._preserve))
             for v in reversed(self._preserve):
                 mon.POP(v.a)
         mon.EmitLabel(self.l_end)
@@ -67,7 +74,7 @@ def If(cond: CmpExpr | bool, preserve: Iterable[Expr] = ()):
 
 # noinspection PyProtectedMember, PyPep8Naming
 def Else():
-    blk = _g_if_stack[-1]
+    blk = g_if_stack[-1]
     assert not blk._emitted_else
     blk._emitted_else = True
 
@@ -77,7 +84,7 @@ def Else():
 
 # noinspection PyProtectedMember, PyPep8Naming
 def ElseIf(cond: CmpExpr):
-    blk = _g_if_stack[-1]
+    blk = g_if_stack[-1]
     assert not blk._emitted_else
     idx = len(blk.l_elses) + 1
     l_next_else = mon.DeclLabel(f'_E{idx}_' + blk.base_name)

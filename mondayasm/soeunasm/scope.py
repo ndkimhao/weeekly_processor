@@ -4,9 +4,10 @@ from soeunasm import Expr, Statement, StmOp
 from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.cmp_expr import CmpExpr
-from soeunasm.global_stack import _push_global_scope, _pop_global_scope
+from soeunasm.miscs import _adjust_sp
+from soeunasm.scope_global import push_global_scope, pop_global_scope, inc_stack_offset, dec_stack_offset
 
-_g_scope_stack: list['ScopeCtx'] = []
+g_scope_stack: list['ScopeCtx'] = []
 
 
 # noinspection PyPep8Naming, PyProtectedMember
@@ -39,21 +40,23 @@ class ScopeCtx:
         self.inner_ctx = ScopeCtxInner(self)
 
     def __enter__(self) -> ScopeCtxInner:
-        _g_scope_stack.append(self)
-        _push_global_scope(self)
-
         mon.EmitLabel(self.l_prepare)
+        inc_stack_offset(len(self._preserve))
         for v in self._preserve:
             mon.PUSH(v.a)
+
+        g_scope_stack.append(self)
+        push_global_scope(self)
         return self.inner_ctx
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        assert _g_scope_stack[-1] is self
-        _g_scope_stack.pop()
-        _pop_global_scope(self)
+        assert g_scope_stack[-1] is self
+        g_scope_stack.pop()
+        pop_global_scope(self)
 
         if not self._emitted_cleanup:
             self._emit_cleanup()
+        dec_stack_offset(len(self._preserve))
         for v in reversed(self._preserve):
             mon.POP(v.a)
         mon.EmitLabel(self.l_end)

@@ -2,7 +2,9 @@ from dataclasses import dataclass, field
 from types import NoneType
 from typing import Optional
 
+import mondayasm.types
 from mondayasm import RawExpr, RawIndirect
+from soeunasm import scope_global, enums
 from soeunasm.enums import StmOp
 import mondayasm as mon
 
@@ -83,15 +85,18 @@ class Statement:
 
         self.emitted.set(True)
 
+        sp_offset = mondayasm.types.Term(scope_global.cur_stack_offset(), 2)
+        sp_offset_ph = mondayasm.types.Term(enums.placeholder_stack_offset, 2)
+
         cmd_args = []
         if self.a is not None:
-            cmd_args.append(self.a)
+            cmd_args.append(self.a.replace_once(sp_offset_ph, sp_offset))
         if self.b is not None:
             assert self.a is not None
-            cmd_args.append(self.b)
+            cmd_args.append(self.b.replace_once(sp_offset_ph, sp_offset))
         if self.c is not None:
             assert self.b is not None
-            cmd_args.append(self.c)
+            cmd_args.append(self.c.replace_once(sp_offset_ph, sp_offset))
 
         OP_MAP[self.op](*cmd_args)
         return self

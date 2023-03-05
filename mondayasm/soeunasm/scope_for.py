@@ -5,9 +5,10 @@ from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.block import BlockStmArg, Block
 from soeunasm.cmp_expr import CmpExpr
-from soeunasm.global_stack import _push_global_scope, _pop_global_scope
+from soeunasm.miscs import _adjust_sp
+from soeunasm.scope_global import push_global_scope, pop_global_scope, inc_stack_offset, dec_stack_offset
 
-_g_for_stack: list['ForScopeCtx'] = []
+g_for_stack: list['ForScopeCtx'] = []
 
 
 # noinspection PyPep8Naming, PyProtectedMember
@@ -23,7 +24,10 @@ class ForScopeCtxInner:
         return cond.then_jmp(self._blk.l_cleanup, signed=signed)
 
     def Continue(self):
-        return Statement(StmOp.JMP, self._blk.l_end_body)
+        if len(self._blk._incr) == 0:
+            return Statement(StmOp.JMP, self._blk.l_begin_body)
+        else:
+            return Statement(StmOp.JMP, self._blk.l_end_body)
 
     def ContinueIf(self, cond: CmpExpr, *, signed: bool = False):
         assert isinstance(cond, CmpExpr)
@@ -58,24 +62,26 @@ class ForScopeCtx:
         self.inner_ctx = ForScopeCtxInner(self)
 
     def __enter__(self) -> ForScopeCtxInner:
-        _g_for_stack.append(self)
-        _push_global_scope(self)
-
         mon.EmitLabel(self.l_prepare)
+        inc_stack_offset(len(self._preserve))
         for v in self._preserve:
             mon.PUSH(v.a)
 
         mon.EmitLabel(self.l_begin_body)
         self._cond.then_jmp(self.l_cleanup, negated=True, signed=self._signed)
+
+        g_for_stack.append(self)
+        push_global_scope(self)
         return self.inner_ctx
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        assert _g_for_stack[-1] is self
-        _g_for_stack.pop()
-        _pop_global_scope(self)
+        assert g_for_stack[-1] is self
+        g_for_stack.pop()
+        pop_global_scope(self)
 
         if not self._emitted_cleanup:
             self._emit_cleanup()
+        dec_stack_offset(len(self._preserve))
         for v in reversed(self._preserve):
             mon.POP(v.a)
         mon.EmitLabel(self.l_end)

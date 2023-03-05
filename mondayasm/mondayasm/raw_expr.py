@@ -110,13 +110,14 @@ class RawExpr:
         labels = {}
         const = 0
         for term, factor in self.terms:
+            assert isinstance(factor, int)
             if isinstance(term, Register):
                 regs[term.name] = regs.get(term.name, 0) + factor
             elif isinstance(term, ConstLabel):
                 labels[term.name] = labels.get(term.name, 0) + factor
             else:
                 assert isinstance(term, int)
-                const += term
+                const += term * factor
         regs = [Term(k, v) for k, v in regs.items() if v != 0]
         labels = [Term(k, v) for k, v in labels.items() if v != 0]
         assert len(regs) <= 2
@@ -252,6 +253,21 @@ class RawExpr:
             assert isinstance(v, (Register, ConstLabel, int)), v
             return RawExpr() + v
 
+    def replace_once(self, find: Term, replace: Term) -> 'RawExpr':
+        assert isinstance(find, Term)
+        assert isinstance(replace, Term)
+        found_idx = -1
+        for i, t in enumerate(self.terms):
+            if t == find:
+                found_idx = i
+                break
+        if found_idx == -1:
+            return self
+        return RawExpr(tuple(
+            t if i != found_idx else replace
+            for i, t in enumerate(self.terms)
+        ))
+
 
 @dataclass(frozen=True, slots=True)
 class RawIndirect:
@@ -270,6 +286,9 @@ class RawIndirect:
             return RawIndirect(RawExpr.to_expr(v[0]))
 
         return RawExpr.to_expr(v)
+
+    def replace_once(self, find: Term, replace: Term) -> 'RawIndirect':
+        return RawIndirect(self.expr.replace_once(find, replace))
 
 
 class MemoryMagic:

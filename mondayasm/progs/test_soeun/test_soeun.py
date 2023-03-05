@@ -2,10 +2,13 @@ import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
 from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While
+from soeunasm.data import stack_vars
 from soeunasm.free_expr import mul, expr, deref
+from soeunasm.miscs import Comment
 
 
 def main():
+    s1, s2 = stack_vars(2)
     A = expr(mon.A)
     B = expr(mon.B)
     C = expr(mon.C)
@@ -28,7 +31,12 @@ def main():
     mabyte = expr([A])
     mabyte @= B.byte()
 
+    Comment('s1 @= 2')
+    s1 @= 2
+    s2 @= 3
     with If(A < B, preserve=(A, B)) as outer:
+        s1 @= 4
+        s2 @= 5
         A @= B
 
         ElseIf(B == 2)
@@ -59,12 +67,15 @@ def main():
         Continue()
         B @= C * A
 
+        Comment('test comment')
         Cleanup()
         A @= 1
 
     with While(A < 10, preserve=[C]):
         A += 1
         BreakIf(B == 100)
+        Continue()
+        A += 2
 
 
 if __name__ == '__main__':
