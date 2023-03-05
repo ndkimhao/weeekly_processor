@@ -18,7 +18,7 @@ entity MemoryController is
 
 		vbuf_en : out std_logic;
 		vbuf_wr : out std_logic;
-		vbuf_addr_bank : out std_logic_vector(1 downto 0);
+		vbuf_addr_bank : out std_logic_vector(2 downto 0);
 		vbuf_addr : out TAddr;
 		vbuf_dout : out TData;
 		vbuf_din : in TData;
@@ -126,7 +126,7 @@ begin
 		-- Memory
 		M_RAM when en = '1' and ahigh < (RAMSize / 256) else
 		M_ROM when en = '1' and x"FF" <= ahigh1 else
-		M_VIDEO when en = '1' and x"F8" <= ahigh1 and ahigh1 < x"FD"
+		M_VIDEO when en = '1' and x"F0" <= ahigh1 and ahigh1 < x"F8"
 							  and x"00" <= ahigh2 and ahigh2 < x"96" else
 		
 		-- External devices
@@ -187,7 +187,7 @@ begin
 
 	rom_addr <= x"00" & addr(15 downto 0);
 	vbuf_addr <= addr(15 downto 0);
-	vbuf_addr_bank <= addr(17 downto 16);
+	vbuf_addr_bank <= addr(18 downto 16);
 
 	vbuf_wr <= wr;
 	vbuf_en <= '1' when mtype = M_VIDEO else '0';

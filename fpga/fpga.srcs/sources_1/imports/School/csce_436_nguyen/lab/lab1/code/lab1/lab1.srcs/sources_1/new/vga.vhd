@@ -19,7 +19,7 @@ entity vga is
 		buf_clk : in  std_logic;
 		buf_en : in std_logic;
 		buf_wr : in std_logic;
-		buf_addr_bank : in std_logic_vector(1 downto 0); -- all/red/green/blue
+		buf_addr_bank : in std_logic_vector(2 downto 0); -- red/green/blue
 		buf_addr : in TAddr;
 		buf_din : in TData;
 		buf_dout : out TData
@@ -71,15 +71,15 @@ signal pixel_data_r : std_logic;
 signal pixel_data_g : std_logic;
 signal pixel_data_b : std_logic;
 
-signal buf_wr_r : std_logic;
-signal buf_wr_g : std_logic;
-signal buf_wr_b : std_logic;
-
 signal buf_dout_r : TData;
 signal buf_dout_g : TData;
 signal buf_dout_b : TData;
 
-signal last_buf_addr_bank : std_logic_vector(1 downto 0);
+signal masked_dout_r : TData;
+signal masked_dout_g : TData;
+signal masked_dout_b : TData;
+
+signal last_buf_addr_bank : std_logic_vector(2 downto 0);
 
 begin
 
@@ -136,16 +136,11 @@ begin
 		end if; -- rising_edge(buf_clk)
 	end process;
 	
-	buf_dout <=
-		(buf_dout_r and buf_dout_g and buf_dout_b) when last_buf_addr_bank = "00" else
-		buf_dout_r when last_buf_addr_bank = "01" else
-		buf_dout_g when last_buf_addr_bank = "10" else
-		buf_dout_b when last_buf_addr_bank = "11" else
-		(others => '0');
-	
-	buf_wr_r <= '1' when buf_addr_bank = "00" or buf_addr_bank = "01" else '0';
-	buf_wr_g <= '1' when buf_addr_bank = "00" or buf_addr_bank = "10" else '0';
-	buf_wr_b <= '1' when buf_addr_bank = "00" or buf_addr_bank = "11" else '0';
+	masked_dout_r <= buf_dout_r when last_buf_addr_bank(2) = '1' else (others => '0');
+	masked_dout_g <= buf_dout_g when last_buf_addr_bank(1) = '1' else (others => '0');
+	masked_dout_b <= buf_dout_b when last_buf_addr_bank(0) = '1' else (others => '0');
+
+	buf_dout <= masked_dout_r and masked_dout_g and masked_dout_b;
 
 	maddr <= std_logic_vector(next_idx(19-1 downto 4));
 
@@ -163,7 +158,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr_r & "",
+		web => buf_addr_bank(2) & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din,
 		doutb => buf_dout_r
@@ -178,7 +173,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr_g & "",
+		web => buf_addr_bank(1) & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din,
 		doutb => buf_dout_g
@@ -193,7 +188,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr_b & "",
+		web => buf_addr_bank(0) & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din,
 		doutb => buf_dout_b

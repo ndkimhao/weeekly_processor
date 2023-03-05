@@ -12,7 +12,7 @@ entity CPU is
 
 		vbuf_en : out std_logic;
 		vbuf_wr : out std_logic;
-		vbuf_addr_bank : out std_logic_vector(1 downto 0);
+		vbuf_addr_bank : out std_logic_vector(2 downto 0);
 		vbuf_addr : out TAddr;
 		vbuf_dout : out TData;
 		vbuf_din : in TData;

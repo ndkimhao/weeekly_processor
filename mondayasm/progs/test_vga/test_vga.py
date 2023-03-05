@@ -32,15 +32,15 @@ CODE_OFFSET = 0xA000
 
 def start():
     addr = 0x2000
-    for color in range(4):
-        MOV(A, 0xF8 + color)
+    for color in range(8):
+        MOV(A, 0xF0 + color)
         MOV(B, 0)
         MMAP(0, 0x9600, 1)
         for i in range(10):
             MOV(M[addr], 0xFFFF)
             addr += 80
 
-    MOV(A, 0xF8)
+    MOV(A, 0xF3)
     MOV(B, 0)
     MMAP(0, 0x9600, 1)
 
