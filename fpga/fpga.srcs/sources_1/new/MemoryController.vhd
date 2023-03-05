@@ -329,12 +329,11 @@ begin
 		valid => ps2_recv_valid
 	);
 
-	ps2_receiver : entity work.ps2_keyboard port map (
+	ps2_receiver : entity work.PS2Receiver port map (
 		clk => clk,
-		reset => reset,
-		ps2_clk => ps2_clk,
-		ps2_data => ps2_data,
-		ps2_code_new => ps2_recv_wr_en,
-		ps2_code => ps2_recv_din
+		kclk => ps2_clk,
+		kdata => ps2_data,
+		oflag => ps2_recv_wr_en,
+		keycode => ps2_recv_din
 	);
 end Behavioral;
