@@ -26,6 +26,9 @@ entity MemoryController is
 		uart_tx : out std_logic;
 		uart_rx : in std_logic;
 		
+		ps2_clk  : in std_logic;
+		ps2_data : in std_logic;
+		
 		led_out : out TByte;
 		btn_in : in std_logic_vector(13-1 downto 0);
 
@@ -66,6 +69,15 @@ signal uart_recv_empty : std_logic;
 signal uart_recv_valid : std_logic;
 signal uart_recv_data_count : std_logic_vector(4 downto 0);
 
+signal ps2_recv_din : std_logic_vector(7 downto 0);
+signal ps2_recv_wr_en : std_logic;
+signal ps2_recv_dout : std_logic_vector(7 downto 0);
+signal ps2_recv_full : std_logic;
+signal ps2_recv_empty : std_logic;
+signal ps2_recv_valid : std_logic;
+signal ps2_recv_data_count : std_logic_vector(4 downto 0);
+signal ps2_recv_buffer_rd_en : std_logic;
+
 ------
 
 signal ahigh : unsigned(PhyAddrWidth-8-1 downto 0);
@@ -80,11 +92,9 @@ type TMappedMemory is (
 	M_UART_SEND,
 	M_UART_RECV,
 	M_UART_STATUS,
-	M_SPI_SEND,
-	M_SPI_STATUS,
+	M_PS2_RECV,
 	M_LED_WRITE,
 	M_BTN_READ,
-	M_PS2_READ,
 	M_CLK_READ_0,
 	M_CLK_READ_1,
 	M_CLK_READ_2,
@@ -133,11 +143,10 @@ begin
 		M_UART_SEND   when dev_en = '1' and alow = x"00" else
 		M_UART_RECV   when dev_en = '1' and alow = x"02" else
 		M_UART_STATUS when dev_en = '1' and alow = x"04" else
-		M_SPI_SEND    when dev_en = '1' and alow = x"06" else
-		M_SPI_STATUS  when dev_en = '1' and alow = x"08" else
+		M_PS2_RECV    when dev_en = '1' and alow = x"06" else
+
 		M_LED_WRITE   when dev_en = '1' and alow = x"0A" else
 		M_BTN_READ    when dev_en = '1' and alow = x"0C" else
-		M_PS2_READ    when dev_en = '1' and alow = x"0E" else
 		
 		-- Counters
 		M_CLK_READ_0 when dev_en = '1' and alow = x"10" else
@@ -166,6 +175,10 @@ begin
 		"0" & uart_recv_empty & uart_recv_full & uart_recv_data_count &
 		"0" & uart_send_empty & uart_send_full & uart_send_data_count
 			when last_mtype = M_UART_STATUS else
+			
+		ps2_recv_valid & ps2_recv_empty & "000000" & ps2_recv_dout
+			when last_mtype = M_PS2_RECV else
+
 		"000" & btn_in
 			when last_mtype = M_BTN_READ else
 		x"00" & s_led_out when last_mtype = M_LED_WRITE else
@@ -289,4 +302,26 @@ begin
 		rx => uart_rx
     );
 
+	--- PS/2
+	ps2_recv_buffer_rd_en <= '1' when mtype = M_PS2_RECV else '0';
+	ps2_recv_buffer : fifo_uart_buffer port map (
+		clk => clk,
+		srst => reset,
+		din => ps2_recv_din,
+		wr_en => ps2_recv_wr_en,
+		rd_en => ps2_recv_buffer_rd_en,
+		dout => ps2_recv_dout,
+		full => ps2_recv_full,
+		empty => ps2_recv_empty,
+		valid => ps2_recv_valid,
+		data_count => ps2_recv_data_count
+	);
+
+	ps2_receiver : entity work.ps2_keyboard port map (
+		clk => clk,
+		ps2_clk => ps2_clk,
+		ps2_data => ps2_data,
+		ps2_code_new => ps2_recv_wr_en,
+		ps2_code => ps2_recv_din
+	);
 end Behavioral;

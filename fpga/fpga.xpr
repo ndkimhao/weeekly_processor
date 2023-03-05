@@ -162,6 +162,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/ps2_recv/ps2_keyboard.vhd">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="C:/Users/nguye/Downloads/ps2_recv/ps2_keyboard.vhd"/>
+          <Attr Name="ImportTime" Val="1678041680"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/MemoryController.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -230,6 +238,14 @@
         <FileInfo SFType="VHDL2008">
           <Attr Name="ImportPath" Val="$PPRDIR/../../../Temp/code/video.vhdl"/>
           <Attr Name="ImportTime" Val="1675456492"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/ps2_recv/debounce.vhd">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="C:/Users/nguye/Downloads/ps2_recv/debounce.vhd"/>
+          <Attr Name="ImportTime" Val="1678041680"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

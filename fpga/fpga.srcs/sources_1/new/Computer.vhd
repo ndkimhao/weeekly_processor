@@ -17,7 +17,9 @@ entity Computer is
 		tmdsb : out  std_logic_vector (3 downto 0);
 		
 		uart_rx_out : out std_logic;
-		uart_tx_in : in std_logic
+		uart_tx_in : in std_logic;
+		ps2_clk  : in std_logic;
+		ps2_data : in std_logic
 	);
 end Computer;
 
@@ -77,6 +79,8 @@ begin
 		
 		uart_tx => uart_rx_out,
 		uart_rx => uart_tx_in,
+		ps2_clk => ps2_clk,
+		ps2_data => ps2_data,
 
 		led_out => led_out,
 		btn_in => btn_in

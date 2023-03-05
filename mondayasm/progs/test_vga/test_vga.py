@@ -7,14 +7,10 @@ DEV_ADDR = 0xFF00
 M_UART_SEND = M[DEV_ADDR + 0x00]
 M_UART_RECV = M[DEV_ADDR + 0x02]
 M_UART_STATUS = M[DEV_ADDR + 0x04]
-
-M_SPI_SEND = M[DEV_ADDR + 0x06]
-M_SPI_STATUS = M[DEV_ADDR + 0x08]
+M_PS2_RECV = M[DEV_ADDR + 0x06]
 
 M_LED = M[DEV_ADDR + 0x0A]
 M_BTN_READ = M[DEV_ADDR + 0x0C]
-
-M_PS2_READ = M[DEV_ADDR + 0x0E]
 
 FLAG_UART_RECV_VALID = 0x8000
 FLAG_UART_RECV_EMPTY = 0x4000
@@ -27,10 +23,39 @@ MASK_UART_SEND_COUNT = 0x003F
 
 CODE_OFFSET = 0xA000
 
-
 ###
 
+UART_HW_BUFSZ = 16
+
+
+def send_data():
+    stashed = PUSH(A, B, C)
+    MOV(C, UART_HW_BUFSZ + 1)  # C tracks send queue size
+    with Block() as for_a:
+        MOV(B, [A])
+        AND(B, 0x00FF)  # only use 1 byte
+        JEQ(B, 0, for_a.end)  # if (*A == '\0') break;
+
+        # check if send buffer is full
+        with Block() as wait_send_ready:
+            JLT(C, UART_HW_BUFSZ, wait_send_ready.end)  # have empty send slots
+            MOV(C, M_UART_STATUS)
+            AND(C, MASK_UART_SEND_COUNT)
+            JMP(wait_send_ready.begin)
+
+        MOV(M_UART_SEND, B)  # SEND UART
+        INC(A)
+        INC(C)
+        JMP(for_a.begin)  # loop next character
+    # end for_a
+    POP(stashed)
+
+
 def start():
+    MOV(SP, CODE_OFFSET - 0x100)
+    MOV(A, ConstData('Hello World!\n'))
+    CALL(send_data)
+
     addr = 0x2000
     for color in range(8):
         MOV(A, 0xF0 + color)
@@ -83,6 +108,16 @@ def start():
         for i in range(10):
             MOV(M[0x1000 - 80 * i], E)
         JMP(while_true.begin)
+
+        ss = PUSH(A, G, H)
+        with Block() as blk:
+            MOV(G, M_PS2_RECV)
+            AND(H, G, 0x8000)
+            JEQ(H, 0, blk.end)
+            MOV(A, ConstData("recv\n"))
+            CALL(send_data)
+        POP(ss)
+
     HALT()
 
 

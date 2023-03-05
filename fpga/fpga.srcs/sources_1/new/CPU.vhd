@@ -19,6 +19,8 @@ entity CPU is
 		
 		uart_tx : out std_logic;
 		uart_rx : in std_logic;
+		ps2_clk  : in std_logic;
+		ps2_data : in std_logic;
 		led_out : out std_logic_vector(8-1 downto 0);
 		btn_in : in std_logic_vector(13-1 downto 0)
 	);
@@ -87,6 +89,8 @@ begin
 		
 		uart_tx => uart_tx,
 		uart_rx => uart_rx,
+		ps2_clk => ps2_clk,
+		ps2_data => ps2_data,
 		led_out => led_out,
 		btn_in => btn_in,
 		
