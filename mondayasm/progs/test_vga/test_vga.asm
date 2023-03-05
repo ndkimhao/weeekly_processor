@@ -5,8 +5,8 @@
                                #      | 
                                #      | fn_start:
 60 a0 e0 00 9f                 # a000 |   mov SP, 0x9f00
-60 20 e0 68 a6                 # a005 |   mov A, ${const_data_1}
-5c f8 1e 06                    # a00a |   call ${fn_send_data}:rel + PC
+60 20 e0 ea a6                 # a005 |   mov A, ${const_data_1}
+5c f8 3b 06                    # a00a |   call ${fn_send_data}:rel + PC
 60 20 e0 f0 00                 # a00e |   mov A, 0xf0
 60 40 00                       # a013 |   mov B, 0
 54 00 e0 1c 00 96 01           # a016 |   mmap 0, 0x9600, 0x1
@@ -256,58 +256,110 @@ e8 20 1c f8 ff 10 00           # a5b4 |   jeq A, 0xff, ${_E_fn_start_2}:rel + PC
 62 e0 fc d0 0d                 # a5ed |   mov [0xdd0], E
 62 e0 fc 80 0d                 # a5f2 |   mov [0xd80], E
 62 e0 fc 30 0d                 # a5f7 |   mov [0xd30], E
-58 f8 b5 ff                    # a5fc |   jmp ${_B_fn_start_1}:rel + PC
-e0 20                          # a600 |   push A
-e0 fe                          # a602 |   push G
-e0 ff                          # a604 |   push H
+e0 20                          # a5fc |   push A
+e0 40                          # a5fe |   push B
+e0 fe                          # a600 |   push G
+e0 ff                          # a602 |   push H
                                #      | _B_fn_start_3:
-61 fe e0 06 ff                 # a606 |   mov G, [0xff06]
-ac ff fe e0 00 80              # a60b |   and H, G, 0x8000
-e8 ff 00 f8 0f 00              # a611 |   jeq H, 0, ${_E_fn_start_3}:rel + PC
-60 20 e0 76 a6                 # a617 |   mov A, ${const_data_2}
-5c f8 0c 00                    # a61c |   call ${fn_send_data}:rel + PC
+61 fe e0 06 ff                 # a604 |   mov G, [0xff06]
+ac ff fe e0 00 80              # a609 |   and H, G, 0x8000
+e8 ff 00 f8 28 00              # a60f |   jeq H, 0, ${_E_fn_start_3}:rel + PC
+60 20 e0 f8 a6                 # a615 |   mov A, ${const_data_2}
+5c f8 2b 00                    # a61a |   call ${fn_send_data}:rel + PC
+60 20 e0 00 a7                 # a61e |   mov A, ${var_uart_buf}
+60 40 fe                       # a623 |   mov B, G
+5c f8 5f 00                    # a626 |   call ${fn_put_hex_16}:rel + PC
+5c f8 1b 00                    # a62a |   call ${fn_send_data}:rel + PC
+60 20 e0 fe a6                 # a62e |   mov A, ${const_data_3}
+5c f8 12 00                    # a633 |   call ${fn_send_data}:rel + PC
                                #      | _E_fn_start_3:
-e4 ff                          # a620 |   pop H
-e4 fe                          # a622 |   pop G
-e4 20                          # a624 |   pop A
+e4 ff                          # a637 |   pop H
+e4 fe                          # a639 |   pop G
+e4 40                          # a63b |   pop B
+e4 20                          # a63d |   pop A
+58 f8 72 ff                    # a63f |   jmp ${_B_fn_start_1}:rel + PC
                                #      | _E_fn_start_1:
-d8                             # a626 |   halt
-dc                             # a627 |   ret
+d8                             # a643 |   halt
+dc                             # a644 |   ret
                                #      | end_fn_start:
                                #      | 
                                #      | fn_send_data:
-e0 20                          # a628 |   push A
-e0 40                          # a62a |   push B
-e0 60                          # a62c |   push C
-60 60 1c 11                    # a62e |   mov C, 0x11
+e0 20                          # a645 |   push A
+e0 40                          # a647 |   push B
+e0 60                          # a649 |   push C
+60 60 1c 11                    # a64b |   mov C, 0x11
                                #      | _B_fn_send_data_1:
-61 40 20                       # a632 |   mov B, [A]
-2c 40 e0 ff 00                 # a635 |   and B, 0xff
-e8 40 00 f8 27 00              # a63a |   jeq B, 0, ${_E_fn_send_data_1}:rel + PC
+61 40 20                       # a64f |   mov B, [A]
+2c 40 e0 ff 00                 # a652 |   and B, 0xff
+e8 40 00 f8 27 00              # a657 |   jeq B, 0, ${_E_fn_send_data_1}:rel + PC
                                #      | _B_fn_send_data_2:
-f0 60 1c f8 10 14 00           # a640 |   jlt C, 0x10, ${_E_fn_send_data_2}:rel + PC
-61 60 e0 04 ff                 # a647 |   mov C, [0xff04]
-2c 60 1c 3f                    # a64c |   and C, 0x3f
-58 f8 f0 ff                    # a650 |   jmp ${_B_fn_send_data_2}:rel + PC
+f0 60 1c f8 10 14 00           # a65d |   jlt C, 0x10, ${_E_fn_send_data_2}:rel + PC
+61 60 e0 04 ff                 # a664 |   mov C, [0xff04]
+2c 60 1c 3f                    # a669 |   and C, 0x3f
+58 f8 f0 ff                    # a66d |   jmp ${_B_fn_send_data_2}:rel + PC
                                #      | _E_fn_send_data_2:
-62 e0 40 00 ff                 # a654 |   mov [0xff00], B
-44 20                          # a659 |   inc A
-44 60                          # a65b |   inc C
-58 f8 d5 ff                    # a65d |   jmp ${_B_fn_send_data_1}:rel + PC
+62 e0 40 00 ff                 # a671 |   mov [0xff00], B
+44 20                          # a676 |   inc A
+44 60                          # a678 |   inc C
+58 f8 d5 ff                    # a67a |   jmp ${_B_fn_send_data_1}:rel + PC
                                #      | _E_fn_send_data_1:
-e4 60                          # a661 |   pop C
-e4 40                          # a663 |   pop B
-e4 20                          # a665 |   pop A
-dc                             # a667 |   ret
+e4 60                          # a67e |   pop C
+e4 40                          # a680 |   pop B
+e4 20                          # a682 |   pop A
+dc                             # a684 |   ret
                                #      | end_fn_send_data:
+                               #      | 
+                               #      | fn_put_hex_16:
+e0 20                          # a685 |   push A
+e0 40                          # a687 |   push B
+e0 60                          # a689 |   push C
+60 60 40                       # a68b |   mov C, B
+a0 40 60 1c 0c                 # a68e |   shr B, C, 0xc
+2c 40 1c 0f                    # a693 |   and B, 0xf
+5c f8 39 00                    # a697 |   call ${fn_put_hex_4}:rel + PC
+44 20                          # a69b |   inc A
+a0 40 60 1c 08                 # a69d |   shr B, C, 0x8
+2c 40 1c 0f                    # a6a2 |   and B, 0xf
+5c f8 2a 00                    # a6a6 |   call ${fn_put_hex_4}:rel + PC
+44 20                          # a6aa |   inc A
+a0 40 60 1c 04                 # a6ac |   shr B, C, 0x4
+2c 40 1c 0f                    # a6b1 |   and B, 0xf
+5c f8 1b 00                    # a6b5 |   call ${fn_put_hex_4}:rel + PC
+44 20                          # a6b9 |   inc A
+a0 40 60 00                    # a6bb |   shr B, C, 0
+2c 40 1c 0f                    # a6bf |   and B, 0xf
+5c f8 0d 00                    # a6c3 |   call ${fn_put_hex_4}:rel + PC
+44 20                          # a6c7 |   inc A
+e4 60                          # a6c9 |   pop C
+e4 40                          # a6cb |   pop B
+e4 20                          # a6cd |   pop A
+dc                             # a6cf |   ret
+                               #      | end_fn_put_hex_16:
+                               #      | 
+                               #      | fn_put_hex_4:
+60 ff 40                       # a6d0 |   mov H, B
+                               #      | _B_fn_put_hex_4_2:
+f8 ff 1c f8 09 0f 00           # a6d3 |   jgt H, 0x9, ${_E_fn_put_hex_4_2}:rel + PC
+00 ff 1c 30                    # a6da |   add H, 0x30
+58 f8 08 00                    # a6de |   jmp ${_L_fn_put_hex_4_1}:rel + PC
+                               #      | _E_fn_put_hex_4_2:
+00 ff 1c 57                    # a6e2 |   add H, 0x57
+                               #      | _L_fn_put_hex_4_1:
+62 20 ff                       # a6e6 |   mov [A], H
+dc                             # a6e9 |   ret
+                               #      | end_fn_put_hex_4:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const_data_1:
-48 65 6c 6c 6f 20 57 6f 72 6c 64 21 0a 00 # a668 |   .data str:"Hello World!\n"
+48 65 6c 6c 6f 20 57 6f 72 6c 64 21 0a 00 # a6ea |   .data str:"Hello World!\n"
                                #      | const_data_2:
-72 65 63 76 0a 00              # a676 |   .data str:"recv\n"
+50 53 32 3a 20 00              # a6f8 |   .data str:"PS2: "
+                               #      | const_data_3:
+0a 00                          # a6fe |   .data str:"\n"
                                #      | SECTION_END_const_data:
                                #      | 
                                #      | SECTION_BEGIN_static_data:
+                               #      | var_uart_buf:
+                               # a700 |   .bss size:130
                                #      | SECTION_END_static_data:
                                #      | 

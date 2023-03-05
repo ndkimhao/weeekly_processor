@@ -27,6 +27,8 @@ CODE_OFFSET = 0xA000
 
 UART_HW_BUFSZ = 16
 
+uart_buf = StaticVar('uart_buf', 128 + 2)
+
 
 def send_data():
     stashed = PUSH(A, B, C)
@@ -49,6 +51,38 @@ def send_data():
         JMP(for_a.begin)  # loop next character
     # end for_a
     POP(stashed)
+
+
+# Input: A => PTR to string buffer (2 bytes, null-terminated)
+#        B => value
+# Output: none
+def put_hex_4():
+    lb_ret = DeclAnonLabel()
+    MOV(H, B)
+    with Block() as if_le_9:
+        JGT(H, 9, if_le_9.end)
+        ADD(H, ord('0'))
+        JMP(lb_ret)
+    # else
+    ADD(H, ord('a') - 10)
+
+    # lb_ret:
+    EmitLabel(lb_ret)
+    MOV([A], H)
+
+
+# Input: A => PTR to string buffer (5 bytes, null-terminated)
+#        B => value
+# Output: none
+def put_hex_16():
+    stash = PUSH(A, B, C)
+    MOV(C, B)
+    for i in [3, 2, 1, 0]:
+        SHR(B, C, i * 4)
+        AND(B, 0xF)
+        CALL(put_hex_4)
+        INC(A)
+    POP(stash)
 
 
 def start():
@@ -107,17 +141,23 @@ def start():
         INC(E)
         for i in range(10):
             MOV(M[0x1000 - 80 * i], E)
-        JMP(while_true.begin)
 
-        ss = PUSH(A, G, H)
+        ss = PUSH(A, B, G, H)
         with Block() as blk:
             MOV(G, M_PS2_RECV)
             AND(H, G, 0x8000)
             JEQ(H, 0, blk.end)
-            MOV(A, ConstData("recv\n"))
+            MOV(A, ConstData("PS2: "))
+            CALL(send_data)
+            MOV(A, uart_buf)
+            MOV(B, G)
+            CALL(put_hex_16)
+            CALL(send_data)
+            MOV(A, ConstData("\n"))
             CALL(send_data)
         POP(ss)
 
+        JMP(while_true.begin)
     HALT()
 
 
