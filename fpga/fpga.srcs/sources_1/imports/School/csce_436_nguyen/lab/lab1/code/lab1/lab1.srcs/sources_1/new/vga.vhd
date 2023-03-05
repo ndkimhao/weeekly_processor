@@ -54,8 +54,12 @@ subtype TIndex is  unsigned(19-1 downto 0);
 signal row, col: unsigned(9 downto 0);
 signal idx: TIndex;
 
-signal next_row, next_col: unsigned(9 downto 0);
-signal next_idx: TIndex;
+signal next_row: unsigned(9 downto 0) := (others => '0');
+signal next_col: unsigned(9 downto 0) := (others => '0');
+signal next_idx: TIndex := (others => '0');
+
+signal buf_row, buf_col: unsigned(9 downto 0);
+signal buf_idx: TIndex;
 
 signal maddr : std_logic_vector(14 downto 0);
 signal mdin : TData;
@@ -86,9 +90,13 @@ begin
 					next_idx <= (others => '0');
 				end if;
 	
-				row <= next_row;
-				col <= next_col;
-				idx <= next_idx;
+				buf_row <= next_row;
+				buf_col <= next_col;
+				buf_idx <= next_idx;
+
+				row <= buf_row;
+				col <= buf_col;
+				idx <= buf_idx;
 			end if;
 		end if; -- rising_edge(clk)
 	end process;

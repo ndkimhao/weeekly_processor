@@ -25,12 +25,42 @@ FLAG_UART_SEND_EMPTY = 0x0040
 FLAG_UART_SEND_FULL = 0x0020
 MASK_UART_SEND_COUNT = 0x003F
 
-CODE_OFFSET = 0x5000
+CODE_OFFSET = 0xA000
 
 
 ###
 
 def start():
+    MOV(A, 0xFE)
+    MOV(B, 0)
+    MMAP(0, 0x9600, 1)
+
+    addr = 0x1000
+    for i in range(10):
+        MOV(M[addr - 2], 0x00FF)
+        MOV(M[addr], 0xFFFF)
+        MOV(M[addr + 2], 0xFF00)
+        addr += 80
+
+    for i in range(10):
+        MOV(M[addr - 2], 0x00FF)
+        MOV(M[addr], 0xFFFF - 1)
+        MOV(M[addr + 2], 0xFF00)
+        addr += 80
+
+    for i in range(10):
+        MOV(M[addr - 2], 0x00FF)
+        MOV(M[addr], 0xFF00)
+        MOV(M[addr + 2], 0xFF00)
+        addr += 80
+
+    for i in range(10):
+        MOV(M[addr - 2], 0x00FF)
+        MOV(M[addr], 0x0F0F)
+        MOV(M[addr + 2], 0xFF00)
+        addr += 80
+
+    MOV(E, 0)
     MOV(M_LED, 0x000)
     with Block() as while_true:
         MOV(A, 0)
@@ -40,6 +70,9 @@ def start():
             MUL(B, B)
             JMP(loop.begin)
         INC(M_LED)
+        INC(E)
+        for i in range(10):
+            MOV(M[0x1000 - 80 * i], E)
         JMP(while_true.begin)
     HALT()
 
