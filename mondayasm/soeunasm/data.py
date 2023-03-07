@@ -30,6 +30,6 @@ def global_var(name: str, size: int) -> Expr:
     return Expr.to_expr(v)
 
 
-def const_data(name, obj=None) -> Expr:
+def const(name, obj=None) -> Expr:
     v = mon.ConstData(name, obj)
     return Expr.to_expr(v)

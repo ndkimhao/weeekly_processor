@@ -312,3 +312,7 @@ class Expr:
     @property
     def is_pure_label(self):
         return self.op == ExprOp.NONE and self.a.is_pure_label
+
+    @property
+    def is_pure(self):
+        return self.op == ExprOp.NONE

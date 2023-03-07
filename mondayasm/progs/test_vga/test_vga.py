@@ -1,5 +1,5 @@
 from mondayasm import *
-from soeunasm.data import const_data
+from soeunasm.data import const
 
 ###
 

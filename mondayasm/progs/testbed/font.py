@@ -1,6 +1,6 @@
-from soeunasm.data import const_data
+from soeunasm.data import const
 
-FONT_COMPRESSED = const_data(
+FONT_COMPRESSED = const(
     'FONT_COMPRESSED',
     bytes.fromhex(
         '00003810018e0410e440600039101ffe23ffc460384077f0f111e201dfc38441e223bf87080c1f813f047010e041c1038407100e401d0e'
@@ -24,7 +24,7 @@ FONT_COMPRESSED = const_data(
         '003810001839e070201c0621cf030071c8e4e180000000')
 )
 
-FONT_INDEX = const_data(
+FONT_INDEX = const(
     'FONT_INDEX',
     [0, 2, 8, 12, 20, 38, 58, 75, 81, 92, 103, 116, 122, 128, 132, 136, 151, 169, 180, 195, 208, 225, 238, 249, 264,
      274, 287, 293, 301, 318, 324, 341, 354, 369, 377, 387, 398, 409, 419, 427, 440, 446, 454, 464, 484, 490, 503, 518,

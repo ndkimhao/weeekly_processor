@@ -4,7 +4,8 @@ from soeunasm.expr import Expr
 from soeunasm.cmp_expr import CmpExpr
 from mondayasm import builder as monb
 import mondayasm as mon
-from soeunasm.scope_global import inc_stack_offset, dec_stack_offset, push_global_scope, pop_global_scope
+from soeunasm.scope_global import inc_stack_offset, dec_stack_offset, push_global_scope, pop_global_scope, BreakIf, \
+    ContinueIf
 
 g_if_stack: list['IfCtx'] = []
 
@@ -12,9 +13,6 @@ g_if_stack: list['IfCtx'] = []
 class IfCtxInner:
     def __init__(self, blk: 'IfCtx'):
         self._ctx = blk
-
-    def Break(self):
-        mon.JMP(self._ctx.l_early_break)
 
 
 # noinspection PyProtectedMember
@@ -64,6 +62,12 @@ class IfCtx:
 
     def jmp(self, target, *, negated: bool = False, signed: bool = False):
         return self._cond.then_jmp(target, negated=negated, signed=signed)
+
+    def then_break(self):
+        return BreakIf(self._cond)
+
+    def then_continue(self):
+        return ContinueIf(self._cond)
 
 
 # noinspection PyPep8Naming

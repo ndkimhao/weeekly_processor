@@ -3,8 +3,8 @@ import mondayasm as mon
 from mondayasm import CodeGen
 from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While, call
 from soeunasm.data import local_vars, local_var
-from soeunasm.free_expr import mul, expr, deref, mov, address_of
-from soeunasm.miscs import Comment
+from soeunasm.free_expr import mul, expr, deref, mov, addr_of
+from soeunasm.miscs import cmt
 from soeunasm.scope_func import Return
 
 
@@ -48,7 +48,7 @@ def main():
     mabyte = expr([A])
     mabyte @= B.byte()
 
-    Comment('s1 @= 2')
+    cmt('s1 @= 2')
     s1 @= 2
     s2 @= 3
     with If(A < B, preserve=(A, B)) as outer:
@@ -89,7 +89,7 @@ def main():
         Continue()
         B @= C * A
 
-        Comment('test comment')
+        cmt('test comment')
         Cleanup()
         A @= 1
 

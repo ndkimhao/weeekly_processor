@@ -176,7 +176,7 @@ def deref(val):
     return Expr.to_expr([val.a])
 
 
-def address_of(val):
+def addr_of(val):
     if isinstance(val, list):
         assert len(val) == 1
         return Expr.to_expr(val[0])
@@ -184,3 +184,14 @@ def address_of(val):
     assert val.op == ExprOp.NONE
     assert isinstance(val.a, RawIndirect)
     return val.a.as_direct()
+
+
+class MemoryAccessor:
+    def __getitem__(self, item):
+        return deref(item)
+
+    def __setitem__(self, key, value):
+        ...
+
+
+M = MemoryAccessor()

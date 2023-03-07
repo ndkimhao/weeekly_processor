@@ -39,7 +39,7 @@ class CmpExpr:
         assert isinstance(self.b, (RawExpr, RawIndirect))
 
     def then_jmp(self, target: Any, *, negated: bool = False, signed: bool = False) -> Statement | Block:
-        if isinstance(target, so.expr.Expr):
+        if isinstance(target, so.Expr):
             assert target.op == ExprOp.NONE
             target = target.a
 

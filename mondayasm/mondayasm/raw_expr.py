@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass, field
 from typing import Union
 
@@ -51,6 +52,9 @@ class Register:
 @dataclass(frozen=True)
 class ConstLabel:
     name: str
+
+    def __post_init__(self):
+        assert re.match(r'^[0-9a-zA-Z-_]+$', self.name), repr(self.name)
 
     def __repr__(self) -> str:
         return f'${self.name}'

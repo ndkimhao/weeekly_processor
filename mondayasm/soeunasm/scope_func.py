@@ -134,7 +134,8 @@ def call(fn, *args: Any, preserve_registers: bool = True):
                 arg in g_func_scope_stack[-1]._used_regs:
             preserve.append(REG_NAME_MAP[arg])
 
-    arg_names = arg_names[:-n_regs]
+    if n_regs > 0:
+        arg_names = arg_names[:-n_regs]
     var_args = len(arg_names) >= 1 and arg_names[-1] == 'VAR_ARGS'
     if var_args:
         assert len(args) >= len(arg_names) - 1
@@ -192,8 +193,9 @@ def generate_fn_code(fn, name, l_fn_entry):
 
     arg_names = arg_names
     stack_args = []
+    stack_offset_after_args = 1 + len(preserve)  # PC + regs
     for i in range(len(arg_names) - len(reg_args)):
-        offset = (i + 1) * 2
+        offset = stack_offset_after_args * 2
         stack_loc = mon.SP + offset + sp_offset
         stack_args.append(expr([stack_loc]))
 

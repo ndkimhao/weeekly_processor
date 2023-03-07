@@ -64,6 +64,8 @@ class ForScopeCtx:
         for v in self._preserve:
             mon.PUSH(v.a)
 
+        self._init.emit(forced=True)
+
         mon.EmitLabel(self.l_begin_body)
         if self._cond is not True:
             self._cond.then_jmp(self.l_cleanup, negated=True, signed=self._signed)
@@ -94,8 +96,10 @@ class ForScopeCtx:
 
 
 # noinspection PyPep8Naming
-def For(init: BlockStmArg, cond: CmpExpr, incr: BlockStmArg,
+def For(init: BlockStmArg, cond: CmpExpr | bool, incr: BlockStmArg,
         *, signed: bool = False, preserve: Iterable[Expr] = ()):
+    if isinstance(cond, bool):
+        assert cond is True
     return ForScopeCtx(init, cond, incr, signed, preserve, 'for')
 
 
@@ -103,3 +107,7 @@ def While(cond: CmpExpr | bool, *, signed: bool = False, preserve: Iterable[Expr
     if isinstance(cond, bool):
         assert cond is True
     return ForScopeCtx((), cond, (), signed, preserve, 'while_true' if cond is True else 'while')
+
+
+def Loop(*, preserve: Iterable[Expr] = ()):
+    return ForScopeCtx((), True, (), False, preserve, 'loop')
