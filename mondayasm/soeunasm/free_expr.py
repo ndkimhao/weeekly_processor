@@ -1,3 +1,4 @@
+import mondayasm as mon
 from mondayasm import RawExpr, RawIndirect
 from soeunasm import ExprOp, Expr
 
@@ -78,7 +79,7 @@ def Or(lhs, rhs):
     return lhs | rhs
 
 
-def xor(lhs, rhs):
+def Xor(lhs, rhs):
     lhs = Expr.to_expr(lhs)
     rhs = Expr.to_expr(rhs)
     return lhs ^ rhs
@@ -86,27 +87,27 @@ def xor(lhs, rhs):
 
 def neg(val):
     val = Expr.to_expr(val)
-    return -val
+    return val @ (-val)
 
 
-def invert(val):
+def Not(val):
     val = Expr.to_expr(val)
-    return ~val
+    return val @ (~val)
 
 
 def bool(val):
     val = Expr.to_expr(val)
-    return val.bool()
+    return val @ val.bool()
 
 
 def inc(val):
     val = Expr.to_expr(val)
-    return val.inc()
+    return val @ val.inc()
 
 
 def dec(val):
     val = Expr.to_expr(val)
-    return val.dec()
+    return val @ val.dec()
 
 
 def byte(val):
@@ -176,7 +177,7 @@ def deref(val):
     return Expr.to_expr([val.a])
 
 
-def addr_of(val):
+def addr(val):
     if isinstance(val, list):
         assert len(val) == 1
         return Expr.to_expr(val[0])
@@ -195,3 +196,17 @@ class MemoryAccessor:
 
 
 M = MemoryAccessor()
+
+
+def decl_label(name: str = '', *, anon: bool = True):
+    lbl = mon.DeclLabel(name, anon)
+    return Expr.to_expr(lbl)
+
+
+def label(name: str | Expr, *, anon: bool = True):
+    assert isinstance(name, str | Expr)
+    if isinstance(name, Expr):
+        assert name.is_pure_label
+        mon.EmitLabel(name.a)
+    else:
+        mon.Label(name, anon)

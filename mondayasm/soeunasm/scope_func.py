@@ -54,7 +54,7 @@ class FuncScopeCtx:
             self._emit_cleanup()
 
         stack_offset = scope_global.cur_stack_offset()
-        adjust_sp(stack_offset * 2)
+        adjust_sp(stack_offset)
         dec_stack_offset(stack_offset)
 
         for v in reversed(self._preserve):
@@ -146,9 +146,11 @@ def call(fn, *args: Any, preserve_registers: bool = True):
         for arg in reversed(args):
             arg = Expr.to_expr(arg)
             assert arg.op == ExprOp.NONE
-            mon.PUSH(arg.a)
+            Statement(StmOp.PUSH, arg.a)
+            inc_stack_offset(2)
         mon.CALL(l_fn_entry)
         adjust_sp(len(args) * 2)
+        dec_stack_offset(len(args) * 2)
 
 
 REG_NAME_MAP = {
@@ -189,13 +191,12 @@ def generate_fn_code(fn, name, l_fn_entry):
             preserve.append(reg_expr)
     reg_args.reverse()
 
-    sp_offset = RawExpr.to_expr(placeholder_stack_offset) * 2
+    sp_offset = RawExpr.to_expr(placeholder_stack_offset)
 
     arg_names = arg_names
     stack_args = []
-    stack_offset_after_args = 1 + len(preserve)  # PC + regs
     for i in range(len(arg_names) - len(reg_args)):
-        offset = stack_offset_after_args * 2
+        offset = (1 + len(preserve) + i) * 2
         stack_loc = mon.SP + offset + sp_offset
         stack_args.append(expr([stack_loc]))
 

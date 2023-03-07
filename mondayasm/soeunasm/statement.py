@@ -85,8 +85,8 @@ class Statement:
 
         self.emitted.set(True)
 
-        sp_offset = mondayasm.types.Term(scope_global.cur_stack_offset(), 2)
-        sp_offset_ph = mondayasm.types.Term(enums.placeholder_stack_offset, 2)
+        sp_offset = scope_global.cur_stack_offset()
+        sp_offset_ph = enums.placeholder_stack_offset
 
         cmd_args = []
         if self.a is not None:

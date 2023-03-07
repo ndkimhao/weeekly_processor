@@ -3,7 +3,7 @@ import mondayasm as mon
 from mondayasm import CodeGen
 from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While, call
 from soeunasm.data import local_vars, local_var
-from soeunasm.free_expr import mul, expr, deref, mov, addr_of
+from soeunasm.free_expr import mul, expr, deref, mov, addr
 from soeunasm.miscs import cmt
 from soeunasm.scope_func import Return
 

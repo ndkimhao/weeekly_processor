@@ -112,7 +112,7 @@ def main():
 
     CHUNK_SIZE = 256  # bytes
 
-    with serial.Serial(args.port, 115200, timeout=1) as ser:
+    with serial.Serial(args.port, 115200, timeout=0.5) as ser:
         comm = Communicator(ser)
         if args.file:
             comm.send_cmd('PING', 'PONG')
@@ -135,13 +135,13 @@ def main():
                     comm.send_cmd(f'READ {chunk_start:04x} {chunk_end:04x}',
                                   f'{chunk_start:04x} {chunk_end:04x} {chunk.hex()}')
 
-            print(f'\nVerified\n\n{SEP}\n')
+                print(f'\nVerified\n\n{SEP}\n')
 
         if args.jmp:
             comm.send_cmd(f'JMP {code_offset:04x}', no_wait=True)
 
         if args.monitor:
-            print(f'\n\n{SEP}')
+            print(f'\n{SEP}')
             comm.run_miniterm()
 
 

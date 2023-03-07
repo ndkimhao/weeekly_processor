@@ -1,5 +1,5 @@
 from progs.stdlib import printf
-from progs.stdlib.printf import send_char
+from progs.stdlib.printf import send_char, test_itoa_10
 from soeunasm import call, halt, init_code_gen, Reg
 from soeunasm.data import const
 
@@ -8,9 +8,9 @@ CODE_OFFSET = 0xA000
 
 
 def main(A, B):
-    A @= 123
+    A @= 12345
     B @= 456
-    call(printf, const("Hello World: a=%d b=%x\n"), A, B)
+    call(printf, const("Hello World: %%a=%d %%b=%x v1=%d v2=%d\n"), A, B, 323, 42342)
     call(printf, const("from soeunasm import call, halt, init_code_gen, Reg\n"), A, B)
 
 

@@ -262,18 +262,16 @@ class RawExpr:
             assert isinstance(v, (Register, ConstLabel, int)), v
             return RawExpr() + v
 
-    def replace_once(self, find: Term, replace: Term) -> 'RawExpr':
-        assert isinstance(find, Term)
-        assert isinstance(replace, Term)
+    def replace_once(self, find_value, replace_value) -> 'RawExpr':
         found_idx = -1
         for i, t in enumerate(self.terms):
-            if t == find:
+            if t.value == find_value:
                 found_idx = i
                 break
         if found_idx == -1:
             return self
         return RawExpr(tuple(
-            t if i != found_idx else replace
+            t if i != found_idx else Term(replace_value, t.factor)
             for i, t in enumerate(self.terms)
         ))
 
@@ -296,8 +294,8 @@ class RawIndirect:
 
         return RawExpr.to_expr(v)
 
-    def replace_once(self, find: Term, replace: Term) -> 'RawIndirect':
-        return RawIndirect(self.expr.replace_once(find, replace))
+    def replace_once(self, find_value, replace_value) -> 'RawIndirect':
+        return RawIndirect(self.expr.replace_once(find_value, replace_value))
 
 
 class MemoryMagic:

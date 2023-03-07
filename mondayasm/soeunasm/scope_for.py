@@ -60,7 +60,7 @@ class ForScopeCtx:
 
     def __enter__(self) -> ForScopeCtxInner:
         mon.EmitLabel(self.l_prepare)
-        inc_stack_offset(len(self._preserve))
+        inc_stack_offset(len(self._preserve) * 2)
         for v in self._preserve:
             mon.PUSH(v.a)
 
@@ -81,7 +81,7 @@ class ForScopeCtx:
 
         if not self._emitted_cleanup:
             self._emit_cleanup()
-        dec_stack_offset(len(self._preserve))
+        dec_stack_offset(len(self._preserve) * 2)
         for v in reversed(self._preserve):
             mon.POP(v.a)
         mon.EmitLabel(self.l_end)

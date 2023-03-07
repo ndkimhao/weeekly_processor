@@ -6,23 +6,24 @@ from soeunasm.free_expr import expr
 from soeunasm.scope_func import FuncScopeCtx
 
 
-def local_vars(n: int) -> tuple[Expr, ...]:
+def local_vars(n: int, *, size: int = 2) -> tuple[Expr, ...]:
+    assert size % 2 == 0
     g_stack = scope_global.g_stack
     assert len(g_stack) == 0 or \
            (len(g_stack) == 1 and isinstance(g_stack[0], FuncScopeCtx))
 
-    sp_offset = RawExpr.to_expr(placeholder_stack_offset) * 2
+    sp_offset = RawExpr.to_expr(placeholder_stack_offset)
     ret = []
     for i in range(n):
-        scope_global.inc_stack_offset(1)
-        cur_offset = scope_global.cur_stack_offset() * 2
+        scope_global.inc_stack_offset(size)
+        cur_offset = scope_global.cur_stack_offset()
         ret.append(Expr.to_expr([mon.SP + sp_offset - cur_offset]))
-    expr(mon.SP).__isub__(n * 2)
+    expr(mon.SP).__isub__(n * size)
     return tuple(ret)
 
 
-def local_var() -> Expr:
-    return local_vars(1)[0]
+def local_var(*, size: int = 2) -> Expr:
+    return local_vars(1, size=size)[0]
 
 
 def global_var(name: str, size: int) -> Expr:

@@ -58,6 +58,18 @@ def ContinueIf(*args, **kwargs):
     blk.inner_ctx.ContinueIf(*args, **kwargs)
 
 
+# noinspection PyPep8Naming
+def Exit(*args, **kwargs):
+    blk = __find_ctx('exit')
+    blk.inner_ctx.Exit(*args, **kwargs)
+
+
+# noinspection PyPep8Naming
+def ExitIf(*args, **kwargs):
+    blk = __find_ctx('exit')
+    blk.inner_ctx.ExitIf(*args, **kwargs)
+
+
 def __find_ctx(bypass: str):
     for blk in reversed(g_stack):
         if hasattr(blk, 'FUNCTION_BYPASS') and bypass in blk.FUNCTION_BYPASS:
