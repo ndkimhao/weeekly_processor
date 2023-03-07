@@ -8,9 +8,10 @@ if __name__ == '__main__':
     HEIGHT = 16
     WIDTH = 12
     ALL_ZEROS = '0' * WIDTH
-    all_encodes = []
+    all_bits = []
     print(f'img size = {im.size}')
     assert im.size == (ROWS * HEIGHT, COLS * WIDTH)
+    enc_index = []
     for i in range(ROWS):
         for j in range(HEIGHT):
             print(f'{i}, {j}:')
@@ -40,13 +41,16 @@ if __name__ == '__main__':
 
             print(' '.join(encode_bits))
             raw_encode = ''.join(encode_bits)
-            all_encodes.append(raw_encode)
+            while len(raw_encode) % 8 != 0:
+                raw_encode += '0'
+            enc_index.append(len(all_bits) // 8)
+            all_bits.extend(raw_encode)
 
-    all_bits = ''.join(all_encodes)
+    all_bits = ''.join(all_bits)
+    assert len(all_bits) % 8 == 0
     ba_encode = bytearray()
-    while len(all_bits) % 8 != 0:
-        all_bits += '0'
     for i in range(0, len(all_bits), 8):
         ba_encode.append(int(all_bits[i:i + 8], 2))
     print(f'total bytes = {len(ba_encode)}')
     print(ba_encode.hex())
+    print(enc_index)

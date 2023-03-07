@@ -258,7 +258,7 @@ def ConstData(name, obj=None) -> RawExpr:
         value = f'str:"{escaped}"'
         data = bytes(obj + '\0', 'utf-8')
     elif isinstance(obj, bytes):
-        value = f'raw:{obj.hex()}'
+        value = f'raw:'
         data = obj
     elif isinstance(obj, list):
         assert all(isinstance(e, int) for e in obj)
