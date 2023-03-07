@@ -12,7 +12,7 @@ package CodeROM is
 -- ## BEGIN ROM
 -- ##############################################################
 
-constant ROMSize : integer := 1355;
+constant ROMSize : integer := 1402;
 type TArrROM is array (0 to ROMSize) of TByte;
 constant arr_rom : TArrROM := (
                                                      --      | .config CODE_OFFSET 0xf500
@@ -62,13 +62,13 @@ constant arr_rom : TArrROM := (
     x"e0",x"20",                                     -- f588 |   push A
     x"e0",x"40",                                     -- f58a |   push B
     x"e0",x"60",                                     -- f58c |   push C
-    x"60",x"60",x"1c",x"11",                         -- f58e |   mov C, 0x11
+    x"60",x"60",x"1c",x"21",                         -- f58e |   mov C, 0x21
                                                      --      | _B_fn_send_data_1:
     x"61",x"40",x"20",                               -- f592 |   mov B, [A]
     x"2c",x"40",x"e0",x"ff",x"00",                   -- f595 |   and B, 0xff
     x"e8",x"40",x"00",x"f8",x"27",x"00",             -- f59a |   jeq B, 0, ${_E_fn_send_data_1}:rel + PC
                                                      --      | _B_fn_send_data_2:
-    x"f0",x"60",x"1c",x"f8",x"10",x"14",x"00",       -- f5a0 |   jlt C, 0x10, ${_E_fn_send_data_2}:rel + PC
+    x"f0",x"60",x"1c",x"f8",x"20",x"14",x"00",       -- f5a0 |   jlt C, 0x20, ${_E_fn_send_data_2}:rel + PC
     x"61",x"60",x"e0",x"04",x"ff",                   -- f5a7 |   mov C, [0xff04]
     x"2c",x"60",x"1c",x"3f",                         -- f5ac |   and C, 0x3f
     x"58",x"f8",x"f0",x"ff",                         -- f5b0 |   jmp ${_B_fn_send_data_2}:rel + PC
@@ -94,7 +94,7 @@ constant arr_rom : TArrROM := (
                                                      --      | _B_fn_recv_command_2:
     x"f0",x"20",x"e0",x"f8",x"25",x"02",x"1b",x"00", -- f5d3 |   jlt A, 0x225, ${_E_fn_recv_command_2}:rel + PC
     x"60",x"fe",x"20",                               -- f5db |   mov G, A
-    x"60",x"20",x"e0",x"1e",x"fa",                   -- f5de |   mov A, ${const_data_2}
+    x"60",x"20",x"e0",x"4d",x"fa",                   -- f5de |   mov A, ${const_data_2}
     x"5c",x"f8",x"a5",x"ff",                         -- f5e3 |   call ${fn_send_data}:rel + PC
     x"60",x"20",x"fe",                               -- f5e7 |   mov A, G
     x"58",x"f8",x"38",x"00",                         -- f5ea |   jmp ${_E_fn_recv_command_1}:rel + PC
@@ -129,7 +129,7 @@ constant arr_rom : TArrROM := (
     x"e0",x"60",                                     -- f63a |   push C
     x"5c",x"f8",x"b4",x"00",                         -- f63c |   call ${fn_split_command}:rel + PC
     x"60",x"40",x"ff",                               -- f640 |   mov B, H
-    x"60",x"60",x"e0",x"28",x"fa",                   -- f643 |   mov C, ${const_data_3}
+    x"60",x"60",x"e0",x"57",x"fa",                   -- f643 |   mov C, ${const_data_3}
     x"5c",x"f8",x"c6",x"00",                         -- f648 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_3:
     x"e8",x"ff",x"00",x"f8",x"18",x"00",             -- f64c |   jeq H, 0, ${_E_fn_parse_command_3}:rel + PC
@@ -138,7 +138,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"88",x"00",             -- f65a |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"8b",x"00",                         -- f660 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_3:
-    x"60",x"60",x"e0",x"33",x"fa",                   -- f664 |   mov C, ${const_data_5}
+    x"60",x"60",x"e0",x"62",x"fa",                   -- f664 |   mov C, ${const_data_5}
     x"5c",x"f8",x"a5",x"00",                         -- f669 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_4:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f66d |   jeq H, 0, ${_E_fn_parse_command_4}:rel + PC
@@ -149,7 +149,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"5e",x"00",             -- f684 |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"61",x"00",                         -- f68a |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_4:
-    x"60",x"60",x"e0",x"38",x"fa",                   -- f68e |   mov C, ${const_data_6}
+    x"60",x"60",x"e0",x"67",x"fa",                   -- f68e |   mov C, ${const_data_6}
     x"5c",x"f8",x"7b",x"00",                         -- f693 |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_5:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f697 |   jeq H, 0, ${_E_fn_parse_command_5}:rel + PC
@@ -160,7 +160,7 @@ constant arr_rom : TArrROM := (
     x"e8",x"ff",x"00",x"f8",x"34",x"00",             -- f6ae |   jeq H, 0, ${_L_fn_parse_command_2}:rel + PC
     x"58",x"f8",x"37",x"00",                         -- f6b4 |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_5:
-    x"60",x"60",x"e0",x"3e",x"fa",                   -- f6b8 |   mov C, ${const_data_7}
+    x"60",x"60",x"e0",x"6d",x"fa",                   -- f6b8 |   mov C, ${const_data_7}
     x"5c",x"f8",x"51",x"00",                         -- f6bd |   call ${fn_string_cmp}:rel + PC
                                                      --      | _B_fn_parse_command_6:
     x"e8",x"ff",x"00",x"f8",x"21",x"00",             -- f6c1 |   jeq H, 0, ${_E_fn_parse_command_6}:rel + PC
@@ -172,7 +172,7 @@ constant arr_rom : TArrROM := (
     x"58",x"f8",x"0d",x"00",                         -- f6de |   jmp ${_L_fn_parse_command_1}:rel + PC
                                                      --      | _E_fn_parse_command_6:
                                                      --      | _L_fn_parse_command_2:
-    x"60",x"20",x"e0",x"42",x"fa",                   -- f6e2 |   mov A, ${const_data_8}
+    x"60",x"20",x"e0",x"71",x"fa",                   -- f6e2 |   mov A, ${const_data_8}
     x"5c",x"f8",x"a1",x"fe",                         -- f6e7 |   call ${fn_send_data}:rel + PC
                                                      --      | _L_fn_parse_command_1:
     x"e4",x"60",                                     -- f6eb |   pop C
@@ -225,7 +225,7 @@ constant arr_rom : TArrROM := (
                                                      --      | 
                                                      --      | fn_handle_ping:
     x"e0",x"20",                                     -- f750 |   push A
-    x"60",x"20",x"e0",x"2d",x"fa",                   -- f752 |   mov A, ${const_data_4}
+    x"60",x"20",x"e0",x"5c",x"fa",                   -- f752 |   mov A, ${const_data_4}
     x"5c",x"f8",x"31",x"fe",                         -- f757 |   call ${fn_send_data}:rel + PC
     x"60",x"ff",x"1c",x"01",                         -- f75b |   mov H, 0x1
     x"e4",x"20",                                     -- f75f |   pop A
@@ -480,21 +480,21 @@ constant arr_rom : TArrROM := (
                                                      --      | 
                                                      --      | SECTION_BEGIN_const_data:
                                                      --      | const_data_1:
-    x"52",x"45",x"41",x"44",x"59",x"0a",x"00",       -- fa17 |   .data str:"READY\n"
+    x"57",x"65",x"65",x"65",x"6b",x"6c",x"79",x"33",x"30",x"30",x"36",x"20",x"2d",x"20",x"48",x"61",x"72",x"64",x"77",x"61",x"72",x"65",x"20",x"76",x"31",x"2e",x"31",x"20",x"2d",x"20",x"42",x"6f",x"6f",x"74",x"6c",x"6f",x"61",x"64",x"65",x"72",x"20",x"76",x"31",x"2e",x"31",x"32",x"0a",x"52",x"45",x"41",x"44",x"59",x"0a",x"00", -- fa17 |   .data str:"Weeekly3006 - Hardware v1.1 - Bootloader v1.12\nREADY\n"
                                                      --      | const_data_2:
-    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- fa1e |   .data str:"OVERFLOW\n"
+    x"4f",x"56",x"45",x"52",x"46",x"4c",x"4f",x"57",x"0a",x"00", -- fa4d |   .data str:"OVERFLOW\n"
                                                      --      | const_data_3:
-    x"50",x"49",x"4e",x"47",x"00",                   -- fa28 |   .data str:"PING"
+    x"50",x"49",x"4e",x"47",x"00",                   -- fa57 |   .data str:"PING"
                                                      --      | const_data_4:
-    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- fa2d |   .data str:"PONG\n"
+    x"50",x"4f",x"4e",x"47",x"0a",x"00",             -- fa5c |   .data str:"PONG\n"
                                                      --      | const_data_5:
-    x"52",x"45",x"41",x"44",x"00",                   -- fa33 |   .data str:"READ"
+    x"52",x"45",x"41",x"44",x"00",                   -- fa62 |   .data str:"READ"
                                                      --      | const_data_6:
-    x"57",x"52",x"49",x"54",x"45",x"00",             -- fa38 |   .data str:"WRITE"
+    x"57",x"52",x"49",x"54",x"45",x"00",             -- fa67 |   .data str:"WRITE"
                                                      --      | const_data_7:
-    x"4a",x"4d",x"50",x"00",                         -- fa3e |   .data str:"JMP"
+    x"4a",x"4d",x"50",x"00",                         -- fa6d |   .data str:"JMP"
                                                      --      | const_data_8:
-    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- fa42 |   .data str:"INVALID\n"
+    x"49",x"4e",x"56",x"41",x"4c",x"49",x"44",x"0a",x"00", -- fa71 |   .data str:"INVALID\n"
                                                      --      | SECTION_END_const_data:
                                                      --      | 
                                                      --      | .offset 0xfb00

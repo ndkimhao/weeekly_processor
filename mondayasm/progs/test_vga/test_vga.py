@@ -85,6 +85,23 @@ def put_hex_16():
     POP(stash)
 
 
+def check_ps2():
+    ss = PUSH(A, B, G, H)
+    with Block() as blk:
+        MOV(G, M_PS2_RECV)
+        AND(H, G, 0x8000)
+        JEQ(H, 0, blk.end)
+        MOV(A, ConstData("PS2: "))
+        CALL(send_data)
+        MOV(A, uart_buf)
+        MOV(B, G)
+        CALL(put_hex_16)
+        CALL(send_data)
+        MOV(A, ConstData("\n"))
+        CALL(send_data)
+    POP(ss)
+
+
 def start():
     MOV(SP, CODE_OFFSET - 0x100)
     MOV(A, ConstData('Hello World!\n'))
@@ -135,27 +152,12 @@ def start():
         with Block() as loop:
             JEQ(A, 0xFFFF, loop.end)
             INC(A)
-            MUL(B, B)
+            CALL(check_ps2)
             JMP(loop.begin)
         INC(M_LED)
         INC(E)
         for i in range(10):
             MOV(M[0x1000 - 80 * i], E)
-
-        ss = PUSH(A, B, G, H)
-        with Block() as blk:
-            MOV(G, M_PS2_RECV)
-            AND(H, G, 0x8000)
-            JEQ(H, 0, blk.end)
-            MOV(A, ConstData("PS2: "))
-            CALL(send_data)
-            MOV(A, uart_buf)
-            MOV(B, G)
-            CALL(put_hex_16)
-            CALL(send_data)
-            MOV(A, ConstData("\n"))
-            CALL(send_data)
-        POP(ss)
 
         JMP(while_true.begin)
     HALT()

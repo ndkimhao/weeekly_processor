@@ -34,7 +34,7 @@ MASK_UART_SEND_COUNT = 0x003F
 
 ###
 
-UART_HW_BUFSZ = 16
+UART_HW_BUFSZ = 32
 UART_BUFSZ = 550
 recv_buf = StaticVar('uart_buf', UART_BUFSZ + 2)
 send_buf = recv_buf
@@ -482,7 +482,7 @@ def start():
         JMP(H)
 
     # send hello
-    MOV(A, ConstData('READY\n'))
+    MOV(A, ConstData('Weeekly3006 - Hardware v1.1 - Bootloader v1.12\nREADY\n'))
     CALL(send_data)
     MOV(A, H)  # A = return result
 
