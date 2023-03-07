@@ -299,7 +299,7 @@ ac ff fe e0 00 80              # a650 |   and H, G, 0x8000
 e8 ff 00 f8 28 00              # a656 |   jeq H, 0, ${_E_fn_check_ps2_1}:rel + PC
 60 20 e0 fa a6                 # a65c |   mov A, ${const_data_2}
 5c f8 a2 ff                    # a661 |   call ${fn_send_data}:rel + PC
-60 20 e0 02 a7                 # a665 |   mov A, ${var_uart_buf}
+60 20 e0 08 a7                 # a665 |   mov A, ${var_uart_buf}
 60 40 fe                       # a66a |   mov B, G
 5c f8 1a 00                    # a66d |   call ${fn_put_hex_16}:rel + PC
 5c f8 92 ff                    # a671 |   call ${fn_send_data}:rel + PC
@@ -360,10 +360,12 @@ dc                             # a6eb |   ret
 50 53 32 3a 20 00              # a6fa |   .data str:"PS2: "
                                #      | const_data_3:
 0a 00                          # a700 |   .data str:"\n"
+                               #      | const_data_4:
+7b 00 c8 01 15 03              # a702 |   .data list:[0x007b, 0x01c8, 0x0315]
                                #      | SECTION_END_const_data:
                                #      | 
                                #      | SECTION_BEGIN_static_data:
                                #      | var_uart_buf:
-                               # a702 |   .bss size:130
+                               # a708 |   .bss size:130
                                #      | SECTION_END_static_data:
                                #      | 

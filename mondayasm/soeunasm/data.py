@@ -6,7 +6,7 @@ from soeunasm.free_expr import expr
 from soeunasm.scope_func import FuncScopeCtx
 
 
-def stack_vars(n: int) -> tuple[Expr, ...]:
+def local_vars(n: int) -> tuple[Expr, ...]:
     g_stack = scope_global.g_stack
     assert len(g_stack) == 0 or \
            (len(g_stack) == 1 and isinstance(g_stack[0], FuncScopeCtx))
@@ -21,5 +21,15 @@ def stack_vars(n: int) -> tuple[Expr, ...]:
     return tuple(ret)
 
 
-def stack_var() -> Expr:
-    return stack_vars(1)[0]
+def local_var() -> Expr:
+    return local_vars(1)[0]
+
+
+def global_var(name: str, size: int) -> Expr:
+    v = mon.StaticVar(name, size)
+    return Expr.to_expr(v)
+
+
+def const_data(name, obj=None) -> Expr:
+    v = mon.ConstData(name, obj)
+    return Expr.to_expr(v)

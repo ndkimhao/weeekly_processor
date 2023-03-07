@@ -260,6 +260,16 @@ def ConstData(name, obj=None) -> RawExpr:
     elif isinstance(obj, bytes):
         value = f'raw:{obj.hex()}'
         data = obj
+    elif isinstance(obj, list):
+        assert all(isinstance(e, int) for e in obj)
+        list_str = ', '.join(f'0x{e:04x}' for e in obj)
+        data = bytearray()
+        for e in obj:
+            assert 0 <= e <= 65536 or -32768 <= e <= 32767
+            data.append(e & 0xFF)
+            data.append((e & 0xFFFF) >> 8)
+        data = bytes(data)
+        value = f'list:[{list_str}]'
     else:
         assert False, f'unknown data type: {type(obj)}'
     bincode = ' '.join(f'{b:02x}' for b in data)

@@ -2,7 +2,7 @@ import soeunasm as so
 import mondayasm as mon
 from mondayasm import CodeGen
 from soeunasm import Expr, If, Else, ElseIf, Scope, Cleanup, BreakIf, Continue, For, Break, While, call
-from soeunasm.data import stack_vars, stack_var
+from soeunasm.data import local_vars, local_var
 from soeunasm.free_expr import mul, expr, deref, mov, address_of
 from soeunasm.miscs import Comment
 from soeunasm.scope_func import Return
@@ -25,7 +25,7 @@ def memcpy(p_dest, p_src, size,
 
 
 def main():
-    s1, s2 = stack_vars(2)
+    s1, s2 = local_vars(2)
     A = expr(mon.A)
     B = expr(mon.B)
     C = expr(mon.C)
