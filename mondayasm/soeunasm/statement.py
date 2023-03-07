@@ -71,10 +71,14 @@ class Statement:
     emitted: MutableFlag = field(default_factory=MutableFlag)
 
     def __post_init__(self):
-        assert isinstance(self.op, StmOp)
-        assert isinstance(self.a, (RawExpr | RawIndirect, NoneType))
-        assert isinstance(self.b, (RawExpr | RawIndirect, NoneType))
-        assert isinstance(self.c, (RawExpr | RawIndirect, NoneType))
+        try:
+            assert isinstance(self.op, StmOp)
+            assert isinstance(self.a, (RawExpr, RawIndirect, NoneType))
+            assert isinstance(self.b, (RawExpr, RawIndirect, NoneType))
+            assert isinstance(self.c, (RawExpr, RawIndirect, NoneType))
+        except AssertionError:
+            self.emitted.set(True)
+            raise
 
     def __del__(self):
         self.emit()

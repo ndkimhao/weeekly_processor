@@ -128,8 +128,6 @@ class Expr:
             else:  # different dest variant
                 return so.Statement(CONST_ADD_VAL_OP_MAP[add_val], lhs.a, rhs.a.without_const_value)
 
-        assert not isinstance(rhs.a, PseudoExpr)
-
         if rhs.op == ExprOp.NONE:
             return so.Statement(so.StmOp.MOV, lhs.a, rhs.a)
 

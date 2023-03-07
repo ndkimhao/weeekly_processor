@@ -1,6 +1,6 @@
 import mondayasm as mon
 from mondayasm import RawExpr, RawIndirect
-from soeunasm import ExprOp, Expr
+from soeunasm import ExprOp, Expr, Statement, StmOp
 
 
 def expr(val) -> Expr:
@@ -210,3 +210,15 @@ def label(name: str | Expr, *, anon: bool = True):
         mon.EmitLabel(name.a)
     else:
         mon.Label(name, anon)
+
+
+def push(val):
+    val = Expr.to_expr(val)
+    assert val.is_pure
+    return Statement(StmOp.PUSH, val.a)
+
+
+def pop(val):
+    val = Expr.to_expr(val)
+    assert val.is_pure
+    return Statement(StmOp.POP, val.a)
