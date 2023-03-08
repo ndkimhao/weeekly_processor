@@ -27,7 +27,7 @@ def main(A, B, C, D, E, H):
     with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
         call(printf, const('%b\n'), [A])
 
-    call(switch_screen_row, 10, 0b110)
+    call(switch_screen_row, 10, 0b100)
     call(fill_cell_content, 1, addr(font_buf))
 
     call(switch_screen_row, 0, 0b110)

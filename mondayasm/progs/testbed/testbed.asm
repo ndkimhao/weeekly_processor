@@ -15,7 +15,7 @@ e0 60                          # a00c |   push C
 e0 40                          # a00e |   push B
 e0 20                          # a010 |   push A
                                #      | _A_call_2:
-e0 e0 fe a9                    # a012 |   push ${const_data_1}
+e0 e0 00 aa                    # a012 |   push ${const_data_1}
 5c f8 65 01                    # a016 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a01a |   mov SP, SP + 0x2
                                #      | _Z_call_2:
@@ -25,7 +25,7 @@ e0 fd                          # a022 |   push F
 e0 fc                          # a024 |   push E
 e0 1c 0c                       # a026 |   push 0xc
 e0 1c 10                       # a029 |   push 0x10
-e0 e0 ba a6                    # a02c |   push ${const_FONT_16_12_COMPRESSED} + 0171
+e0 e0 bc a6                    # a02c |   push ${const_FONT_16_12_COMPRESSED} + 0171
 e0 bc 0a                       # a030 |   push SP + 0xa
 5c f8 82 01                    # a033 |   call ${fn_decode_font}:rel + PC
 60 a0 bc 08                    # a037 |   mov SP, SP + 0x8
@@ -38,7 +38,7 @@ e4 fd                          # a03d |   pop F
 e8 20 bc f8 20 1d 00           # a042 |   jeq A, SP + 0x20, ${_C_for_3}:rel + PC
                                #      | _A_call_13:
 e2 20                          # a049 |   push [A]
-e0 e0 07 aa                    # a04b |   push ${const_data_2}
+e0 e0 09 aa                    # a04b |   push ${const_data_2}
 5c f8 2a 02                    # a04f |   call ${fn_printf}:rel + PC
 60 a0 bc 04                    # a053 |   mov SP, SP + 0x4
                                #      | _Z_call_13:
@@ -48,7 +48,7 @@ e0 e0 07 aa                    # a04b |   push ${const_data_2}
                                #      | _C_for_3:
                                #      | _Z_for_3:
                                #      | _A_call_14:
-e0 1c 06                       # a05f |   push 0x6
+e0 1c 04                       # a05f |   push 0x4
 e0 1c 0a                       # a062 |   push 0xa
 5c f8 c1 03                    # a065 |   call ${fn_switch_screen_row}:rel + PC
 60 a0 bc 04                    # a069 |   mov SP, SP + 0x4
@@ -68,19 +68,19 @@ e0 00                          # a07d |   push 0
                                #      | _A_call_18:
 e0 e0 0f 0f                    # a087 |   push 0xf0f
 e0 00                          # a08b |   push 0
-5c f8 fa 03                    # a08d |   call ${fn_fill_cell}:rel + PC
+5c f8 fc 03                    # a08d |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a091 |   mov SP, SP + 0x4
                                #      | _Z_call_18:
                                #      | _A_call_19:
 e0 1c ff                       # a095 |   push -1
 e0 1c 01                       # a098 |   push 0x1
-5c f8 ec 03                    # a09b |   call ${fn_fill_cell}:rel + PC
+5c f8 ee 03                    # a09b |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a09f |   mov SP, SP + 0x4
                                #      | _Z_call_19:
                                #      | _A_call_20:
 e0 e0 aa aa                    # a0a3 |   push 0xaaaa
 e0 1c 02                       # a0a7 |   push 0x2
-5c f8 dd 03                    # a0aa |   call ${fn_fill_cell}:rel + PC
+5c f8 df 03                    # a0aa |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a0ae |   mov SP, SP + 0x4
                                #      | _Z_call_20:
                                #      | _A_call_21:
@@ -92,19 +92,19 @@ e0 1c 02                       # a0b5 |   push 0x2
                                #      | _A_call_22:
 e0 e0 0f 0f                    # a0c0 |   push 0xf0f
 e0 00                          # a0c4 |   push 0
-5c f8 c1 03                    # a0c6 |   call ${fn_fill_cell}:rel + PC
+5c f8 c3 03                    # a0c6 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a0ca |   mov SP, SP + 0x4
                                #      | _Z_call_22:
                                #      | _A_call_23:
 e0 1c ff                       # a0ce |   push -1
 e0 1c 01                       # a0d1 |   push 0x1
-5c f8 b3 03                    # a0d4 |   call ${fn_fill_cell}:rel + PC
+5c f8 b5 03                    # a0d4 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a0d8 |   mov SP, SP + 0x4
                                #      | _Z_call_23:
                                #      | _A_call_24:
 e0 e0 aa aa                    # a0dc |   push 0xaaaa
 e0 1c 02                       # a0e0 |   push 0x2
-5c f8 a4 03                    # a0e3 |   call ${fn_fill_cell}:rel + PC
+5c f8 a6 03                    # a0e3 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a0e7 |   mov SP, SP + 0x4
                                #      | _Z_call_24:
                                #      | _A_for_9:
@@ -131,34 +131,34 @@ e0 1c 05                       # a109 |   push 0x5
                                #      | _A_call_27:
 e0 e0 0f 0f                    # a114 |   push 0xf0f
 e0 00                          # a118 |   push 0
-5c f8 6d 03                    # a11a |   call ${fn_fill_cell}:rel + PC
+5c f8 6f 03                    # a11a |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a11e |   mov SP, SP + 0x4
                                #      | _Z_call_27:
                                #      | _A_call_28:
 e0 e0 a0 a0                    # a122 |   push 0xa0a0
 e0 1c 01                       # a126 |   push 0x1
-5c f8 5e 03                    # a129 |   call ${fn_fill_cell}:rel + PC
+5c f8 60 03                    # a129 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a12d |   mov SP, SP + 0x4
                                #      | _Z_call_28:
                                #      | _A_call_29:
 e0 e0 cc cc                    # a131 |   push 0xcccc
 e0 1c 02                       # a135 |   push 0x2
-5c f8 4f 03                    # a138 |   call ${fn_fill_cell}:rel + PC
+5c f8 51 03                    # a138 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a13c |   mov SP, SP + 0x4
                                #      | _Z_call_29:
                                #      | _A_call_30:
 e0 e0 aa aa                    # a140 |   push 0xaaaa
 e0 1c 03                       # a144 |   push 0x3
-5c f8 40 03                    # a147 |   call ${fn_fill_cell}:rel + PC
+5c f8 42 03                    # a147 |   call ${fn_fill_cell}:rel + PC
 60 a0 bc 04                    # a14b |   mov SP, SP + 0x4
                                #      | _Z_call_30:
-62 e0 00 10 af                 # a14f |   mov [${var_test_loop_target_v}], 0
+62 e0 00 20 af                 # a14f |   mov [${var_test_loop_target_v}], 0
                                #      | _A_call_31:
 e0 00                          # a154 |   push 0
 e0 e0 00 87                    # a156 |   push 0x8700
 e0 e0 93 03                    # a15a |   push 0x393
 e0 00                          # a15e |   push 0
-5c f8 4e 03                    # a160 |   call ${fn__delay_impl}:rel + PC
+5c f8 50 03                    # a160 |   call ${fn__delay_impl}:rel + PC
 60 a0 bc 08                    # a164 |   mov SP, SP + 0x8
                                #      | _Z_call_31:
                                #      | _BZ_for_9:
@@ -525,7 +525,7 @@ e0 20                          # a428 |   push A
 61 20 bc 08                    # a42a |   mov A, [SP + 0x8]
 60 20 e4 f0 00                 # a42e |   mov A, 0xf0 + A
 89 40 bc e0 06 00 05           # a433 |   mul B, [SP + 0x6], 0x500
-54 e0 e0 1c 10 aa 0f af 01     # a43a |   mmap ${var_VIDEO_ROW_BUFFER}, ${var_VIDEO_ROW_BUFFER} + 04ff, 0x1
+54 e0 e0 1c 20 aa 1f af 01     # a43a |   mmap ${var_VIDEO_ROW_BUFFER}, ${var_VIDEO_ROW_BUFFER} + 04ff, 0x1
                                #      | _cleanup_fn_switch_screen_row:
 e4 20                          # a443 |   pop A
 e4 40                          # a445 |   pop B
@@ -539,99 +539,100 @@ e0 20                          # a44a |   push A
 a9 20 bc 1c 06 01              # a44c |   shl A, [SP + 0x6], 0x1
 61 40 bc 08                    # a452 |   mov B, [SP + 0x8]
                                #      | _A_for_7:
-60 20 e4 10 aa                 # a456 |   mov A, ${var_VIDEO_ROW_BUFFER} + A
+60 20 e4 20 aa                 # a456 |   mov A, ${var_VIDEO_ROW_BUFFER} + A
                                #      | _BA_for_7:
-fc 20 e0 f8 10 af 27 00        # a45b |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_7}:rel + PC
-62 20 e0 a0 a0                 # a463 |   mov [A], 0xa0a0
+fc 20 e0 f8 20 af 29 00        # a45b |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_7}:rel + PC
+62 20 e0 ff aa                 # a463 |   mov [A], 0xaaff
                                #      | _A_call_15:
 e2 20                          # a468 |   push [A]
-e0 e0 0b aa                    # a46a |   push ${const_data_3}
-5c f8 0b fe                    # a46e |   call ${fn_printf}:rel + PC
-60 a0 bc 04                    # a472 |   mov SP, SP + 0x4
+e0 20                          # a46a |   push A
+e0 e0 0d aa                    # a46c |   push ${const_data_3}
+5c f8 09 fe                    # a470 |   call ${fn_printf}:rel + PC
+60 a0 bc 06                    # a474 |   mov SP, SP + 0x6
                                #      | _Z_call_15:
                                #      | _BZ_for_7:
-60 20 3c 50                    # a476 |   mov A, A + 0x50
-60 40 5c 02                    # a47a |   mov B, B + 0x2
-58 f8 dd ff                    # a47e |   jmp ${_BA_for_7}:rel + PC
+60 20 3c 50                    # a478 |   mov A, A + 0x50
+60 40 5c 02                    # a47c |   mov B, B + 0x2
+58 f8 db ff                    # a480 |   jmp ${_BA_for_7}:rel + PC
                                #      | _C_for_7:
                                #      | _Z_for_7:
                                #      | _cleanup_fn_fill_cell_content:
-e4 20                          # a482 |   pop A
-e4 40                          # a484 |   pop B
-dc                             # a486 |   ret
+e4 20                          # a484 |   pop A
+e4 40                          # a486 |   pop B
+dc                             # a488 |   ret
                                #      | _end_fn_fill_cell_content:
                                #      | 
                                #      | fn_fill_cell:
                                #      | _begin_fn_fill_cell:
-e0 20                          # a487 |   push A
-61 fe bc 06                    # a489 |   mov G, [SP + 0x6]
-a9 20 bc 1c 04 01              # a48d |   shl A, [SP + 0x4], 0x1
+e0 20                          # a489 |   push A
+61 fe bc 06                    # a48b |   mov G, [SP + 0x6]
+a9 20 bc 1c 04 01              # a48f |   shl A, [SP + 0x4], 0x1
                                #      | _A_for_8:
-60 20 e4 10 aa                 # a493 |   mov A, ${var_VIDEO_ROW_BUFFER} + A
+60 20 e4 20 aa                 # a495 |   mov A, ${var_VIDEO_ROW_BUFFER} + A
                                #      | _BA_for_8:
-fc 20 e0 f8 10 af 13 00        # a498 |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_8}:rel + PC
-62 20 fe                       # a4a0 |   mov [A], G
+fc 20 e0 f8 20 af 13 00        # a49a |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_8}:rel + PC
+62 20 fe                       # a4a2 |   mov [A], G
                                #      | _BZ_for_8:
-60 20 3c 50                    # a4a3 |   mov A, A + 0x50
-58 f8 f1 ff                    # a4a7 |   jmp ${_BA_for_8}:rel + PC
+60 20 3c 50                    # a4a5 |   mov A, A + 0x50
+58 f8 f1 ff                    # a4a9 |   jmp ${_BA_for_8}:rel + PC
                                #      | _C_for_8:
                                #      | _Z_for_8:
                                #      | _cleanup_fn_fill_cell:
-e4 20                          # a4ab |   pop A
-dc                             # a4ad |   ret
+e4 20                          # a4ad |   pop A
+dc                             # a4af |   ret
                                #      | _end_fn_fill_cell:
                                #      | 
                                #      | fn__delay_impl:
                                #      | _begin_fn__delay_impl:
-e0 80                          # a4ae |   push D
-e0 60                          # a4b0 |   push C
-e0 40                          # a4b2 |   push B
-e0 20                          # a4b4 |   push A
-61 40 e0 10 ff                 # a4b6 |   mov B, [0xff10]
-61 60 e0 12 ff                 # a4bb |   mov C, [0xff12]
-61 80 e0 14 ff                 # a4c0 |   mov D, [0xff14]
-61 20 bc 0e                    # a4c5 |   mov A, [SP + 0xe]
-60 ff 00                       # a4c9 |   mov H, 0
+e0 80                          # a4b0 |   push D
+e0 60                          # a4b2 |   push C
+e0 40                          # a4b4 |   push B
+e0 20                          # a4b6 |   push A
+61 40 e0 10 ff                 # a4b8 |   mov B, [0xff10]
+61 60 e0 12 ff                 # a4bd |   mov C, [0xff12]
+61 80 e0 14 ff                 # a4c2 |   mov D, [0xff14]
+61 20 bc 0e                    # a4c7 |   mov A, [SP + 0xe]
+60 ff 00                       # a4cb |   mov H, 0
                                #      | _A_if_10:
-fc 28 20 f8 09 00              # a4cc |   jge A + B, A, ${_E_if_10}:rel + PC
-c4 ff 00                       # a4d2 |   inc H, 0
+fc 28 20 f8 09 00              # a4ce |   jge A + B, A, ${_E_if_10}:rel + PC
+c4 ff 00                       # a4d4 |   inc H, 0
                                #      | _E_if_10:
                                #      | _C_if_10:
                                #      | _Z_if_10:
-60 40 44                       # a4d5 |   mov B, B + A
-81 20 bc ff 0c                 # a4d8 |   add A, [SP + 0xc], H
-60 ff 00                       # a4dd |   mov H, 0
+60 40 44                       # a4d7 |   mov B, B + A
+81 20 bc ff 0c                 # a4da |   add A, [SP + 0xc], H
+60 ff 00                       # a4df |   mov H, 0
                                #      | _A_scope_1:
                                #      | _B_scope_1:
-f0 2c 20 f8 10 00              # a4e0 |   jlt A + C, A, ${_C_scope_1}:rel + PC
-f0 20 ff f8 0a 00              # a4e6 |   jlt A, H, ${_C_scope_1}:rel + PC
-58 f8 07 00                    # a4ec |   jmp ${_Z_scope_1}:rel + PC
+f0 2c 20 f8 10 00              # a4e2 |   jlt A + C, A, ${_C_scope_1}:rel + PC
+f0 20 ff f8 0a 00              # a4e8 |   jlt A, H, ${_C_scope_1}:rel + PC
+58 f8 07 00                    # a4ee |   jmp ${_Z_scope_1}:rel + PC
                                #      | _C_scope_1:
-c4 ff 00                       # a4f0 |   inc H, 0
+c4 ff 00                       # a4f2 |   inc H, 0
                                #      | _Z_scope_1:
-60 60 64                       # a4f3 |   mov C, C + A
-81 20 bc ff 0a                 # a4f6 |   add A, [SP + 0xa], H
-60 80 84                       # a4fb |   mov D, D + A
+60 60 64                       # a4f5 |   mov C, C + A
+81 20 bc ff 0a                 # a4f8 |   add A, [SP + 0xa], H
+60 80 84                       # a4fd |   mov D, D + A
                                #      |   # delay loop
-61 20 bc 10                    # a4fe |   mov A, [SP + 0x10]
+61 20 bc 10                    # a500 |   mov A, [SP + 0x10]
                                #      | _A_loop_3:
                                #      | _BA_loop_3:
-61 ff e0 14 ff                 # a502 |   mov H, [0xff14]
+61 ff e0 14 ff                 # a504 |   mov H, [0xff14]
                                #      | _A_if_13:
-f4 ff 80 f8 0a 00              # a507 |   jle H, D, ${_E_if_13}:rel + PC
-58 f8 33 00                    # a50d |   jmp ${_C_loop_3}:rel + PC
+f4 ff 80 f8 0a 00              # a509 |   jle H, D, ${_E_if_13}:rel + PC
+58 f8 33 00                    # a50f |   jmp ${_C_loop_3}:rel + PC
                                #      | _E_if_13:
-ec ff 80 f8 2b 00              # a511 |   jne H, D, ${_E2_if_13}:rel + PC
-61 ff e0 12 ff                 # a517 |   mov H, [0xff12]
+ec ff 80 f8 2b 00              # a513 |   jne H, D, ${_E2_if_13}:rel + PC
+61 ff e0 12 ff                 # a519 |   mov H, [0xff12]
                                #      | _A_if_14:
-f4 ff 60 f8 0a 00              # a51c |   jle H, C, ${_E_if_14}:rel + PC
-58 f8 1e 00                    # a522 |   jmp ${_C_loop_3}:rel + PC
+f4 ff 60 f8 0a 00              # a51e |   jle H, C, ${_E_if_14}:rel + PC
+58 f8 1e 00                    # a524 |   jmp ${_C_loop_3}:rel + PC
                                #      | _E_if_14:
-ec ff 60 f8 16 00              # a526 |   jne H, C, ${_E2_if_14}:rel + PC
-fa e0 40 f8 10 ff 14 00        # a52c |   jgt [0xff10], B, ${_C_loop_3}:rel + PC
+ec ff 60 f8 16 00              # a528 |   jne H, C, ${_E2_if_14}:rel + PC
+fa e0 40 f8 10 ff 14 00        # a52e |   jgt [0xff10], B, ${_C_loop_3}:rel + PC
                                #      | _A_if_16:
-e8 20 00 f8 08 00              # a534 |   jeq A, 0, ${_E_if_16}:rel + PC
-5c 20                          # a53a |   call A
+e8 20 00 f8 08 00              # a536 |   jeq A, 0, ${_E_if_16}:rel + PC
+5c 20                          # a53c |   call A
                                #      | _E_if_16:
                                #      | _C_if_16:
                                #      | _Z_if_16:
@@ -642,36 +643,36 @@ e8 20 00 f8 08 00              # a534 |   jeq A, 0, ${_E_if_16}:rel + PC
                                #      | _C_if_13:
                                #      | _Z_if_13:
                                #      | _BZ_loop_3:
-58 f8 c6 ff                    # a53c |   jmp ${_BA_loop_3}:rel + PC
+58 f8 c6 ff                    # a53e |   jmp ${_BA_loop_3}:rel + PC
                                #      | _C_loop_3:
                                #      | _Z_loop_3:
                                #      | _cleanup_fn__delay_impl:
-e4 20                          # a540 |   pop A
-e4 40                          # a542 |   pop B
-e4 60                          # a544 |   pop C
-e4 80                          # a546 |   pop D
-dc                             # a548 |   ret
+e4 20                          # a542 |   pop A
+e4 40                          # a544 |   pop B
+e4 60                          # a546 |   pop C
+e4 80                          # a548 |   pop D
+dc                             # a54a |   ret
                                #      | _end_fn__delay_impl:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const_FONT_16_12_COMPRESSED:
-00 00 38 10 01 8e 04 10 e4 40 60 00 39 10 1f fe 23 ff c4 60 38 40 77 f0 f1 11 e2 01 df c3 84 41 e2 23 bf 87 08 0c 1f 81 3f 04 70 10 e0 41 c1 03 84 07 10 0e 40 1d 0e 3c 1c 60 38 e0 72 20 71 c0 e1 01 c7 0b 91 e7 20 83 8f f6 00 e0 40 e1 81 80 00 38 0c 70 60 e1 00 07 06 0e 03 18 39 80 70 c0 e0 40 07 0c 0e 60 18 0e 60 dc 36 38 10 73 fe b8 6c 73 06 c0 07 02 07 3f e9 80 00 1c 20 1c c0 30 01 cf e2 00 00 0e 10 10 38 04 38 08 70 20 70 40 70 80 71 00 e4 00 c0 38 f8 72 08 72 18 e4 51 c9 23 94 47 30 8e 41 0e 3e 18 38 10 70 e0 e6 41 c0 80 0e 7f 18 38 f8 72 08 70 08 38 38 71 80 e4 00 e7 f1 80 38 f8 72 08 e0 10 70 f0 8e 41 1c 7c 30 38 0c 70 28 e0 91 c2 23 88 47 20 83 9f c7 00 86 00 39 fc 72 00 39 f8 70 08 1c 82 38 f8 60 38 f0 72 00 39 f8 72 08 0e 3e 18 39 fc 72 08 e0 11 c0 41 c0 81 c1 01 c2 01 80 38 f8 72 08 1c 7c 21 c7 c3 00 38 f8 72 08 0e 3f 1c 02 1c 0c 39 e0 60 07 08 08 38 40 40 07 08 08 38 40 39 80 60 1c 03 38 18 70 c0 e6 01 f0 02 e1 81 c0 c3 80 66 00 07 3f 88 e7 f1 00 1f 00 39 80 70 c0 e0 61 c0 32 e1 81 cc 03 e0 06 00 38 f8 72 08 70 08 70 70 e1 00 ce 10 10 38 f8 72 08 e4 f1 ca 20 39 3c 72 00 e3 f1 80 38 f8 72 08 1c fe 20 c0 39 f8 72 08 39 f8 41 cf c3 00 38 f8 72 08 e4 00 07 20 8e 3e 18 39 e0 72 30 e4 10 07 23 0e 78 18 39 fc 72 00 1c f8 21 cf e3 00 39 fc 72 00 1c f8 20 c0 38 f8 72 08 e4 00 72 38 e4 10 38 f8 60 39 04 07 3f 88 30 38 7c 70 20 00 e1 f1 80 38 1c 70 08 03 90 43 8f 86 00 39 04 72 10 e4 41 c9 03 94 07 30 0b 92 07 22 0e 42 1c 82 30 39 00 00 39 fc 60 3c 04 7c 18 f4 51 e5 23 c4 47 80 80 60 39 04 39 84 72 88 e4 91 c8 a3 90 c7 20 81 80 38 f8 72 08 00 e3 e1 80 39 f8 72 08 1c fc 39 00 06 00 38 f8 72 08 00 e3 e1 c1 83 80 c6 39 f8 72 08 1c fc 39 40 72 40 e4 41 c8 43 90 46 00 38 f8 72 08 e4 00 71 f0 e0 10 72 08 e3 e1 80 39 ff 70 20 00 60 39 04 00 38 f8 60 3c 04 1d 04 1c 88 1c 50 1c 20 18 3c 04 03 c4 47 94 8f 45 1f 06 3c 04 60 3c 04 74 10 e4 41 c5 03 84 01 c5 03 91 07 41 0f 01 18 3c 04 74 10 e4 41 c5 03 84 00 18 39 fc 70 08 70 10 e0 41 c1 03 84 07 10 0e 40 0e 7f 18 38 70 70 80 00 e1 c1 80 1c 80 38 80 70 80 e0 81 c0 83 80 87 00 8e 00 9c 00 b8 00 e0 39 c0 70 80 00 e7 01 80 70 c0 e6 61 f0 33 00 00 00 03 9f c4 e1 00 e0 c1 80 00 07 0f 0e 01 0e 3f 1c 82 0e 3f 18 39 00 1c fc 39 04 03 9f 86 00 07 1f 0e 41 1c 80 07 20 8e 3e 18 38 04 1c 7e 39 04 03 8f c6 00 07 1f 0e 41 07 3f 8e 40 1c 82 38 f8 60 38 3c 70 80 73 e0 80 c0 07 1f 8e 41 00 e3 f1 c0 21 cf c0 39 00 1c fc 39 04 01 80 38 10 4e 1c 1c 08 01 c3 e3 00 38 10 4e 04 00 1c 88 38 e0 00 39 00 1c 86 39 30 73 80 e6 01 cb 03 91 87 20 8e 40 98 38 70 70 20 00 e1 f1 80 07 ff 0f 11 00 60 07 3f 0e 41 00 60 07 1f 0e 41 00 e3 e1 80 07 3f 0e 41 00 e7 e1 c8 00 07 1f 8e 41 00 e3 f1 c0 20 07 27 8e 70 1c 80 01 80 07 1f 0e 41 1c 80 38 f8 70 08 72 08 e3 e1 80 38 40 1c fe 20 70 78 c0 07 20 80 38 fc 60 07 80 87 41 07 22 07 14 0e 10 18 07 80 83 c4 40 ee e1 80 07 80 8e 82 1c 88 38 e0 71 40 e4 41 d0 43 c0 46 00 07 20 80 38 fc 70 08 70 f0 07 3f 8e 01 1c 04 38 10 70 40 e1 01 c4 03 9f c6 00 38 3c 70 80 1c c0 21 c1 e3 00 38 10 00 18 39 e0 70 20 1c 06 21 cf 03 00 71 c8 e4 e1 80 00 00 00 # a549 |   .data raw:
+00 00 38 10 01 8e 04 10 e4 40 60 00 39 10 1f fe 23 ff c4 60 38 40 77 f0 f1 11 e2 01 df c3 84 41 e2 23 bf 87 08 0c 1f 81 3f 04 70 10 e0 41 c1 03 84 07 10 0e 40 1d 0e 3c 1c 60 38 e0 72 20 71 c0 e1 01 c7 0b 91 e7 20 83 8f f6 00 e0 40 e1 81 80 00 38 0c 70 60 e1 00 07 06 0e 03 18 39 80 70 c0 e0 40 07 0c 0e 60 18 0e 60 dc 36 38 10 73 fe b8 6c 73 06 c0 07 02 07 3f e9 80 00 1c 20 1c c0 30 01 cf e2 00 00 0e 10 10 38 04 38 08 70 20 70 40 70 80 71 00 e4 00 c0 38 f8 72 08 72 18 e4 51 c9 23 94 47 30 8e 41 0e 3e 18 38 10 70 e0 e6 41 c0 80 0e 7f 18 38 f8 72 08 70 08 38 38 71 80 e4 00 e7 f1 80 38 f8 72 08 e0 10 70 f0 8e 41 1c 7c 30 38 0c 70 28 e0 91 c2 23 88 47 20 83 9f c7 00 86 00 39 fc 72 00 39 f8 70 08 1c 82 38 f8 60 38 f0 72 00 39 f8 72 08 0e 3e 18 39 fc 72 08 e0 11 c0 41 c0 81 c1 01 c2 01 80 38 f8 72 08 1c 7c 21 c7 c3 00 38 f8 72 08 0e 3f 1c 02 1c 0c 39 e0 60 07 08 08 38 40 40 07 08 08 38 40 39 80 60 1c 03 38 18 70 c0 e6 01 f0 02 e1 81 c0 c3 80 66 00 07 3f 88 e7 f1 00 1f 00 39 80 70 c0 e0 61 c0 32 e1 81 cc 03 e0 06 00 38 f8 72 08 70 08 70 70 e1 00 ce 10 10 38 f8 72 08 e4 f1 ca 20 39 3c 72 00 e3 f1 80 38 f8 72 08 1c fe 20 c0 39 f8 72 08 39 f8 41 cf c3 00 38 f8 72 08 e4 00 07 20 8e 3e 18 39 e0 72 30 e4 10 07 23 0e 78 18 39 fc 72 00 1c f8 21 cf e3 00 39 fc 72 00 1c f8 20 c0 38 f8 72 08 e4 00 72 38 e4 10 38 f8 60 39 04 07 3f 88 30 38 7c 70 20 00 e1 f1 80 38 1c 70 08 03 90 43 8f 86 00 39 04 72 10 e4 41 c9 03 94 07 30 0b 92 07 22 0e 42 1c 82 30 39 00 00 39 fc 60 3c 04 7c 18 f4 51 e5 23 c4 47 80 80 60 39 04 39 84 72 88 e4 91 c8 a3 90 c7 20 81 80 38 f8 72 08 00 e3 e1 80 39 f8 72 08 1c fc 39 00 06 00 38 f8 72 08 00 e3 e1 c1 83 80 c6 39 f8 72 08 1c fc 39 40 72 40 e4 41 c8 43 90 46 00 38 f8 72 08 e4 00 71 f0 e0 10 72 08 e3 e1 80 39 ff 70 20 00 60 39 04 00 38 f8 60 3c 04 1d 04 1c 88 1c 50 1c 20 18 3c 04 03 c4 47 94 8f 45 1f 06 3c 04 60 3c 04 74 10 e4 41 c5 03 84 01 c5 03 91 07 41 0f 01 18 3c 04 74 10 e4 41 c5 03 84 00 18 39 fc 70 08 70 10 e0 41 c1 03 84 07 10 0e 40 0e 7f 18 38 70 70 80 00 e1 c1 80 1c 80 38 80 70 80 e0 81 c0 83 80 87 00 8e 00 9c 00 b8 00 e0 39 c0 70 80 00 e7 01 80 70 c0 e6 61 f0 33 00 00 00 03 9f c4 e1 00 e0 c1 80 00 07 0f 0e 01 0e 3f 1c 82 0e 3f 18 39 00 1c fc 39 04 03 9f 86 00 07 1f 0e 41 1c 80 07 20 8e 3e 18 38 04 1c 7e 39 04 03 8f c6 00 07 1f 0e 41 07 3f 8e 40 1c 82 38 f8 60 38 3c 70 80 73 e0 80 c0 07 1f 8e 41 00 e3 f1 c0 21 cf c0 39 00 1c fc 39 04 01 80 38 10 4e 1c 1c 08 01 c3 e3 00 38 10 4e 04 00 1c 88 38 e0 00 39 00 1c 86 39 30 73 80 e6 01 cb 03 91 87 20 8e 40 98 38 70 70 20 00 e1 f1 80 07 ff 0f 11 00 60 07 3f 0e 41 00 60 07 1f 0e 41 00 e3 e1 80 07 3f 0e 41 00 e7 e1 c8 00 07 1f 8e 41 00 e3 f1 c0 20 07 27 8e 70 1c 80 01 80 07 1f 0e 41 1c 80 38 f8 70 08 72 08 e3 e1 80 38 40 1c fe 20 70 78 c0 07 20 80 38 fc 60 07 80 87 41 07 22 07 14 0e 10 18 07 80 83 c4 40 ee e1 80 07 80 8e 82 1c 88 38 e0 71 40 e4 41 d0 43 c0 46 00 07 20 80 38 fc 70 08 70 f0 07 3f 8e 01 1c 04 38 10 70 40 e1 01 c4 03 9f c6 00 38 3c 70 80 1c c0 21 c1 e3 00 38 10 00 18 39 e0 70 20 1c 06 21 cf 03 00 71 c8 e4 e1 80 00 00 00 # a54b |   .data raw:
                                #      | const_FONT_16_12_INDEX:
-00 00 02 00 08 00 0c 00 14 00 26 00 3a 00 4b 00 51 00 5c 00 67 00 74 00 7a 00 80 00 84 00 88 00 97 00 a9 00 b4 00 c3 00 d0 00 e1 00 ee 00 f9 00 08 01 12 01 1f 01 25 01 2d 01 3e 01 44 01 55 01 62 01 71 01 79 01 83 01 8e 01 99 01 a3 01 ab 01 b8 01 be 01 c6 01 d0 01 e4 01 ea 01 f7 01 06 02 0e 02 18 02 23 02 34 02 43 02 49 02 4f 02 5a 02 67 02 79 02 84 02 96 02 9e 02 b2 02 ba 02 c2 02 c6 02 cc 02 d7 02 e1 02 ec 02 f6 02 03 03 0b 03 16 03 1e 03 28 03 32 03 44 03 4c 03 52 03 58 03 60 03 69 03 72 03 7a 03 89 03 91 03 97 03 a2 03 aa 03 bb 03 c4 03 d5 03 df 03 e3 03 ed 03 f3 03 # a93e |   .data list:[0x0000, 0x0002, 0x0008, 0x000c, 0x0014, 0x0026, 0x003a, 0x004b, 0x0051, 0x005c, 0x0067, 0x0074, 0x007a, 0x0080, 0x0084, 0x0088, 0x0097, 0x00a9, 0x00b4, 0x00c3, 0x00d0, 0x00e1, 0x00ee, 0x00f9, 0x0108, 0x0112, 0x011f, 0x0125, 0x012d, 0x013e, 0x0144, 0x0155, 0x0162, 0x0171, 0x0179, 0x0183, 0x018e, 0x0199, 0x01a3, 0x01ab, 0x01b8, 0x01be, 0x01c6, 0x01d0, 0x01e4, 0x01ea, 0x01f7, 0x0206, 0x020e, 0x0218, 0x0223, 0x0234, 0x0243, 0x0249, 0x024f, 0x025a, 0x0267, 0x0279, 0x0284, 0x0296, 0x029e, 0x02b2, 0x02ba, 0x02c2, 0x02c6, 0x02cc, 0x02d7, 0x02e1, 0x02ec, 0x02f6, 0x0303, 0x030b, 0x0316, 0x031e, 0x0328, 0x0332, 0x0344, 0x034c, 0x0352, 0x0358, 0x0360, 0x0369, 0x0372, 0x037a, 0x0389, 0x0391, 0x0397, 0x03a2, 0x03aa, 0x03bb, 0x03c4, 0x03d5, 0x03df, 0x03e3, 0x03ed, 0x03f3]
+00 00 02 00 08 00 0c 00 14 00 26 00 3a 00 4b 00 51 00 5c 00 67 00 74 00 7a 00 80 00 84 00 88 00 97 00 a9 00 b4 00 c3 00 d0 00 e1 00 ee 00 f9 00 08 01 12 01 1f 01 25 01 2d 01 3e 01 44 01 55 01 62 01 71 01 79 01 83 01 8e 01 99 01 a3 01 ab 01 b8 01 be 01 c6 01 d0 01 e4 01 ea 01 f7 01 06 02 0e 02 18 02 23 02 34 02 43 02 49 02 4f 02 5a 02 67 02 79 02 84 02 96 02 9e 02 b2 02 ba 02 c2 02 c6 02 cc 02 d7 02 e1 02 ec 02 f6 02 03 03 0b 03 16 03 1e 03 28 03 32 03 44 03 4c 03 52 03 58 03 60 03 69 03 72 03 7a 03 89 03 91 03 97 03 a2 03 aa 03 bb 03 c4 03 d5 03 df 03 e3 03 ed 03 f3 03 # a940 |   .data list:[0x0000, 0x0002, 0x0008, 0x000c, 0x0014, 0x0026, 0x003a, 0x004b, 0x0051, 0x005c, 0x0067, 0x0074, 0x007a, 0x0080, 0x0084, 0x0088, 0x0097, 0x00a9, 0x00b4, 0x00c3, 0x00d0, 0x00e1, 0x00ee, 0x00f9, 0x0108, 0x0112, 0x011f, 0x0125, 0x012d, 0x013e, 0x0144, 0x0155, 0x0162, 0x0171, 0x0179, 0x0183, 0x018e, 0x0199, 0x01a3, 0x01ab, 0x01b8, 0x01be, 0x01c6, 0x01d0, 0x01e4, 0x01ea, 0x01f7, 0x0206, 0x020e, 0x0218, 0x0223, 0x0234, 0x0243, 0x0249, 0x024f, 0x025a, 0x0267, 0x0279, 0x0284, 0x0296, 0x029e, 0x02b2, 0x02ba, 0x02c2, 0x02c6, 0x02cc, 0x02d7, 0x02e1, 0x02ec, 0x02f6, 0x0303, 0x030b, 0x0316, 0x031e, 0x0328, 0x0332, 0x0344, 0x034c, 0x0352, 0x0358, 0x0360, 0x0369, 0x0372, 0x037a, 0x0389, 0x0391, 0x0397, 0x03a2, 0x03aa, 0x03bb, 0x03c4, 0x03d5, 0x03df, 0x03e3, 0x03ed, 0x03f3]
                                #      | const_data_1:
-54 65 73 74 62 65 64 0a 00     # a9fe |   .data str:"Testbed\n"
+54 65 73 74 62 65 64 0a 00     # aa00 |   .data str:"Testbed\n"
                                #      | const_data_2:
-25 62 0a 00                    # aa07 |   .data str:"%b\n"
+25 62 0a 00                    # aa09 |   .data str:"%b\n"
                                #      | const_data_3:
-25 78 0a 00                    # aa0b |   .data str:"%x\n"
+25 78 20 3d 20 25 78 0a 00     # aa0d |   .data str:"%x = %x\n"
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0xaa0f
+                               #      | .offset 0xaa16
                                #      | SECTION_BEGIN_static_data:
-                               # aa0f |   .align dummy_size:1 align:16
+                               # aa16 |   .align dummy_size:10 align:16
                                #      | var_VIDEO_ROW_BUFFER:
-                               # aa10 |   .bss size:1280 align:16
+                               # aa20 |   .bss size:1280 align:16
                                #      | var_test_loop_target_v:
-                               # af10 |   .bss size:2 align:1
+                               # af20 |   .bss size:2 align:1
                                #      | SECTION_END_static_data:
                                #      | 

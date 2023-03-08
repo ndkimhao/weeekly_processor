@@ -63,9 +63,8 @@ signal buf_row, buf_col: unsigned(9 downto 0);
 signal buf_idx: TIndex;
 
 signal maddr : std_logic_vector(14 downto 0);
-signal mdin_r : TData;
-signal mdin_g : TData;
-signal mdin_b : TData;
+signal mdata_r, mdata_g, mdata_b : TData;
+signal mlatched_r, mlatched_g, mlatched_b : TData;
 
 signal pixel_data_r : std_logic;
 signal pixel_data_g : std_logic;
@@ -116,6 +115,10 @@ begin
 				row <= buf_row;
 				col <= buf_col;
 				idx <= buf_idx;
+				
+				mlatched_r <= mdata_r;
+				mlatched_g <= mdata_g;
+				mlatched_b <= mdata_b;
 			end if;
 		end if; -- rising_edge(clk)
 	end process;
@@ -152,9 +155,9 @@ begin
 
 	maddr <= std_logic_vector(next_idx(19-1 downto 4));
 
-	pixel_data_r <= mdin_r(to_integer(idx(3 downto 0)));
-	pixel_data_g <= mdin_g(to_integer(idx(3 downto 0)));
-	pixel_data_b <= mdin_b(to_integer(idx(3 downto 0)));
+	pixel_data_r <= mlatched_r(to_integer(idx(3 downto 0)));
+	pixel_data_g <= mlatched_g(to_integer(idx(3 downto 0)));
+	pixel_data_b <= mlatched_b(to_integer(idx(3 downto 0)));
 
 	buf_din_r <= buf_din when buf_addr_bank(2) = '1' else (others => '0');
 	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');
@@ -166,7 +169,7 @@ begin
 		wea => "0",
 		addra => maddr,
 		dina => (others => '0'),
-		douta => mdin_r,
+		douta => mdata_r,
 
 		clkb => buf_clk,
 		enb => buf_en,
@@ -181,7 +184,7 @@ begin
 		wea => "0",
 		addra => maddr,
 		dina => (others => '0'),
-		douta => mdin_g,
+		douta => mdata_g,
 
 		clkb => buf_clk,
 		enb => buf_en,
@@ -196,7 +199,7 @@ begin
 		wea => "0",
 		addra => maddr,
 		dina => (others => '0'),
-		douta => mdin_b,
+		douta => mdata_b,
 
 		clkb => buf_clk,
 		enb => buf_en,
