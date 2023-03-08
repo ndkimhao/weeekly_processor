@@ -19,23 +19,29 @@ def test_loop_target():
         M[test_loop_target_v] @= 1
 
 
-def main(A, B, C, D, E, H):
-    call(puts, const('Testbed\n'))
-
+def gen_font(A, B, C, D, E, H):
+    color = M[global_var()]
     font_buf = local_var(size=2 * 16)
-    # call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
-    # with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
-    #     call(printf, const('%b\n'), [A])
-
     C @= C_FONT_16_12_INDEX
     with For(A @ 0, A < 6, A @ (A + 1)):
-        call(switch_screen_row, A + 1, A + 2)
+        with If(color >= 7):
+            color @= 0
+        color += 1
+        call(switch_screen_row, A + 1, color)
         with For(B @ 0, B < 16, B @ (B + 1)):
             D @= M[C] + C_FONT_16_12_COMPRESSED
             # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
             C += 2
             call(decode_font, addr(font_buf), D, 16, 12)
             call(fill_cell_content, 10 + B, addr(font_buf))
+
+
+def main(A, B, C, D, E, H):
+    call(puts, const('Testbed\n'))
+
+    # call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
+    # with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
+    #     call(printf, const('%b\n'), [A])
 
     call(switch_screen_row, 0, 0b110)
     call(fill_cell, 0, 0x0f0f)
@@ -45,7 +51,9 @@ def main(A, B, C, D, E, H):
     call(fill_cell, 0, 0x0f0f)
     call(fill_cell, 1, 0xffff)
     call(fill_cell, 2, 0xaaaa)
+
     with For(A @ 0, True, A @ (~A)):
+        call(gen_font)
         with If(A == 0):
             call(switch_screen_row, 5, 0b111)
             Else()
