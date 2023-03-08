@@ -53,18 +53,16 @@ def _delay_impl(cnt_2, cnt_1, cnt_0, A, B, C, D, H):
     cmt("delay loop")
     with Loop():
         H @= M_CLK_COUNT_2
-        with If(H > D) as if_2:
+        with If(H > D):
             Break()
 
-            if_2.DoNotEmitJmpCleanupBeforeElse()
-            ElseIf(H == D)
+            ElseIf(H == D, emit_jmp_cleanup_before_this=False)
 
             H @= M_CLK_COUNT_1
-            with If(H > C) as if_1:
+            with If(H > C):
                 Break()
 
-                if_1.DoNotEmitJmpCleanupBeforeElse()
-                ElseIf(H == C)
+                ElseIf(H == C, emit_jmp_cleanup_before_this=False)
 
                 If(M_CLK_COUNT_0 > B).then_break()
 

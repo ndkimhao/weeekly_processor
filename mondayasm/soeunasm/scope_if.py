@@ -105,24 +105,24 @@ def If(cond: CmpExpr | bool, preserve: Iterable[Expr] = ()):
 
 
 # noinspection PyProtectedMember, PyPep8Naming
-def Else():
+def Else(*, emit_jmp_cleanup_before_this: bool = True):
     blk = g_if_stack[-1]
     assert not blk._emitted_else
     blk._emitted_else = True
 
-    if blk._emit_jmp_cleanup_before_else:
+    if blk._emit_jmp_cleanup_before_else and emit_jmp_cleanup_before_this:
         mon.JMP(blk.l_cleanup)
     mon.EmitLabel(blk.l_elses[-1])
 
 
 # noinspection PyProtectedMember, PyPep8Naming
-def ElseIf(cond: CmpExpr | bool):
+def ElseIf(cond: CmpExpr | bool, *, emit_jmp_cleanup_before_this: bool = True):
     blk = g_if_stack[-1]
     assert not blk._emitted_else
     idx = len(blk.l_elses) + 1
     l_next_else = mon.DeclLabel(f'_E{idx}_' + blk.base_name)
 
-    if blk._emit_jmp_cleanup_before_else:
+    if blk._emit_jmp_cleanup_before_else and emit_jmp_cleanup_before_this:
         mon.JMP(blk.l_cleanup)
     mon.EmitLabel(blk.l_elses[-1])
     cond.then_jmp(l_next_else, negated=True)
