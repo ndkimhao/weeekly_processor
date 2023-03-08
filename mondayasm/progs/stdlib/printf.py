@@ -1,5 +1,5 @@
 from progs.stdlib.devices import FLAG_UART_SEND_FULL, UART_SEND, UART_STATUS
-from progs.stdlib.format import itoa_10
+from progs.stdlib.format import itoa_10, itoa_16, itoa_2
 from soeunasm import M, If, For, cmt, call, Loop, Continue, addr, ElseIf, Break, Cleanup, Else, BreakIf
 from soeunasm.data import local_var
 from soeunasm.free_expr import decl_label, label, inc
@@ -25,7 +25,7 @@ def puts(p_str, A, H):
 # noinspection PyPep8Naming
 def printf(fmt, VAR_ARGS,
            A, B, C):
-    buf = local_var(size=6)
+    buf = local_var(size=18)
     cmt('For each letter in fmt')
     B @= addr(VAR_ARGS)
     with For(A @ fmt, True, A @ (A + 1)):
@@ -51,6 +51,14 @@ def printf(fmt, VAR_ARGS,
 
             ElseIf(C == ord('x'))
             cmt('format %x')
+            call(itoa_16, [B], addr(buf))
+            call(puts, addr(buf))
+            B += 2
+
+            ElseIf(C == ord('b'))
+            cmt('format %b')
+            call(itoa_2, [B], addr(buf))
+            call(puts, addr(buf))
             B += 2
 
             ElseIf(C == ord('%'))

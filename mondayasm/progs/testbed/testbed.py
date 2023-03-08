@@ -11,9 +11,10 @@ def main(A, B, C, D, E, H):
     A @= 12345
     B @= 456
     C @= A // B
-    setb(D, A, 3)
-    setb(E, A, 4)
-    call(printf, const("Hello World: %%a=%d %%b=%x c=%d h=%d d=%d e=%d v1=%d v2=%d\n"), A, B, C, H, D, E, 323, 42342)
+    getb(D, A, 3)
+    setb(E, A, 2)
+    call(printf, const("Hello World: %%a=%d b=%x c=%d h=%d d=%d(%b) e=%d(%b) v1=%d v2=%d\n"), A, B, C, H, D, D, E, E,
+         323, 42342)
     call(printf, const("from soeunasm import call, halt, init_code_gen, Reg\n"), A, B)
 
 
