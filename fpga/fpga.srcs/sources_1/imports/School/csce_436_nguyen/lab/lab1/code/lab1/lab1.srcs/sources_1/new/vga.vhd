@@ -62,12 +62,8 @@ signal next_idx: TIndex := (others => '0');
 signal buf_row, buf_col: unsigned(9 downto 0);
 signal buf_idx: TIndex;
 
-signal buf2_row, buf2_col: unsigned(9 downto 0);
-signal buf2_idx: TIndex;
-
 signal maddr : std_logic_vector(14 downto 0);
 signal mdata_r, mdata_g, mdata_b : TData;
-signal mlatched_r, mlatched_g, mlatched_b : TData;
 
 signal pixel_data_r : std_logic;
 signal pixel_data_g : std_logic;
@@ -115,17 +111,9 @@ begin
 				buf_col <= next_col;
 				buf_idx <= next_idx;
 
-				buf2_row <= buf_row;
-				buf2_col <= buf_col;
-				buf2_idx <= buf_idx;
-
-				row <= buf2_row;
-				col <= buf2_col;
-				idx <= buf2_idx;
-				
-				mlatched_r <= mdata_r;
-				mlatched_g <= mdata_g;
-				mlatched_b <= mdata_b;
+				row <= buf_row;
+				col <= buf_col;
+				idx <= buf_idx;
 			end if;
 		end if; -- rising_edge(clk)
 	end process;
@@ -162,9 +150,9 @@ begin
 
 	maddr <= std_logic_vector(next_idx(19-1 downto 4));
 
-	pixel_data_r <= mlatched_r(to_integer(idx(3 downto 0)));
-	pixel_data_g <= mlatched_g(to_integer(idx(3 downto 0)));
-	pixel_data_b <= mlatched_b(to_integer(idx(3 downto 0)));
+	pixel_data_r <= mdata_r(to_integer(idx(3 downto 0)));
+	pixel_data_g <= mdata_g(to_integer(idx(3 downto 0)));
+	pixel_data_b <= mdata_b(to_integer(idx(3 downto 0)));
 
 	buf_din_r <= buf_din when buf_addr_bank(2) = '1' else (others => '0');
 	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');

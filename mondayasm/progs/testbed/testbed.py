@@ -23,13 +23,13 @@ def main(A, B, C, D, E, H):
     call(puts, const('Testbed\n'))
 
     font_buf = local_var(size=2 * 16)
-    call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('A') - 32], 16, 12)
+    call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
     with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
         call(printf, const('%b\n'), [A])
 
-    call(switch_screen_row, 0, 0b100)
-    call(fill_cell_content, 0, addr(font_buf))
-    halt()
+    with For(A @ 0, A < 8, A @ (A + 1)):
+        call(switch_screen_row, A, A)
+        call(fill_cell_content, 20, addr(font_buf))
 
     call(switch_screen_row, 0, 0b110)
     call(fill_cell, 0, 0x0f0f)

@@ -38,10 +38,7 @@ def fill_cell_content(col, ptr_buf, A, B):
              A < ROW_BUFFER_END,
              (A @ (A + JUMP_ONE_ROW), B @ (B + 2))
              ):
-        # call(printf, const('f:%b\n'), M[B])
-        # M[A] @= M[B]
-        M[A] @= 0xaaFF
-        call(printf, const('%x = %x\n'), A, M[A])
+        M[A] @= M[B]
 
 
 def decode_font(ptr_out, ptr_encoded, height, width,
