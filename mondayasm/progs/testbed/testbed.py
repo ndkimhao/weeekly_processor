@@ -1,4 +1,4 @@
-from progs.stdlib.font import FONT_16_12_COMPRESSED, FONT_16_12_INDEX, FONT_16_12_INDEX_PY
+from progs.stdlib.font import C_FONT_16_12_COMPRESSED, C_FONT_16_12_INDEX, FONT_16_12_INDEX_PY
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.timing import DELAY_MILLIS
 from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
@@ -23,13 +23,19 @@ def main(A, B, C, D, E, H):
     call(puts, const('Testbed\n'))
 
     font_buf = local_var(size=2 * 16)
-    call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
-    with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
-        call(printf, const('%b\n'), [A])
+    # call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
+    # with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
+    #     call(printf, const('%b\n'), [A])
 
-    with For(A @ 0, A < 8, A @ (A + 1)):
-        call(switch_screen_row, A, A)
-        call(fill_cell_content, 20, addr(font_buf))
+    C @= C_FONT_16_12_INDEX
+    with For(A @ 0, A < 6, A @ (A + 1)):
+        call(switch_screen_row, A + 1, A + 2)
+        with For(B @ 0, B < 16, B @ (B + 1)):
+            D @= M[C] + C_FONT_16_12_COMPRESSED
+            # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
+            C += 2
+            call(decode_font, addr(font_buf), D, 16, 12)
+            call(fill_cell_content, 10 + B, addr(font_buf))
 
     call(switch_screen_row, 0, 0b110)
     call(fill_cell, 0, 0x0f0f)

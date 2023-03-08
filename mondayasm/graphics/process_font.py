@@ -1,4 +1,5 @@
 from PIL import Image
+import base64
 
 if __name__ == '__main__':
     im = Image.open('font_12x16.png').transpose(method=Image.TRANSPOSE)
@@ -36,7 +37,8 @@ if __name__ == '__main__':
                 elif line == ALL_ZEROS:
                     encode_bits.append('110')
                 else:
-                    encode_bits.append(f'111{line}')
+                    reversed_line = line[::-1]
+                    encode_bits.append(f'111{reversed_line}')
                 prev_lines.append(line)
 
             print(' '.join(encode_bits))
@@ -53,4 +55,5 @@ if __name__ == '__main__':
         ba_encode.append(int(all_bits[i:i + 8], 2))
     print(f'total bytes = {len(ba_encode)}')
     print(ba_encode.hex())
-    print(enc_index)
+    print(repr(base64.b64encode(ba_encode)))
+    print(', '.join(f'0x{idx:04x}' for idx in enc_index))
