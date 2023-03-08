@@ -68,6 +68,7 @@ class StaticData:
     name: str
     readonly: bool
     size: int
+    align: int
     data: DataEncode
 
 
@@ -126,9 +127,12 @@ class Global:
         cls.static_data[d.name] = d
         scope = cls.const_data_scope if d.readonly else cls.static_var_scope
         prefix = 'const' if d.readonly else 'var'
+        if d.align != 1:
+            assert d.align > 1
+            scope.add(Directive('.align', (d.align,)))
         lbl = Label(f'{prefix}_{d.name}', emit_to=scope)
         directive = '.data' if d.readonly else '.bss'
-        scope.add(Directive(directive, (d.data.value, d.data.bincode, d.size)))
+        scope.add(Directive(directive, (d.data.value, d.data.bincode, d.size, d.align)))
         return lbl
 
 
@@ -249,7 +253,7 @@ def AnonLabel(name: str = '', emit_label: bool = True) -> RawExpr:
     return Label(name, anon=True, emit=emit_label)
 
 
-def ConstData(name, obj=None) -> RawExpr:
+def ConstData(name, obj=None, *, align=1) -> RawExpr:
     if obj is None:
         obj = name
         name = Global.gen_label_name('data', '')
@@ -278,10 +282,11 @@ def ConstData(name, obj=None) -> RawExpr:
         readonly=True,
         data=DataEncode(value, data, bincode),
         size=len(data),
+        align=align
     ))
 
 
-def StaticVar(name: Union[str, int], size=None) -> RawExpr:
+def StaticVar(name: Union[str, int], size=None, *, align=1) -> RawExpr:
     if size is None:
         size = name
         assert isinstance(size, int)
@@ -291,6 +296,7 @@ def StaticVar(name: Union[str, int], size=None) -> RawExpr:
         readonly=False,
         data=DataEncode('', bytes(), ''),
         size=size,
+        align=align,
     ))
 
 

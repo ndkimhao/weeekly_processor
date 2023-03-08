@@ -1,5 +1,6 @@
 from progs.stdlib import printf
-from progs.stdlib.printf import putc, test_itoa_10
+from progs.stdlib.printf import putc, test_itoa_10, puts
+from progs.stdlib.video import switch_screen_row, fill_cell
 from soeunasm import call, halt, init_code_gen, Reg, getb, setb
 from soeunasm.data import const
 
@@ -8,14 +9,13 @@ CODE_OFFSET = 0xA000
 
 
 def main(A, B, C, D, E, H):
-    A @= 12345
-    B @= 456
-    C @= A // B
-    getb(D, A, 3)
-    setb(E, A, 2)
-    call(printf, const("Hello World: %%a=%d b=%x c=%d h=%d d=%d(%b) e=%d(%b) v1=%d v2=%d\n"), A, B, C, H, D, D, E, E,
-         323, 42342)
-    call(printf, const("from soeunasm import call, halt, init_code_gen, Reg\n"), A, B)
+    call(puts, const('Testbed\n'))
+    call(switch_screen_row, 0, 0b110)
+    call(fill_cell, 0, 0x0f0f)
+    call(fill_cell, 1, 0xffff)
+    call(switch_screen_row, 2, 0b101)
+    call(fill_cell, 0, 0x0f0f)
+    call(fill_cell, 1, 0xffff)
 
 
 if __name__ == '__main__':

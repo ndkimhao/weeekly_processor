@@ -62,9 +62,17 @@ class CodeGen:
                 elif inst.name == '.data':
                     self.buf.append((get_offset(), inst.args[1], f'  .data {inst.args[0]}'))
                     self.romlen += inst.args[2]
+                elif inst.name == '.align':
+                    align = inst.args[0]
+                    if get_offset() % align != 0:
+                        dummy_size = align - (get_offset() % align)
+                        self.buf.append(
+                            (get_offset(), '', f'  .align dummy_size:{dummy_size} align:{align}'))
+                        blocklen += dummy_size
                 elif inst.name == '.bss':
                     bss_size = inst.args[2]
-                    self.buf.append((get_offset(), inst.args[1], f'  .bss size:{bss_size}'))
+                    bss_align = inst.args[3]
+                    self.buf.append((get_offset(), inst.args[1], f'  .bss size:{bss_size} align:{bss_align}'))
                     blocklen += bss_size
                 elif inst.name == '.comment':
                     self.buf.append((get_offset(), '', f'  # {inst.args[0]}'))
@@ -107,13 +115,16 @@ class CodeGen:
                 continue
             self._gen_block(blk)
         self._gen_block(Global.const_data_scope)
+        if self.var_offset is None:
+            self.var_offset = self.code_offset + self.romlen
         self._gen_block(Global.static_var_scope, forced_offset=self.var_offset)
         self._fix_refs()
         return self
 
     @staticmethod
     def get_idxstr(idx: int, hexcode: str, cmd: str):
-        if hexcode != '' or cmd.lstrip().startswith('.bss'):
+        cmd = cmd.lstrip()
+        if hexcode != '' or cmd.startswith('.bss') or cmd.startswith('.align'):
             return f'{idx:x}'
         else:
             return ''

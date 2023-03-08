@@ -26,8 +26,8 @@ def local_var(*, size: int = 2) -> Expr:
     return local_vars(1, size=size)[0]
 
 
-def global_var(name: str, size: int) -> Expr:
-    v = mon.StaticVar(name, size)
+def global_var(name: str, size: int, *, align: int = 1) -> Expr:
+    v = mon.StaticVar(name, size, align=align)
     return Expr.to_expr(v)
 
 
