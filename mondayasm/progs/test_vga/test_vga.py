@@ -143,7 +143,7 @@ def start():
         addr += 80
 
     for i in range(10):
-        MOV(M[addr - 2], 0x00FF)
+        MOV(M[addr - 2], 0xFaFa)
         MOV(M[addr], 0x0F0F)
         MOV(M[addr + 2], 0xFF00)
         addr += 80

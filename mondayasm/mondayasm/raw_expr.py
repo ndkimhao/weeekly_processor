@@ -26,6 +26,8 @@ class AsmArg:
                 s += ' + '
             if isinstance(b, int) and b < 0:
                 s += str(b)
+            elif isinstance(b, int) and b >= 0xFF:
+                s += str(b - 0x10000)
             else:
                 s += f'0x{b & 0xFF:x}' if isinstance(b, int) else str(b)
         if s == '':

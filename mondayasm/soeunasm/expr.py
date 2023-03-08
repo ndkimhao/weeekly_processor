@@ -138,7 +138,10 @@ class Expr:
             else:
                 return so.Statement(stm_op, lhs.a)
         else:  # different dest variant
-            return so.Statement(stm_op, lhs.a, rhs.a, rhs.b)
+            if rhs.b != PseudoExpr.NULL:
+                return so.Statement(stm_op, lhs.a, rhs.a, rhs.b)
+            else:
+                return so.Statement(stm_op, lhs.a, rhs.a)
 
     # Operators of Expr
 
