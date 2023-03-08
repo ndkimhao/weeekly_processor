@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="video_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="constants" />
+            <top_module name="glbl" />
+            <top_module name="types" />
+            <top_module name="video_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="12,519.747 ns"></ZoomStartTime>
+      <ZoomEndTime time="24,069.748 ns"></ZoomEndTime>
+      <Cursor1Time time="14,444.747 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="136"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="19" />
+   <wvobject fp_name="/video_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_clk" type="logic">
+      <obj_property name="ElementShortName">vbuf_clk</obj_property>
+      <obj_property name="ObjectShortName">vbuf_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_en" type="logic">
+      <obj_property name="ElementShortName">vbuf_en</obj_property>
+      <obj_property name="ObjectShortName">vbuf_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_wr" type="logic">
+      <obj_property name="ElementShortName">vbuf_wr</obj_property>
+      <obj_property name="ObjectShortName">vbuf_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_addr_bank" type="array">
+      <obj_property name="ElementShortName">vbuf_addr_bank[2:0]</obj_property>
+      <obj_property name="ObjectShortName">vbuf_addr_bank[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_addr" type="array">
+      <obj_property name="ElementShortName">vbuf_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">vbuf_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_din" type="array">
+      <obj_property name="ElementShortName">vbuf_din[15:0]</obj_property>
+      <obj_property name="ObjectShortName">vbuf_din[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/vbuf_dout" type="array">
+      <obj_property name="ElementShortName">vbuf_dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">vbuf_dout[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider34">
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/row" type="array">
+      <obj_property name="ElementShortName">row[9:0]</obj_property>
+      <obj_property name="ObjectShortName">row[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/col" type="array">
+      <obj_property name="ElementShortName">col[9:0]</obj_property>
+      <obj_property name="ObjectShortName">col[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/r" type="array">
+      <obj_property name="ElementShortName">r[7:0]</obj_property>
+      <obj_property name="ObjectShortName">r[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/g" type="array">
+      <obj_property name="ElementShortName">g[7:0]</obj_property>
+      <obj_property name="ObjectShortName">g[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/b" type="array">
+      <obj_property name="ElementShortName">b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/idx" type="array">
+      <obj_property name="ElementShortName">idx[18:0]</obj_property>
+      <obj_property name="ObjectShortName">idx[18:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/next_idx" type="array">
+      <obj_property name="ElementShortName">next_idx[18:0]</obj_property>
+      <obj_property name="ObjectShortName">next_idx[18:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/video_tb/display/vga/maddr" type="array">
+      <obj_property name="ElementShortName">maddr[14:0]</obj_property>
+      <obj_property name="ObjectShortName">maddr[14:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="group43" type="group">
+      <obj_property name="label">data</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/video_tb/display/vga/mdata_r" type="array">
+         <obj_property name="ElementShortName">mdata_r[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mdata_r[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/video_tb/display/vga/mdata_g" type="array">
+         <obj_property name="ElementShortName">mdata_g[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mdata_g[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/video_tb/display/vga/mdata_b" type="array">
+         <obj_property name="ElementShortName">mdata_b[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mdata_b[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/video_tb/display/vga/mlatched_r" type="array">
+         <obj_property name="ElementShortName">mlatched_r[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mlatched_r[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/video_tb/display/vga/mlatched_g" type="array">
+         <obj_property name="ElementShortName">mlatched_g[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mlatched_g[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/video_tb/display/vga/mlatched_b" type="array">
+         <obj_property name="ElementShortName">mlatched_b[15:0]</obj_property>
+         <obj_property name="ObjectShortName">mlatched_b[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#DCDCDC</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

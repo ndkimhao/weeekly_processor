@@ -62,6 +62,9 @@ signal next_idx: TIndex := (others => '0');
 signal buf_row, buf_col: unsigned(9 downto 0);
 signal buf_idx: TIndex;
 
+signal buf2_row, buf2_col: unsigned(9 downto 0);
+signal buf2_idx: TIndex;
+
 signal maddr : std_logic_vector(14 downto 0);
 signal mdata_r, mdata_g, mdata_b : TData;
 signal mlatched_r, mlatched_g, mlatched_b : TData;
@@ -112,9 +115,13 @@ begin
 				buf_col <= next_col;
 				buf_idx <= next_idx;
 
-				row <= buf_row;
-				col <= buf_col;
-				idx <= buf_idx;
+				buf2_row <= buf_row;
+				buf2_col <= buf_col;
+				buf2_idx <= buf_idx;
+
+				row <= buf2_row;
+				col <= buf2_col;
+				idx <= buf2_idx;
 				
 				mlatched_r <= mdata_r;
 				mlatched_g <= mdata_g;
