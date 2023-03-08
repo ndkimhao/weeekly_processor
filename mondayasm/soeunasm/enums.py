@@ -31,6 +31,8 @@ class StmOp(Enum):
     IMUL = auto()
     DIV = auto()
     IDIV = auto()
+    GETB = auto()
+    SETB = auto()
     SHR = auto()
     ISHR = auto()
     SHL = auto()

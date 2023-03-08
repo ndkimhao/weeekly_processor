@@ -75,6 +75,10 @@ signal buf_dout_r : TData;
 signal buf_dout_g : TData;
 signal buf_dout_b : TData;
 
+signal buf_din_r : TData;
+signal buf_din_g : TData;
+signal buf_din_b : TData;
+
 signal masked_dout_r : TData;
 signal masked_dout_g : TData;
 signal masked_dout_b : TData;
@@ -136,17 +140,25 @@ begin
 		end if; -- rising_edge(buf_clk)
 	end process;
 	
-	masked_dout_r <= buf_dout_r when last_buf_addr_bank(2) = '1' else (others => '0');
-	masked_dout_g <= buf_dout_g when last_buf_addr_bank(1) = '1' else (others => '0');
-	masked_dout_b <= buf_dout_b when last_buf_addr_bank(0) = '1' else (others => '0');
+	masked_dout_r <= (others => '1') when last_buf_addr_bank(2) = '1' else (others => '0');
+	masked_dout_g <= (others => '1') when last_buf_addr_bank(1) = '1' else (others => '0');
+	masked_dout_b <= (others => '1') when last_buf_addr_bank(0) = '1' else (others => '0');
 
-	buf_dout <= masked_dout_r and masked_dout_g and masked_dout_b;
+	buf_dout <= not (
+					(masked_dout_r xor buf_dout_r) or
+					(masked_dout_g xor buf_dout_g) or
+					(masked_dout_b xor buf_dout_b)
+				);
 
 	maddr <= std_logic_vector(next_idx(19-1 downto 4));
 
 	pixel_data_r <= mdin_r(to_integer(idx(3 downto 0)));
 	pixel_data_g <= mdin_g(to_integer(idx(3 downto 0)));
 	pixel_data_b <= mdin_b(to_integer(idx(3 downto 0)));
+
+	buf_din_r <= buf_din when buf_addr_bank(2) = '1' else (others => '0');
+	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');
+	buf_din_b <= buf_din when buf_addr_bank(0) = '1' else (others => '0');
 
 	video_buffer_r : blk_mem_gen_video_buffer port map (
 		clka => clk,
@@ -158,9 +170,9 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_addr_bank(2) & "",
+		web => buf_wr & "",
 		addrb => buf_addr(15 downto 1),
-		dinb => buf_din,
+		dinb => buf_din_r,
 		doutb => buf_dout_r
 	);
 	video_buffer_g : blk_mem_gen_video_buffer port map (
@@ -173,9 +185,9 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_addr_bank(1) & "",
+		web => buf_wr & "",
 		addrb => buf_addr(15 downto 1),
-		dinb => buf_din,
+		dinb => buf_din_g,
 		doutb => buf_dout_g
 	);
 	video_buffer_b : blk_mem_gen_video_buffer port map (
@@ -188,9 +200,9 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_addr_bank(0) & "",
+		web => buf_wr & "",
 		addrb => buf_addr(15 downto 1),
-		dinb => buf_din,
+		dinb => buf_din_b,
 		doutb => buf_dout_b
 	);
 end structure;

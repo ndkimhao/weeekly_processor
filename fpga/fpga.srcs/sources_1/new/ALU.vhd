@@ -75,6 +75,8 @@ signal o : unsigned(ALUOpLen-1 downto 0);
 signal uprod, sprod, udiv, sdiv : std_logic_vector(DataWidth*2-1 downto 0);
 signal udiv_done, sdiv_done : std_logic;
 
+signal bitmask : unsigned(DataWidth-1 downto 0);
+
 begin
 
 	ua <= unsigned(a);
@@ -84,6 +86,8 @@ begin
 	o <= unsigned(op);
 	r <= std_logic_vector(ur);
 	
+	bitmask <= to_unsigned(1, DataWidth) sll to_integer(ub(3 downto 0));
+	
 	ur <=
 		-- 2 args
 		ua + ub when o = OP_ADD else
@@ -92,6 +96,8 @@ begin
 		unsigned(sprod(DataWidth-1 downto 0)) when o = OP_IMUL else
 		unsigned(udiv(DataWidth-1 downto 0)) when o = OP_DIV else
 		unsigned(sdiv(DataWidth-1 downto 0)) when o = OP_IDIV else
+		ua or bitmask when o = OP_GETB else
+		ua and (not bitmask) when o = OP_SETB else
 		ua srl to_integer(ub(3 downto 0)) when o = OP_SHR else
 		unsigned(sa sra to_integer(ub(3 downto 0))) when o = OP_ISHR else
 		ua sll to_integer(ub(3 downto 0)) when o = OP_SHL else
@@ -136,25 +142,25 @@ begin
 		p => sprod
 	);
 	
---	unsigned_div : div_unsigned_16 port map (
---		aclk => clk,
---		s_axis_divisor_tvalid => start_op,
---		s_axis_divisor_tdata => b,
---		s_axis_dividend_tvalid => start_op,
---		s_axis_dividend_tdata => a,
---		m_axis_dout_tvalid => udiv_done,
---		m_axis_dout_tdata => udiv
---	);
+	unsigned_div : div_unsigned_16 port map (
+		aclk => clk,
+		s_axis_divisor_tvalid => start_op,
+		s_axis_divisor_tdata => b,
+		s_axis_dividend_tvalid => start_op,
+		s_axis_dividend_tdata => a,
+		m_axis_dout_tvalid => udiv_done,
+		m_axis_dout_tdata => udiv
+	);
 
---	signed_div : div_signed_16 port map (
---		aclk => clk,
---		s_axis_divisor_tvalid => start_op,
---		s_axis_divisor_tdata => b,
---		s_axis_dividend_tvalid => start_op,
---		s_axis_dividend_tdata => a,
---		m_axis_dout_tvalid => sdiv_done,
---		m_axis_dout_tdata => sdiv
---	);
+	signed_div : div_signed_16 port map (
+		aclk => clk,
+		s_axis_divisor_tvalid => start_op,
+		s_axis_divisor_tdata => b,
+		s_axis_dividend_tvalid => start_op,
+		s_axis_dividend_tdata => a,
+		m_axis_dout_tvalid => sdiv_done,
+		m_axis_dout_tdata => sdiv
+	);
 	
 	div_done <= 
 		udiv_done when o = OP_DIV else

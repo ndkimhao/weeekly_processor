@@ -57,6 +57,14 @@ def XOR(a, b, c=None):
     return __emit_command('xor', a, b, c)
 
 
+def GETB(a, b, c=None):
+    return __emit_command('getb', a, b, c)
+
+
+def SETB(a, b, c=None):
+    return __emit_command('setb', a, b, c)
+
+
 ##################################################
 # ALU 2/3 args
 ##################################################

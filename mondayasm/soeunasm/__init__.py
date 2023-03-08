@@ -12,6 +12,6 @@ from soeunasm.free_expr import (
     neg, Xor, bmov, Not, lshift, rshift, truediv, floordiv, M
 )
 from soeunasm.free_cmds import (
-    halt, mmap, umap
+    halt, mmap, umap, getb, setb
 )
 from soeunasm.miscs import init_code_gen, Reg, cmt

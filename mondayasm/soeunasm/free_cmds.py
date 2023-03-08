@@ -19,3 +19,25 @@ def umap(slot_idx):
     slot_idx = Expr.to_expr(slot_idx)
     assert slot_idx.is_pure
     return Statement(StmOp.UMAP, slot_idx.a)
+
+
+def getb(a, b, c=None):
+    a = Expr.to_expr(a)
+    b = Expr.to_expr(b)
+    assert a.is_pure
+    assert b.is_pure
+    if c is not None:
+        c = Expr.to_expr(c)
+        assert c.is_pure
+    return Statement(StmOp.GETB)
+
+
+def setb(a, b, c=None):
+    a = Expr.to_expr(a)
+    b = Expr.to_expr(b)
+    assert a.is_pure
+    assert b.is_pure
+    if c is not None:
+        c = Expr.to_expr(c)
+        assert c.is_pure
+    return Statement(StmOp.SETB)

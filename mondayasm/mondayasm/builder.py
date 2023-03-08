@@ -161,7 +161,7 @@ def emit_command(name: str, a=None, b=None, c=None, emit_to=None):
             if RawExpr.to_expr(a).is_pure_label:
                 a = RawExpr.to_expr(a).relative
 
-    if name in ('add', 'sub', 'mul', 'imul', 'div', 'idiv', 'shr', 'ishr', 'shl', 'and',
+    if name in ('add', 'sub', 'mul', 'imul', 'div', 'idiv', 'getb', 'setb' 'shr', 'ishr', 'shl', 'and',
                 'or', 'xor', 'neg', 'not', 'bool', 'inc', 'dec', 'getf', 'mov', 'bmov', 'pop'):
         assert indirect_a or a != REGISTER_0
 
