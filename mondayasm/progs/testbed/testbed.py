@@ -1,7 +1,7 @@
-from progs.stdlib import printf
-from progs.stdlib.printf import putc, test_itoa_10, puts
+from progs.stdlib.printf import puts
+from progs.stdlib.timing import DELAY_MILLIS
 from progs.stdlib.video import switch_screen_row, fill_cell
-from soeunasm import call, halt, init_code_gen, Reg, getb, setb
+from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else
 from soeunasm.data import const
 
 VID_MEM_OFFSET = 0x0000
@@ -16,6 +16,15 @@ def main(A, B, C, D, E, H):
     call(switch_screen_row, 2, 0b101)
     call(fill_cell, 0, 0x0f0f)
     call(fill_cell, 1, 0xffff)
+    with For(A @ 0, True, A @ (~A)):
+        with If(A == 0):
+            call(switch_screen_row, 5, 0b111)
+            Else()
+            call(switch_screen_row, 5, 0b101)
+
+        call(fill_cell, 0, 0x0f0f)
+        call(fill_cell, 1, 0xffff)
+        DELAY_MILLIS(1000)
 
 
 if __name__ == '__main__':

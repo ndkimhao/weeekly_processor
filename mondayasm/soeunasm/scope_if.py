@@ -29,6 +29,9 @@ class IfCtxInner:
         assert not self._ctx._emitted_cleanup
         self._ctx._emit_cleanup()
 
+    def DoNotEmitJmpCleanupBeforeElse(self):
+        self._ctx._emit_jmp_cleanup_before_else = False
+
 
 # noinspection PyProtectedMember
 class IfCtx:
@@ -47,6 +50,7 @@ class IfCtx:
         self.l_end = mon.DeclLabel('_Z_' + name)
         self._emitted_else = False
         self._emitted_cleanup = False
+        self._emit_jmp_cleanup_before_else = True
 
         self.inner_ctx = IfCtxInner(self)
 
@@ -106,18 +110,20 @@ def Else():
     assert not blk._emitted_else
     blk._emitted_else = True
 
-    mon.JMP(blk.l_cleanup)
+    if blk._emit_jmp_cleanup_before_else:
+        mon.JMP(blk.l_cleanup)
     mon.EmitLabel(blk.l_elses[-1])
 
 
 # noinspection PyProtectedMember, PyPep8Naming
-def ElseIf(cond: CmpExpr):
+def ElseIf(cond: CmpExpr | bool):
     blk = g_if_stack[-1]
     assert not blk._emitted_else
     idx = len(blk.l_elses) + 1
     l_next_else = mon.DeclLabel(f'_E{idx}_' + blk.base_name)
 
-    mon.JMP(blk.l_cleanup)
+    if blk._emit_jmp_cleanup_before_else:
+        mon.JMP(blk.l_cleanup)
     mon.EmitLabel(blk.l_elses[-1])
     cond.then_jmp(l_next_else, negated=True)
 

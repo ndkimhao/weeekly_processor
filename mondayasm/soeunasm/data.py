@@ -31,6 +31,15 @@ def global_var(name: str, size: int, *, align: int = 1) -> Expr:
     return Expr.to_expr(v)
 
 
-def const(name, obj=None) -> Expr:
+_CONST_DEDUP = {}
+
+
+def const(name, obj=None, *, dedup: bool = True) -> Expr:
+    dedup = dedup and obj is None and isinstance(name, str)
+    if dedup and name in _CONST_DEDUP:
+        return _CONST_DEDUP[name]
     v = mon.ConstData(name, obj)
-    return Expr.to_expr(v)
+    v = Expr.to_expr(v)
+    if dedup:
+        _CONST_DEDUP[name] = v
+    return v
