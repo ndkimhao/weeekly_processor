@@ -290,7 +290,10 @@ def StaticVar(name: Union[str, int], size=None, *, align=1) -> RawExpr:
     if size is None:
         size = name
         assert isinstance(size, int)
-        name = Global.gen_label_name('data', '')
+        name = ''
+    assert isinstance(name, str)
+    if name == '':
+        name = Global.gen_label_name('var', '')
     return Global.add_static_data(StaticData(
         name=name,
         readonly=False,

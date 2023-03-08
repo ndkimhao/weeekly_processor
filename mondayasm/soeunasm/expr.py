@@ -319,3 +319,8 @@ class Expr:
     @property
     def is_pure(self):
         return self.op == ExprOp.NONE
+
+    @property
+    def raw_expr(self):
+        assert self.is_pure
+        return self.a

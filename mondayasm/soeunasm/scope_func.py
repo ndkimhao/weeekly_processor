@@ -112,15 +112,19 @@ def Return(value=None, value_2=None):
 g_visited_fns: set[Callable] = set()
 
 
-def call(fn, *args: Any, preserve_registers: bool = True):
-    assert callable(fn)
-
+def emit_fn(fn):
+    assert callable(fn) and hasattr(fn, '__name__')
     name = fn.__name__
     l_fn_entry = mon.DeclLabel(f'fn_{name}')
-
     if fn not in g_visited_fns:
         generate_fn_code(fn, name, l_fn_entry)
+    return l_fn_entry
 
+
+def call(fn, *args: Any, preserve_registers: bool = True):
+    assert callable(fn) and hasattr(fn, '__name__')
+
+    l_fn_entry = emit_fn(fn)
     preserve = []
     n_regs = 0
 
