@@ -1,7 +1,9 @@
-from soeunasm import Reg, If, mov, inc
+from soeunasm import Reg, If, mov, inc, expr
 from soeunasm.scope_global import ExitIf
 
 _DIV_CONST_CACHE = {}
+
+HAS_HW_DIVIDER = True
 
 
 def _check_div_const(v, p):
@@ -41,6 +43,9 @@ def DIV_RECIPROCAL(v):
 def DIV_CONST(dest, a_var, b_const, H, G, *, calc_mod: bool = False):
     assert isinstance(b_const, int)
     assert dest != a_var
+    # if HAS_HW_DIVIDER:
+    #     mov(dest, expr(a_var) // expr(b_const))
+    #     return
     G @= a_var * DIV_RECIPROCAL(b_const)
     mov(dest, H)
     G @= H * b_const

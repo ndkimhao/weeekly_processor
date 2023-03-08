@@ -26,10 +26,13 @@ def getb(a, b, c=None):
     b = Expr.to_expr(b)
     assert a.is_pure
     assert b.is_pure
+    a = a.a
+    b = b.a
     if c is not None:
         c = Expr.to_expr(c)
         assert c.is_pure
-    return Statement(StmOp.GETB)
+        c = c.a
+    return Statement(StmOp.GETB, a, b, c)
 
 
 def setb(a, b, c=None):
@@ -37,7 +40,10 @@ def setb(a, b, c=None):
     b = Expr.to_expr(b)
     assert a.is_pure
     assert b.is_pure
+    a = a.a
+    b = b.a
     if c is not None:
         c = Expr.to_expr(c)
         assert c.is_pure
-    return Statement(StmOp.SETB)
+        c = c.a
+    return Statement(StmOp.SETB, a, b, c)

@@ -115,6 +115,8 @@ def start():
         MMAP(0, 0x9600, 1)
         for i in range(10):
             MOV(M[addr], 0xFFFF)
+            ADD(M[addr], 0xF0F0)
+            AND(M[addr], ~0x4002)
             addr += 80
 
     MOV(A, 0xF3)

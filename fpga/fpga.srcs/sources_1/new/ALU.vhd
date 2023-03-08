@@ -94,10 +94,11 @@ begin
 		ua - ub when o = OP_SUB else
 		unsigned(uprod(DataWidth-1 downto 0)) when o = OP_MUL else
 		unsigned(sprod(DataWidth-1 downto 0)) when o = OP_IMUL else
-		unsigned(udiv(DataWidth-1 downto 0)) when o = OP_DIV else
-		unsigned(sdiv(DataWidth-1 downto 0)) when o = OP_IDIV else
-		ua or bitmask when o = OP_GETB else
-		ua and (not bitmask) when o = OP_SETB else
+		unsigned(udiv(DataWidth*2-1 downto DataWidth)) when o = OP_DIV else
+		unsigned(sdiv(DataWidth*2-1 downto DataWidth)) when o = OP_IDIV else
+		ua and bitmask when o = OP_GETB else
+		ua or bitmask when o = OP_SETB and ub(4) = '0' else
+		ua and (not bitmask) when o = OP_SETB and ub(4) = '1' else
 		ua srl to_integer(ub(3 downto 0)) when o = OP_SHR else
 		unsigned(sa sra to_integer(ub(3 downto 0))) when o = OP_ISHR else
 		ua sll to_integer(ub(3 downto 0)) when o = OP_SHL else
@@ -115,8 +116,8 @@ begin
 	aux <=
 		uprod(DataWidth*2-1 downto DataWidth) when o = OP_MUL else
 		sprod(DataWidth*2-1 downto DataWidth) when o = OP_IMUL else
-		udiv(DataWidth*2-1 downto DataWidth) when o = OP_DIV else
-		sdiv(DataWidth*2-1 downto DataWidth) when o = OP_IDIV else
+		udiv(DataWidth-1 downto 0) when o = OP_DIV else
+		sdiv(DataWidth-1 downto 0) when o = OP_IDIV else
 		x"0000";
 
 	cmp(FLAGID_EQ) <= '1' when ua = ub else '0'; -- EQ
