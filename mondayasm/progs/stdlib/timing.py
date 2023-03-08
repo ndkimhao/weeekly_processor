@@ -1,6 +1,6 @@
 from progs.stdlib import printf
 from progs.stdlib.devices import M_CLK_COUNT_2, M_CLK_COUNT_1, M_CLK_COUNT_0
-from soeunasm import If, While, Else, Loop, call, Break, Continue, ElseIf, cmt
+from soeunasm import If, While, Else, Loop, call, Break, Continue, ElseIf, cmt, Scope, Cleanup, BreakIf
 from soeunasm.data import const
 
 CLK_FREQ = 60_000_000  # 60 MHz
@@ -41,8 +41,14 @@ def _delay_impl(cnt_2, cnt_1, cnt_0, A, B, C, D, H):
     # second word
     A @= cnt_1 + H
     H @= 0
-    with If(A + C < A):
+    with Scope():
+        If(A + C < A).then_break()
+        If(A < H).then_break()
+        Break(cleanup=False)
+
+        Cleanup()
         H @= 1
+
     C += A
 
     # third word

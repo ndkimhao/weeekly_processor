@@ -91,11 +91,11 @@ class IfCtx:
     def jmp(self, target, *, negated: bool = False, signed: bool = False):
         return self._cond.then_jmp(target, negated=negated, signed=signed)
 
-    def then_break(self):
-        return BreakIf(self._cond)
+    def then_break(self, *args, **kwargs):
+        return BreakIf(self._cond, *args, **kwargs)
 
-    def then_continue(self):
-        return ContinueIf(self._cond)
+    def then_continue(self, *args, **kwargs):
+        return ContinueIf(self._cond, *args, **kwargs)
 
 
 # noinspection PyPep8Naming

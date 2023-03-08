@@ -14,12 +14,16 @@ class ScopeCtxInner:
     def __init__(self, blk: 'ScopeCtx'):
         self._blk = blk
 
-    def Break(self):
-        return Statement(StmOp.JMP, self._blk.l_cleanup)
+    def _break_target(self, cleanup: bool):
+        assert len(self._blk._preserve) == 0
+        return self._blk.l_cleanup if cleanup else self._blk.l_end
 
-    def BreakIf(self, cond: CmpExpr, *, signed: bool = False):
+    def Break(self, *, cleanup: bool = True):
+        return Statement(StmOp.JMP, self._break_target(cleanup))
+
+    def BreakIf(self, cond: CmpExpr, *, signed: bool = False, cleanup: bool = True):
         assert isinstance(cond, CmpExpr)
-        return cond.then_jmp(self._blk.l_cleanup, signed=signed)
+        return cond.then_jmp(self._break_target(cleanup), signed=signed)
 
     def Continue(self):
         return Statement(StmOp.JMP, self._blk.l_begin_body)

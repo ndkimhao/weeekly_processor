@@ -15,7 +15,7 @@ e0 60                          # a00c |   push C
 e0 40                          # a00e |   push B
 e0 20                          # a010 |   push A
                                #      | _A_call_2:
-e0 e0 df a1                    # a012 |   push ${const_data_1}
+e0 e0 e9 a1                    # a012 |   push ${const_data_1}
 5c f8 c1 00                    # a016 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a01a |   mov SP, SP + 0x2
                                #      | _Z_call_2:
@@ -155,7 +155,7 @@ e0 20                          # a113 |   push A
 61 20 bc 08                    # a115 |   mov A, [SP + 0x8]
 60 20 e4 f0 00                 # a119 |   mov A, 0xf0 + A
 89 40 bc e0 06 00 05           # a11e |   mul B, [SP + 0x6], 0x500
-54 e0 e0 1c f0 a1 ef a6 01     # a125 |   mmap ${var_VIDEO_ROW_BUFFER}, ${var_VIDEO_ROW_BUFFER} + 04ff, 0x1
+54 e0 e0 1c 00 a2 ff a6 01     # a125 |   mmap ${var_VIDEO_ROW_BUFFER}, ${var_VIDEO_ROW_BUFFER} + 04ff, 0x1
                                #      | _cleanup_fn_switch_screen_row:
 e4 20                          # a12e |   pop A
 e4 40                          # a130 |   pop B
@@ -168,9 +168,9 @@ e0 20                          # a133 |   push A
 61 fe bc 06                    # a135 |   mov G, [SP + 0x6]
 a9 20 bc 1c 04 01              # a139 |   shl A, [SP + 0x4], 0x1
                                #      | _A_for_2:
-60 20 e4 f0 a1                 # a13f |   mov A, ${var_VIDEO_ROW_BUFFER} + A
+60 20 e4 00 a2                 # a13f |   mov A, ${var_VIDEO_ROW_BUFFER} + A
                                #      | _BA_for_2:
-fc 20 e0 f8 f0 a6 13 00        # a144 |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_2}:rel + PC
+fc 20 e0 f8 00 a7 13 00        # a144 |   jge A, ${var_VIDEO_ROW_BUFFER} + 0500, ${_C_for_2}:rel + PC
 62 20 fe                       # a14c |   mov [A], G
                                #      | _BZ_for_2:
 60 20 3c 50                    # a14f |   mov A, A + 0x50
@@ -202,58 +202,60 @@ c4 ff 00                       # a17e |   inc H, 0
 60 40 44                       # a181 |   mov B, B + A
 81 20 bc ff 0c                 # a184 |   add A, [SP + 0xc], H
 60 ff 00                       # a189 |   mov H, 0
-                               #      | _A_if_5:
-fc 2c 20 f8 09 00              # a18c |   jge A + C, A, ${_E_if_5}:rel + PC
-c4 ff 00                       # a192 |   inc H, 0
-                               #      | _E_if_5:
-                               #      | _C_if_5:
-                               #      | _Z_if_5:
-60 60 64                       # a195 |   mov C, C + A
-81 20 bc ff 0a                 # a198 |   add A, [SP + 0xa], H
-60 80 84                       # a19d |   mov D, D + A
+                               #      | _A_scope_1:
+                               #      | _B_scope_1:
+f0 2c 20 f8 10 00              # a18c |   jlt A + C, A, ${_C_scope_1}:rel + PC
+f0 20 ff f8 0a 00              # a192 |   jlt A, H, ${_C_scope_1}:rel + PC
+58 f8 07 00                    # a198 |   jmp ${_Z_scope_1}:rel + PC
+                               #      | _C_scope_1:
+c4 ff 00                       # a19c |   inc H, 0
+                               #      | _Z_scope_1:
+60 60 64                       # a19f |   mov C, C + A
+81 20 bc ff 0a                 # a1a2 |   add A, [SP + 0xa], H
+60 80 84                       # a1a7 |   mov D, D + A
                                #      |   # delay loop
                                #      | _A_loop_2:
                                #      | _BA_loop_2:
-61 ff e0 14 ff                 # a1a0 |   mov H, [0xff14]
-                               #      | _A_if_6:
-f4 ff 80 f8 0a 00              # a1a5 |   jle H, D, ${_E_if_6}:rel + PC
-58 f8 2b 00                    # a1ab |   jmp ${_C_loop_2}:rel + PC
-                               #      | _E_if_6:
-ec ff 80 f8 23 00              # a1af |   jne H, D, ${_E2_if_6}:rel + PC
-61 ff e0 12 ff                 # a1b5 |   mov H, [0xff12]
+61 ff e0 14 ff                 # a1aa |   mov H, [0xff14]
                                #      | _A_if_7:
-f4 ff 60 f8 0a 00              # a1ba |   jle H, C, ${_E_if_7}:rel + PC
-58 f8 16 00                    # a1c0 |   jmp ${_C_loop_2}:rel + PC
+f4 ff 80 f8 0a 00              # a1af |   jle H, D, ${_E_if_7}:rel + PC
+58 f8 2b 00                    # a1b5 |   jmp ${_C_loop_2}:rel + PC
                                #      | _E_if_7:
-ec ff 60 f8 0e 00              # a1c4 |   jne H, C, ${_E2_if_7}:rel + PC
-fa e0 40 f8 10 ff 0c 00        # a1ca |   jgt [0xff10], B, ${_C_loop_2}:rel + PC
+ec ff 80 f8 23 00              # a1b9 |   jne H, D, ${_E2_if_7}:rel + PC
+61 ff e0 12 ff                 # a1bf |   mov H, [0xff12]
+                               #      | _A_if_8:
+f4 ff 60 f8 0a 00              # a1c4 |   jle H, C, ${_E_if_8}:rel + PC
+58 f8 16 00                    # a1ca |   jmp ${_C_loop_2}:rel + PC
+                               #      | _E_if_8:
+ec ff 60 f8 0e 00              # a1ce |   jne H, C, ${_E2_if_8}:rel + PC
+fa e0 40 f8 10 ff 0c 00        # a1d4 |   jgt [0xff10], B, ${_C_loop_2}:rel + PC
+                               #      | _E2_if_8:
+                               #      | _C_if_8:
+                               #      | _Z_if_8:
                                #      | _E2_if_7:
                                #      | _C_if_7:
                                #      | _Z_if_7:
-                               #      | _E2_if_6:
-                               #      | _C_if_6:
-                               #      | _Z_if_6:
                                #      | _BZ_loop_2:
-58 f8 ce ff                    # a1d2 |   jmp ${_BA_loop_2}:rel + PC
+58 f8 ce ff                    # a1dc |   jmp ${_BA_loop_2}:rel + PC
                                #      | _C_loop_2:
                                #      | _Z_loop_2:
                                #      | _cleanup_fn__delay_impl:
-e4 20                          # a1d6 |   pop A
-e4 40                          # a1d8 |   pop B
-e4 60                          # a1da |   pop C
-e4 80                          # a1dc |   pop D
-dc                             # a1de |   ret
+e4 20                          # a1e0 |   pop A
+e4 40                          # a1e2 |   pop B
+e4 60                          # a1e4 |   pop C
+e4 80                          # a1e6 |   pop D
+dc                             # a1e8 |   ret
                                #      | _end_fn__delay_impl:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const_data_1:
-54 65 73 74 62 65 64 0a 00     # a1df |   .data str:"Testbed\n"
+54 65 73 74 62 65 64 0a 00     # a1e9 |   .data str:"Testbed\n"
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0xa1e8
+                               #      | .offset 0xa1f2
                                #      | SECTION_BEGIN_static_data:
-                               # a1e8 |   .align dummy_size:8 align:16
+                               # a1f2 |   .align dummy_size:14 align:16
                                #      | var_VIDEO_ROW_BUFFER:
-                               # a1f0 |   .bss size:1280 align:16
+                               # a200 |   .bss size:1280 align:16
                                #      | SECTION_END_static_data:
                                #      | 

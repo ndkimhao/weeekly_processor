@@ -57,3 +57,12 @@ class CmpExpr:
             )
         else:
             return Statement(CMP_STM_OP[op], self.a, self.b, target)
+
+    def negate(self) -> 'CmpExpr':
+        return CmpExpr(CMP_OP_INVERSE[self.op], self.a, self.b)
+
+    def __invert__(self):
+        return self.negate()
+
+    def __neg__(self):
+        return self.negate()
