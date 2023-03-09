@@ -21,6 +21,7 @@ def main(A, B, C, D, E, F, G, H):
         call(tg_tick, move)
         running @= H
         call(display_board)
+        DELAY_MILLIS(1000)
 
 
 if __name__ == '__main__':

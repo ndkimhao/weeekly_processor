@@ -37,10 +37,11 @@ class IfCtxInner:
 class IfCtx:
     FUNCTION_BYPASS = ['break', 'continue']
 
-    def __init__(self, cond: CmpExpr, preserve: Iterable[Expr]):
+    def __init__(self, cond: CmpExpr, preserve: Iterable[Expr], signed: bool):
         assert all(e.is_pure_register for e in preserve)
         self._cond = cond
         self._preserve = tuple(preserve)
+        self._signed = signed
 
         name = monb.Global.gen_label_name('if', prefix='')
         self.base_name = name
@@ -60,7 +61,7 @@ class IfCtx:
         for v in self._preserve:
             mon.PUSH(v.a)
 
-        self._cond.then_jmp(self.l_elses[-1], negated=True)
+        self._cond.then_jmp(self.l_elses[-1], negated=True, signed=self._signed)
 
         g_if_stack.append(self)
         push_global_scope(self)
@@ -99,9 +100,9 @@ class IfCtx:
 
 
 # noinspection PyPep8Naming
-def If(cond: CmpExpr | bool, preserve: Iterable[Expr] = ()):
+def If(cond: CmpExpr | bool, *, preserve: Iterable[Expr] = (), signed: bool = False):
     assert isinstance(cond, CmpExpr)
-    return IfCtx(cond, preserve)
+    return IfCtx(cond, preserve, signed)
 
 
 # noinspection PyProtectedMember, PyPep8Naming
@@ -116,7 +117,7 @@ def Else(*, emit_jmp_cleanup_before_this: bool = True):
 
 
 # noinspection PyProtectedMember, PyPep8Naming
-def ElseIf(cond: CmpExpr | bool, *, emit_jmp_cleanup_before_this: bool = True):
+def ElseIf(cond: CmpExpr | bool, *, emit_jmp_cleanup_before_this: bool = True, signed: bool = False):
     blk = g_if_stack[-1]
     assert not blk._emitted_else
     idx = len(blk.l_elses) + 1
@@ -125,6 +126,6 @@ def ElseIf(cond: CmpExpr | bool, *, emit_jmp_cleanup_before_this: bool = True):
     if blk._emit_jmp_cleanup_before_else and emit_jmp_cleanup_before_this:
         mon.JMP(blk.l_cleanup)
     mon.EmitLabel(blk.l_elses[-1])
-    cond.then_jmp(l_next_else, negated=True)
+    cond.then_jmp(l_next_else, negated=True, signed=signed)
 
     blk.l_elses.append(l_next_else)
