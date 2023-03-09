@@ -19,7 +19,7 @@ entity vga is
 		buf_clk : in  std_logic;
 		buf_en : in std_logic;
 		buf_wr : in std_logic;
-		buf_addr_bank : in std_logic_vector(2 downto 0); -- red/green/blue
+		buf_addr_bank : in std_logic_vector(4-1 downto 0); -- wr_all/red/green/blue
 		buf_addr : in TAddr;
 		buf_din : in TData;
 		buf_dout : out TData
@@ -77,11 +77,15 @@ signal buf_din_r : TData;
 signal buf_din_g : TData;
 signal buf_din_b : TData;
 
+signal buf_wr_r : std_logic;
+signal buf_wr_g : std_logic;
+signal buf_wr_b : std_logic;
+
 signal masked_dout_r : TData;
 signal masked_dout_g : TData;
 signal masked_dout_b : TData;
 
-signal last_buf_addr_bank : std_logic_vector(2 downto 0);
+signal last_buf_addr_bank : std_logic_vector(4-1 downto 0);
 
 begin
 
@@ -158,6 +162,10 @@ begin
 	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');
 	buf_din_b <= buf_din when buf_addr_bank(0) = '1' else (others => '0');
 
+	buf_wr_r <= buf_addr_bank(2) or buf_addr_bank(3);
+	buf_wr_g <= buf_addr_bank(1) or buf_addr_bank(3);
+	buf_wr_b <= buf_addr_bank(0) or buf_addr_bank(3);
+
 	video_buffer_r : blk_mem_gen_video_buffer port map (
 		clka => clk,
 		ena => '1',
@@ -168,7 +176,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr & "",
+		web => buf_wr_r & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din_r,
 		doutb => buf_dout_r
@@ -183,7 +191,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr & "",
+		web => buf_wr_g & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din_g,
 		doutb => buf_dout_g
@@ -198,7 +206,7 @@ begin
 
 		clkb => buf_clk,
 		enb => buf_en,
-		web => buf_wr & "",
+		web => buf_wr_b & "",
 		addrb => buf_addr(15 downto 1),
 		dinb => buf_din_b,
 		doutb => buf_dout_b

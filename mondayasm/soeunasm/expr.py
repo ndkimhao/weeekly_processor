@@ -84,7 +84,7 @@ class Expr:
             try:
                 tmp.assemble()
                 return Expr(ExprOp.NONE, tmp)
-            except AssertionError:
+            except:
                 ...
 
         return Expr(op, lhs.a, rhs.a)

@@ -573,6 +573,7 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_Video" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_Video" RelGenDir="$PGENDIR/sim_Video">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sim_Video/new/video_tb.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>

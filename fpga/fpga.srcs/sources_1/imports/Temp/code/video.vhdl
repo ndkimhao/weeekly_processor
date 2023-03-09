@@ -21,7 +21,7 @@ entity video is
 		buf_clk : in  std_logic;
 		buf_en : in std_logic;
 		buf_wr : in std_logic;
-		buf_addr_bank : in std_logic_vector(2 downto 0);
+		buf_addr_bank : in std_logic_vector(4-1 downto 0);
 		buf_addr : in TAddr;
 		buf_din : in TData;
 		buf_dout : out TData

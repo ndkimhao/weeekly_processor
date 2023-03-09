@@ -79,5 +79,6 @@ def _delay_impl(cnt_2, cnt_1, cnt_0, loop_target, A, B, C, D, H):
                 If(M_CLK_COUNT_0 > B).then_break()
 
                 with If(A != 0):
+                    # we don't need to preserve G & H here
                     mondayasm.CALL(A.raw_expr)
     # call(printf, const("done: %x %x %x\n"), M_CLK_COUNT_2, M_CLK_COUNT_1, M_CLK_COUNT_0)

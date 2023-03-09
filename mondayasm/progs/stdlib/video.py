@@ -1,6 +1,6 @@
 from progs.stdlib import printf
 from progs.stdlib.printf import puts
-from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf
+from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr
 from soeunasm.data import global_var, const, local_var, local_vars
 
 CHUNK_SZ = 16
@@ -17,7 +17,7 @@ JUMP_ONE_ROW = WIDTH // 8
 
 def switch_screen_row(chunk_row, color, A, B, H):
     A @= color
-    A @= 0xF0 + A
+    A @= 0xA0 + A
     B @= chunk_row * (JUMP_ONE_ROW * CHUNK_SZ)
     start_addr = ROW_BUFFER.addr()
     end_addr = ROW_BUFFER.addr_add(ROW_BUFFER_SZ - 1).addr()
@@ -29,6 +29,11 @@ def fill_cell(col, value, A, G):
     A @= col << 1
     with For(A @ (A + ROW_BUFFER.addr()), A < ROW_BUFFER_END.addr(), A @ (A + JUMP_ONE_ROW)):
         M[A] @= G
+
+
+def get_cell_addr(col, H):
+    H @= col << 1
+    H @= H + ROW_BUFFER.addr()
 
 
 def fill_cell_content(col, ptr_buf, A, B):
