@@ -45,18 +45,17 @@ class TeMove(Enum):
     NONE = 0
     LEFT = 1
     RIGHT = 2
-    CLOCK = 3
-    COUNTER = 4
-    DROP = 5
-    HOLD = 6
+    ROTATE = 3
+    DROP = 4
+    HOLD = 5
 
 
 class TeCell:
     EMPTY = 0
-    CELLI = 1
-    CELLJ = 2
-    CELLL = 3
-    CELLO = 4
-    CELLS = 5
-    CELLT = 6
-    CELLZ = 7
+    CELL_J = 1
+    CELL_S = 2
+    CELL_I = 3
+    CELL_Z = 4
+    CELL_T = 5
+    CELL_O = 6
+    CELL_L = 7

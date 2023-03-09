@@ -81,7 +81,7 @@ def tg_do_gravity_tick(A, H):
 
             Else()
 
-            PRINTF('not fit!\n')
+            # PRINTF('not fit!\n')
             Board.falling.loc.row -= 1
             call(tg_put, 1)
             call(tg_new_falling)
@@ -100,7 +100,8 @@ def tg_put(put_or_clear,
     teblk = Board.falling
 
     B @= teblk.typ - 1
-    D @= teblk.ori + (B * NUM_ORIENTATIONS * 2)
+    D @= teblk.ori << 1
+    D += (B * NUM_ORIENTATIONS * 2)
     D @= [TETROMINOS + D]
     # call(printf, const('t=%d o=%d blk=%x\n'), B, teblk.ori, D)
     with ForRange(C, 0, CELLS_PER_TETROMINOS):
@@ -133,6 +134,9 @@ def tg_handle_move(move, A):
         ElseIf(A == TeMove.DROP.value)
         call(tg_down)
 
+        ElseIf(A == TeMove.ROTATE.value)
+        call(tg_rotate)
+
 
 def tg_move(direction, H):
     call(tg_put, 0)
@@ -151,9 +155,40 @@ def tg_down(H):
         If(H == 0).then_break()
     ###
     Board.falling.loc.row -= 1
-    PRINTF('drop: %d\n', Board.falling.loc.row)
+    # PRINTF('drop: %d\n', Board.falling.loc.row)
     call(tg_put, 1)
     call(tg_new_falling)
+
+
+def tg_rotate(H):
+    call(tg_put, 0)
+    with Loop():
+        H @= Board.falling.ori + 1
+        H &= (NUM_ORIENTATIONS - 1)
+        Board.falling.ori @= H
+
+        # If the new orientation fits, we're done.
+        call(tg_fits)
+        If(H != 0).then_break()
+
+        # Otherwise, try moving left to make it fit.
+        Board.falling.loc.col -= 1
+        call(tg_fits)
+        If(H != 0).then_break()
+
+        # Finally, try moving right to make it fit.
+        Board.falling.loc.col += 2
+        call(tg_fits)
+        If(H != 0).then_break()
+
+        # Put it back in its original location and try the next orientation.
+        Board.falling.loc.col -= 1
+        # Worst case, we come back to the original orientation and it fits, so this
+        # loop will terminate.
+
+    # PRINTF('rot: t=%d o=%d r=%d c=%d\n',
+    #        Board.falling.typ, Board.falling.ori, Board.falling.loc.row, Board.falling.loc.col)
+    call(tg_put, 1)
 
 
 def tg_adjust_score(lines_cleared):
@@ -183,9 +218,10 @@ def tg_fits(A, B, C, D, E, F, G, H):
     teblk = Board.falling
 
     B @= teblk.typ - 1
-    D @= teblk.ori + (B * NUM_ORIENTATIONS * 2)
+    D @= teblk.ori << 1
+    D += (B * NUM_ORIENTATIONS * 2)
     D @= [TETROMINOS + D]
-    call(printf, const('fits: t=%d o=%d row=%d col=%d\n'), teblk.typ, teblk.ori, teblk.loc.row, teblk.loc.col)
+    # call(printf, const('fits: t=%d o=%d row=%d col=%d\n'), teblk.typ, teblk.ori, teblk.loc.row, teblk.loc.col)
     with ForRange(C, 0, CELLS_PER_TETROMINOS):
         A @= D >> (C * 4 + 2)
         E @= D >> (C * 4)
@@ -193,7 +229,7 @@ def tg_fits(A, B, C, D, E, F, G, H):
         E &= 0x03
         G @= teblk.loc.row + A
         B @= teblk.loc.col + E
-        call(printf, const('fits: %d %d ; %d %d -> %d %d\n'), A, E, teblk.loc.row, teblk.loc.col, G, B)
+        # call(printf, const('fits: %d %d ; %d %d -> %d %d\n'), A, E, teblk.loc.row, teblk.loc.col, G, B)
 
         cmt('check if out of board area')
         H @= 0

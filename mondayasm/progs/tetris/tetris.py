@@ -30,7 +30,7 @@ def handle_keyboard(G, H):
         If(G == 0xF0).then_continue()  # break code
         G @= TeMove.NONE.value
         with If(H == 0x75):  # up
-            G @= TeMove.CLOCK.value
+            G @= TeMove.ROTATE.value
 
             ElseIf(H == 0x74)  # right
             G @= TeMove.RIGHT.value
