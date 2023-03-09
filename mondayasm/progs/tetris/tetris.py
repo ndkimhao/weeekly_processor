@@ -54,7 +54,7 @@ def main(A, B, C, D, E, F, G, H):
     with While(running != 0):
         call(tg_tick, move)
         running @= H
-        DELAY_MICROS(10000, handle_keyboard)
+        DELAY_MICROS(5000, handle_keyboard)
 
 
 if __name__ == '__main__':

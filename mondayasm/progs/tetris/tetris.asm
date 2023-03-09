@@ -30,8 +30,8 @@ e2 a0                          # 5021 |   push [SP]
 62 bc ff 02                    # 502b |   mov [SP + 0x2], H
                                #      | _A_call_43:
 e0 e0 e8 55                    # 502f |   push ${fn_handle_keyboard}
-e0 e0 c0 27                    # 5033 |   push 0x27c0
-e0 1c 09                       # 5037 |   push 0x9
+e0 e0 e0 93                    # 5033 |   push 0x93e0
+e0 1c 04                       # 5037 |   push 0x4
 e0 00                          # 503a |   push 0
 5c f8 36 06                    # 503c |   call ${fn__delay_impl}:rel + PC
 60 a0 bc 08                    # 5040 |   mov SP, SP + 0x8
