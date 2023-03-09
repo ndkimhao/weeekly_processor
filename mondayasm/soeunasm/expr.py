@@ -327,3 +327,15 @@ class Expr:
     def raw_expr(self):
         assert self.is_pure
         return self.a
+
+    def addr_add(self, rhs):
+        if not isinstance(rhs, Expr):
+            rhs = Expr.to_expr(rhs)
+        assert rhs.is_pure
+        assert self.is_pure
+        assert isinstance(self.a, RawIndirect)
+        return Expr(ExprOp.NONE, RawIndirect(self.a.as_direct() + rhs.a))
+
+    def addr(self):
+        assert self.is_pure and isinstance(self.a, RawIndirect)
+        return self.a.as_direct()

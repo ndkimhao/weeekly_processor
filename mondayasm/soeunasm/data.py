@@ -2,7 +2,7 @@ from mondayasm import RawExpr
 from soeunasm import Expr, scope_global
 import mondayasm as mon
 from soeunasm.enums import placeholder_stack_offset
-from soeunasm.free_expr import expr
+from soeunasm.free_expr import expr, deref
 from soeunasm.scope_func import FuncScopeCtx
 
 
@@ -28,7 +28,7 @@ def local_var(*, size: int = 2) -> Expr:
 
 def global_var(name: str = '', *, size: int = 2, align: int = 1) -> Expr:
     v = mon.StaticVar(name, size, align=align)
-    return Expr.to_expr(v)
+    return deref(Expr.to_expr(v))
 
 
 _CONST_DEDUP = {}
