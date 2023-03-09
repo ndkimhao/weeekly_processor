@@ -7,6 +7,7 @@ from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.scope_global import inc_stack_offset, dec_stack_offset, push_global_scope, pop_global_scope, BreakIf, \
     ContinueIf
+import soeunasm
 
 g_if_stack: list['IfCtx'] = []
 
@@ -93,10 +94,13 @@ class IfCtx:
         return self._cond.then_jmp(target, negated=negated, signed=signed)
 
     def then_break(self, *args, **kwargs):
-        return BreakIf(self._cond, *args, **kwargs)
+        return BreakIf(self._cond, *args, signed=self._signed, **kwargs)
 
     def then_continue(self, *args, **kwargs):
-        return ContinueIf(self._cond, *args, **kwargs)
+        return ContinueIf(self._cond, *args, signed=self._signed, **kwargs)
+
+    def then_return(self, *args, **kwargs):
+        return soeunasm.scope_func.ReturnIf(self._cond, *args, signed=self._signed, **kwargs)
 
 
 # noinspection PyPep8Naming

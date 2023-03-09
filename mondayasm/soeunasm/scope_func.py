@@ -2,9 +2,11 @@ from typing import Iterable, Callable, Any
 import inspect
 
 import mondayasm
+import soeunasm.scope_if
 from soeunasm import Expr, Statement, StmOp, scope_if, scope_for, scope_global, scope, enums, Scope
 from mondayasm import builder as monb, RawExpr
 import mondayasm as mon
+from soeunasm.cmp_expr import CmpExpr
 from soeunasm.enums import placeholder_stack_offset, ExprOp
 from soeunasm.free_expr import mov, expr
 from soeunasm.miscs import adjust_sp
@@ -107,6 +109,13 @@ class FuncScopeCtx:
 def Return(value=None, value_2=None):
     blk = g_func_scope_stack[-1]
     blk._emit_return(value, value_2)
+
+
+# noinspection PyProtectedMember
+def ReturnIf(cond: CmpExpr, value=None, value_2=None, *, signed: bool = False):
+    blk = g_func_scope_stack[-1]
+    with soeunasm.scope_if.If(cond, signed=signed):
+        blk._emit_return(value, value_2)
 
 
 g_visited_fns: set[Callable] = set()

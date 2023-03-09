@@ -1,10 +1,12 @@
 from progs.stdlib import printf
 from progs.stdlib.memory import memset, memcpy
+from progs.stdlib.printf import PRINTF
 from progs.stdlib.random import srand, rand
-from progs.tetris.data import CELLS_PER_TETROMINOS, TETROMINOS, NUM_ORIENTATIONS
+from progs.tetris.data import CELLS_PER_TETROMINOS, TETROMINOS, NUM_ORIENTATIONS, GRAVITY_LEVELS
 from progs.tetris.defs import N_ROWS, N_COLS
-from progs.tetris.types import TeCell, TeBlock
-from soeunasm import global_var, call, const, local_var, If, cmt, Else, ForRange, M
+from progs.tetris.types import TeCell, TeBlock, TeMove
+from soeunasm import global_var, call, const, local_var, If, cmt, Else, ForRange, M, Scope, ElseIf, While, Loop
+from soeunasm.scope_func import Return
 
 
 class Board:
@@ -35,15 +37,16 @@ def tg_init():
     Board.stored.typ @= -1
     Board.stored.ori @= 0
     Board.stored.loc.row @= 0
-    Board.next.loc.col @= N_ROWS // 2 - 2
+    Board.next.loc.col @= N_COLS // 2 - 2
 
 
-def tg_new_falling(H):
+def tg_new_falling(G, H):
     cmt('Board.falling = Board.next')
     call(memcpy, Board.falling.addr(), Board.next.addr(), TeBlock.SIZE)
     cmt('fill new Board.next')
     call(rand)
-    Board.next.typ @= H
+    G @= H // 7
+    Board.next.typ @= H + 1
     Board.next.ori @= 0
     Board.next.loc.row @= 0
     Board.next.loc.col @= N_COLS // 2 - 2
@@ -59,23 +62,34 @@ def tg_tick(move, H):
     call(tg_adjust_score, H)
     #  Return whether the game will continue (NOT whether it's over)
     call(tg_game_over)
-    H @= H.bool()
     H @= 1 - H
 
 
-def tg_do_gravity_tick():
+def tg_do_gravity_tick(A, H):
     Board.ticks_till_gravity -= 1
     with If(Board.ticks_till_gravity <= 0, signed=True):
-        call(tg_put, Board.falling.addr(), 0)
+        call(tg_put, 0)
         Board.falling.loc.row += 1
-        call(tg_put, Board.falling.addr(), 1)
+        call(tg_fits)
+        with If(H == 1):
+            A @= Board.level
+            Board.ticks_till_gravity @= M[GRAVITY_LEVELS + A * 2]
+
+            Else()
+
+            PRINTF('not fit!\n')
+            Board.falling.loc.row -= 1
+            call(tg_put, 1)
+            call(tg_new_falling)
+        ###
+        call(tg_put, 1)
 
 
 # put_or_clear: 0 = clear, 1 = put
-def tg_put(ptr_teblock, put_or_clear,
+def tg_put(put_or_clear,
            A, B, C, D, E, F, G, H):
-    A @= ptr_teblock
-    teblk = TeBlock(M[A])
+    A @= put_or_clear
+    teblk = Board.falling
 
     B @= teblk.typ - 1
     D @= teblk.ori + (B * NUM_ORIENTATIONS * 2)
@@ -100,17 +114,89 @@ def tg_put(ptr_teblock, put_or_clear,
             # call(printf, const('%x\n'), [F])
 
 
-def tg_handle_move(move):
-    ...
+def tg_handle_move(move, A):
+    A @= move
+    with If(A == TeMove.LEFT.value):
+        call(tg_move, -1)
+
+        ElseIf(A == TeMove.RIGHT.value)
+        call(tg_move, 1)
+
+        ElseIf(A == TeMove.DROP.value)
+        call(tg_down)
+
+
+def tg_move(direction, H):
+    call(tg_put, 0)
+    Board.falling.loc.col += direction
+    call(tg_fits)
+    with If(H == 0):
+        Board.falling.loc.col -= direction
+    call(tg_put, 1)
+
+
+def tg_down(H):
+    call(tg_put, 0)
+    with Loop():
+        call(tg_fits)
+        If(H == 0).then_break()
+        Board.falling.loc.row += 1
+    ###
+    Board.falling.loc.row -= 1
+    call(tg_put, 1)
+    call(tg_new_falling)
 
 
 def tg_adjust_score(lines_cleared):
     ...
 
 
-def tg_game_over(H):
-    H @= 0
+def tg_game_over(A, B, C, D, H):
+    C @= 0
+    call(tg_put, 0)
+    with ForRange(A, 0, 2) as for_a:
+        with ForRange(B, 0, N_COLS):
+            D @= A * N_COLS
+            D += B + Board.state.addr()
+            H @= M[D].byte()
+            with If(H != TeCell.EMPTY):
+                C @= 1
+                for_a.Break()
+    call(tg_put, 1)
+    H @= C
 
 
 def tg_check_lines(H):
     H @= 0
+
+
+def tg_fits(B, C, D, E, F, G, H):
+    teblk = Board.falling
+
+    B @= teblk.typ - 1
+    D @= teblk.ori + (B * NUM_ORIENTATIONS * 2)
+    D @= [TETROMINOS + D]
+    call(printf, const('fits: t=%d o=%d row=%d col=%d\n'), teblk.typ, teblk.ori, teblk.loc.row, teblk.loc.col)
+    with ForRange(C, 0, CELLS_PER_TETROMINOS):
+        B @= D >> (C * 4 + 2)  # reuse B
+        E @= D >> (C * 4)
+        B &= 0x03
+        E &= 0x03
+        G @= teblk.loc.row + B
+        B @= teblk.loc.col + E  # reuse B
+        # call(printf, const('fits: %d %d ; %d %d -> %d %d\n'), B, E, teblk.loc.row, teblk.loc.col, G, B)
+
+        cmt('check if out of board area')
+        H @= 0
+        If(G < 0, signed=True).then_return()
+        If(B < 0, signed=True).then_return()
+        If(G >= N_ROWS).then_return()
+        If(B >= N_COLS).then_return()
+
+        cmt('check if cell is occupied')
+        F @= G * N_COLS
+        F += B + Board.state.addr()
+        If(M[F] != TeCell.EMPTY).then_return()
+
+    cmt('done checking, all good')
+    H @= 1

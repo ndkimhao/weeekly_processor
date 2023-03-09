@@ -1,7 +1,7 @@
 from progs.stdlib.devices import M_LED
 from progs.stdlib.font import C_FONT_16_12_COMPRESSED, C_FONT_16_12_INDEX, FONT_16_12_INDEX_PY
 from progs.stdlib.printf import puts, printf
-from progs.stdlib.timing import DELAY_MILLIS
+from progs.stdlib.timing import DELAY_MILLIS, DELAY_MICROS
 from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
 from progs.tetris.board import tg_init, tg_tick
 from progs.tetris.display import display_board
@@ -21,7 +21,7 @@ def main(A, B, C, D, E, F, G, H):
         call(tg_tick, move)
         running @= H
         call(display_board)
-        DELAY_MILLIS(1000)
+        DELAY_MICROS(500)
 
 
 if __name__ == '__main__':
