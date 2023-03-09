@@ -320,6 +320,10 @@ class Expr:
         return self.op == ExprOp.NONE and self.a.is_pure_label
 
     @property
+    def is_pure_indirect(self):
+        return self.op == ExprOp.NONE and isinstance(self.a, RawIndirect)
+
+    @property
     def is_pure(self):
         return self.op == ExprOp.NONE
 

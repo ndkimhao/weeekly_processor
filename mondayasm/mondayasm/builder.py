@@ -130,7 +130,7 @@ class Global:
         if d.align != 1:
             assert d.align > 1
             scope.add(Directive('.align', (d.align,)))
-        lbl = Label(f'{prefix}_{d.name}', emit_to=scope)
+        lbl = Label(f'{prefix}__{d.name}', emit_to=scope)
         directive = '.data' if d.readonly else '.bss'
         scope.add(Directive(directive, (d.data.value, d.data.bincode, d.size, d.align)))
         return lbl

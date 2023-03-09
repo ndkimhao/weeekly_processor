@@ -111,3 +111,7 @@ def While(cond: CmpExpr | bool, *, signed: bool = False, preserve: Iterable[Expr
 
 def Loop(*, preserve: Iterable[Expr] = ()):
     return ForScopeCtx((), True, (), False, preserve, 'loop')
+
+
+def ForRange(var, v_from, v_to, v_step=1):
+    return For(var @ v_from, var < v_to, var @ (var + v_step))

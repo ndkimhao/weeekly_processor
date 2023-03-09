@@ -2,10 +2,8 @@ from progs.stdlib.font import C_FONT_16_12_COMPRESSED, C_FONT_16_12_INDEX, FONT_
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.timing import DELAY_MILLIS
 from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
-from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr
-from soeunasm.data import const, global_var, local_var
+from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var
 
-VID_MEM_OFFSET = 0x0000
 CODE_OFFSET = 0xA000
 
 test_loop_target_v = global_var('test_loop_target_v')
