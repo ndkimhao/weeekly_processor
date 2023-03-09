@@ -47,3 +47,10 @@ def setb(a, b, c=None):
         assert c.is_pure
         c = c.a
     return Statement(StmOp.SETB, a, b, c)
+
+
+def jmp(target):
+    if not isinstance(target, Expr):
+        target = Expr.to_expr(target)
+    assert target.is_pure
+    return Statement(StmOp.JMP, target.a)

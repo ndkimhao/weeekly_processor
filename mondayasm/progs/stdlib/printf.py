@@ -2,7 +2,6 @@ from progs.stdlib.devices import FLAG_UART_SEND_FULL, UART_SEND, UART_STATUS
 from progs.stdlib.format import itoa_10, itoa_16, itoa_2
 from soeunasm import M, If, For, cmt, call, Loop, Continue, addr, ElseIf, Break, Cleanup, Else, BreakIf
 from soeunasm.data import local_var, const
-from soeunasm.free_expr import decl_label, label, inc
 
 
 def putc(c, H):

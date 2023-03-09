@@ -87,27 +87,27 @@ def Xor(lhs, rhs):
 
 def neg(val):
     val = Expr.to_expr(val)
-    return val @ (-val)
+    return -val
 
 
 def Not(val):
     val = Expr.to_expr(val)
-    return val @ (~val)
+    return ~val
 
 
 def bool(val):
     val = Expr.to_expr(val)
-    return val @ val.bool()
+    return val.bool()
 
 
 def inc(val):
     val = Expr.to_expr(val)
-    return val @ val.inc()
+    return val.inc()
 
 
 def dec(val):
     val = Expr.to_expr(val)
-    return val @ val.dec()
+    return val.dec()
 
 
 def byte(val):

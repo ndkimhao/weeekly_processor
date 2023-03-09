@@ -1,5 +1,5 @@
 from progs.stdlib.div_const import DIV_CONST
-from soeunasm import M, While, Break, If, cmt, Else, For, inc
+from soeunasm import M, While, Break, If, cmt, Else, For
 from soeunasm.scope_func import Return, call
 
 

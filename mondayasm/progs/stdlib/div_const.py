@@ -1,4 +1,4 @@
-from soeunasm import Reg, If, mov, inc, expr
+from soeunasm import Reg, If, mov, expr, inc
 from soeunasm.scope_global import ExitIf
 
 _DIV_CONST_CACHE = {}
@@ -53,5 +53,5 @@ def DIV_CONST(dest, a_var, b_const, H, G, *, calc_mod: bool = False):
         H @= a_var - G
     with If(G <= a_var - b_const):
         ExitIf(a_var < b_const)
-        inc(dest)
+        mov(dest, inc(dest))
         H -= b_const
