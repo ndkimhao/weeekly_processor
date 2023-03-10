@@ -53,13 +53,11 @@ def tg_new_falling(G, H):
     Board.next.loc.col @= N_COLS // 2 - 2
 
 
-def tg_tick(move, H):
+def tg_tick(H):
     # Handle gravity.
     call(tg_do_gravity_tick)
     with If(H != 0):
         call(progs.tetris.display.display_board)
-    # Handle input.
-    call(tg_handle_move, move)
     # Check for cleared lines
     call(tg_check_lines)  # H == lines_cleared
     call(tg_adjust_score, H)

@@ -46,14 +46,12 @@ def handle_keyboard(G, H):
             call(display_board)
 
 
-def main(A, B, C, D, E, F, G, H):
+def main(H):
     call(tg_init)
-    running, move = local_vars(2)
-
     cmt('game loop')
-    with While(running != 0):
-        call(tg_tick, move)
-        running @= H
+    with Loop():
+        call(tg_tick)
+        If(H == 0).then_break()
         DELAY_MICROS(5000, handle_keyboard)
 
 

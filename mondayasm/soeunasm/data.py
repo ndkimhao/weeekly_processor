@@ -35,15 +35,19 @@ _CONST_DEDUP = {}
 
 
 def const(name, obj=None, *, dedup: bool = True) -> Expr:
-    if obj is None and isinstance(name, str):
+    dedup = dedup and \
+            obj is None and \
+            isinstance(name, str)
+
+    if dedup:
         name_escaped = name.replace('\n', '__endl')
         if ConstLabel.is_valid_name(name_escaped):
             obj = name
             name = f'str__{name_escaped}'
 
-    dedup = dedup and obj is None and isinstance(name, str)
     if dedup and name in _CONST_DEDUP:
         return _CONST_DEDUP[name]
+
     v = mon.ConstData(name, obj)
     v = Expr.to_expr(v)
     if dedup:

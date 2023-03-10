@@ -1,7 +1,9 @@
 from enum import Enum
 
 import mondayasm
-from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND, JMP_TARGET
+from progs.bootloader2.syscall_entry import syscall_entry
+from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND, JMP_TARGET, \
+    SYSCALL_ENTRY
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
 from progs.stdlib.printf import puts, printf, PRINTF
@@ -262,10 +264,10 @@ def handle_jmp(cmd_num, G):
     jmp(M[JMP_TARGET])
 
 
-def _process_handler_map(arr):
+def _process_handler_map():
     ret = []
     prev = SerialCmd.NONE
-    for cmd, fn in HANDLER_MAP_PY:
+    for cmd, fn in HANDLER_MAP_PY.items():
         cmd: SerialCmd
         assert prev.value + 1 == cmd.value
         prev = cmd
@@ -275,16 +277,16 @@ def _process_handler_map(arr):
     return ret
 
 
-HANDLER_MAP_PY = [
-    (SerialCmd.PING, handle_ping),
-    (SerialCmd.READ, handle_read),
-    (SerialCmd.WRITE, handle_write),
-    (SerialCmd.READB, handle_read),
-    (SerialCmd.WRITEB, handle_write),
-    (SerialCmd.JMP, handle_jmp),
-    (SerialCmd.JMP_PERSIST, handle_jmp),
-]
-HANDLER_MAP = const('HANDLER_MAP', _process_handler_map(HANDLER_MAP_PY))
+HANDLER_MAP_PY = {
+    SerialCmd.PING: handle_ping,
+    SerialCmd.READ: handle_read,
+    SerialCmd.WRITE: handle_write,
+    SerialCmd.READB: handle_read,
+    SerialCmd.WRITEB: handle_write,
+    SerialCmd.JMP: handle_jmp,
+    SerialCmd.JMP_PERSIST: handle_jmp,
+}
+HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
 
 def main(A, B, G, H):
@@ -328,6 +330,7 @@ if __name__ == '__main__':
         umap(MMAP_SLOT_DEVICES)
 
     Reg.SP @= DEV_BASE_ADDR
+    M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
     call(main, preserve_registers=False)
     halt()
 

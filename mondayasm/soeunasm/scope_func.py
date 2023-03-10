@@ -138,7 +138,6 @@ def call(fn, *args: Any, preserve_registers: bool = True):
     assert callable(fn) and hasattr(fn, '__name__')
 
     l_fn_entry = emit_fn(fn)
-    preserve = []
     n_regs = 0
 
     arg_names = list(inspect.signature(fn).parameters.keys())
@@ -146,10 +145,11 @@ def call(fn, *args: Any, preserve_registers: bool = True):
         if arg not in REG_NAME_MAP:
             break
         n_regs += 1
-        if preserve_registers and \
-                arg in CALLER_SAVE and \
-                arg in g_func_scope_stack[-1]._used_regs_names:
-            preserve.append(REG_NAME_MAP[arg])
+
+    preserve = []
+    if preserve_registers:
+        preserve = [r for r in g_func_scope_stack[-1]._used_regs
+                    if r.a.register_value.name in CALLER_SAVE]
 
     if n_regs > 0:
         arg_names = arg_names[:-n_regs]
