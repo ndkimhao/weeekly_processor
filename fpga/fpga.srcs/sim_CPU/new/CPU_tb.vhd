@@ -46,7 +46,8 @@ begin
 		ps2_data => ps2_data,
 
 		led_out => led_line,
-		btn_in => led_line & "00000"
+		btn_in => led_line & "00000",
+		sd_miso => '0'
 	);
 
 --	display: entity work.video port map ( 

@@ -384,7 +384,6 @@ begin
 	sd_controller : entity work.SdCardCtrl port map (
 		-- Host-side interface signals.
 		clk_i      => clk,
-		reset_i    => reset,
 		addr_i     => reg_sd_addr,
 		
 		data_i     => reg_sd_send(7 downto 0),
@@ -392,6 +391,7 @@ begin
 		rd_i       => reg_sd_send(10),
 		wr_i       => reg_sd_send(11),
 		continue_i => reg_sd_send(12),
+		reset_i    => reg_sd_send(14),
 
 		data_o     => reg_sd_recv(7 downto 0),
 		hndShk_o   => reg_sd_recv(9),

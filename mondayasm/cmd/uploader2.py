@@ -107,33 +107,34 @@ def main():
                         default=True, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
-    with open(args.file, 'r') as f:
-        lines = f.readlines()
+    if args.file:
+        with open(args.file, 'r') as f:
+            lines = f.readlines()
 
-    configs = {}
-    data_builder = bytearray()
-    config_section = True
-    for line in lines:
-        hexcode, rest = line.split('#', 1)
-        addr, comment = rest.split('|', 1)
+        configs = {}
+        data_builder = bytearray()
+        config_section = True
+        for line in lines:
+            hexcode, rest = line.split('#', 1)
+            addr, comment = rest.split('|', 1)
 
-        comment: str = comment.strip()
-        if config_section and comment.startswith('.config '):
-            parts = comment.split(' ', 2)
-            configs[parts[1]] = parts[2]
-        else:
-            config_section = False
+            comment: str = comment.strip()
+            if config_section and comment.startswith('.config '):
+                parts = comment.split(' ', 2)
+                configs[parts[1]] = parts[2]
+            else:
+                config_section = False
 
-        data_builder.extend(bytearray.fromhex(hexcode))
+            data_builder.extend(bytearray.fromhex(hexcode))
 
-    if len(data_builder) % 2 == 1:
-        data_builder.append(0)
+        if len(data_builder) % 2 == 1:
+            data_builder.append(0)
 
-    data = bytes(data_builder)
-    code_offset = int(configs['CODE_OFFSET'][2:], 16)
-    print(f'data len = {len(data)}')
-    print(f'code offset = 0x{code_offset:04x}')
-    print(f'\nLoaded hex code at {args.file}\n\n{SEP}\n')
+        data = bytes(data_builder)
+        code_offset = int(configs['CODE_OFFSET'][2:], 16)
+        print(f'data len = {len(data)}')
+        print(f'code offset = 0x{code_offset:04x}')
+        print(f'\nLoaded hex code at {args.file}\n\n{SEP}\n')
 
     CHUNK_SIZE = 256  # bytes
 
@@ -166,7 +167,7 @@ def main():
 
                 print(f'\nVerified\n\n{SEP}\n')
 
-        if args.jmp:
+        if args.file and args.jmp:
             if args.persist:
                 comm.send_cmd(f'JMP_PERSIST {code_offset:04x}', f'JMP_PERSISTED {code_offset:04x}')
             else:
