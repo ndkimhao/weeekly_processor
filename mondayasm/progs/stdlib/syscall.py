@@ -28,6 +28,8 @@ class S(Enum):
     rand = 15
     _delay_impl = 16
     puts = 17
+    decode_font = 18
+    decode_font_16_12 = 19
 
 
 def syscall(syscall_number: S, *args):

@@ -14,10 +14,15 @@ from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const,
 from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
-BOOTLOADER2_ROM_MODE = False
+BOOTLOADER2_ROM_MODE = True
 
-CODE_OFFSET = 0xA000
-CODE_END = 0xFB00
+if BOOTLOADER2_ROM_MODE:
+    CODE_OFFSET = 0xE000
+    CODE_END = 0xFB00
+else:
+    CODE_OFFSET = 0xA000
+    CODE_END = 0xFB00
+
 MMAP_SLOT_ROM = 3
 MMAP_SLOT_DEVICES = 2
 

@@ -1,4 +1,4 @@
-from progs.stdlib.font import C_FONT_16_12_COMPRESSED, C_FONT_16_12_INDEX, FONT_16_12_INDEX_PY
+from progs.stdlib.font import FONT_16_12_COMPRESSED, FONT_16_12_INDEX, FONT_16_12_INDEX_PY
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.timing import DELAY_MILLIS
 from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
@@ -20,14 +20,14 @@ def test_loop_target():
 def gen_font(A, B, C, D, E, H):
     color = global_var()
     font_buf = local_var(size=2 * 16)
-    C @= C_FONT_16_12_INDEX
+    C @= FONT_16_12_INDEX
     with For(A @ 0, A < 6, A @ (A + 1)):
         with If(color >= 7):
             color @= 0
         color += 1
         call(switch_screen_row, A + 1, color)
         with For(B @ 0, B < 16, B @ (B + 1)):
-            D @= M[C] + C_FONT_16_12_COMPRESSED
+            D @= M[C] + FONT_16_12_COMPRESSED
             # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
             C += 2
             call(decode_font, addr(font_buf), D, 16, 12)

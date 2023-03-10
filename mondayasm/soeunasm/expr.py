@@ -53,7 +53,7 @@ class Expr:
     def to_expr(cls, obj) -> 'Expr':
         if isinstance(obj, str) and len(obj) == 1:
             obj = ord(obj)
-        if isinstance(obj, Enum):
+        if not isinstance(obj, PseudoExpr) and isinstance(obj, Enum):
             obj = obj.value
         if not isinstance(obj, Expr):
             if isinstance(obj, list) and len(obj) == 1:

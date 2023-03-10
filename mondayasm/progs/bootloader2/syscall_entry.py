@@ -6,6 +6,7 @@ from progs.stdlib.random import srand, rand
 from progs.stdlib.syscall import S
 from progs.stdlib.timing import _delay_impl
 from progs.stdlib.uart import putc, getc
+from progs.stdlib.video import decode_font, decode_font_16_12
 from soeunasm import emit_fn, const, Reg, M, global_var, jmp, If
 import mondayasm
 from soeunasm.free_expr import pop
@@ -30,6 +31,8 @@ SYSCALL_MAP_PY = {
     S.rand: rand,
     S._delay_impl: _delay_impl,
     S.puts: puts,
+    S.decode_font: decode_font,
+    S.decode_font_16_12: decode_font_16_12,
 }
 
 

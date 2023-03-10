@@ -1,5 +1,5 @@
 from progs.stdlib.devices import M_LED, M_PS2_RECV, FLAG_PS2_RECV_VALID
-from progs.stdlib.font import C_FONT_16_12_COMPRESSED, C_FONT_16_12_INDEX, FONT_16_12_INDEX_PY
+from progs.stdlib.font import FONT_16_12_COMPRESSED, FONT_16_12_INDEX, FONT_16_12_INDEX_PY
 from progs.stdlib.printf import puts, printf, PRINTF
 from progs.stdlib.timing import DELAY_MILLIS, DELAY_MICROS
 from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content

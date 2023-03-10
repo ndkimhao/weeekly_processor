@@ -1,6 +1,7 @@
 from progs.stdlib import printf
+from progs.stdlib.font import FONT_16_12_COMPRESSED
 from progs.stdlib.printf import puts
-from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr
+from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope
 from soeunasm.data import global_var, const, local_var, local_vars
 
 CHUNK_SZ = 16
@@ -44,6 +45,17 @@ def fill_cell_content(col, ptr_buf, A, B):
              (A @ (A + JUMP_ONE_ROW), B @ (B + 2))
              ):
         M[A] @= M[B]
+
+
+def decode_font_16_12(ptr_out, ch, A, B):
+    A @= ch
+    B @= '?'
+    with Scope():
+        If(A < 32).then_break()
+        If(A >= 128).then_break()
+        B @= A - 32
+    B <<= 1
+    call(decode_font, ptr_out, B + FONT_16_12_COMPRESSED, 16, 12)
 
 
 def decode_font(ptr_out, ptr_encoded, height, width,
