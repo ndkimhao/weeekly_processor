@@ -250,47 +250,47 @@ class Expr:
         return lhs @ self
 
     def __imatmul__(self, rhs):
-        self @ rhs
+        (self @ rhs).emit()
         return self
 
     def __iadd__(self, rhs):
-        self @ (self + rhs)
+        (self @ (self + rhs)).emit()
         return self
 
     def __isub__(self, rhs):
-        self @ (self - rhs)
+        (self @ (self - rhs)).emit()
         return self
 
     def __imul__(self, rhs):
-        self @ (self * rhs)
+        (self @ (self * rhs)).emit()
         return self
 
     def __itruediv__(self, rhs):
-        self @ (self / rhs)
+        (self @ (self / rhs)).emit()
         return self
 
     def __ifloordiv__(self, rhs):
-        self @ (self // rhs)
+        (self @ (self // rhs)).emit()
         return self
 
     def __irshift__(self, rhs):
-        self @ (self >> rhs)
+        (self @ (self >> rhs)).emit()
         return self
 
     def __ilshift__(self, rhs):
-        self @ (self << rhs)
+        (self @ (self << rhs)).emit()
         return self
 
     def __iand__(self, rhs):
-        self @ (self & rhs)
+        (self @ (self & rhs)).emit()
         return self
 
     def __ior__(self, rhs):
-        self @ (self | rhs)
+        (self @ (self | rhs)).emit()
         return self
 
     def __ixor__(self, rhs):
-        self @ (self ^ rhs)
+        (self @ (self ^ rhs)).emit()
         return self
 
     # Comparators

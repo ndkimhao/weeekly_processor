@@ -76,8 +76,8 @@ def tg_do_gravity_tick(A, H):
         Board.falling.loc.row += 1
         call(tg_fits)
         with If(H == 1):
-            A @= Board.level
-            Board.ticks_till_gravity @= M[GRAVITY_LEVELS + A * 2]
+            A @= Board.level << 1
+            Board.ticks_till_gravity @= M[GRAVITY_LEVELS + A]
 
             Else()
 

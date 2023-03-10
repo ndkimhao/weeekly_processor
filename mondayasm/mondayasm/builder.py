@@ -254,6 +254,8 @@ def AnonLabel(name: str = '', emit_label: bool = True) -> RawExpr:
 
 
 def ConstData(name, obj=None, *, align=1) -> RawExpr:
+    bincode = None
+
     if obj is None:
         obj = name
         name = Global.gen_label_name('data', '')
@@ -264,6 +266,13 @@ def ConstData(name, obj=None, *, align=1) -> RawExpr:
     elif isinstance(obj, bytes):
         value = f'raw:'
         data = obj
+    elif isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], RawExpr):
+        assert all(isinstance(e, RawExpr) and e.is_pure_label for e in obj)
+        label_names = ', '.join(str(e.label_value) for e in obj)
+        value = f'label_list:[{label_names}]'
+        data = bytes([0, 0]) * len(obj)
+        lbl_bins = [f'<{e.terms[0].factor:x}*${{{e.terms[0].value.name}}}>' for e in obj]
+        bincode = ' '.join(lbl_bins)
     elif isinstance(obj, list):
         assert all(isinstance(e, int) for e in obj)
         list_str = ', '.join(f'0x{e:04x}' for e in obj)
@@ -276,7 +285,9 @@ def ConstData(name, obj=None, *, align=1) -> RawExpr:
         value = f'list:[{list_str}]'
     else:
         assert False, f'unknown data type: {type(obj)}'
-    bincode = ' '.join(f'{b:02x}' for b in data)
+
+    if bincode is None:
+        bincode = ' '.join(f'{b:02x}' for b in data)
     return Global.add_static_data(StaticData(
         name=name,
         readonly=True,

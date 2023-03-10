@@ -161,6 +161,7 @@ class RawExpr:
             a = ArgEncode(humanval, '111', f'<{const_head}{const_tail}>')
             if len(regs) != 0:
                 assert len(regs) == 1
+                assert regs[0].factor == 1 or regs[0].value == REGISTER_0
                 b = ArgEncode(regs[0].value, f'{REGS_MAP[regs[0].value]:03b}', '')
         elif len(regs) == 0:
             # constant
