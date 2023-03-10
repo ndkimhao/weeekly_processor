@@ -39,30 +39,32 @@ def printf(fmt, VAR_ARGS,
         cmt('format specifier')
         A += 1
         C @= M[A].byte()
-        with If(C == 0) as if_g_0:
+        with If(C == 0):
             Break()
 
+            ElseIf(C == ord('%'))
+            call(putc, ord('%'))
+            Continue()
+
             ElseIf(C == ord('d'))
-            cmt('format %d')
             call(itoa_10, [B], addr(buf))
             call(puts, addr(buf))
-            B += 2
 
             ElseIf(C == ord('x'))
-            cmt('format %x')
             call(itoa_16, [B], addr(buf))
             call(puts, addr(buf))
-            B += 2
 
             ElseIf(C == ord('b'))
-            cmt('format %b')
             call(itoa_2, [B], addr(buf))
             call(puts, addr(buf))
-            B += 2
 
-            ElseIf(C == ord('%'))
-            cmt('format %%')
-            call(putc, ord('%'))
+            ElseIf(C == ord('s'))
+            call(puts, [B])
+
+            ElseIf(C == ord('c'))
+            call(putc, [B])
+        ###
+        B += 2
 
 
 def test_itoa_10(A):

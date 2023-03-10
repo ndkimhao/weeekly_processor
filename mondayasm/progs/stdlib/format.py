@@ -1,5 +1,5 @@
 from progs.stdlib.div_const import DIV_CONST
-from soeunasm import M, While, Break, If, cmt, Else, For
+from soeunasm import M, While, Break, If, cmt, Else, For, Loop, Scope
 from soeunasm.scope_func import Return, call
 
 
@@ -53,3 +53,44 @@ def to_hex_digit(v, H):
         H @= v + ord('0')
         Else()
         H @= v + (ord('a') - 10)
+
+
+# returns H = value, G = 0/1 is okay
+def from_hex_digit(ch, G, H):
+    G @= ch | 32
+    with Scope():
+        If(G < '0').then_break()
+        If(G > '9').then_break()
+        H @= G - '0'
+        G @= 1
+        Return()
+    with Scope():
+        If(G < 'a').then_break()
+        If(G > 'f').then_break()
+        H @= G + (- ord('a') + 10)
+        G @= 1
+        Return()
+
+    H @= 0
+    G @= 0
+
+
+# returns H = value, G = 0/1 is okay
+def atoi_16(p_str, A, B, G, H):
+    A @= 0
+    B @= p_str
+    with Loop():
+        H @= M[B].byte()
+        If(H == 0).then_break()
+        call(from_hex_digit, H)
+        If(G == 0).then_return()  # parsing error
+        A <<= 4
+        A += H
+        B += 1
+    G @= 0
+    with Scope():
+        H @= p_str
+        If(B == H).then_break()
+        If(B - 4 > H).then_break()
+        G @= 1
+    H @= A

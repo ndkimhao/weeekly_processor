@@ -51,6 +51,10 @@ class Expr:
 
     @classmethod
     def to_expr(cls, obj) -> 'Expr':
+        if isinstance(obj, str) and len(obj) == 1:
+            obj = ord(obj)
+        if isinstance(obj, Enum):
+            obj = obj.value
         if not isinstance(obj, Expr):
             if isinstance(obj, list) and len(obj) == 1:
                 if isinstance(obj[0], Expr):
@@ -91,6 +95,8 @@ class Expr:
 
     @classmethod
     def _compare(cls, op: CmpOp, lhs: Any, rhs: Any):
+        if isinstance(rhs, str) and len(rhs) == 1:
+            rhs = ord(rhs)
         lhs = cls.to_expr(lhs)
         rhs = cls.to_expr(rhs)
         assert lhs.op == ExprOp.NONE

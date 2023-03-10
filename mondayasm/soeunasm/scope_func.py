@@ -27,8 +27,10 @@ class FuncScopeCtxInner:
 class FuncScopeCtx:
     def __init__(self, name: str, preserve: Iterable[Expr], used_regs: Iterable[Expr]):
         assert all(e.is_pure_register for e in preserve)
+        assert all(e.is_pure_register for e in used_regs)
         self._preserve = tuple(preserve)
         self._used_regs = tuple(used_regs)
+        self._used_regs_names = tuple(e.a.register_value.name for e in used_regs)
 
         self.l_prepare = mon.DeclLabel('_begin_fn_' + name)
         self.l_cleanup = mon.DeclLabel('_cleanup_fn_' + name)
@@ -73,13 +75,11 @@ class FuncScopeCtx:
         mon.EmitLabel(self.l_cleanup)
 
     def _emit_return(self, value, value_2):
-        assert scope_global.cur_stack_offset() == 0 or \
-               (len(scope_global.g_stack) == 1 and scope_global.g_stack[0] is self)
         if value is not None:
             mov(mon.H, value)
         if value_2 is not None:
             assert value is not None
-            mov(mon.G, value)
+            mov(mon.G, value_2)
         if len(self._preserve) == 0 and scope_global.cur_stack_offset() == 0:
             mon.RET()
         else:
@@ -114,8 +114,12 @@ def Return(value=None, value_2=None):
 # noinspection PyProtectedMember
 def ReturnIf(cond: CmpExpr, value=None, value_2=None, *, signed: bool = False):
     blk = g_func_scope_stack[-1]
-    with soeunasm.scope_if.If(cond, signed=signed):
-        blk._emit_return(value, value_2)
+
+    if value is None and value_2 is None:
+        cond.then_jmp(blk.l_cleanup, signed=signed)
+    else:
+        with soeunasm.scope_if.If(cond, signed=signed):
+            blk._emit_return(value, value_2)
 
 
 g_visited_fns: set[Callable] = set()
@@ -144,7 +148,7 @@ def call(fn, *args: Any, preserve_registers: bool = True):
         n_regs += 1
         if preserve_registers and \
                 arg in CALLER_SAVE and \
-                arg in g_func_scope_stack[-1]._used_regs:
+                arg in g_func_scope_stack[-1]._used_regs_names:
             preserve.append(REG_NAME_MAP[arg])
 
     if n_regs > 0:

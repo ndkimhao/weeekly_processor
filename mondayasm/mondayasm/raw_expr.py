@@ -56,10 +56,16 @@ class ConstLabel:
     name: str
 
     def __post_init__(self):
-        assert re.match(r'^[0-9a-zA-Z-_]+$', self.name), repr(self.name)
+        assert self.is_valid_name(self.name), repr(self.name)
 
     def __repr__(self) -> str:
         return f'${self.name}'
+
+    @classmethod
+    def is_valid_name(cls, name):
+        if name.strip() != name:
+            return False
+        return re.match(r'^[0-9a-zA-Z-_]+$', name)
 
 
 REGISTER_A = Register('A')
@@ -240,6 +246,11 @@ class RawExpr:
     @property
     def label_value(self) -> ConstLabel:
         assert self.is_pure_label
+        return self.terms[0].value
+
+    @property
+    def register_value(self) -> Register:
+        assert self.is_pure_register
         return self.terms[0].value
 
     def __str__(self) -> str:

@@ -102,6 +102,9 @@ class IfCtx:
     def then_return(self, *args, **kwargs):
         return soeunasm.scope_func.ReturnIf(self._cond, *args, signed=self._signed, **kwargs)
 
+    def then_jmp(self, *args, **kwargs):
+        return self._cond.then_jmp(*args, signed=self._signed, **kwargs)
+
 
 # noinspection PyPep8Naming
 def If(cond: CmpExpr | bool, *, preserve: Iterable[Expr] = (), signed: bool = False):

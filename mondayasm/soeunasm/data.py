@@ -1,4 +1,4 @@
-from mondayasm import RawExpr
+from mondayasm import RawExpr, ConstLabel
 from soeunasm import Expr, scope_global
 import mondayasm as mon
 from soeunasm.enums import placeholder_stack_offset
@@ -35,6 +35,12 @@ _CONST_DEDUP = {}
 
 
 def const(name, obj=None, *, dedup: bool = True) -> Expr:
+    if obj is None and isinstance(name, str):
+        name_escaped = name.replace('\n', '__endl')
+        if ConstLabel.is_valid_name(name_escaped):
+            obj = name
+            name = f'str__{name_escaped}'
+
     dedup = dedup and obj is None and isinstance(name, str)
     if dedup and name in _CONST_DEDUP:
         return _CONST_DEDUP[name]
