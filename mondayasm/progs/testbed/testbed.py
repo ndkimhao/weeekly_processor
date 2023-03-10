@@ -1,5 +1,5 @@
-from progs.stdlib.font import decode_font_16_12
 from progs.stdlib.printf import puts, printf
+from progs.stdlib.syscall import syscall, S
 from progs.stdlib.timing import DELAY_MILLIS
 from progs.stdlib.video import switch_screen_row, fill_cell, fill_cell_content
 from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var
@@ -30,7 +30,7 @@ def gen_font(A, B, C, D, E, H):
         with For(B @ 0, B < 16, B @ (B + 1)):
             # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
             # call(decode_font, addr(font_buf), D, 16, 12)
-            call(decode_font_16_12, addr(font_buf), C)
+            syscall(S.decode_font_16_12, addr(font_buf), C)
             call(fill_cell_content, 10 + B, addr(font_buf))
             C += 1
 

@@ -258,6 +258,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/VHDL_Lib-master/SDCard.vhd">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="C:/Users/nguye/Downloads/VHDL_Lib-master/VHDL_Lib-master/SDCard.vhd"/>
+          <Attr Name="ImportTime" Val="1483930328"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/CodeROM.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="AutoDisabled" Val="1"/>
@@ -269,15 +278,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../mondayasm/progs/bootloader2/bootloader2.coe"/>
           <Attr Name="ImportTime" Val="1678432316"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/VHDL_Lib-master/SDCard.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="ImportPath" Val="C:/Users/nguye/Downloads/VHDL_Lib-master/VHDL_Lib-master/SDCard.vhd"/>
-          <Attr Name="ImportTime" Val="1483930328"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

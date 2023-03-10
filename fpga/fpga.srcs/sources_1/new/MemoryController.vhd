@@ -2,8 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library SdCardCtrl;
 use work.Constants.all;
 use work.Types.all;
+use SdCardCtrl.all;
 
 entity MemoryController is
 	port (
