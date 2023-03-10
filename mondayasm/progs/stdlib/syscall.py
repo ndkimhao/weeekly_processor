@@ -4,7 +4,7 @@ import mondayasm
 from progs.stdlib.devices import SYSCALL_ENTRY
 from soeunasm import call, Scope, Expr, ExprOp
 from soeunasm.free_expr import push, M
-from soeunasm.miscs import adjust_sp
+from soeunasm.miscs import adjust_sp, Reg
 from soeunasm.scope_func import g_func_scope_stack, CALLER_SAVE
 from soeunasm.scope_global import inc_stack_offset, dec_stack_offset
 
@@ -27,6 +27,7 @@ class S(Enum):
     srand = 14
     rand = 15
     _delay_impl = 16
+    puts = 17
 
 
 def syscall(syscall_number: S, *args):
@@ -34,12 +35,13 @@ def syscall(syscall_number: S, *args):
 
     preserve = [r for r in g_func_scope_stack[-1]._used_regs
                 if r.a.register_value.name in CALLER_SAVE]
-    args = [syscall_number.value] + list(args)
+    args = list(args)
 
     with Scope(preserve=preserve, simple=True, base_name='syscall'):
         for arg in reversed(args):
             push(arg).emit()
             inc_stack_offset(2)
+        Reg.H @= syscall_number
         mondayasm.CALL([SYSCALL_ENTRY])
-        adjust_sp(len(args) * 2 - 2)  # the syscall_number is poped out by syscall_entry()
+        adjust_sp(len(args) * 2)
         dec_stack_offset(len(args) * 2)

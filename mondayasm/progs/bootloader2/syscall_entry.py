@@ -1,7 +1,7 @@
 from progs.stdlib import printf
 from progs.stdlib.format import itoa_10, itoa_16, itoa_2, to_hex_digit, from_hex_digit, atoi_16
 from progs.stdlib.memory import memset, memcpy, strcmp, strcasecmp, strchr
-from progs.stdlib.printf import PRINTF
+from progs.stdlib.printf import PRINTF, puts
 from progs.stdlib.random import srand, rand
 from progs.stdlib.syscall import S
 from progs.stdlib.timing import _delay_impl
@@ -29,6 +29,7 @@ SYSCALL_MAP_PY = {
     S.srand: srand,
     S.rand: rand,
     S._delay_impl: _delay_impl,
+    S.puts: puts,
 }
 
 
@@ -48,14 +49,9 @@ def _process_syscall_map():
 SYSCALL_MAP = const('SYSCALL_MAP', _process_syscall_map())
 
 
-def syscall_entry(SP, H):
-    with If(M[SP + 2] >= len(SYSCALL_MAP_PY)):
+def syscall_entry(H):
+    with If(H >= len(SYSCALL_MAP_PY)):
         Return()
-    #  SP-2          SP            SP+2
-    # [    t    ] [return addr] [syscall num] [args...]
-
-    H @= M[SP + 2] << 1
+    H <<= 1
     H += SYSCALL_MAP
-    pop(M[SP])  # move return addr up one slot
-
     jmp(M[H])

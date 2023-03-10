@@ -18,6 +18,9 @@ def main(SP):
 
     syscall(S.printf, const('okay %d %x\n'), 22, 0xaaff)
 
+    syscall(S.puts, const('test puts %d %x\n'), 22, 0xaaff)
+
+    syscall(S.printf, const('okay %d %x\n'), 22, 0xaaff)
 
 if __name__ == '__main__':
     Reg.SP @= CODE_OFFSET
