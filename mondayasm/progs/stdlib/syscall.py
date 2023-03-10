@@ -41,5 +41,5 @@ def syscall(syscall_number: S, *args):
             push(arg).emit()
             inc_stack_offset(2)
         mondayasm.CALL([SYSCALL_ENTRY])
-        adjust_sp(len(args) * 2)
+        adjust_sp(len(args) * 2 - 2)  # the syscall_number is poped out by syscall_entry()
         dec_stack_offset(len(args) * 2)

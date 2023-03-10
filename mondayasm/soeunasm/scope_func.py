@@ -163,7 +163,7 @@ def call(fn, *args: Any, preserve_registers: bool = True):
         for arg in reversed(args):
             arg = Expr.to_expr(arg)
             assert arg.op == ExprOp.NONE
-            Statement(StmOp.PUSH, arg.a)
+            Statement(StmOp.PUSH, arg.a).emit()
             inc_stack_offset(2)
         mon.CALL(l_fn_entry)
         adjust_sp(len(args) * 2)
