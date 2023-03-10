@@ -117,6 +117,7 @@ type TMappedMemory is (
 	M_INSTCNT_READ_1,
 	M_INSTCNT_READ_2,
 	M_JUMP_TARGET,
+	M_SYSCALL_ENTRY,
 	M_NONE
 );
 
@@ -133,6 +134,7 @@ signal clk_counter : unsigned(48-1 downto 0) := (others => '0');
 signal inst_counter : unsigned(48-1 downto 0) := (others => '0');
 
 signal mem_jump_target : TData := (others => '0');
+signal mem_syscall_entry : TData := (others => '0');
 
 -----
 signal ram_en : std_logic;
@@ -174,6 +176,7 @@ begin
 
 		-- Miscs
 		M_JUMP_TARGET when dev_en = '1' and alow = x"1C" else
+		M_SYSCALL_ENTRY when dev_en = '1' and alow = x"1E" else
 
 		--
 		M_NONE;
@@ -209,7 +212,8 @@ begin
 
 		-- Miscs
 		mem_jump_target when last_mtype = M_JUMP_TARGET else
-		
+		mem_syscall_entry when last_mtype = M_SYSCALL_ENTRY else
+
 		--
 		(others => '0'); -- M_NONE
 
@@ -249,6 +253,8 @@ begin
 						s_led_out <= din(7 downto 0);
 					when M_JUMP_TARGET =>
 						mem_jump_target <= din;
+					when M_SYSCALL_ENTRY =>
+						mem_syscall_entry <= din;
 					when others =>
 						null;
 				end case;

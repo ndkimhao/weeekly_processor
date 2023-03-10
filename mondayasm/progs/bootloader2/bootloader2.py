@@ -3,7 +3,7 @@ from enum import Enum
 import mondayasm
 from progs.bootloader2.syscall_entry import syscall_entry
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND, JMP_TARGET, \
-    SYSCALL_ENTRY
+    SYSCALL_ENTRY, BTN_READ
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
 from progs.stdlib.printf import puts, printf, PRINTF
@@ -306,18 +306,29 @@ def main(A, B, G, H):
     B @= 0
     mmap(DEV_BASE_ADDR, DEV_BASE_ADDR + 0xFF, MMAP_SLOT_DEVICES)
 
+    # write syscall address
+    M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
+
     # send hello
-    call(puts, const('Weeekly3006 - Hardware v1.2 - Bootloader v2.0\nREADY\n'))
+    call(puts, const('Weeekly3006 - Hardware v1.3 - Bootloader v2.1\n'))
 
     # check for persisted target
     A @= M[JMP_TARGET]
     with Scope():
         If(A == 0).then_break()
         If(A == CODE_OFFSET).then_break()
-        call(printf, const('Found persisted jump target at %x\n'), A)
+
+        B @= M[BTN_READ]
+        B &= 0x100
+        with If(B != 0):
+            call(printf, const('FORCED_BOOTLOADER\n'))
+            Break()
+
+        call(printf, const('JMP_TO %x\n'), A)
         jmp(glb_jmp_to_stored_target)
 
     # wait for commands
+    call(puts, const('READY\n'))
     M[LED] @= 1
     with Loop():
         call(recv_command)
@@ -349,7 +360,6 @@ if __name__ == '__main__':
         umap(MMAP_SLOT_DEVICES)
 
     Reg.SP @= DEV_BASE_ADDR
-    M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
     call(main, preserve_registers=False)
     halt()
 

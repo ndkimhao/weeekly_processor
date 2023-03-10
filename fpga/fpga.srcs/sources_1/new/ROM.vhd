@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 use work.Constants.all;
 use work.Types.all;
-use work.CodeROM.all;
+--use work.CodeROM.all;
 
 entity ROM is
 	port (

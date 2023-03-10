@@ -1,4 +1,5 @@
-from soeunasm.data import const
+from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope
+from soeunasm.data import global_var, const, local_var, local_vars
 import base64
 
 FONT_16_12_COMPRESSED_BASE64 = \
@@ -28,3 +29,81 @@ FONT_16_12_INDEX_PY = [
 
 FONT_16_12_COMPRESSED = const('FONT_16_12_COMPRESSED', base64.b64decode(FONT_16_12_COMPRESSED_BASE64))
 FONT_16_12_INDEX = const('FONT_16_12_INDEX', FONT_16_12_INDEX_PY)
+
+
+def decode_font_16_12(ptr_out, ch, A, B):
+    A @= ch
+    B @= '?'
+    with Scope():
+        If(A < 32).then_break()
+        If(A >= 128).then_break()
+        B @= A - 32
+    B <<= 1
+    call(decode_font, ptr_out, B + FONT_16_12_COMPRESSED, 16, 12)
+
+
+def decode_font(ptr_out, ptr_encoded, height, width,
+                A, B, C, D, E, F, G, H):
+    E @= ptr_out
+    F @= height << 1
+    F += E
+
+    G @= ptr_encoded
+    B @= [G]  # current enc word
+    C @= 7  # bit index
+    A @= 0  # decoding content
+
+    bits_cnt = local_var()
+
+    with For((), E < F, E @ (E + 2)):
+        cmt('decode one line')
+        A @= 0
+        bits_cnt @= 0xFFFF
+        with Loop():
+            with If(C == -1):
+                G += 1
+                B @= [G]
+                C @= 7
+            getb(D, B, C)
+            C -= 1
+            D @= D.bool()
+            A @= (A * 2) | D
+            bits_cnt -= 1
+            with If(bits_cnt == 0):
+                cmt('bit pattern')
+                # call(printf, const('A: %b\n'), A)
+                H @= A
+                A @= -width
+                A @= 0xFFFF >> (A + 16)
+                M[E] @= H & A
+                # call(printf, const('H: %b\n'), H)
+                # call(printf, const('A: %b\n'), A)
+                Break()
+
+                ElseIf(A == 0, emit_jmp_cleanup_before_this=False)
+                cmt('copy line n-1')
+                H @= E - 2
+                M[E] @= M[H]
+                # call(puts, const('n-1\n'))
+                Break()
+
+                ElseIf(A == 0b10, emit_jmp_cleanup_before_this=False)
+
+                cmt('copy line n-2')
+                H @= E - 4
+                M[E] @= M[H]
+                # call(puts, const('n-2\n'))
+                Break()
+
+                ElseIf(A == 0b110, emit_jmp_cleanup_before_this=False)
+
+                cmt('all zeros')
+                M[E] @= 0
+                # call(puts, const('zeros\n'))
+                Break()
+
+                ElseIf(A == 0b111, emit_jmp_cleanup_before_this=False)
+
+                cmt('bitmap')
+                bits_cnt @= width
+                # call(puts, const('bitmap\n'))

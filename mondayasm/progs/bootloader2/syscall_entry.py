@@ -6,7 +6,7 @@ from progs.stdlib.random import srand, rand
 from progs.stdlib.syscall import S
 from progs.stdlib.timing import _delay_impl
 from progs.stdlib.uart import putc, getc
-from progs.stdlib.video import decode_font, decode_font_16_12
+from progs.stdlib.font import decode_font, decode_font_16_12
 from soeunasm import emit_fn, const, Reg, M, global_var, jmp, If
 import mondayasm
 from soeunasm.free_expr import pop
