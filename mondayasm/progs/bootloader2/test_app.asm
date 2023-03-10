@@ -16,7 +16,7 @@ e0 e0 ff aa                    # 5111 |   push 0xaaff
 e0 1c 7b                       # 5115 |   push 0x7b
 e0 e0 81 51                    # 5118 |   push ${const__data_1}
 60 ff 00                       # 511c |   mov H, 0
-5e e0 00 01                    # 511f |   call [0x100]
+5e e0 1e ff                    # 511f |   call [0xff1e]
 60 a0 bc 06                    # 5123 |   mov SP, SP + 0x6
                                #      | _Z_syscall_1:
                                #      | _A_syscall_2:
@@ -24,7 +24,7 @@ e0 e0 ff aa                    # 5127 |   push 0xaaff
 e0 1c 0b                       # 512b |   push 0xb
 e0 e0 8d 51                    # 512e |   push ${const__data_2}
 60 ff 00                       # 5132 |   mov H, 0
-5e e0 00 01                    # 5135 |   call [0x100]
+5e e0 1e ff                    # 5135 |   call [0xff1e]
 60 a0 bc 06                    # 5139 |   mov SP, SP + 0x6
                                #      | _Z_syscall_2:
                                #      | _A_syscall_3:
@@ -32,7 +32,7 @@ e0 e0 ff aa                    # 513d |   push 0xaaff
 e0 1c 16                       # 5141 |   push 0x16
 e0 e0 9b 51                    # 5144 |   push ${const__data_3}
 60 ff 00                       # 5148 |   mov H, 0
-5e e0 00 01                    # 514b |   call [0x100]
+5e e0 1e ff                    # 514b |   call [0xff1e]
 60 a0 bc 06                    # 514f |   mov SP, SP + 0x6
                                #      | _Z_syscall_3:
                                #      | _A_syscall_4:
@@ -40,7 +40,7 @@ e0 e0 ff aa                    # 5153 |   push 0xaaff
 e0 1c 16                       # 5157 |   push 0x16
 e0 e0 a7 51                    # 515a |   push ${const__data_4}
 60 ff 1c 11                    # 515e |   mov H, 0x11
-5e e0 00 01                    # 5162 |   call [0x100]
+5e e0 1e ff                    # 5162 |   call [0xff1e]
 60 a0 bc 06                    # 5166 |   mov SP, SP + 0x6
                                #      | _Z_syscall_4:
                                #      | _A_syscall_5:
@@ -48,7 +48,7 @@ e0 e0 ff aa                    # 516a |   push 0xaaff
 e0 1c 16                       # 516e |   push 0x16
 e0 e0 9b 51                    # 5171 |   push ${const__data_3}
 60 ff 00                       # 5175 |   mov H, 0
-5e e0 00 01                    # 5178 |   call [0x100]
+5e e0 1e ff                    # 5178 |   call [0xff1e]
 60 a0 bc 06                    # 517c |   mov SP, SP + 0x6
                                #      | _Z_syscall_5:
                                #      | _cleanup_fn_main:

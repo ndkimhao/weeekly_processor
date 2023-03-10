@@ -1,7 +1,7 @@
-from progs.stdlib.font import FONT_16_12_COMPRESSED, FONT_16_12_INDEX, FONT_16_12_INDEX_PY
+from progs.stdlib.font import decode_font_16_12
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.timing import DELAY_MILLIS
-from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
+from progs.stdlib.video import switch_screen_row, fill_cell, fill_cell_content
 from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var
 
 CODE_OFFSET = 0xA000
@@ -20,18 +20,19 @@ def test_loop_target():
 def gen_font(A, B, C, D, E, H):
     color = global_var()
     font_buf = local_var(size=2 * 16)
-    C @= FONT_16_12_INDEX
+    C @= 32
     with For(A @ 0, A < 6, A @ (A + 1)):
         with If(color >= 7):
             color @= 0
         color += 1
-        call(switch_screen_row, A + 1, color)
+        E @= color + 8
+        call(switch_screen_row, A + 1, E)
         with For(B @ 0, B < 16, B @ (B + 1)):
-            D @= M[C] + FONT_16_12_COMPRESSED
             # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
-            C += 2
-            call(decode_font, addr(font_buf), D, 16, 12)
+            # call(decode_font, addr(font_buf), D, 16, 12)
+            call(decode_font_16_12, addr(font_buf), C)
             call(fill_cell_content, 10 + B, addr(font_buf))
+            C += 1
 
 
 def main(A, B, C, D, E, H):

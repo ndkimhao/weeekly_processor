@@ -1,4 +1,5 @@
-from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope
+from progs.stdlib.printf import PRINTF
+from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope, Else
 from soeunasm.data import global_var, const, local_var, local_vars
 import base64
 
@@ -33,12 +34,13 @@ FONT_16_12_INDEX = const('FONT_16_12_INDEX', FONT_16_12_INDEX_PY)
 
 def decode_font_16_12(ptr_out, ch, A, B):
     A @= ch
-    B @= '?'
+    B @= ord('?') - 32
     with Scope():
         If(A < 32).then_break()
         If(A >= 128).then_break()
         B @= A - 32
     B <<= 1
+    B @= M[FONT_16_12_INDEX + B]
     call(decode_font, ptr_out, B + FONT_16_12_COMPRESSED, 16, 12)
 
 
@@ -83,7 +85,10 @@ def decode_font(ptr_out, ptr_encoded, height, width,
                 ElseIf(A == 0, emit_jmp_cleanup_before_this=False)
                 cmt('copy line n-1')
                 H @= E - 2
-                M[E] @= M[H]
+                with If(H >= ptr_out):
+                    M[E] @= M[H]
+                    Else()
+                    M[E] @= 0
                 # call(puts, const('n-1\n'))
                 Break()
 
