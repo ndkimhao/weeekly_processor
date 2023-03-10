@@ -275,23 +275,30 @@ begin
 	process(clk)
 	begin
 		if rising_edge(clk) then
-			last_mtype <= mtype;
 
-			if wr = '1' then
-				case mtype is
-					when M_LED_WRITE     => s_led_out <= din(7 downto 0);
-					when M_JUMP_TARGET   => mem_jump_target <= din;
-					when M_SYSCALL_ENTRY => mem_syscall_entry <= din;
+			if reset = '1' then
+				reg_sd_addr <= (others => '0');
+				reg_sd_send <= (others => '0');
+			else
+				last_mtype <= mtype;
+	
+				if wr = '1' then
+					case mtype is
+						when M_LED_WRITE     => s_led_out <= din(7 downto 0);
+						when M_JUMP_TARGET   => mem_jump_target <= din;
+						when M_SYSCALL_ENTRY => mem_syscall_entry <= din;
+	
+						when M_SD_ADDR_0 => reg_sd_addr(15 downto 0) <= din;
+						when M_SD_ADDR_1 => reg_sd_addr(31 downto 16) <= din;
+						when M_SD_SEND   => reg_sd_send <= din;
+	
+						when others =>
+							null;
+					end case;
+				end if; -- wr
+			end if; -- reset
 
-					when M_SD_ADDR_0 => reg_sd_addr(15 downto 0) <= din;
-					when M_SD_ADDR_1 => reg_sd_addr(31 downto 16) <= din;
-					when M_SD_SEND   => reg_sd_send <= din;
-
-					when others =>
-						null;
-				end case;
-			end if;
-		end if;
+		end if; -- rising_edge(clk)
 	end process;
 
 	process(clk)
@@ -391,7 +398,7 @@ begin
 		rd_i       => reg_sd_send(9),
 		wr_i       => reg_sd_send(10),
 		continue_i => reg_sd_send(11),
-		reset_i    => reg_sd_send(12),
+		reset_i    => reg_sd_send(12) or reset,
 
 		data_o     => reg_sd_recv(7 downto 0),
 		hndShk_o   => reg_sd_recv(8),
