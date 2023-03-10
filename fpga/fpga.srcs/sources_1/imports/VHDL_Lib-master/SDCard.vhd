@@ -159,6 +159,7 @@ entity SdCardCtrl is
     hndShk_i   : in  std_logic;  -- High when host has data to give or has taken data.
     hndShk_o   : out std_logic;  -- High when controller has taken data or has data to give.
     error_o    : out std_logic_vector(15 downto 0) := (others => NO);
+    status_o   : out std_logic_vector(4 downto 0);
     -- I/O signals to the external SD card.
     cs_bo      : out std_logic                     := HI;  -- Active-low chip-select.
     sclk_o     : out std_logic                     := LO;  -- Serial clock to SD card.
@@ -589,12 +590,14 @@ begin
             state_v := START_INIT;
         end case;
       end if;
+      
+
+      status_o <= std_logic_vector(to_unsigned(FsmState_t'POS(state_v), status_o'length));
     end if;
   end process;
 
   sclk_o   <= sclk_r;    -- Output the generated SPI clock for the SD card.
   hndShk_o <= hndShk_r;  -- Output the generated handshake to the host.
-  
 end architecture;
 
 

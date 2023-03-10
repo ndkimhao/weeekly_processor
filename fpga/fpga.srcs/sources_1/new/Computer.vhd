@@ -26,7 +26,7 @@ entity Computer is
 		sd_sclk : out std_logic;
 		sd_mosi : out std_logic;
 		sd_miso : in  std_logic;
-		sd_nc   : out std_logic_vector(1 downto 0) := (others => '0')
+		sd_nc   : inout std_logic_vector(1 downto 0)
 	);
 end Computer;
 
