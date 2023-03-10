@@ -54,6 +54,10 @@ def printf(fmt, VAR_ARGS,
             call(itoa_16, [B], addr(buf))
             call(puts, addr(buf))
 
+            ElseIf(C == ord('h'))  # one byte, hex
+            call(itoa_16, [B], addr(buf))
+            call(puts, addr(buf) + 2)
+
             ElseIf(C == ord('b'))
             call(itoa_2, [B], addr(buf))
             call(puts, addr(buf))

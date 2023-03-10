@@ -2,13 +2,13 @@ from enum import Enum
 
 import mondayasm
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND
-from progs.stdlib.format import atoi_16
+from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
-from progs.stdlib.printf import puts, printf, PRINTF
+from progs.stdlib.printf import puts, printf, PRINTF, putc
 from progs.stdlib.timing import DELAY_MILLIS
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
     global_var, While, Else, cmt, Continue
-from soeunasm.free_expr import decl_label, label
+from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
 BOOTLOADER2_ROM_MODE = False
@@ -28,6 +28,8 @@ class SerialCmd(Enum):
     PING = 1
     READ = 2
     WRITE = 3
+    READB = 4
+    WRITEB = 5
 
 
 def parse_command_name(p_str, A, H):
@@ -65,7 +67,7 @@ def recv_command(A, B, C, D, G, H):
         If(C == '\r').then_break()
 
         with If(A >= buf.addr() + BUF_SZ - 1):
-            call(puts, const('$OVERFLOW\n'))
+            call(puts, const(f'$OVERFLOW max={BUF_SZ - 1}\n'))
             If(H == SerialCmd.NONE).then_jmp(lb_fail)
 
         M[A] @= C  # Write character
@@ -97,17 +99,17 @@ def recv_command(A, B, C, D, G, H):
             D @= 0xFFFF - 1  # prevent overflow when doing C @= D+1
         A @= g_num_args
         with If(A >= MAX_ARGS):
-            call(puts, const('TOO_MANY_ARGS\n'))
+            call(puts, const(f'TOO_MANY_ARGS max={MAX_ARGS}\n'))
             jmp(lb_fail)
 
         call(atoi_16, C)
         with If(G == 0):  # parse error
-            call(printf, const("INVALID_ARG %d\n"), A)
+            call(printf, const('INVALID_ARG idx=%d\n'), A)
             jmp(lb_fail)
 
         B @= A << 1
         g_args.addr_add(B) @ H
-        PRINTF('arg%d=%x\n', g_num_args, g_args.addr_add(B))
+        # PRINTF('arg%d=%x\n', g_num_args, g_args.addr_add(B))
 
         g_num_args @= A + 1
         C @= D + 1
@@ -121,23 +123,48 @@ def recv_command(A, B, C, D, G, H):
     H @= SerialCmd.NONE
 
 
-def handle_ping():
-    call(puts, const("PONG\n"))
+def check_num_args(need, G):
+    G @= 1
+    with If(g_num_args != need):
+        call(printf, const('WRONG_NUM_ARGS need=%d provided=%d\n'), need, g_num_args)
+        G @= 0
 
 
-def handle_read():
-    call(puts, const("read\n"))
+def handle_ping(cmd_num):
+    call(check_num_args, 0)
+    call(puts, const('PONG\n'))
 
 
-def handle_write():
-    call(puts, const("write\n"))
+def handle_read(cmd_num, A, B, C, D, G):
+    buf = local_var(size=6)
+
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+    A @= g_args
+    B @= g_args.addr_add(2)
+    with If(cmd_num == SerialCmd.READ):
+        with While(A < B):
+            C @= [A]
+            D @= C >> 8
+            C <<= 8
+            call(itoa_16, D + C, addr(buf))
+            call(puts, addr(buf))
+            A += 2
+
+        Else()  # cmd_num == SerialCmd.READB
+        with While(A < B):
+            C @= [A]
+            call(putc, C)
+            C >>= 8
+            call(putc, C)
+            A += 2
+
+    ###
+    call(putc, '\n')
 
 
-HANDLER_MAP_PY = [
-    (SerialCmd.PING, handle_ping),
-    (SerialCmd.READ, handle_read),
-    (SerialCmd.WRITE, handle_write),
-]
+def handle_write(cmd_num):
+    call(puts, const('write\n'))
 
 
 def _process_handler_map(arr):
@@ -149,9 +176,17 @@ def _process_handler_map(arr):
         prev = cmd
         lb_fn = emit_fn(fn)
         ret.append(lb_fn)
+    assert len(ret) == len(SerialCmd) - 1
     return ret
 
 
+HANDLER_MAP_PY = [
+    (SerialCmd.PING, handle_ping),
+    (SerialCmd.READ, handle_read),
+    (SerialCmd.WRITE, handle_write),
+    (SerialCmd.READB, handle_read),
+    (SerialCmd.WRITEB, handle_write),
+]
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map(HANDLER_MAP_PY))
 
 
@@ -174,9 +209,11 @@ def main(A, B, G, H):
         with If(A == SerialCmd.NONE):
             call(puts, const('UNKNOWN_COMMAND\n'))
             Continue()
-        A <<= 1
-        A += HANDLER_MAP - 2
-        mondayasm.CALL([A.a])
+        B @= A * 2
+        B += HANDLER_MAP - 2
+        push(A)
+        mondayasm.CALL([B.a])
+        pop(A)
 
 
 if __name__ == '__main__':
