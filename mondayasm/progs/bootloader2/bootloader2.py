@@ -1,13 +1,14 @@
 from enum import Enum
 
 import mondayasm
-from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND
+from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND, JMP_TARGET
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
-from progs.stdlib.printf import puts, printf, PRINTF, putc
+from progs.stdlib.printf import puts, printf, PRINTF
+from progs.stdlib.uart import putc, getc
 from progs.stdlib.timing import DELAY_MILLIS
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
-    global_var, While, Else, cmt, Continue
+    global_var, While, Else, cmt, Continue, ForRange
 from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
@@ -30,6 +31,8 @@ class SerialCmd(Enum):
     WRITE = 3
     READB = 4
     WRITEB = 5
+    JMP = 6
+    JMP_PERSIST = 7
 
 
 def parse_command_name(p_str, A, H):
@@ -55,12 +58,8 @@ def recv_command(A, B, C, D, G, H):
     A @= buf.addr()
     with Loop():
         # recv uart
-        C @= M[UART_RECV]
-        D @= C & FLAG_UART_RECV_VALID
-        If(D == 0).then_continue()
-
-        # process character
-        C &= 0xFF
+        call(getc)
+        C @= H
         # echo back
         M[UART_SEND] @= C  # we are receiving, so uart sender won't be busy
         If(C == '\n').then_break()
@@ -130,6 +129,28 @@ def check_num_args(need, G):
         G @= 0
 
 
+def check_addr_range(A, B, C, G):
+    lb_fail = decl_label()
+    A @= g_args
+    B @= g_args.addr_add(2)
+
+    C @= const('INVALID_RANGE\n')
+    If(A >= B).then_jmp(lb_fail)
+
+    C @= const('NOT_ALIGNED\n')
+    G @= A & 1
+    If(G != 0).then_jmp(lb_fail)
+    G @= B & 1
+    If(G != 0).then_jmp(lb_fail)
+
+    G @= 1
+    Return()
+
+    label(lb_fail)
+    call(puts, C)
+    G @= 0
+
+
 def handle_ping(cmd_num):
     call(check_num_args, 0)
     call(puts, const('PONG\n'))
@@ -140,6 +161,9 @@ def handle_read(cmd_num, A, B, C, D, G):
 
     call(check_num_args, 2)
     If(G == 0).then_return()
+    call(check_addr_range)
+    If(G == 0).then_return()
+
     A @= g_args
     B @= g_args.addr_add(2)
     with If(cmd_num == SerialCmd.READ):
@@ -163,8 +187,79 @@ def handle_read(cmd_num, A, B, C, D, G):
     call(putc, '\n')
 
 
-def handle_write(cmd_num):
-    call(puts, const('write\n'))
+def handle_write(cmd_num, A, B, C, D, G, H):
+    lb_fail = decl_label()
+    buf = local_var(size=6)
+
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+    call(check_addr_range)
+    If(G == 0).then_return()
+
+    A @= g_args
+    B @= g_args.addr_add(2)
+
+    with If(cmd_num == SerialCmd.WRITE):
+        with While(A < B):
+            with ForRange(D, 0, 4):
+                call(getc)
+                M[UART_SEND] @= H  # echo back
+                buf.addr_add(D) @ H
+            ###
+            call(atoi_16, buf.addr())
+            If(G == 0).then_jmp(lb_fail)
+
+            C @= H << 8
+            H >>= 8
+            C |= H
+            M[A] @= C
+            A += 2
+
+        Else()
+        with While(A < B):
+            call(getc)
+            M[UART_SEND] @= H
+            C @= H
+            call(getc)
+            M[UART_SEND] @= H
+
+            H <<= 8
+            C |= H
+            M[A] @= C
+            A += 2
+    ###
+    call(getc)
+    M[UART_SEND] @= H  # echo back
+    with Scope():
+        If(H == '\n').then_break()
+        If(H == '\r').then_break()
+        jmp(lb_fail)
+    call(printf, const('WRITE_OK %x %x\n'), g_args, B)
+
+    Return()
+    label(lb_fail)
+    call(puts, const("$INVALID_DATA\n"))
+    G @= 0
+
+
+def handle_jmp(cmd_num, G):
+    call(check_num_args, 1)
+    If(G == 0).then_return()
+
+    with If(cmd_num == SerialCmd.JMP):
+        call(printf, const('JMP_TO %x\n'), g_args)
+        jmp(g_args)
+
+    M[JMP_TARGET] @= g_args
+    call(printf, const('JMP_PERSISTED %x\n'), M[JMP_TARGET])
+
+    # No return from this point
+    M[LED] @= 0
+    for reg in [Reg.A, Reg.B, Reg.C, Reg.D, Reg.SP,
+                Reg.E, Reg.F, Reg.G, Reg.H]:
+        reg @= 0
+
+    jmp(M[JMP_TARGET])
 
 
 def _process_handler_map(arr):
@@ -186,6 +281,8 @@ HANDLER_MAP_PY = [
     (SerialCmd.WRITE, handle_write),
     (SerialCmd.READB, handle_read),
     (SerialCmd.WRITEB, handle_write),
+    (SerialCmd.JMP, handle_jmp),
+    (SerialCmd.JMP_PERSIST, handle_jmp),
 ]
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map(HANDLER_MAP_PY))
 
@@ -203,6 +300,7 @@ def main(A, B, G, H):
     M[LED] @= 1
     with Loop():
         call(recv_command)
+        M[LED] += 1
         A @= H
         with If(G == 0):
             Continue()
@@ -212,6 +310,7 @@ def main(A, B, G, H):
         B @= A * 2
         B += HANDLER_MAP - 2
         push(A)
+        # NOTES: E & F maybe modified after this call
         mondayasm.CALL([B.a])
         pop(A)
 

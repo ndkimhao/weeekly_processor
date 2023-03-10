@@ -1,17 +1,7 @@
-from progs.stdlib.devices import FLAG_UART_SEND_FULL, UART_SEND, UART_STATUS
 from progs.stdlib.format import itoa_10, itoa_16, itoa_2
-from soeunasm import M, If, For, cmt, call, Loop, Continue, addr, ElseIf, Break, Cleanup, Else, BreakIf
+from progs.stdlib.uart import putc
+from soeunasm import M, If, For, cmt, call, Loop, Continue, addr, ElseIf, Break, BreakIf
 from soeunasm.data import local_var, const
-
-
-def putc(c, H):
-    cmt('wait if uart send buffer is full')
-    with Loop():
-        H @= M[UART_STATUS] & FLAG_UART_SEND_FULL
-        If(H == 0).then_break()
-
-    cmt('send data now')
-    M[UART_SEND] @= c
 
 
 def puts(p_str, A, H):
