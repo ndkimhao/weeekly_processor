@@ -22,7 +22,13 @@ entity CPU is
 		ps2_clk  : in std_logic;
 		ps2_data : in std_logic;
 		led_out : out std_logic_vector(8-1 downto 0);
-		btn_in : in std_logic_vector(13-1 downto 0)
+		btn_in : in std_logic_vector(13-1 downto 0);
+
+		sd_pwr  : out std_logic;
+		sd_cs   : out std_logic;
+		sd_sclk : out std_logic;
+		sd_mosi : out std_logic;
+		sd_miso : in  std_logic
 	);
 end CPU;
 
@@ -93,6 +99,12 @@ begin
 		ps2_data => ps2_data,
 		led_out => led_out,
 		btn_in => btn_in,
+		
+		sd_pwr  => sd_pwr,
+		sd_cs   => sd_cs,
+		sd_sclk => sd_sclk,
+		sd_mosi => sd_mosi,
+		sd_miso => sd_miso,
 		
 		uop_hold => dec_hold,
 		uop_done => dec_done

@@ -19,7 +19,14 @@ entity Computer is
 		uart_rx_out : out std_logic;
 		uart_tx_in : in std_logic;
 		ps2_clk  : in std_logic;
-		ps2_data : in std_logic
+		ps2_data : in std_logic;
+
+		sd_pwr  : out std_logic;
+		sd_cs   : out std_logic;
+		sd_sclk : out std_logic;
+		sd_mosi : out std_logic;
+		sd_miso : in  std_logic;
+		sd_nc   : out std_logic_vector(1 downto 0) := (others => '0')
 	);
 end Computer;
 
@@ -81,6 +88,12 @@ begin
 		uart_rx => uart_tx_in,
 		ps2_clk => ps2_clk,
 		ps2_data => ps2_data,
+
+		sd_pwr  => sd_pwr,
+		sd_cs   => sd_cs,
+		sd_sclk => sd_sclk,
+		sd_mosi => sd_mosi,
+		sd_miso => sd_miso,
 
 		led_out => led_out,
 		btn_in => btn_in

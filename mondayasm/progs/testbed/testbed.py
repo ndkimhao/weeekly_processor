@@ -54,9 +54,9 @@ def main(A, B, C, D, E, H):
     with For(A @ 0, True, A @ (~A)):
         call(gen_font)
         with If(A == 0):
-            call(switch_screen_row, 5, 0b111)
+            call(switch_screen_row, 5, 0b1111)
             Else()
-            call(switch_screen_row, 5, 0b100)
+            call(switch_screen_row, 5, 0b1100)
 
         call(fill_cell, 0, 0x0f0f)
         call(fill_cell, 1, 0xa0a0)

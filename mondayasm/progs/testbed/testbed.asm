@@ -97,7 +97,7 @@ e4 fc                          # a0bc |   pop E
 ec 20 00 f8 1c 00              # a0be |   jne A, 0, ${_E_if_4}:rel + PC
                                #      | _A_call_14:
 e0 fc                          # a0c4 |   push E
-e0 1c 07                       # a0c6 |   push 0x7
+e0 1c 0f                       # a0c6 |   push 0xf
 e0 1c 05                       # a0c9 |   push 0x5
 5c f8 d1 00                    # a0cc |   call ${fn_switch_screen_row}:rel + PC
 60 a0 bc 04                    # a0d0 |   mov SP, SP + 0x4
@@ -107,7 +107,7 @@ e4 fc                          # a0d4 |   pop E
                                #      | _E_if_4:
                                #      | _A_call_15:
 e0 fc                          # a0da |   push E
-e0 1c 04                       # a0dc |   push 0x4
+e0 1c 0c                       # a0dc |   push 0xc
 e0 1c 05                       # a0df |   push 0x5
 5c f8 bb 00                    # a0e2 |   call ${fn_switch_screen_row}:rel + PC
 60 a0 bc 04                    # a0e6 |   mov SP, SP + 0x4

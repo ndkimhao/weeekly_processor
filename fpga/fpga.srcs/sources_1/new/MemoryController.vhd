@@ -2,10 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library SdCardCtrl;
 use work.Constants.all;
 use work.Types.all;
-use SdCardCtrl.all;
 
 entity MemoryController is
 	port (
@@ -33,6 +31,12 @@ entity MemoryController is
 		
 		led_out : out TByte;
 		btn_in : in std_logic_vector(13-1 downto 0);
+
+		sd_pwr  : out std_logic;
+		sd_cs   : out std_logic;
+		sd_sclk : out std_logic;
+		sd_mosi : out std_logic;
+		sd_miso : in  std_logic;
 
 		uop_hold : in std_logic;
 		uop_done : in std_logic
@@ -120,6 +124,11 @@ type TMappedMemory is (
 	M_INSTCNT_READ_2,
 	M_JUMP_TARGET,
 	M_SYSCALL_ENTRY,
+	M_SD_ADDR_0,
+	M_SD_ADDR_1,
+	M_SD_SEND,
+	M_SD_RECV,
+	M_SD_ERROR,
 	M_NONE
 );
 
@@ -137,6 +146,11 @@ signal inst_counter : unsigned(48-1 downto 0) := (others => '0');
 
 signal mem_jump_target : TData := (others => '0');
 signal mem_syscall_entry : TData := (others => '0');
+
+signal reg_sd_addr : std_logic_vector(31 downto 0) := (others => '0');
+signal reg_sd_send : TData := (others => '0');
+signal reg_sd_recv : TData := (others => '0');
+signal reg_sd_err : TData := (others => '0');
 
 -----
 signal ram_en : std_logic;
@@ -180,6 +194,13 @@ begin
 		M_JUMP_TARGET when dev_en = '1' and alow = x"1C" else
 		M_SYSCALL_ENTRY when dev_en = '1' and alow = x"1E" else
 
+		-- SD
+		M_SD_ADDR_0 when dev_en = '1' and alow = x"20" else
+		M_SD_ADDR_1 when dev_en = '1' and alow = x"22" else
+		M_SD_SEND   when dev_en = '1' and alow = x"24" else
+		M_SD_RECV   when dev_en = '1' and alow = x"26" else
+		M_SD_ERROR  when dev_en = '1' and alow = x"28" else
+
 		--
 		M_NONE;
 
@@ -216,6 +237,13 @@ begin
 		mem_jump_target when last_mtype = M_JUMP_TARGET else
 		mem_syscall_entry when last_mtype = M_SYSCALL_ENTRY else
 
+		-- SD
+		reg_sd_addr(15 downto 0) when last_mtype = M_SD_ADDR_0 else
+		reg_sd_addr(31 downto 16) when last_mtype = M_SD_ADDR_1 else
+		reg_sd_send when last_mtype = M_SD_SEND else
+		reg_sd_recv when last_mtype = M_SD_RECV else
+		reg_sd_err when last_mtype = M_SD_ERROR else
+
 		--
 		(others => '0'); -- M_NONE
 
@@ -251,12 +279,14 @@ begin
 
 			if wr = '1' then
 				case mtype is
-					when M_LED_WRITE =>
-						s_led_out <= din(7 downto 0);
-					when M_JUMP_TARGET =>
-						mem_jump_target <= din;
-					when M_SYSCALL_ENTRY =>
-						mem_syscall_entry <= din;
+					when M_LED_WRITE     => s_led_out <= din(7 downto 0);
+					when M_JUMP_TARGET   => mem_jump_target <= din;
+					when M_SYSCALL_ENTRY => mem_syscall_entry <= din;
+
+					when M_SD_ADDR_0 => reg_sd_addr(15 downto 0) <= din;
+					when M_SD_ADDR_1 => reg_sd_addr(31 downto 16) <= din;
+					when M_SD_SEND   => reg_sd_send <= din;
+
 					when others =>
 						null;
 				end case;
@@ -347,5 +377,32 @@ begin
 		ps2_data => ps2_data,
 		ps2_code_new => ps2_recv_wr_en,
 		ps2_code => ps2_recv_din
+	);
+	
+	--- SD Card
+	sd_pwr <= reg_sd_send(15);
+	sd_controller : entity work.SdCardCtrl port map (
+		-- Host-side interface signals.
+		clk_i      => clk,
+		reset_i    => reset,
+		addr_i     => reg_sd_addr,
+		
+		data_i     => reg_sd_send(7 downto 0),
+		hndShk_i   => reg_sd_send(8),
+		rd_i       => reg_sd_send(10),
+		wr_i       => reg_sd_send(11),
+		continue_i => reg_sd_send(12),
+
+		data_o     => reg_sd_recv(7 downto 0),
+		hndShk_o   => reg_sd_recv(9),
+		busy_o     => reg_sd_recv(13),
+
+		error_o    => reg_sd_err,
+
+		-- I/O signals to the external SD card.
+		cs_bo => sd_cs,
+		sclk_o => sd_sclk,
+		mosi_o => sd_mosi,
+		miso_i => sd_miso
 	);
 end Behavioral;
