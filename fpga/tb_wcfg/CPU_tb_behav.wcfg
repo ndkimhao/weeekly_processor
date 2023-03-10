@@ -15,15 +15,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="5,366.357156 us"></ZoomEndTime>
-      <Cursor1Time time="1,001.000000 us"></Cursor1Time>
+      <ZoomStartTime time="28,345.980 ns"></ZoomStartTime>
+      <ZoomEndTime time="39,615.981 ns"></ZoomEndTime>
+      <Cursor1Time time="31,090.980 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="136"></NameColumnWidth>
+      <NameColumnWidth column_width="192"></NameColumnWidth>
       <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="25" />
+   <WVObjectSize size="27" />
    <wvobject fp_name="/CPU_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -157,5 +157,51 @@
    <wvobject fp_name="/CPU_tb/cpu/engine/hold_counter" type="array">
       <obj_property name="ElementShortName">hold_counter[4:0]</obj_property>
       <obj_property name="ObjectShortName">hold_counter[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="group35" type="group">
+      <obj_property name="label">ROM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/rom/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/rom/addr" type="array">
+         <obj_property name="ElementShortName">addr[23:0]</obj_property>
+         <obj_property name="ObjectShortName">addr[23:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/rom/dout" type="array">
+         <obj_property name="ElementShortName">dout[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group57" type="group">
+      <obj_property name="label">MemCtrl</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/en" type="logic">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/wr" type="logic">
+         <obj_property name="ElementShortName">wr</obj_property>
+         <obj_property name="ObjectShortName">wr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/addr" type="array">
+         <obj_property name="ElementShortName">addr[23:0]</obj_property>
+         <obj_property name="ObjectShortName">addr[23:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/din" type="array">
+         <obj_property name="ElementShortName">din[15:0]</obj_property>
+         <obj_property name="ObjectShortName">din[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/CPU_tb/cpu/devices_controller/dout" type="array">
+         <obj_property name="ElementShortName">dout[15:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[15:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

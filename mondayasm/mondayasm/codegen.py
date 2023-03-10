@@ -147,3 +147,13 @@ class CodeGen:
 
             f.write(vhd_footer())
         return self
+
+    def write_coe(self, file) -> 'CodeGen':
+        with open(file, 'w', newline='\n') as f:
+            f.write('memory_initialization_radix=16;\n')
+            f.write('memory_initialization_vector=\n')
+            for idx, hexcode, cmd in self.buf:
+                if len(hexcode) > 0:
+                    f.write(hexcode.replace(' ', ',') + ',\n')
+            f.write('d8;\n')
+        return self

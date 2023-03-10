@@ -17,7 +17,7 @@ signal reset : std_logic;
 signal vbuf_clk : std_logic;
 signal vbuf_en : std_logic;
 signal vbuf_wr : std_logic;
-signal vbuf_addr_bank :  std_logic_vector(2 downto 0);
+signal vbuf_addr_bank :  std_logic_vector(4-1 downto 0);
 signal vbuf_addr :  TAddr;
 signal vbuf_din : TData;
 signal vbuf_dout : TData;
@@ -72,14 +72,14 @@ begin
 
 	process -- clock
 	begin
-		clk <= '0'; wait for 5ns;
-		clk <= '1'; wait for 5ns;
+		clk <= '0'; wait for 500ns;
+		clk <= '1'; wait for 500ns;
 	end process;
 
 	process -- test
 	begin
-		reset <= '1'; wait for 10ns;
-		reset <= '0'; wait for 10ns;
+		reset <= '1'; wait for 1us;
+		reset <= '0'; wait for 1us;
 		
 		wait;
 	end process;

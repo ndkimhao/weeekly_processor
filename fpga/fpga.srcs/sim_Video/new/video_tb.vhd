@@ -17,7 +17,7 @@ signal reset : std_logic;
 signal vbuf_clk : std_logic;
 signal vbuf_en : std_logic := '0';
 signal vbuf_wr : std_logic;
-signal vbuf_addr_bank :  std_logic_vector(2 downto 0);
+signal vbuf_addr_bank :  std_logic_vector(4-1 downto 0);
 signal vbuf_addr :  TAddr;
 signal vbuf_din : TData;
 signal vbuf_dout : TData;

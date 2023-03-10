@@ -356,4 +356,4 @@ if __name__ == '__main__':
     cg = init_code_gen()
     cg.code_offset = CODE_OFFSET
     cg.var_offset = (CODE_END + 0xF) & 0xFFF0
-    cg.compile().write('bootloader2.asm')
+    cg.compile().write('bootloader2.asm').write_coe('bootloader2.coe')
