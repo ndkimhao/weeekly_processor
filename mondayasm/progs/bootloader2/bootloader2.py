@@ -168,6 +168,8 @@ def handle_read(cmd_num, A, B, C, D, G):
 
     A @= g_args
     B @= g_args.addr_add(2)
+
+    call(printf, const('READ_OK %x %x\n'), A, B)
     with If(cmd_num == SerialCmd.READ):
         with While(A < B):
             C @= [A]
@@ -244,6 +246,9 @@ def handle_write(cmd_num, A, B, C, D, G, H):
     G @= 0
 
 
+glb_jmp_to_stored_target = decl_label('glb_jmp_to_stored_target', anon=False)
+
+
 def handle_jmp(cmd_num, G):
     call(check_num_args, 1)
     If(G == 0).then_return()
@@ -256,6 +261,7 @@ def handle_jmp(cmd_num, G):
     call(printf, const('JMP_PERSISTED %x\n'), M[JMP_TARGET])
 
     # No return from this point
+    label(glb_jmp_to_stored_target)
     M[LED] @= 0
     for reg in [Reg.A, Reg.B, Reg.C, Reg.D, Reg.SP,
                 Reg.E, Reg.F, Reg.G, Reg.H]:
@@ -297,6 +303,14 @@ def main(A, B, G, H):
 
     # send hello
     call(puts, const('Weeekly3006 - Hardware v1.2 - Bootloader v2.0\nREADY\n'))
+
+    # check for persisted target
+    A @= M[JMP_TARGET]
+    with Scope():
+        If(A == 0).then_break()
+        If(A == CODE_OFFSET).then_break()
+        call(printf, const('Found persisted jump target at %x\n'), A)
+        jmp(glb_jmp_to_stored_target)
 
     # wait for commands
     M[LED] @= 1

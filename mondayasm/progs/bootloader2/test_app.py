@@ -1,10 +1,12 @@
+from progs.stdlib.devices import LED
 from progs.stdlib.syscall import syscall, S
-from soeunasm import Reg, call, halt, init_code_gen, const
+from soeunasm import Reg, call, halt, init_code_gen, const, M
 
 CODE_OFFSET = 0x5000
 
 
 def main():
+    M[LED] @= 0x00af
     syscall(S.printf, const('test %d %x\n'), 123, 0xaaff)
 
 
