@@ -2,26 +2,32 @@ from enum import Enum
 
 import mondayasm
 from progs.bootloader2.syscall_entry import syscall_entry
-from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_RECV, FLAG_UART_RECV_VALID, UART_SEND, JMP_TARGET, \
-    SYSCALL_ENTRY, BTN_READ
+from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
+    SYSCALL_ENTRY, BTN_READ, SD_OUT, SD_IN, SD_ADDR_1, \
+    SD_ADDR_0, BIT_SD_OUT_RESET, BIT_SD_OUT_POWER_OFF, BIT_SD_IN_BUSY, BIT_SD_OUT_READ, \
+    BIT_SD_OUT_HANDSHAKE, BIT_SD_IN_HANDSHAKE, SD_ERROR
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
 from progs.stdlib.printf import puts, printf, PRINTF
+from progs.stdlib.sdcard import read_sd
 from progs.stdlib.uart import putc, getc
 from progs.stdlib.timing import DELAY_MILLIS
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
-    global_var, While, Else, cmt, Continue, ForRange
+    global_var, While, Else, cmt, Continue, ForRange, setb
+from soeunasm.free_cmds import clrb, getb
 from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
-BOOTLOADER2_ROM_MODE = True
+BOOTLOADER2_ROM_MODE = False
 
 if BOOTLOADER2_ROM_MODE:
+    # ROM mode
     CODE_OFFSET = 0xE000
-    CODE_END = 0xFB00
+    CODE_END = 0xFA00
 else:
-    CODE_OFFSET = 0xA000
-    CODE_END = 0xFB00
+    # TESTING mode
+    CODE_OFFSET = 0x9000
+    CODE_END = 0xFA00
 
 MMAP_SLOT_ROM = 3
 MMAP_SLOT_DEVICES = 2
@@ -40,6 +46,8 @@ class SerialCmd(Enum):
     WRITEB = 5
     JMP = 6
     JMP_PERSIST = 7
+    INITSD = 8
+    READSD = 9
 
 
 def parse_command_name(p_str, A, H):
@@ -275,6 +283,86 @@ def handle_jmp(cmd_num, G):
     jmp(M[JMP_TARGET])
 
 
+def handle_init_sd(cmd_num, A, B, C):
+    setb([SD_OUT], BIT_SD_OUT_RESET)
+
+    setb([SD_OUT], BIT_SD_OUT_POWER_OFF)
+    DELAY_MILLIS(1)
+    clrb([SD_OUT], BIT_SD_OUT_POWER_OFF)
+
+    clrb([SD_OUT], BIT_SD_OUT_RESET)
+
+    # PRINTF('%x %x\n', [SD_IN], [SD_OUT])
+
+    with ForRange(C, 0, 10):
+        with ForRange(A, 0, 0xFFFF):
+            getb(B, [SD_IN], BIT_SD_IN_BUSY)
+            If(B == 0).then_break()
+        If(B == 0).then_break()
+
+    with If(B != 0):
+        call(puts, const('TIMEOUT\n'))
+        Return()
+
+    call(puts, const('INIT_OK\n'))
+
+
+def handle_read_sd(cmd_num, A, B, C, D, G, H):
+    buf = local_var(size=514)
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+
+    call(read_sd, buf.addr(), g_args, g_args.addr_add(2))
+    with If(G == 0):
+        call(puts, const('TIMEOUT\n'))
+        Return()
+
+    A @= H
+    PRINTF('read %d bytes\n', A)
+    A += buf.addr()
+    with ForRange(B, buf.addr(), A):
+        call(printf, const('%h '), [B])
+
+    # call(puts, '\n')
+    #
+    # lb_timeout = decl_label()
+    # # PRINTF('%x %x %x%x\n', [SD_IN], [SD_OUT], [SD_ADDR_1], [SD_ADDR_0])
+    # M[SD_ADDR_1] @= g_args
+    # M[SD_ADDR_0] @= g_args.addr_add(2)
+    #
+    # setb([SD_OUT], BIT_SD_OUT_READ)
+    # with ForRange(D, 0, 0xFFFF):
+    #     getb(B, [SD_IN], BIT_SD_IN_BUSY)
+    #     If(B != 0).then_break()
+    # If(B == 0).then_jmp(lb_timeout)
+    #
+    # clrb([SD_OUT], BIT_SD_OUT_READ)
+    # with Loop():
+    #     D += 1
+    #     If(D == 0xFFFF).then_jmp(lb_timeout)
+    #     C @= [SD_IN]
+    #     getb(A, C, BIT_SD_IN_BUSY)
+    #     If(A == 0).then_break()  # done read
+    #     getb(A, C, BIT_SD_IN_HANDSHAKE)
+    #     If(A == 0).then_continue()
+    #
+    #     setb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
+    #     with ForRange(D, 0, 0xFFFF):
+    #         getb(B, [SD_IN], BIT_SD_IN_HANDSHAKE)
+    #         If(B == 0).then_break()
+    #     clrb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
+    #
+    #     C &= 0xFF
+    #     PRINTF('%h ', C)
+    #     D @= 0
+    #
+    # PRINTF('\n')
+    # Return()
+    #
+    # label(lb_timeout)
+    # call(puts, const('TIMEOUT\n'))
+
+
 def _process_handler_map():
     ret = []
     prev = SerialCmd.NONE
@@ -296,6 +384,8 @@ HANDLER_MAP_PY = {
     SerialCmd.WRITEB: handle_write,
     SerialCmd.JMP: handle_jmp,
     SerialCmd.JMP_PERSIST: handle_jmp,
+    SerialCmd.INITSD: handle_init_sd,
+    SerialCmd.READSD: handle_read_sd,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
@@ -310,7 +400,7 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # send hello
-    call(puts, const('Weeekly3006 - Hardware v1.3 - Bootloader v2.1\n'))
+    call(puts, const('Weeekly3006 - Hardware v1.3 - Bootloader v2.2\n'))
 
     # check for persisted target
     A @= M[JMP_TARGET]
@@ -359,11 +449,17 @@ if __name__ == '__main__':
         mmap(CODE_OFFSET, CODE_END - 1, MMAP_SLOT_ROM)
         umap(MMAP_SLOT_DEVICES)
 
-    Reg.SP @= DEV_BASE_ADDR
+    if BOOTLOADER2_ROM_MODE:
+        Reg.SP @= DEV_BASE_ADDR
+    else:
+        Reg.SP @= CODE_OFFSET - 2
     call(main, preserve_registers=False)
     halt()
 
     cg = init_code_gen()
     cg.code_offset = CODE_OFFSET
-    cg.var_offset = (CODE_END + 0xF) & 0xFFF0
-    cg.compile().write('bootloader2.asm').write_coe('bootloader2.coe')
+    if BOOTLOADER2_ROM_MODE:
+        cg.var_offset = (CODE_END + 0xF) & 0xFFF0
+    cg.compile().write('bootloader2.asm')
+    if BOOTLOADER2_ROM_MODE:
+        cg.write_coe('bootloader2.coe')

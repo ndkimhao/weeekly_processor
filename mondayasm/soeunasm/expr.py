@@ -63,6 +63,9 @@ class Expr:
                     obj = RawIndirect(obj[0].a)
                 elif isinstance(obj[0], RawExpr):
                     obj = RawIndirect(obj[0])
+                else:
+                    obj = RawExpr.to_expr(obj[0])
+                    obj = RawIndirect(obj)
             if not isinstance(obj, (RawExpr, RawIndirect, PseudoExpr)):
                 obj = RawExpr.to_expr(obj)
             obj = Expr(ExprOp.NONE, obj)

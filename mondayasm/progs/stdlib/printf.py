@@ -13,7 +13,7 @@ def puts(p_str, A, H):
 
 # noinspection PyPep8Naming
 def printf(fmt, VAR_ARGS,
-           A, B, C):
+           A, B, C, D):
     buf = local_var(size=18)
     cmt('For each letter in fmt')
     B @= addr(VAR_ARGS)
@@ -42,6 +42,13 @@ def printf(fmt, VAR_ARGS,
 
             ElseIf(C == ord('x'))
             call(itoa_16, [B], addr(buf))
+            call(puts, addr(buf))
+
+            ElseIf(C == ord('q'))  # like %x, but swapped byte order
+            D @= M[B]
+            C @= D >> 8
+            D <<= 8
+            call(itoa_16, C + D, addr(buf))
             call(puts, addr(buf))
 
             ElseIf(C == ord('h'))  # one byte, hex

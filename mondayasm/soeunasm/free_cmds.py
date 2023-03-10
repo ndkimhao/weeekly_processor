@@ -49,6 +49,14 @@ def setb(a, b, c=None):
     return Statement(StmOp.SETB, a, b, c)
 
 
+def clrb(a, b, c=None):
+    if c is None:
+        b += 16
+    else:
+        c += 16
+    return setb(a, b, c)
+
+
 def jmp(target):
     if not isinstance(target, Expr):
         target = Expr.to_expr(target)

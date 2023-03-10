@@ -195,7 +195,7 @@ class MemoryAccessor:
         ...
 
 
-M = MemoryAccessor()
+M: MemoryAccessor = MemoryAccessor()
 
 
 def decl_label(name: str = '', *, anon: bool = True):
