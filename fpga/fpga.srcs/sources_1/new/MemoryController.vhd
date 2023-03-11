@@ -387,7 +387,7 @@ begin
 	);
 	
 	--- SD Card
-	sd_pwr <= reg_sd_send(15);
+	sd_pwr <= not reg_sd_send(15);
 	sd_controller : entity work.SdCardCtrl port map (
 		-- Host-side interface signals.
 		clk_i      => clk,

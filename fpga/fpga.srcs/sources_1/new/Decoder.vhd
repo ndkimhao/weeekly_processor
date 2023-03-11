@@ -99,7 +99,7 @@ begin
 						if op(5) = '0' then
 							nargs := to_unsigned(2, NArgsW);
 							if direct_reg(0) = '1' and direct_reg(1) = '1' and 
-								not (alu_op = OP_MUL or alu_op = OP_IMUL or alu_op = OP_DIV or alu_op = OP_IDIV)
+								not (alu_op = OP_MUL or alu_op = OP_IMUL or alu_op = OP_DIV)
 							then
 								synth_uop := UOP_ALU_HEAD & UOP_ALU_OP_COPY & synth_uop_2args;
 							end if;

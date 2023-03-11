@@ -43,10 +43,10 @@ def floordiv(lhs, rhs):
     return lhs // rhs
 
 
-def idiv(lhs, rhs):
+def ror(lhs, rhs):
     lhs = Expr.to_expr(lhs)
     rhs = Expr.to_expr(rhs)
-    return lhs.idiv(rhs)
+    return lhs.ror(rhs)
 
 
 def rshift(lhs, rhs):

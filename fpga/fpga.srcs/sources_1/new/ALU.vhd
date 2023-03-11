@@ -72,8 +72,7 @@ signal ua, ub, ur: unsigned(DataWidth-1 downto 0);
 signal sa, sb: signed(DataWidth-1 downto 0);
 signal o : unsigned(ALUOpLen-1 downto 0);
 
-signal uprod, sprod, udiv, sdiv : std_logic_vector(DataWidth*2-1 downto 0);
-signal udiv_done, sdiv_done : std_logic;
+signal uprod, sprod, udiv : std_logic_vector(DataWidth*2-1 downto 0);
 
 signal bitmask : unsigned(DataWidth-1 downto 0);
 
@@ -95,7 +94,7 @@ begin
 		unsigned(uprod(DataWidth-1 downto 0)) when o = OP_MUL else
 		unsigned(sprod(DataWidth-1 downto 0)) when o = OP_IMUL else
 		unsigned(udiv(DataWidth*2-1 downto DataWidth)) when o = OP_DIV else
-		unsigned(sdiv(DataWidth*2-1 downto DataWidth)) when o = OP_IDIV else
+		ua ror to_integer(ub(3 downto 0)) when o = OP_ROR else
 		ua and bitmask when o = OP_GETB else
 		ua or bitmask when o = OP_SETB and ub(4) = '0' else
 		ua and (not bitmask) when o = OP_SETB and ub(4) = '1' else
@@ -117,7 +116,6 @@ begin
 		uprod(DataWidth*2-1 downto DataWidth) when o = OP_MUL else
 		sprod(DataWidth*2-1 downto DataWidth) when o = OP_IMUL else
 		udiv(DataWidth-1 downto 0) when o = OP_DIV else
-		sdiv(DataWidth-1 downto 0) when o = OP_IDIV else
 		x"0000";
 
 	cmp(FLAGID_EQ) <= '1' when ua = ub else '0'; -- EQ
@@ -149,23 +147,8 @@ begin
 		s_axis_divisor_tdata => b,
 		s_axis_dividend_tvalid => start_op,
 		s_axis_dividend_tdata => a,
-		m_axis_dout_tvalid => udiv_done,
+		m_axis_dout_tvalid => div_done,
 		m_axis_dout_tdata => udiv
 	);
-
-	signed_div : div_signed_16 port map (
-		aclk => clk,
-		s_axis_divisor_tvalid => start_op,
-		s_axis_divisor_tdata => b,
-		s_axis_dividend_tvalid => start_op,
-		s_axis_dividend_tdata => a,
-		m_axis_dout_tvalid => sdiv_done,
-		m_axis_dout_tdata => sdiv
-	);
-	
-	div_done <= 
-		udiv_done when o = OP_DIV else
-		sdiv_done when o = OP_IDIV else
-		'0';
 
 end Behavioral;

@@ -13,7 +13,7 @@ EXPR_STM_OP_MAP = {
     ExprOp.MUL: StmOp.MUL,
     ExprOp.IMUL: StmOp.IMUL,
     ExprOp.DIV: StmOp.DIV,
-    ExprOp.IDIV: StmOp.IDIV,
+    ExprOp.ROR: StmOp.ROR,
     ExprOp.SHR: StmOp.SHR,
     ExprOp.ISHR: StmOp.ISHR,
     ExprOp.SHL: StmOp.SHL,
@@ -172,8 +172,8 @@ class Expr:
     def __floordiv__(self, rhs):
         return self._combine(ExprOp.DIV, self, rhs)
 
-    def idiv(self, rhs):
-        return self._combine(ExprOp.IDIV, self, rhs)
+    def ror(self, rhs):
+        return self._combine(ExprOp.ROR, self, rhs)
 
     def __rshift__(self, rhs):
         return self._combine(ExprOp.SHR, self, rhs)

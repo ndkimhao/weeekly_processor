@@ -29,8 +29,8 @@ def DIV(a, b, c=None):
     return __emit_command('div', a, b, c)
 
 
-def IDIV(a, b, c=None):
-    return __emit_command('idiv', a, b, c)
+def ROR(a, b, c=None):
+    return __emit_command('ror', a, b, c)
 
 
 def SHR(a, b, c=None):

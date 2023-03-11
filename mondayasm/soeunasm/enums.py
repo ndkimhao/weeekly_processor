@@ -30,7 +30,7 @@ class StmOp(Enum):
     MUL = auto()
     IMUL = auto()
     DIV = auto()
-    IDIV = auto()
+    ROR = auto()
     GETB = auto()
     SETB = auto()
     SHR = auto()
@@ -55,7 +55,7 @@ class ExprOp(Enum):
     MUL = auto()
     IMUL = auto()
     DIV = auto()
-    IDIV = auto()
+    ROR = auto()
 
     SHR = auto()
     ISHR = auto()

@@ -120,7 +120,7 @@ package Constants is
 	constant OP_MUL    : integer := 2;
 	constant OP_IMUL   : integer := 3;
 	constant OP_DIV    : integer := 4;
-	constant OP_IDIV   : integer := 5;
+	constant OP_ROR    : integer := 5;
 	constant OP_GETB   : integer := 6;
 	constant OP_SETB   : integer := 7;
 	constant OP_SHR    : integer := 8;
@@ -152,7 +152,7 @@ package Constants is
 	constant OP_MUL3   : integer := 34;
 	constant OP_IMUL3  : integer := 35;
 	constant OP_DIV3   : integer := 36;
-	constant OP_IDIV3  : integer := 37;
+	constant OP_ROR3  : integer := 37;
 	constant OP_GETB3  : integer := 38;
 	constant OP_SETB3  : integer := 39;
 	constant OP_SHR3   : integer := 40;

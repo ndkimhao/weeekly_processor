@@ -35,7 +35,7 @@ OP_MAP = {
     StmOp.MUL: mon.MUL,
     StmOp.IMUL: mon.IMUL,
     StmOp.DIV: mon.DIV,
-    StmOp.IDIV: mon.IDIV,
+    StmOp.ROR: mon.ROR,
     StmOp.GETB: mon.GETB,
     StmOp.SETB: mon.SETB,
     StmOp.SHR: mon.SHR,

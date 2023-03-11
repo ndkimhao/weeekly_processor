@@ -288,17 +288,14 @@ begin
 							r_write := '1';
 							r_res := alu_out;
 							if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL or
-							   unsigned(alu_op) = OP_DIV or unsigned(alu_op) = OP_IDIV then
+							   unsigned(alu_op) = OP_DIV then
 	
 								if hold_counter = 0 then
-									if unsigned(alu_op) = OP_MUL or unsigned(alu_op) = OP_IMUL then
-										hold_counter <= to_unsigned(4, HoldCounterW);
-									elsif unsigned(alu_op) = OP_DIV then
+									if unsigned(alu_op) = OP_DIV then
 										hold_counter <= to_unsigned(18, HoldCounterW);
 										alu_start_op <= '1';
-									else -- OP_IDIV
-										hold_counter <= to_unsigned(20, HoldCounterW);
-										alu_start_op <= '1';
+									else -- MUL / IMUL
+										hold_counter <= to_unsigned(4, HoldCounterW);
 									end if;
 									uop_hold <= '1';
 								else
