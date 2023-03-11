@@ -26,7 +26,14 @@ entity Computer is
 		sd_sclk : out std_logic;
 		sd_mosi : out std_logic;
 		sd_miso : in  std_logic;
-		sd_nc   : out std_logic_vector(1 downto 0) := "11"
+		sd_nc   : out std_logic_vector(1 downto 0) := "11";
+		
+		oled_sdin : out std_logic;
+		oled_sclk : out std_logic;
+		oled_dc   : out std_logic;
+		oled_res  : out std_logic;
+		oled_vbat : out std_logic;
+		oled_vdd  : out std_logic
 	);
 end Computer;
 
@@ -96,7 +103,14 @@ begin
 		sd_miso => sd_miso,
 
 		led_out => led_out,
-		btn_in => btn_in
+		btn_in => btn_in,
+
+		oled_sdin => oled_sdin,
+		oled_sclk => oled_sclk,
+		oled_dc   => oled_dc,
+		oled_res  => oled_res,
+		oled_vbat => oled_vbat,
+		oled_vdd  => oled_vdd
 	);
 
 	display: entity work.video port map ( 

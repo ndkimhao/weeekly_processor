@@ -38,6 +38,13 @@ entity MemoryController is
 		sd_mosi : out std_logic;
 		sd_miso : in  std_logic;
 
+		oled_sdin : out std_logic;
+		oled_sclk : out std_logic;
+		oled_dc   : out std_logic;
+		oled_res  : out std_logic;
+		oled_vbat : out std_logic;
+		oled_vdd  : out std_logic;
+
 		uop_hold : in std_logic;
 		uop_done : in std_logic
 	);
@@ -129,6 +136,8 @@ type TMappedMemory is (
 	M_SD_SEND,
 	M_SD_RECV,
 	M_SD_ERROR,
+	M_OLED_IN,
+	M_OLED_OUT,
 	M_NONE
 );
 
@@ -151,6 +160,9 @@ signal reg_sd_addr : std_logic_vector(31 downto 0) := (others => '0');
 signal reg_sd_send : TData := (others => '0');
 signal reg_sd_recv : TData := (others => '0');
 signal reg_sd_err : TData := (others => '0');
+
+signal reg_oled_in : TData := (others => '0');
+signal reg_oled_out : TData := (others => '0');
 
 -----
 signal ram_en : std_logic;
@@ -201,6 +213,10 @@ begin
 		M_SD_RECV   when dev_en = '1' and alow = x"26" else
 		M_SD_ERROR  when dev_en = '1' and alow = x"28" else
 
+		-- OLED
+		M_OLED_IN  when dev_en = '1' and alow = x"30" else
+		M_OLED_OUT when dev_en = '1' and alow = x"32" else
+
 		--
 		M_NONE;
 
@@ -244,6 +260,10 @@ begin
 		reg_sd_recv when last_mtype = M_SD_RECV else
 		reg_sd_err when last_mtype = M_SD_ERROR else
 
+		-- OLED
+		reg_oled_in when last_mtype = M_OLED_IN else
+		reg_oled_out when last_mtype = M_OLED_OUT else
+
 		--
 		(others => '0'); -- M_NONE
 
@@ -279,6 +299,7 @@ begin
 			if reset = '1' then
 				reg_sd_addr <= (others => '0');
 				reg_sd_send <= (others => '0');
+				reg_oled_out <= (others => '0');
 			else
 				last_mtype <= mtype;
 	
@@ -292,6 +313,8 @@ begin
 						when M_SD_ADDR_1 => reg_sd_addr(31 downto 16) <= din;
 						when M_SD_SEND   => reg_sd_send <= din;
 	
+						when M_OLED_OUT  => reg_oled_out <= din;
+
 						when others =>
 							null;
 					end case;
@@ -413,4 +436,18 @@ begin
 		mosi_o => sd_mosi,
 		miso_i => sd_miso
 	);
+	
+	-- OLED
+	oled_spi : entity SpiCtrl port map (
+		clk => clk,
+		send_data  => reg_oled_out(7 downto 0),
+		send_start => reg_oled_out(8),
+		send_ready => reg_oled_in(1),
+		SDO => oled_sdin,
+		SCLK => oled_sclk
+	);
+	oled_dc <= reg_oled_out(12);
+	oled_res <= not reg_oled_out(13);
+	oled_vbat <= not reg_oled_out(14);
+	oled_vdd <= not reg_oled_out(15);
 end Behavioral;
