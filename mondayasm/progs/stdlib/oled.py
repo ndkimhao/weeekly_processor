@@ -45,8 +45,8 @@ def delay_1ms():
     DELAY_MILLIS(1)
 
 
-def delay_100ms():
-    DELAY_MILLIS(100)
+def delay_10ms():
+    DELAY_MILLIS(10)
 
 
 def init_oled(D):
@@ -79,7 +79,7 @@ def init_oled(D):
 
     # Turn VBAT on (active low), delay 100ms
     setb([D], BIT_OLED_OUT_VBAT, inplace=True)
-    call(delay_100ms)
+    call(delay_10ms)
 
     # Send DispContrast1 command (h81)
     call(send_oled_cmd, 0x81)
@@ -105,7 +105,7 @@ def deinit_oled(D):
 
     # Power off vbat, wait 100ms
     clrb([D], BIT_OLED_OUT_VBAT, inplace=True)
-    call(delay_100ms)
+    call(delay_10ms)
 
     # Power off vdd
     clrb([D], BIT_OLED_OUT_VDD, inplace=True)

@@ -29,9 +29,9 @@ module SpiCtrl (
                 Send   = 1,
                 HoldCS = 2,
                 Hold   = 3;
-    localparam  COUNTER_MID = 4,
-                COUNTER_MAX = 9,
-                SCLK_DUTY = 5;
+    localparam  COUNTER_MID = 3,
+                COUNTER_MAX = 7,
+                SCLK_DUTY = 4;
     reg [2:0]   state = Idle;
     reg [7:0]   shift_register=0;
     reg [3:0]   shift_counter=0;

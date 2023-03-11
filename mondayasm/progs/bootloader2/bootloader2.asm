@@ -1303,7 +1303,7 @@ e0 e0 f1 00                    # 9aa6 |   push 0xf1
                                #      | _Z_call_61:
 1e 80 1c 0e                    # 9ab2 |   setb [D], 0xe
                                #      | _A_call_63:
-5c f8 c6 00                    # 9ab6 |   call ${fn_delay_100ms}:rel + PC
+5c f8 c6 00                    # 9ab6 |   call ${fn_delay_10ms}:rel + PC
                                #      | _Z_call_63:
                                #      | _A_call_64:
 e0 e0 81 00                    # 9aba |   push 0x81
@@ -1402,19 +1402,19 @@ e4 40                          # 9b79 |   pop B
 dc                             # 9b7b |   ret
                                #      | _end_fn_send_oled_data_or_cmd:
                                #      | 
-                               #      | fn_delay_100ms:
-                               #      | _begin_fn_delay_100ms:
+                               #      | fn_delay_10ms:
+                               #      | _begin_fn_delay_10ms:
                                #      | _A_call_62:
 e0 00                          # 9b7c |   push 0
-e0 e0 80 8d                    # 9b7e |   push 0x8d80
-e0 1c 5b                       # 9b82 |   push 0x5b
+e0 e0 c0 27                    # 9b7e |   push 0x27c0
+e0 1c 09                       # 9b82 |   push 0x9
 e0 00                          # 9b85 |   push 0
 5c f8 a2 f8                    # 9b87 |   call ${fn__delay_impl}:rel + PC
 60 a0 bc 08                    # 9b8b |   mov SP, SP + 0x8
                                #      | _Z_call_62:
-                               #      | _cleanup_fn_delay_100ms:
+                               #      | _cleanup_fn_delay_10ms:
 dc                             # 9b8f |   ret
-                               #      | _end_fn_delay_100ms:
+                               #      | _end_fn_delay_10ms:
                                #      | 
                                #      | fn_handle_deinit_oled:
                                #      | _begin_fn_handle_deinit_oled:
@@ -1441,7 +1441,7 @@ e0 e0 ae 00                    # 9ba8 |   push 0xae
                                #      | _Z_call_73:
 1e 80 1c 1e                    # 9bb4 |   setb [D], 0x1e
                                #      | _A_call_74:
-5c f8 c4 ff                    # 9bb8 |   call ${fn_delay_100ms}:rel + PC
+5c f8 c4 ff                    # 9bb8 |   call ${fn_delay_10ms}:rel + PC
                                #      | _Z_call_74:
 1e 80 1c 1f                    # 9bbc |   setb [D], 0x1f
 62 e0 00 32 ff                 # 9bc0 |   mov [0xff32], 0
