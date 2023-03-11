@@ -57,6 +57,10 @@ def printf(fmt, VAR_ARGS,
             call(itoa_2, [B], addr(buf))
             call(puts, addr(buf))
 
+            ElseIf(C == ord('z'))  # one byte, bin
+            call(itoa_2, [B], addr(buf))
+            call(puts, addr(buf) + 8)
+
             ElseIf(C == ord('s'))
             call(puts, [B])
 

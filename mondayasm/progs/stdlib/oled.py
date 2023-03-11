@@ -2,9 +2,9 @@ from enum import Enum
 
 from progs.stdlib.devices import OLED_IN, OLED_OUT, BIT_OLED_IN_SEND_READY, BIT_OLED_OUT_DC, FLAG_OLED_OUT_SEND_START, \
     BIT_OLED_OUT_SEND_START, BIT_OLED_OUT_VDD, BIT_OLED_OUT_RESET, BIT_OLED_OUT_VBAT
-from progs.stdlib.printf import PRINTF
-from progs.stdlib.timing import DELAY_MILLIS
-from soeunasm import Loop, getb, call, If, M, Else, ForRange, For, NUM_VAR_ARGS
+from progs.stdlib.font import decode_font_16_12
+from progs.stdlib.timing import delay_1ms, delay_10ms
+from soeunasm import Loop, getb, call, If, M, Else, ForRange, For, NUM_VAR_ARGS, local_var
 from soeunasm.free_cmds import clrb, setb
 
 
@@ -39,14 +39,6 @@ def send_oled_cmd(value):
 
 def send_oled_data(value):
     call(send_oled_data_or_cmd, OledDc.DATA, value)
-
-
-def delay_1ms():
-    DELAY_MILLIS(1)
-
-
-def delay_10ms():
-    DELAY_MILLIS(10)
 
 
 def send_oled_cmd_sequence(num, VAR_ARGS,
@@ -141,7 +133,52 @@ def clear_oled(A):
         call(send_oled_data, 0x00)
 
 
-# row = 0 - 1
-# col = 0 - 8
-def draw_char_oled(row, col, c):
-    ...
+# row = 0 to 1
+# col = 0 to 7
+def draw_char_oled(row, col, ch,
+                   A, B, C, D, H, G):
+    font_buf = local_var(size=2 * 16)
+    call(decode_font_16_12, font_buf.addr(), ch)
+
+    A @= row & 0x01
+    B @= col & 0x07
+    B <<= 4  # B = col * 16
+    call(send_oled_cmd_sequence,
+         NUM_VAR_ARGS,
+         0x21, B, B + 15,  # Set Column Address Range
+         0x22, A * 2, A * 2 + 1,  # Set Page Address Range
+         )
+
+    with ForRange(A, 0, 16, 8):
+        # PRINTF('A=%d\n', A)
+        C @= A * 2 + font_buf.addr()
+        with ForRange(B, 0, 16, preserve=[A]):
+            A @= 0
+            with ForRange(D, 8, 0, -1):
+                G @= getb(M[C + D * 2], B)
+                G @= G.bool()
+                A @= A * 2 | G
+            # PRINTF('%z\n', A)
+            call(send_oled_data_or_cmd, OledDc.DATA, A)
+        # PRINTF('\n')
+
+
+def test_show_oled_chars(A, B, C):
+    C @= 'a'
+    with ForRange(A, 0, 2):
+        with ForRange(B, 0, 8):
+            call(draw_char_oled, A, B, C)
+            C += 1
+
+
+def draw_str_oled(row, col, p_str,
+                  A, B, C, D):
+    C @= row
+    D @= col
+    A @= p_str
+    with Loop():
+        B @= M[A].byte()
+        If(B == 0).then_break()
+        call(draw_char_oled, C, D, B)
+        A += 1
+        D += 1

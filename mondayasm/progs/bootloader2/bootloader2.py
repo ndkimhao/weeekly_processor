@@ -8,9 +8,10 @@ from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
     BIT_SD_OUT_HANDSHAKE, BIT_SD_IN_HANDSHAKE, SD_ERROR
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
-from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled
+from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, test_show_oled_chars, draw_str_oled, \
+    draw_char_oled
 from progs.stdlib.printf import puts, printf, PRINTF
-from progs.stdlib.sdcard import read_sd
+from progs.stdlib.sdcard import read_sd, init_sd, init_sd_head, init_sd_tail
 from progs.stdlib.uart import putc, getc
 from progs.stdlib.timing import DELAY_MILLIS
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
@@ -286,31 +287,15 @@ def handle_jmp(cmd_num, G):
     jmp(M[JMP_TARGET])
 
 
-def handle_init_sd(cmd_num, A, B, C):
-    setb([SD_OUT], BIT_SD_OUT_RESET, inplace=True)
-
-    clrb([SD_OUT], BIT_SD_OUT_POWER_ON, inplace=True)
-    DELAY_MILLIS(1)
-    setb([SD_OUT], BIT_SD_OUT_POWER_ON, inplace=True)
-
-    clrb([SD_OUT], BIT_SD_OUT_RESET, inplace=True)
-
-    # PRINTF('%x %x\n', [SD_IN], [SD_OUT])
-
-    with ForRange(C, 0, 10):
-        with ForRange(A, 0, 0xFFFF):
-            getb(B, [SD_IN], BIT_SD_IN_BUSY)
-            If(B == 0).then_break()
-        If(B == 0).then_break()
-
-    with If(B != 0):
+def handle_init_sd(cmd_num, G):
+    call(init_sd)
+    with If(G == 0):
         call(puts, const('TIMEOUT\n'))
-        Return()
+        Else()
+        call(puts, const('INIT_OK\n'))
 
-    call(puts, const('INIT_OK\n'))
 
-
-def handle_read_sd(cmd_num, A, B, C, D, G, H):
+def handle_read_sd(cmd_num, A, B, G, H):
     buf = local_var(size=514)
     call(check_num_args, 2)
     If(G == 0).then_return()
@@ -399,11 +384,21 @@ def main(A, B, G, H):
         call(printf, const('JMP_TO %x\n'), A)
         jmp(glb_jmp_to_stored_target)
 
-    # TODO: TEST ONLY
+    # show welcome screen
+    call(init_sd_head)
     call(init_oled)
+    call(draw_str_oled, 0, 0, const('Weeekly'))
+    call(draw_str_oled, 1, 0, const('3006'))
+    # check sd status
+    call(init_sd_tail)
+    H @= 's'
+    with If(G == 0):
+        H @= '-'
+    call(draw_char_oled, 1, 6, H)
 
     # wait for commands
     call(puts, const('READY\n'))
+    call(draw_char_oled, 1, 7, 'R')
     M[LED] @= 1
     with Loop():
         call(recv_command)

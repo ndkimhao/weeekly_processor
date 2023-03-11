@@ -222,7 +222,6 @@ def generate_fn_code(fn, name, l_fn_entry):
 
     sp_offset = RawExpr.to_expr(placeholder_stack_offset)
 
-    arg_names = arg_names
     stack_args = []
     for i in range(len(arg_names) - len(reg_args)):
         offset = (1 + len(preserve) + i) * 2

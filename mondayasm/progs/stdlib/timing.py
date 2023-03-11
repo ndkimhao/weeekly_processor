@@ -82,3 +82,11 @@ def _delay_impl(cnt_2, cnt_1, cnt_0, loop_target, A, B, C, D, H):
                     # we don't need to preserve G & H here
                     mondayasm.CALL(A.raw_expr)
     # call(printf, const("done: %x %x %x\n"), M_CLK_COUNT_2, M_CLK_COUNT_1, M_CLK_COUNT_0)
+
+
+def delay_1ms():
+    DELAY_MILLIS(1)
+
+
+def delay_10ms():
+    DELAY_MILLIS(10)

@@ -113,5 +113,12 @@ def Loop(*, preserve: Iterable[Expr] = ()):
     return ForScopeCtx((), True, (), False, preserve, 'loop')
 
 
-def ForRange(var, v_from, v_to, v_step=1):
-    return For(var @ v_from, var < v_to, var @ (var + v_step))
+def ForRange(var, v_from, v_to, v_step=1,
+             *, signed: bool = False, preserve: Iterable[Expr] = ()):
+    assert v_step != 0
+    if v_step > 0:
+        return For(var @ v_from, var < v_to, var @ (var + v_step),
+                   signed=signed, preserve=preserve)
+    else:
+        return For(var @ (v_from + v_step), var != (v_to + v_step), var @ (var + v_step),
+                   signed=signed, preserve=preserve)
