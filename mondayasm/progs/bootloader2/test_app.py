@@ -6,7 +6,7 @@ from soeunasm import Reg, call, halt, init_code_gen, const, M
 CODE_OFFSET = 0x5100
 
 
-def main(SP):
+def main(A, B, SP):
     M[LED] @= 0x00af
     syscall(S.printf, const('test %d %x\n'), 123, 0xaaff)
 
@@ -18,6 +18,16 @@ def main(SP):
 
     syscall(S.printf, const('okay %d %x\n'), 22, 0xaaff)
 
+    A @= 0x8a1b
+    syscall(S.printf, const('%x\n'), A)
+    B @= A.ror(4)
+    syscall(S.printf, const('%x\n'), B)
+    B @= A.ror(8)
+    syscall(S.printf, const('%x\n'), B)
+    B @= A.ror(15)
+    syscall(S.printf, const('%x\n'), B)
+    B @= A.ror(16)
+    syscall(S.printf, const('%x\n'), B)
 
 if __name__ == '__main__':
     Reg.SP @= CODE_OFFSET

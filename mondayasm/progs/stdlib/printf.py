@@ -45,10 +45,8 @@ def printf(fmt, VAR_ARGS,
             call(puts, addr(buf))
 
             ElseIf(C == ord('q'))  # like %x, but swapped byte order
-            D @= M[B]
-            C @= D >> 8
-            D <<= 8
-            call(itoa_16, C + D, addr(buf))
+            D @= M[B].ror(8)
+            call(itoa_16, D, addr(buf))
             call(puts, addr(buf))
 
             ElseIf(C == ord('h'))  # one byte, hex

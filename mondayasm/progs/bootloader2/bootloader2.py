@@ -4,7 +4,7 @@ import mondayasm
 from progs.bootloader2.syscall_entry import syscall_entry
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
     SYSCALL_ENTRY, BTN_READ, SD_OUT, SD_IN, SD_ADDR_1, \
-    SD_ADDR_0, BIT_SD_OUT_RESET, BIT_SD_OUT_POWER_OFF, BIT_SD_IN_BUSY, BIT_SD_OUT_READ, \
+    SD_ADDR_0, BIT_SD_OUT_RESET, BIT_SD_OUT_POWER_ON, BIT_SD_IN_BUSY, BIT_SD_OUT_READ, \
     BIT_SD_OUT_HANDSHAKE, BIT_SD_IN_HANDSHAKE, SD_ERROR
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
@@ -185,10 +185,8 @@ def handle_read(cmd_num, A, B, C, D, G):
     call(printf, const('READ_OK %x %x\n'), A, B)
     with If(cmd_num == SerialCmd.READ):
         with While(A < B):
-            C @= [A]
-            D @= C >> 8
-            C <<= 8
-            call(itoa_16, D + C, addr(buf))
+            D @= M[A].ror(8)
+            call(itoa_16, D, addr(buf))
             call(puts, addr(buf))
             A += 2
 
@@ -286,9 +284,9 @@ def handle_jmp(cmd_num, G):
 def handle_init_sd(cmd_num, A, B, C):
     setb([SD_OUT], BIT_SD_OUT_RESET)
 
-    setb([SD_OUT], BIT_SD_OUT_POWER_OFF)
+    clrb([SD_OUT], BIT_SD_OUT_POWER_ON)
     DELAY_MILLIS(1)
-    clrb([SD_OUT], BIT_SD_OUT_POWER_OFF)
+    setb([SD_OUT], BIT_SD_OUT_POWER_ON)
 
     clrb([SD_OUT], BIT_SD_OUT_RESET)
 
@@ -323,44 +321,7 @@ def handle_read_sd(cmd_num, A, B, C, D, G, H):
     with ForRange(B, buf.addr(), A):
         call(printf, const('%h '), [B])
 
-    # call(puts, '\n')
-    #
-    # lb_timeout = decl_label()
-    # # PRINTF('%x %x %x%x\n', [SD_IN], [SD_OUT], [SD_ADDR_1], [SD_ADDR_0])
-    # M[SD_ADDR_1] @= g_args
-    # M[SD_ADDR_0] @= g_args.addr_add(2)
-    #
-    # setb([SD_OUT], BIT_SD_OUT_READ)
-    # with ForRange(D, 0, 0xFFFF):
-    #     getb(B, [SD_IN], BIT_SD_IN_BUSY)
-    #     If(B != 0).then_break()
-    # If(B == 0).then_jmp(lb_timeout)
-    #
-    # clrb([SD_OUT], BIT_SD_OUT_READ)
-    # with Loop():
-    #     D += 1
-    #     If(D == 0xFFFF).then_jmp(lb_timeout)
-    #     C @= [SD_IN]
-    #     getb(A, C, BIT_SD_IN_BUSY)
-    #     If(A == 0).then_break()  # done read
-    #     getb(A, C, BIT_SD_IN_HANDSHAKE)
-    #     If(A == 0).then_continue()
-    #
-    #     setb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
-    #     with ForRange(D, 0, 0xFFFF):
-    #         getb(B, [SD_IN], BIT_SD_IN_HANDSHAKE)
-    #         If(B == 0).then_break()
-    #     clrb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
-    #
-    #     C &= 0xFF
-    #     PRINTF('%h ', C)
-    #     D @= 0
-    #
-    # PRINTF('\n')
-    # Return()
-    #
-    # label(lb_timeout)
-    # call(puts, const('TIMEOUT\n'))
+    call(putc, '\n')
 
 
 def _process_handler_map():
@@ -400,7 +361,7 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # send hello
-    call(puts, const('Weeekly3006 - Hardware v1.3 - Bootloader v2.2\n'))
+    call(puts, const('Weeekly3006 - Hardware v1.4 - Bootloader v2.3\n'))
 
     # check for persisted target
     A @= M[JMP_TARGET]
