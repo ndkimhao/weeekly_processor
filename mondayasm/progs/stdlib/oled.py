@@ -4,7 +4,7 @@ from progs.stdlib.devices import OLED_IN, OLED_OUT, BIT_OLED_IN_SEND_READY, BIT_
     BIT_OLED_OUT_SEND_START, BIT_OLED_OUT_VDD, BIT_OLED_OUT_RESET, BIT_OLED_OUT_VBAT
 from progs.stdlib.printf import PRINTF
 from progs.stdlib.timing import DELAY_MILLIS
-from soeunasm import Loop, getb, call, If, M, Else
+from soeunasm import Loop, getb, call, If, M, Else, ForRange, For, NUM_VAR_ARGS
 from soeunasm.free_cmds import clrb, setb
 
 
@@ -49,6 +49,17 @@ def delay_10ms():
     DELAY_MILLIS(10)
 
 
+def send_oled_cmd_sequence(num, VAR_ARGS,
+                           A, B):
+    A @= VAR_ARGS.addr()
+    B @= num
+    B @= B * 2 + A
+    # PRINTF('num=%d A=%x B=%x\n', num, A, B)
+    with For((), A < B, A @ (A + 2)):
+        # PRINTF('send: %x\n', [A])
+        call(send_oled_data_or_cmd, OledDc.COMMAND, [A])
+
+
 def init_oled(D):
     D @= OLED_OUT
     M[D] @= 0
@@ -68,33 +79,30 @@ def init_oled(D):
     clrb([D], BIT_OLED_OUT_RESET, inplace=True)
     call(delay_1ms)
 
-    # Send ChargePump1 command (h8D)
-    call(send_oled_cmd, 0x8D)
-    # Send ChargePump2 command (h14)
-    call(send_oled_cmd, 0x14)
-    # Send PreCharge1 command (hD9)
-    call(send_oled_cmd, 0xD9)
-    # Send PreCharge2 command (hF1)
-    call(send_oled_cmd, 0xF1)
+    call(send_oled_cmd_sequence,
+         NUM_VAR_ARGS,
+         0x8D,  # ChargePump1 command
+         0x14,  # ChargePump2 command
+         0xD9,  # PreCharge1 command
+         0xF1,  # PreCharge2 command
+         )
 
     # Turn VBAT on (active low), delay 100ms
     setb([D], BIT_OLED_OUT_VBAT, inplace=True)
     call(delay_10ms)
 
-    # Send DispContrast1 command (h81)
-    call(send_oled_cmd, 0x81)
-    # Send DispContrast2 command (h0F)
-    call(send_oled_cmd, 0x0F)
-    # Send SetSegRemap command (hA0)
-    call(send_oled_cmd, 0xA0)
-    # Send SetScanDirection command (hC0)
-    call(send_oled_cmd, 0xC0)
-    # Send Set Lower Column Address command (hDA)
-    call(send_oled_cmd, 0xDA)
-    # Send Lower Column Address (h00)
-    call(send_oled_cmd, 0x00)
-    # Send Display On command (hAF)
-    call(send_oled_cmd, 0xAF)
+    call(send_oled_cmd_sequence,
+         NUM_VAR_ARGS,
+         0x81,  # DispContrast1 command
+         0x0F,  # DispContrast2 command
+         0xA0,  # SetSegRemap command
+         0xC0,  # SetScanDirection command
+         0xDA, 0x00,  # COM Pins Hardware Configuration
+         0xAF,  # Display On command
+         0x20, 0x00,  # Set Memory Addressing Mode: Horizontal
+         )
+
+    call(clear_oled)
 
 
 def deinit_oled(D):
@@ -121,3 +129,19 @@ def quick_deinit_oled():
     call(send_oled_cmd, 0xAE)
     # Turn off everything
     M[OLED_OUT] @= 0
+
+
+def clear_oled(A):
+    call(send_oled_cmd_sequence,
+         NUM_VAR_ARGS,
+         0x21, 0x00, 0x7F,  # Set Column Address Range: 0 to 127
+         0x22, 0x00, 0x03,  # Set Page Address Range: 0 to 3
+         )
+    with ForRange(A, 0, 512):
+        call(send_oled_data, 0x00)
+
+
+# row = 0 - 1
+# col = 0 - 8
+def draw_char_oled(row, col, c):
+    ...

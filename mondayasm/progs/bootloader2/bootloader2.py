@@ -399,6 +399,9 @@ def main(A, B, G, H):
         call(printf, const('JMP_TO %x\n'), A)
         jmp(glb_jmp_to_stored_target)
 
+    # TODO: TEST ONLY
+    call(init_oled)
+
     # wait for commands
     call(puts, const('READY\n'))
     M[LED] @= 1

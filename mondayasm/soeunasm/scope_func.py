@@ -134,6 +134,13 @@ def emit_fn(fn):
     return l_fn_entry
 
 
+class AutoNumVarArgsSentinel:
+    ...
+
+
+NUM_VAR_ARGS = AutoNumVarArgsSentinel()
+
+
 def call(fn, *args: Any, preserve_registers: bool = True):
     assert callable(fn) and hasattr(fn, '__name__')
 
@@ -156,11 +163,16 @@ def call(fn, *args: Any, preserve_registers: bool = True):
     var_args = len(arg_names) >= 1 and arg_names[-1] == 'VAR_ARGS'
     if var_args:
         assert len(args) >= len(arg_names) - 1
+        num_var_args = len(args) - (len(arg_names) - 1)
     else:
         assert len(args) == len(arg_names)
+        num_var_args = 0
 
     with Scope(preserve=preserve, simple=True, base_name='call'):
         for arg in reversed(args):
+            if arg is NUM_VAR_ARGS:
+                arg = num_var_args
+
             arg = Expr.to_expr(arg)
             assert arg.op == ExprOp.NONE
             Statement(StmOp.PUSH, arg.a).emit()
