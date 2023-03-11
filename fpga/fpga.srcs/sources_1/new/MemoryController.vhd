@@ -82,6 +82,19 @@ component fifo_ps2_buffer
 	);
 end component;
 
+component SpiCtrl
+	port (
+		clk : in std_logic;
+		send_start : in std_logic;
+		send_data : in std_logic_vector(7 downto 0);
+		send_ready : out std_logic;
+		CS : out std_logic;
+		SDO : out std_logic;
+		SCLK : out std_logic;
+		cur_state : out std_logic_vector(1 downto 0)
+	);
+end component;
+
 signal uart_send_rd_en : std_logic;
 signal uart_send_dout : std_logic_vector(7 downto 0);
 signal uart_send_full : std_logic;
@@ -438,13 +451,14 @@ begin
 	);
 	
 	-- OLED
-	oled_spi : entity SpiCtrl port map (
+	oled_spi : SpiCtrl port map (
 		clk => clk,
 		send_data  => reg_oled_out(7 downto 0),
 		send_start => reg_oled_out(8),
-		send_ready => reg_oled_in(1),
+		send_ready => reg_oled_in(8),
 		SDO => oled_sdin,
-		SCLK => oled_sclk
+		SCLK => oled_sclk,
+		cur_state  => reg_oled_in(13 downto 12)
 	);
 	oled_dc <= reg_oled_out(12);
 	oled_res <= not reg_oled_out(13);

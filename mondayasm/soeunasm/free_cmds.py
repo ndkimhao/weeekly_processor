@@ -1,4 +1,4 @@
-from soeunasm import Statement, StmOp, Expr
+from soeunasm import Statement, StmOp, Expr, ExprOp
 
 
 def halt():
@@ -21,7 +21,7 @@ def umap(slot_idx):
     return Statement(StmOp.UMAP, slot_idx.a)
 
 
-def getb(a, b, c=None):
+def getb(a, b, c=None, *, inplace: bool = False):
     a = Expr.to_expr(a)
     b = Expr.to_expr(b)
     assert a.is_pure
@@ -32,10 +32,12 @@ def getb(a, b, c=None):
         c = Expr.to_expr(c)
         assert c.is_pure
         c = c.a
+    if c is None and not inplace:
+        return Expr(ExprOp.GETB, a, b)
     return Statement(StmOp.GETB, a, b, c)
 
 
-def setb(a, b, c=None):
+def setb(a, b, c=None, *, inplace: bool = False):
     a = Expr.to_expr(a)
     b = Expr.to_expr(b)
     assert a.is_pure
@@ -46,15 +48,17 @@ def setb(a, b, c=None):
         c = Expr.to_expr(c)
         assert c.is_pure
         c = c.a
+    if c is None and not inplace:
+        return Expr(ExprOp.SETB, a, b)
     return Statement(StmOp.SETB, a, b, c)
 
 
-def clrb(a, b, c=None):
+def clrb(a, b, c=None, *, inplace: bool = False):
     if c is None:
         b += 16
     else:
         c += 16
-    return setb(a, b, c)
+    return setb(a, b, c, inplace=inplace)
 
 
 def jmp(target):

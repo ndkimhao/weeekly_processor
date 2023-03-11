@@ -22,7 +22,8 @@ module SpiCtrl (
     output       send_ready,
     output       CS,
     output       SDO,
-    output       SCLK
+    output       SCLK,
+    output [1:0] cur_state
 );
     localparam  Idle   = 0,
                 Send   = 1,
@@ -37,28 +38,34 @@ module SpiCtrl (
     wire        clk_divided;
     reg [4:0]   counter=0;
     reg         temp_sdo;
+    reg [1:0]   r_cur_state;
     
     assign SCLK = (counter < SCLK_DUTY) | CS;
     assign SDO = temp_sdo | CS | (state == HoldCS ? 1'b1 : 1'b0);
     assign CS = (state != Send && state != HoldCS) ? 1'b1 : 1'b0;
     assign send_ready = (state == Idle && send_start == 1'b0) ? 1'b1 : 1'b0;
+    assign cur_state = r_cur_state;
     
     always@(posedge clk)
         case (state)
         Idle: begin
+        	r_cur_state <= 2'b00;
             if (send_start == 1'b1)
                 state <= Send;
         end
         Send: begin
+        	r_cur_state <= 2'b01;
             if (shift_counter == 8 && counter == COUNTER_MID) begin
                 state <= HoldCS;
             end
         end
         HoldCS: begin
+        	r_cur_state <= 2'b10;
             if (shift_counter == 4'd3)
                 state <= Hold;
         end
         Hold: begin
+        	r_cur_state <= 2'b11;
             if (send_start == 1'b0)
                 state <= Idle;
         end

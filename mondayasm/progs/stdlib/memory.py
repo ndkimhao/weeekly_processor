@@ -50,8 +50,14 @@ def strcasecmp(p_lhs, p_rhs,
         G @= M[E].byte()
         H @= M[F].byte()
         A @= G  # G before converting case
-        G |= 32
-        H |= 32
+        with Scope():
+            If(G < 'A').then_break()
+            If(G > 'Z').then_break()
+            G |= 32
+        with Scope():
+            If(H < 'A').then_break()
+            If(H > 'Z').then_break()
+            H |= 32
         H @= G - H
         If(H != 0).then_return()
         If(A == 0).then_return()  # H == 0 ==> returns 0

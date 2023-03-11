@@ -14,6 +14,8 @@ EXPR_STM_OP_MAP = {
     ExprOp.IMUL: StmOp.IMUL,
     ExprOp.DIV: StmOp.DIV,
     ExprOp.ROR: StmOp.ROR,
+    ExprOp.GETB: StmOp.GETB,
+    ExprOp.SETB: StmOp.SETB,
     ExprOp.SHR: StmOp.SHR,
     ExprOp.ISHR: StmOp.ISHR,
     ExprOp.SHL: StmOp.SHL,

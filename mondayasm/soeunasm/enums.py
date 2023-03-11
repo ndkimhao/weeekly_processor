@@ -64,6 +64,9 @@ class ExprOp(Enum):
     OR = auto()
     XOR = auto()
 
+    GETB = auto()
+    SETB = auto()
+
     # unary ALU
     NEG = auto()
     NOT = auto()

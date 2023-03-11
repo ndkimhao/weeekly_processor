@@ -8,6 +8,7 @@ from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
     BIT_SD_OUT_HANDSHAKE, BIT_SD_IN_HANDSHAKE, SD_ERROR
 from progs.stdlib.format import atoi_16, itoa_16
 from progs.stdlib.memory import strchr, strcmp, strcasecmp
+from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled
 from progs.stdlib.printf import puts, printf, PRINTF
 from progs.stdlib.sdcard import read_sd
 from progs.stdlib.uart import putc, getc
@@ -46,8 +47,11 @@ class SerialCmd(Enum):
     WRITEB = 5
     JMP = 6
     JMP_PERSIST = 7
-    INITSD = 8
-    READSD = 9
+    INIT_SD = 8
+    READ_SD = 9
+    INIT_OLED = 10
+    READW = 11  # read hex in big endian
+    DEINIT_OLED = 12
 
 
 def parse_command_name(p_str, A, H):
@@ -183,14 +187,7 @@ def handle_read(cmd_num, A, B, C, D, G):
     B @= g_args.addr_add(2)
 
     call(printf, const('READ_OK %x %x\n'), A, B)
-    with If(cmd_num == SerialCmd.READ):
-        with While(A < B):
-            D @= M[A].ror(8)
-            call(itoa_16, D, addr(buf))
-            call(puts, addr(buf))
-            A += 2
-
-        Else()  # cmd_num == SerialCmd.READB
+    with If(cmd_num == SerialCmd.READB):
         with While(A < B):
             C @= [A]
             call(putc, C)
@@ -198,6 +195,14 @@ def handle_read(cmd_num, A, B, C, D, G):
             call(putc, C)
             A += 2
 
+        Else()  # READ or READW
+        with While(A < B):
+            D @= M[A].ror(8)
+            with If(cmd_num == SerialCmd.READW):
+                D @= D.ror(8)
+            call(itoa_16, D, addr(buf))
+            call(puts, addr(buf))
+            A += 2
     ###
     call(putc, '\n')
 
@@ -324,6 +329,16 @@ def handle_read_sd(cmd_num, A, B, C, D, G, H):
     call(putc, '\n')
 
 
+def handle_init_oled(cmd_num):
+    call(init_oled)
+    call(puts, const('DONE\n'))
+
+
+def handle_deinit_oled(cmd_num):
+    call(deinit_oled)
+    call(puts, const('DONE\n'))
+
+
 def _process_handler_map():
     ret = []
     prev = SerialCmd.NONE
@@ -345,8 +360,11 @@ HANDLER_MAP_PY = {
     SerialCmd.WRITEB: handle_write,
     SerialCmd.JMP: handle_jmp,
     SerialCmd.JMP_PERSIST: handle_jmp,
-    SerialCmd.INITSD: handle_init_sd,
-    SerialCmd.READSD: handle_read_sd,
+    SerialCmd.INIT_SD: handle_init_sd,
+    SerialCmd.READ_SD: handle_read_sd,
+    SerialCmd.INIT_OLED: handle_init_oled,
+    SerialCmd.READW: handle_read,
+    SerialCmd.DEINIT_OLED: handle_deinit_oled,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
@@ -359,6 +377,9 @@ def main(A, B, G, H):
 
     # write syscall address
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
+
+    # cleanup devices
+    call(quick_deinit_oled)
 
     # send hello
     call(puts, const('Weeekly3006 - Hardware v1.4 - Bootloader v2.3\n'))
