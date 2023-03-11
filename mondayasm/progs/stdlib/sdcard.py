@@ -16,12 +16,12 @@ def read_sd(buf, addr_1, addr_0,
     M[SD_ADDR_1] @= addr_1
     M[SD_ADDR_0] @= addr_0
 
-    setb([SD_OUT], BIT_SD_OUT_READ)
+    setb([SD_OUT], BIT_SD_OUT_READ, inplace=True)
     with ForRange(D, 0, 0xFFFF):
         getb(B, [SD_IN], BIT_SD_IN_BUSY)
         If(B != 0).then_break()
     If(B == 0).then_jmp(lb_timeout)
-    clrb([SD_OUT], BIT_SD_OUT_READ)
+    clrb([SD_OUT], BIT_SD_OUT_READ, inplace=True)
 
     E @= buf
     with Loop():
@@ -33,12 +33,12 @@ def read_sd(buf, addr_1, addr_0,
         getb(A, C, BIT_SD_IN_HANDSHAKE)
         If(A == 0).then_continue()
 
-        setb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
+        setb([SD_OUT], BIT_SD_OUT_HANDSHAKE, inplace=True)
         with ForRange(D, 0, 0xFFFF):
             getb(B, [SD_IN], BIT_SD_IN_HANDSHAKE)
             If(B == 0).then_break()
         If(B != 0).then_jmp(lb_timeout)
-        clrb([SD_OUT], BIT_SD_OUT_HANDSHAKE)
+        clrb([SD_OUT], BIT_SD_OUT_HANDSHAKE, inplace=True)
 
         C &= 0xFF
         M[E] @= C

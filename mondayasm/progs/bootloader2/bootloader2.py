@@ -287,13 +287,13 @@ def handle_jmp(cmd_num, G):
 
 
 def handle_init_sd(cmd_num, A, B, C):
-    setb([SD_OUT], BIT_SD_OUT_RESET)
+    setb([SD_OUT], BIT_SD_OUT_RESET, inplace=True)
 
-    clrb([SD_OUT], BIT_SD_OUT_POWER_ON)
+    clrb([SD_OUT], BIT_SD_OUT_POWER_ON, inplace=True)
     DELAY_MILLIS(1)
-    setb([SD_OUT], BIT_SD_OUT_POWER_ON)
+    setb([SD_OUT], BIT_SD_OUT_POWER_ON, inplace=True)
 
-    clrb([SD_OUT], BIT_SD_OUT_RESET)
+    clrb([SD_OUT], BIT_SD_OUT_RESET, inplace=True)
 
     # PRINTF('%x %x\n', [SD_IN], [SD_OUT])
 
