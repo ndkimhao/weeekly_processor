@@ -144,9 +144,17 @@ begin
 	v_blank <= '1' when row >= 480 else '0';
 	blank <= h_blank or v_blank;
 
+	-- vga read
+
+	maddr <= std_logic_vector(next_idx(19-1 downto 4));
+
+	pixel_data_r <= mdata_r(to_integer(imm_idx(3 downto 0)));
+	pixel_data_g <= mdata_g(to_integer(imm_idx(3 downto 0)));
+	pixel_data_b <= mdata_b(to_integer(imm_idx(3 downto 0)));
+
 	palette_idx <= pixel_data_r & pixel_data_g & pixel_data_b;
 
-	-- memory
+	-- host read/write
 	
 	process(buf_clk)
 	begin
@@ -178,12 +186,6 @@ begin
 					(masked_dout_g xor buf_dout_g) or
 					(masked_dout_b xor buf_dout_b)
 				);
-
-	maddr <= std_logic_vector(next_idx(19-1 downto 4));
-
-	pixel_data_r <= mdata_r(to_integer(idx(3 downto 0)));
-	pixel_data_g <= mdata_g(to_integer(idx(3 downto 0)));
-	pixel_data_b <= mdata_b(to_integer(idx(3 downto 0)));
 
 	buf_din_r <= buf_din when buf_addr_bank(2) = '1' else (others => '0');
 	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');

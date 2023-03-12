@@ -427,7 +427,7 @@ def main(A, B, G, H):
     call(quick_deinit_oled)
 
     # send hello
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.0\n'))
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.1\n'))
 
     # check for persisted target
     A @= M[JMP_TARGET]
@@ -448,7 +448,7 @@ def main(A, B, G, H):
     call(init_sd_head)
     call(init_oled)
     call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006 0'))
+    call(draw_str_oled, 1, 0, const('3006 1'))
     # check sd status
     call(init_sd_tail)
     H @= 'S'

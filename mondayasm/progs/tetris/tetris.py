@@ -1,14 +1,11 @@
-from progs.stdlib.devices import M_LED, M_PS2_RECV, FLAG_PS2_RECV_VALID
-from progs.stdlib.font import FONT_16_12_COMPRESSED, FONT_16_12_INDEX, FONT_16_12_INDEX_PY
-from progs.stdlib.printf import puts, printf, PRINTF
-from progs.stdlib.timing import DELAY_MILLIS, DELAY_MICROS
-from progs.stdlib.video import switch_screen_row, fill_cell, decode_font, fill_cell_content
+from progs.stdlib.devices import M_PS2_RECV, FLAG_PS2_RECV_VALID
+from progs.stdlib.timing import DELAY_MICROS
+from progs.stdlib.video import reset_color_palette, switch_screen_row, set_color_palette
 from progs.tetris.board import tg_init, tg_tick, tg_handle_move
 from progs.tetris.display import display_board
 from progs.tetris.te_types import TeMove
 from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var, cmt, \
     While, ElseIf
-from soeunasm.data import local_vars
 
 CODE_OFFSET = 0x5000
 
@@ -47,6 +44,10 @@ def handle_keyboard(G, H):
 
 
 def main(H):
+    call(switch_screen_row, 0, 0)
+    call(reset_color_palette)
+    call(set_color_palette, 7, 0xFF, 0x8C, 0x00)
+
     call(tg_init)
     cmt('game loop')
     with Loop():

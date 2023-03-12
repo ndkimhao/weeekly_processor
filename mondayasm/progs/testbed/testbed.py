@@ -55,6 +55,10 @@ def main(A, B, C, D, E, H):
     call(fill_cell, 1, 0xffff)
     call(fill_cell, 2, 0xaaaa)
 
+    call(switch_screen_row, 7, 0b111)
+    call(fill_cell, 1, 0xFF00)
+
+
     with For(A @ 0, True, A @ (~A)):
         call(gen_font)
         with If(A == 0):

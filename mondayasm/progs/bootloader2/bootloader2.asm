@@ -2450,13 +2450,13 @@ dc                             # a3df |   ret
                                #      | const__HANDLER_MAP:
 55 98 8f 98 a3 99 8f 98 a3 99 95 9a 95 9a fe 9a 25 9b c4 9b 8f 98 3b 9d 73 9d 4b 9e aa 9e # a9b5 |   .data label_list:[$fn_handle_ping, $fn_handle_read, $fn_handle_write, $fn_handle_read, $fn_handle_write, $fn_handle_jmp, $fn_handle_jmp, $fn_handle_init_sd, $fn_handle_read_sd, $fn_handle_init_oled, $fn_handle_read, $fn_handle_deinit_oled, $fn_handle_write_sd, $fn_handle_mmap, $fn_handle_umap]
                                #      | const__data_11:
-57 65 65 65 6b 6c 79 33 30 30 36 20 2d 20 48 61 72 64 77 61 72 65 20 76 32 2e 30 20 2d 20 42 6f 6f 74 6c 6f 61 64 65 72 20 76 33 2e 30 0a 00 # a9d3 |   .data str:"Weeekly3006 - Hardware v2.0 - Bootloader v3.0\n"
+57 65 65 65 6b 6c 79 33 30 30 36 20 2d 20 48 61 72 64 77 61 72 65 20 76 32 2e 30 20 2d 20 42 6f 6f 74 6c 6f 61 64 65 72 20 76 33 2e 31 0a 00 # a9d3 |   .data str:"Weeekly3006 - Hardware v2.0 - Bootloader v3.1\n"
                                #      | const__str__FORCED_BOOTLOADER__endl:
 46 4f 52 43 45 44 5f 42 4f 4f 54 4c 4f 41 44 45 52 0a 00 # aa02 |   .data str:"FORCED_BOOTLOADER\n"
                                #      | const__str__Weeekly:
 57 65 65 65 6b 6c 79 00        # aa15 |   .data str:"Weeekly"
                                #      | const__data_12:
-33 30 30 36 20 30 00           # aa1d |   .data str:"3006 0"
+33 30 30 36 20 31 00           # aa1d |   .data str:"3006 1"
                                #      | const__str__READY__endl:
 52 45 41 44 59 0a 00           # aa24 |   .data str:"READY\n"
                                #      | const__data_13:
