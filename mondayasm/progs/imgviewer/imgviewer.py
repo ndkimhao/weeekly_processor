@@ -32,8 +32,8 @@ def sd_error():
 # 48 - color palette
 # returns G: 0=fail, 1=ok, 2=interrupted
 def show_image(img_slot, A, B, C, D, G, H):
-    btn_state = local_var()
-    btn_state @= M[BTN_DEBOUNCED]
+    not_pressed_btns = local_var()
+    not_pressed_btns @= ~M[BTN_DEBOUNCED]
 
     C @= img_slot << 8
     syscall(S.read_sd, g_sd_buf.addr(), SD_SECTOR_SIZE, SD_IMAGE_BANK, C)
@@ -70,7 +70,9 @@ def show_image(img_slot, A, B, C, D, G, H):
             B += SD_SECTOR_SIZE
         A @= 0xA0 | H
 
-        with If(M[BTN_DEBOUNCED] != btn_state):
+        H @= M[BTN_DEBOUNCED]
+        H &= not_pressed_btns
+        with If(H != 0):
             G @= 2
             Return()
     ###

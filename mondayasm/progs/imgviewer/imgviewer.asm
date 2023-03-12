@@ -15,7 +15,7 @@ d8                             # 5009 |   halt
 5e e0 1e ff                    # 500e |   call [0xff1e]
                                #      | _Z_syscall_1:
                                #      | _A_syscall_2:
-e0 e0 6a 52                    # 5012 |   push ${const__data_1}
+e0 e0 70 52                    # 5012 |   push ${const__data_1}
 e0 00                          # 5016 |   push 0
 e0 00                          # 5018 |   push 0
 60 ff 1c 1c                    # 501a |   mov H, 0x1c
@@ -34,7 +34,7 @@ ec fe 00 f8 0e 00              # 502e |   jne G, 0, ${_E_if_1}:rel + PC
 58 f8 19 00                    # 5038 |   jmp ${_C_if_1}:rel + PC
                                #      | _E_if_1:
                                #      | _A_syscall_5:
-e0 e0 7c 52                    # 503c |   push ${const__data_3}
+e0 e0 82 52                    # 503c |   push ${const__data_3}
 e0 00                          # 5040 |   push 0
 e0 1c 01                       # 5042 |   push 0x1
 60 ff 1c 1c                    # 5045 |   mov H, 0x1c
@@ -43,15 +43,15 @@ e0 1c 01                       # 5042 |   push 0x1
                                #      | _Z_syscall_5:
                                #      | _C_if_1:
                                #      | _Z_if_1:
-62 e0 00 90 57                 # 5051 |   mov [${var__var_1}], 0
+62 e0 00 a0 57                 # 5051 |   mov [${var__var_1}], 0
                                #      | _A_call_4:
-e2 e0 90 57                    # 5056 |   push [${var__var_1}]
+e2 e0 a0 57                    # 5056 |   push [${var__var_1}]
 5c f8 29 00                    # 505a |   call ${fn_show_image}:rel + PC
 60 a0 bc 02                    # 505e |   mov SP, SP + 0x2
                                #      | _Z_call_4:
-62 e0 00 b2 5b                 # 5062 |   mov [${var__var_2}], 0
+62 e0 00 c2 5b                 # 5062 |   mov [${var__var_2}], 0
                                #      | _A_call_8:
-5c f8 79 01                    # 5067 |   call ${fn_main_loop}:rel + PC
+5c f8 7f 01                    # 5067 |   call ${fn_main_loop}:rel + PC
                                #      | _Z_call_8:
                                #      | _cleanup_fn_main:
 dc                             # 506b |   ret
@@ -60,7 +60,7 @@ dc                             # 506b |   ret
                                #      | fn_sd_error:
                                #      | _begin_fn_sd_error:
                                #      | _A_syscall_4:
-e0 e0 73 52                    # 506c |   push ${const__data_2}
+e0 e0 79 52                    # 506c |   push ${const__data_2}
 e0 00                          # 5070 |   push 0
 e0 1c 01                       # 5072 |   push 0x1
 60 ff 1c 1c                    # 5075 |   mov H, 0x1c
@@ -79,13 +79,13 @@ e0 60                          # 5085 |   push C
 e0 40                          # 5087 |   push B
 e0 20                          # 5089 |   push A
 60 a0 bc fe                    # 508b |   mov SP, SP + -2
-63 a0 e0 0e ff                 # 508f |   mov [SP], [0xff0e]
+bf a0 e0 0e ff                 # 508f |   not [SP], [0xff0e]
 a9 60 bc 1c 0c 08              # 5094 |   shl C, [SP + 0xc], 0x8
                                #      | _A_syscall_6:
 e0 60                          # 509a |   push C
 e0 1c 01                       # 509c |   push 0x1
 e0 e0 00 02                    # 509f |   push 0x200
-e0 e0 a0 57                    # 50a3 |   push ${var__g_sd_buf}
+e0 e0 b0 57                    # 50a3 |   push ${var__g_sd_buf}
 60 ff 1c 14                    # 50a7 |   mov H, 0x14
 5e e0 1e ff                    # 50ab |   call [0xff1e]
 60 a0 bc 08                    # 50af |   mov SP, SP + 0x8
@@ -99,20 +99,20 @@ ec fe 00 f8 0a 00              # 50b3 |   jne G, 0, ${_E_if_2}:rel + PC
                                #      | _C_if_2:
                                #      | _Z_if_2:
                                #      | _A_if_3:
-ea e0 e0 f8 a0 57 a6 3a 11 00  # 50bd |   jeq [${var__g_sd_buf}], 0x3aa6, ${_E_if_3}:rel + PC
+ea e0 e0 f8 b0 57 a6 3a 11 00  # 50bd |   jeq [${var__g_sd_buf}], 0x3aa6, ${_E_if_3}:rel + PC
 60 fe 00                       # 50c7 |   mov G, 0
-58 f8 e5 00                    # 50ca |   jmp ${_cleanup_fn_show_image}:rel + PC
+58 f8 eb 00                    # 50ca |   jmp ${_cleanup_fn_show_image}:rel + PC
                                #      | _E_if_3:
                                #      | _C_if_3:
                                #      | _Z_if_3:
-62 e0 00 aa 57                 # 50ce |   mov [${var__g_sd_buf} + 000a], 0
-62 e0 00 b4 57                 # 50d3 |   mov [${var__g_sd_buf} + 0014], 0
+62 e0 00 ba 57                 # 50ce |   mov [${var__g_sd_buf} + 000a], 0
+62 e0 00 c4 57                 # 50d3 |   mov [${var__g_sd_buf} + 0014], 0
                                #      | _A_syscall_7:
 60 ff 1c 1a                    # 50d8 |   mov H, 0x1a
 5e e0 1e ff                    # 50dc |   call [0xff1e]
                                #      | _Z_syscall_7:
                                #      | _A_syscall_8:
-e0 e0 a2 57                    # 50e0 |   push ${var__g_sd_buf} + 0002
+e0 e0 b2 57                    # 50e0 |   push ${var__g_sd_buf} + 0002
 e0 00                          # 50e4 |   push 0
 e0 00                          # 50e6 |   push 0
 60 ff 1c 1c                    # 50e8 |   mov H, 0x1c
@@ -120,7 +120,7 @@ e0 00                          # 50e6 |   push 0
 60 a0 bc 06                    # 50f0 |   mov SP, SP + 0x6
                                #      | _Z_syscall_8:
                                #      | _A_syscall_9:
-e0 e0 ac 57                    # 50f4 |   push ${var__g_sd_buf} + 000c
+e0 e0 bc 57                    # 50f4 |   push ${var__g_sd_buf} + 000c
 e0 00                          # 50f8 |   push 0
 e0 1c 01                       # 50fa |   push 0x1
 60 ff 1c 1c                    # 50fd |   mov H, 0x1c
@@ -130,13 +130,13 @@ e0 1c 01                       # 50fa |   push 0x1
                                #      | _A_call_3:
 e0 00                          # 5109 |   push 0
 e0 00                          # 510b |   push 0
-5c f8 b1 00                    # 510d |   call ${fn_switch_screen_row}:rel + PC
+5c f8 b7 00                    # 510d |   call ${fn_switch_screen_row}:rel + PC
 60 a0 bc 04                    # 5111 |   mov SP, SP + 0x4
                                #      | _Z_call_3:
                                #      | _A_syscall_10:
 e0 1c 30                       # 5115 |   push 0x30
-e0 e0 b6 57                    # 5118 |   push ${var__g_sd_buf} + 0016
-e0 e0 90 52                    # 511c |   push ${var__VIDEO_ROW_BUFFER}
+e0 e0 c6 57                    # 5118 |   push ${var__g_sd_buf} + 0016
+e0 e0 a0 52                    # 511c |   push ${var__VIDEO_ROW_BUFFER}
 60 ff 1c 0a                    # 5120 |   mov H, 0xa
 5e e0 1e ff                    # 5124 |   call [0xff1e]
 60 a0 bc 06                    # 5128 |   mov SP, SP + 0x6
@@ -146,21 +146,21 @@ e0 e0 90 52                    # 511c |   push ${var__VIDEO_ROW_BUFFER}
                                #      | _A_for_1:
 c4 80 00                       # 5134 |   inc D, 0
                                #      | _BA_for_1:
-fc 80 e0 f8 e2 00 75 00        # 5137 |   jge D, 0xe2, ${_C_for_1}:rel + PC
+fc 80 e0 f8 e2 00 7b 00        # 5137 |   jge D, 0xe2, ${_C_for_1}:rel + PC
                                #      | _A_syscall_11:
 e0 70                          # 513f |   push C + D
 e0 1c 01                       # 5141 |   push 0x1
 e0 e0 00 02                    # 5144 |   push 0x200
-e0 e0 a0 57                    # 5148 |   push ${var__g_sd_buf}
+e0 e0 b0 57                    # 5148 |   push ${var__g_sd_buf}
 60 ff 1c 14                    # 514c |   mov H, 0x14
 5e e0 1e ff                    # 5150 |   call [0xff1e]
 60 a0 bc 08                    # 5154 |   mov SP, SP + 0x8
                                #      | _Z_syscall_11:
-54 e0 e0 00 b0 59 b0 5b        # 5158 |   mmap ${var__g_vid_chunk}, ${var__g_vid_chunk} + 0200, 0
+54 e0 e0 00 c0 59 c0 5b        # 5158 |   mmap ${var__g_vid_chunk}, ${var__g_vid_chunk} + 0200, 0
                                #      | _A_syscall_12:
 e0 e0 00 02                    # 5160 |   push 0x200
-e0 e0 a0 57                    # 5164 |   push ${var__g_sd_buf}
-e0 e0 b0 59                    # 5168 |   push ${var__g_vid_chunk}
+e0 e0 b0 57                    # 5164 |   push ${var__g_sd_buf}
+e0 e0 c0 59                    # 5168 |   push ${var__g_vid_chunk}
 60 ff 1c 0a                    # 516c |   mov H, 0xa
 5e e0 1e ff                    # 5170 |   call [0xff1e]
 60 a0 bc 06                    # 5174 |   mov SP, SP + 0x6
@@ -175,70 +175,72 @@ c4 ff 00                       # 5188 |   inc H, 0
                                #      | _C_if_4:
                                #      | _Z_if_4:
 b0 20 e0 ff a0 00              # 5190 |   or A, 0xa0, H
+61 ff e0 0e ff                 # 5196 |   mov H, [0xff0e]
+2d ff a0                       # 519b |   and H, [SP]
                                #      | _A_if_5:
-eb e0 a0 f8 0e ff 10 00        # 5196 |   jeq [0xff0e], [SP], ${_E_if_5}:rel + PC
-60 fe 1c 02                    # 519e |   mov G, 0x2
-58 f8 0d 00                    # 51a2 |   jmp ${_cleanup_fn_show_image}:rel + PC
+e8 ff 00 f8 0e 00              # 519e |   jeq H, 0, ${_E_if_5}:rel + PC
+60 fe 1c 02                    # 51a4 |   mov G, 0x2
+58 f8 0d 00                    # 51a8 |   jmp ${_cleanup_fn_show_image}:rel + PC
                                #      | _E_if_5:
                                #      | _C_if_5:
                                #      | _Z_if_5:
                                #      | _BZ_for_1:
-44 80                          # 51a6 |   inc D
-58 f8 8f ff                    # 51a8 |   jmp ${_BA_for_1}:rel + PC
+44 80                          # 51ac |   inc D
+58 f8 89 ff                    # 51ae |   jmp ${_BA_for_1}:rel + PC
                                #      | _C_for_1:
                                #      | _Z_for_1:
-c4 fe 00                       # 51ac |   inc G, 0
+c4 fe 00                       # 51b2 |   inc G, 0
                                #      | _cleanup_fn_show_image:
-d4 00                          # 51af |   umap 0
-60 a0 bc 02                    # 51b1 |   mov SP, SP + 0x2
-e4 20                          # 51b5 |   pop A
-e4 40                          # 51b7 |   pop B
-e4 60                          # 51b9 |   pop C
-e4 80                          # 51bb |   pop D
-dc                             # 51bd |   ret
+d4 00                          # 51b5 |   umap 0
+60 a0 bc 02                    # 51b7 |   mov SP, SP + 0x2
+e4 20                          # 51bb |   pop A
+e4 40                          # 51bd |   pop B
+e4 60                          # 51bf |   pop C
+e4 80                          # 51c1 |   pop D
+dc                             # 51c3 |   ret
                                #      | _end_fn_show_image:
                                #      | 
                                #      | fn_switch_screen_row:
                                #      | _begin_fn_switch_screen_row:
-e0 40                          # 51be |   push B
-e0 20                          # 51c0 |   push A
-61 20 bc 08                    # 51c2 |   mov A, [SP + 0x8]
-60 20 e4 a0 00                 # 51c6 |   mov A, 0xa0 + A
-89 40 bc e0 06 00 05           # 51cb |   mul B, [SP + 0x6], 0x500
-54 e0 e0 1c 90 52 8f 57 01     # 51d2 |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x1
+e0 40                          # 51c4 |   push B
+e0 20                          # 51c6 |   push A
+61 20 bc 08                    # 51c8 |   mov A, [SP + 0x8]
+60 20 e4 a0 00                 # 51cc |   mov A, 0xa0 + A
+89 40 bc e0 06 00 05           # 51d1 |   mul B, [SP + 0x6], 0x500
+54 e0 e0 1c a0 52 9f 57 01     # 51d8 |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x1
                                #      | _cleanup_fn_switch_screen_row:
-e4 20                          # 51db |   pop A
-e4 40                          # 51dd |   pop B
-dc                             # 51df |   ret
+e4 20                          # 51e1 |   pop A
+e4 40                          # 51e3 |   pop B
+dc                             # 51e5 |   ret
                                #      | _end_fn_switch_screen_row:
                                #      | 
                                #      | fn_main_loop:
                                #      | _begin_fn_main_loop:
-e0 20                          # 51e0 |   push A
+e0 20                          # 51e6 |   push A
                                #      | _A_loop_1:
                                #      | _BA_loop_1:
-61 20 e0 0e ff                 # 51e2 |   mov A, [0xff0e]
+61 20 e0 0e ff                 # 51e8 |   mov A, [0xff0e]
                                #      | _A_if_6:
-e9 20 e0 f8 b2 5b 39 00        # 51e7 |   jeq A, [${var__var_2}], ${_E_if_6}:rel + PC
-62 e0 20 b2 5b                 # 51ef |   mov [${var__var_2}], A
-98 fe 20 1c 0c                 # 51f4 |   getb G, A, 0xc
+e9 20 e0 f8 c2 5b 39 00        # 51ed |   jeq A, [${var__var_2}], ${_E_if_6}:rel + PC
+62 e0 20 c2 5b                 # 51f5 |   mov [${var__var_2}], A
+98 fe 20 1c 0c                 # 51fa |   getb G, A, 0xc
                                #      | _A_if_7:
-e8 fe 00 f8 11 00              # 51f9 |   jeq G, 0, ${_E_if_7}:rel + PC
+e8 fe 00 f8 11 00              # 51ff |   jeq G, 0, ${_E_if_7}:rel + PC
                                #      | _A_call_6:
-e0 1c ff                       # 51ff |   push -1
-5c f8 25 00                    # 5202 |   call ${fn_move_slot}:rel + PC
-60 a0 bc 02                    # 5206 |   mov SP, SP + 0x2
+e0 1c ff                       # 5205 |   push -1
+5c f8 25 00                    # 5208 |   call ${fn_move_slot}:rel + PC
+60 a0 bc 02                    # 520c |   mov SP, SP + 0x2
                                #      | _Z_call_6:
                                #      | _E_if_7:
                                #      | _C_if_7:
                                #      | _Z_if_7:
-98 fe 20 1c 09                 # 520a |   getb G, A, 0x9
+98 fe 20 1c 09                 # 5210 |   getb G, A, 0x9
                                #      | _A_if_9:
-e8 fe 00 f8 11 00              # 520f |   jeq G, 0, ${_E_if_9}:rel + PC
+e8 fe 00 f8 11 00              # 5215 |   jeq G, 0, ${_E_if_9}:rel + PC
                                #      | _A_call_7:
-e0 1c 01                       # 5215 |   push 0x1
-5c f8 0f 00                    # 5218 |   call ${fn_move_slot}:rel + PC
-60 a0 bc 02                    # 521c |   mov SP, SP + 0x2
+e0 1c 01                       # 521b |   push 0x1
+5c f8 0f 00                    # 521e |   call ${fn_move_slot}:rel + PC
+60 a0 bc 02                    # 5222 |   mov SP, SP + 0x2
                                #      | _Z_call_7:
                                #      | _E_if_9:
                                #      | _C_if_9:
@@ -247,73 +249,73 @@ e0 1c 01                       # 5215 |   push 0x1
                                #      | _C_if_6:
                                #      | _Z_if_6:
                                #      | _BZ_loop_1:
-58 f8 c2 ff                    # 5220 |   jmp ${_BA_loop_1}:rel + PC
+58 f8 c2 ff                    # 5226 |   jmp ${_BA_loop_1}:rel + PC
                                #      | _C_loop_1:
                                #      | _Z_loop_1:
                                #      | _cleanup_fn_main_loop:
-e4 20                          # 5224 |   pop A
-dc                             # 5226 |   ret
+e4 20                          # 522a |   pop A
+dc                             # 522c |   ret
                                #      | _end_fn_main_loop:
                                #      | 
                                #      | fn_move_slot:
                                #      | _begin_fn_move_slot:
-e0 20                          # 5227 |   push A
-61 20 e0 90 57                 # 5229 |   mov A, [${var__var_1}]
-01 20 bc 04                    # 522e |   add A, [SP + 0x4]
+e0 20                          # 522d |   push A
+61 20 e0 a0 57                 # 522f |   mov A, [${var__var_1}]
+01 20 bc 04                    # 5234 |   add A, [SP + 0x4]
                                #      | _A_call_5:
-e0 20                          # 5232 |   push A
-5c f8 4f fe                    # 5234 |   call ${fn_show_image}:rel + PC
-60 a0 bc 02                    # 5238 |   mov SP, SP + 0x2
+e0 20                          # 5238 |   push A
+5c f8 49 fe                    # 523a |   call ${fn_show_image}:rel + PC
+60 a0 bc 02                    # 523e |   mov SP, SP + 0x2
                                #      | _Z_call_5:
                                #      | _A_if_8:
-ec fe 00 f8 26 00              # 523c |   jne G, 0, ${_E_if_8}:rel + PC
+ec fe 00 f8 26 00              # 5242 |   jne G, 0, ${_E_if_8}:rel + PC
                                #      | _A_syscall_13:
-60 ff 1c 1a                    # 5242 |   mov H, 0x1a
-5e e0 1e ff                    # 5246 |   call [0xff1e]
+60 ff 1c 1a                    # 5248 |   mov H, 0x1a
+5e e0 1e ff                    # 524c |   call [0xff1e]
                                #      | _Z_syscall_13:
                                #      | _A_syscall_14:
-e0 e0 84 52                    # 524a |   push ${const__data_4}
-e0 00                          # 524e |   push 0
-e0 00                          # 5250 |   push 0
-60 ff 1c 1c                    # 5252 |   mov H, 0x1c
-5e e0 1e ff                    # 5256 |   call [0xff1e]
-60 a0 bc 06                    # 525a |   mov SP, SP + 0x6
+e0 e0 8a 52                    # 5250 |   push ${const__data_4}
+e0 00                          # 5254 |   push 0
+e0 00                          # 5256 |   push 0
+60 ff 1c 1c                    # 5258 |   mov H, 0x1c
+5e e0 1e ff                    # 525c |   call [0xff1e]
+60 a0 bc 06                    # 5260 |   mov SP, SP + 0x6
                                #      | _Z_syscall_14:
-58 f8 09 00                    # 525e |   jmp ${_C_if_8}:rel + PC
+58 f8 09 00                    # 5264 |   jmp ${_C_if_8}:rel + PC
                                #      | _E_if_8:
-62 e0 20 90 57                 # 5262 |   mov [${var__var_1}], A
+62 e0 20 a0 57                 # 5268 |   mov [${var__var_1}], A
                                #      | _C_if_8:
                                #      | _Z_if_8:
                                #      | _cleanup_fn_move_slot:
-e4 20                          # 5267 |   pop A
-dc                             # 5269 |   ret
+e4 20                          # 526d |   pop A
+dc                             # 526f |   ret
                                #      | _end_fn_move_slot:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const__data_1:
-49 6d 67 20 56 69 65 77 00     # 526a |   .data str:"Img View"
+49 6d 67 20 56 69 65 77 00     # 5270 |   .data str:"Img View"
                                #      | const__data_2:
-53 44 20 45 72 72 6f 72 00     # 5273 |   .data str:"SD Error"
+53 44 20 45 72 72 6f 72 00     # 5279 |   .data str:"SD Error"
                                #      | const__data_3:
-53 44 20 4f 6b 61 79 00        # 527c |   .data str:"SD Okay"
+53 44 20 4f 6b 61 79 00        # 5282 |   .data str:"SD Okay"
                                #      | const__data_4:
-54 68 65 20 65 6e 64 21 00     # 5284 |   .data str:"The end!"
+54 68 65 20 65 6e 64 21 00     # 528a |   .data str:"The end!"
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0x528d
+                               #      | .offset 0x5293
                                #      | SECTION_BEGIN_static_data:
-                               # 528d |   .align dummy_size:3 align:16
+                               # 5293 |   .align dummy_size:13 align:16
                                #      | var__VIDEO_ROW_BUFFER:
-                               # 5290 |   .bss size:1280 align:16
+                               # 52a0 |   .bss size:1280 align:16
                                #      | var__var_1:
-                               # 5790 |   .bss size:2 align:1
-                               # 5792 |   .align dummy_size:14 align:16
+                               # 57a0 |   .bss size:2 align:1
+                               # 57a2 |   .align dummy_size:14 align:16
                                #      | var__g_sd_buf:
-                               # 57a0 |   .bss size:514 align:16
-                               # 59a2 |   .align dummy_size:14 align:16
+                               # 57b0 |   .bss size:514 align:16
+                               # 59b2 |   .align dummy_size:14 align:16
                                #      | var__g_vid_chunk:
-                               # 59b0 |   .bss size:514 align:16
+                               # 59c0 |   .bss size:514 align:16
                                #      | var__var_2:
-                               # 5bb2 |   .bss size:2 align:1
+                               # 5bc2 |   .bss size:2 align:1
                                #      | SECTION_END_static_data:
                                #      | 
