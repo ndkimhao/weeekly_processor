@@ -136,6 +136,7 @@ type TMappedMemory is (
 	M_PS2_RECV,
 	M_LED_WRITE,
 	M_BTN_READ,
+	M_BTN_DEBOUNCED,
 	M_CLK_READ_0,
 	M_CLK_READ_1,
 	M_CLK_READ_2,
@@ -177,6 +178,8 @@ signal reg_sd_err : TData := (others => '0');
 signal reg_oled_in : TData := (others => '0');
 signal reg_oled_out : TData := (others => '0');
 
+signal reg_btn_debounced : std_logic_vector(13-1 downto 0);
+
 -----
 signal ram_en : std_logic;
 signal uart_send_buffer_en, uart_recv_buffer_en : std_logic;
@@ -205,6 +208,7 @@ begin
 
 		M_LED_WRITE   when dev_en = '1' and alow = x"0A" else
 		M_BTN_READ    when dev_en = '1' and alow = x"0C" else
+		M_BTN_DEBOUNCED when dev_en = '1' and alow = x"0E" else
 		
 		-- Counters
 		M_CLK_READ_0 when dev_en = '1' and alow = x"10" else
@@ -249,8 +253,8 @@ begin
 		ps2_recv_valid & ps2_recv_empty & ps2_recv_full & "0" & ps2_recv_data_count & ps2_recv_dout
 			when last_mtype = M_PS2_RECV else
 
-		"000" & btn_in
-			when last_mtype = M_BTN_READ else
+		"000" & btn_in when last_mtype = M_BTN_READ else
+		"000" & reg_btn_debounced when last_mtype = M_BTN_DEBOUNCED else
 		x"00" & s_led_out when last_mtype = M_LED_WRITE else
 
 		-- Counters
@@ -464,4 +468,13 @@ begin
 	oled_res <= not reg_oled_out(13);
 	oled_vbat <= not reg_oled_out(14);
 	oled_vdd <= not reg_oled_out(15);
+	
+	-- Button debouncer
+	btn_debouncer : entity work.ButtonDebouncer
+	generic map ( N => 13 )
+	port map (
+		clk => clk,
+		btn_in => btn_in,
+		debounced_out => reg_btn_debounced
+	);
 end Behavioral;
