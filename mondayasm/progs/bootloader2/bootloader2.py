@@ -452,7 +452,7 @@ def init_sd_and_oled(H, G):
     call(init_sd_head)
     call(init_oled)
     call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006 2'))
+    call(draw_str_oled, 1, 0, const('3006 3'))
     # check sd status
     call(init_sd_tail)
     H @= 'S'
@@ -471,7 +471,7 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # init
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.2\n'))
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.3\n'))
     call(init_sd_and_oled)
 
     # jump to persisted target if exists

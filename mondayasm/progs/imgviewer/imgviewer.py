@@ -2,7 +2,7 @@ from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_
 from progs.stdlib.syscall import S, syscall
 from progs.stdlib.video import switch_screen_row, g_row_buffer, HEIGHT, WIDTH
 from soeunasm import call, halt, init_code_gen, Reg, Loop, If, global_var, cmt, expr, const, Else, local_var, ForRange, \
-    mmap, umap, M, getb
+    mmap, umap, M, getb, Cleanup
 from soeunasm.scope_func import Return
 
 CODE_OFFSET = 0x5000
@@ -30,7 +30,11 @@ def sd_error():
 # 8 2 - first line
 # 8 2 - second line
 # 48 - color palette
+# returns G: 0=fail, 1=ok, 2=interrupted
 def show_image(img_slot, A, B, C, D, G, H):
+    btn_state = local_var()
+    btn_state @= M[BTN_DEBOUNCED]
+
     C @= img_slot << 8
     syscall(S.read_sd, g_sd_buf.addr(), SD_SECTOR_SIZE, SD_IMAGE_BANK, C)
     with If(G == 0):
@@ -65,22 +69,27 @@ def show_image(img_slot, A, B, C, D, G, H):
             H @= 1
             B += SD_SECTOR_SIZE
         A @= 0xA0 | H
+
+        with If(M[BTN_DEBOUNCED] != btn_state):
+            G @= 2
+            Return()
     ###
 
-    umap(SD_BUF_MMAP_SLOT)
     G @= 1
+    Cleanup()
+    umap(SD_BUF_MMAP_SLOT)
 
 
 def move_slot(dir, A, G):
     A @= g_current_image_idx
     A += dir
     call(show_image, A)
-    with If(G == 1):
-        g_current_image_idx @ A
-
-        Else()
+    with If(G == 0):
         syscall(S.clear_oled)
         syscall(S.draw_str_oled, 0, 0, const('The end!'))
+
+        Else()  # G = 1 or 2
+        g_current_image_idx @ A
 
 
 g_last_btn = global_var()
@@ -94,11 +103,11 @@ def main_loop(A, G, H):
 
             G @= getb(A, BIT_BTN_UP)
             with If(G != 0):
-                call(move_slot, 1)
+                call(move_slot, -1)
 
             G @= getb(A, BIT_BTN_DOWN)
             with If(G != 0):
-                call(move_slot, -1)
+                call(move_slot, 1)
 
 
 def main(G):
