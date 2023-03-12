@@ -6,7 +6,7 @@ from soeunasm.cmp_expr import CmpExpr
 from mondayasm import builder as monb
 import mondayasm as mon
 from soeunasm.scope_global import inc_stack_offset, dec_stack_offset, push_global_scope, pop_global_scope, BreakIf, \
-    ContinueIf
+    ContinueIf, ExitIf
 import soeunasm
 
 g_if_stack: list['IfCtx'] = []
@@ -104,6 +104,9 @@ class IfCtx:
 
     def then_jmp(self, *args, **kwargs):
         return self._cond.then_jmp(*args, signed=self._signed, **kwargs)
+
+    def then_exit(self, *args, **kwargs):
+        return ExitIf(self._cond, *args, signed=self._signed, **kwargs)
 
 
 # noinspection PyPep8Naming
