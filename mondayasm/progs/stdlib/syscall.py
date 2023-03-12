@@ -30,6 +30,9 @@ class S(Enum):
     puts = 17
     decode_font = 18
     decode_font_16_12 = 19
+    read_sd = 20
+    write_sd = 21
+    init_sd = 22
 
 
 def syscall(syscall_number: S, *args):

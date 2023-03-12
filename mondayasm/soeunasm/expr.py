@@ -343,6 +343,11 @@ class Expr:
         assert self.is_pure
         return self.a
 
+    @property
+    def raw(self):
+        assert self.is_pure
+        return self.a
+
     def addr_add(self, rhs):
         if not isinstance(rhs, Expr):
             rhs = Expr.to_expr(rhs)

@@ -3,7 +3,7 @@ from enum import Enum
 from progs.stdlib.devices import OLED_IN, OLED_OUT, BIT_OLED_IN_SEND_READY, BIT_OLED_OUT_DC, FLAG_OLED_OUT_SEND_START, \
     BIT_OLED_OUT_SEND_START, BIT_OLED_OUT_VDD, BIT_OLED_OUT_RESET, BIT_OLED_OUT_VBAT
 from progs.stdlib.font import decode_font_16_12
-from progs.stdlib.timing import delay_1ms, delay_10ms
+from progs.stdlib.timing import delay_1ms
 from soeunasm import Loop, getb, call, If, M, Else, ForRange, For, NUM_VAR_ARGS, local_var
 from soeunasm.free_cmds import clrb, setb
 
@@ -81,7 +81,7 @@ def init_oled(D):
 
     # Turn VBAT on (active low), delay 100ms
     setb([D], BIT_OLED_OUT_VBAT, inplace=True)
-    call(delay_10ms)
+    call(delay_1ms)
 
     call(send_oled_cmd_sequence,
          NUM_VAR_ARGS,
@@ -105,7 +105,7 @@ def deinit_oled(D):
 
     # Power off vbat, wait 100ms
     clrb([D], BIT_OLED_OUT_VBAT, inplace=True)
-    call(delay_10ms)
+    call(delay_1ms)
 
     # Power off vdd
     clrb([D], BIT_OLED_OUT_VDD, inplace=True)

@@ -1,15 +1,14 @@
 from progs.stdlib import printf
 from progs.stdlib.format import itoa_10, itoa_16, itoa_2, to_hex_digit, from_hex_digit, atoi_16
 from progs.stdlib.memory import memset, memcpy, strcmp, strcasecmp, strchr
-from progs.stdlib.printf import PRINTF, puts
+from progs.stdlib.printf import puts
 from progs.stdlib.random import srand, rand
+from progs.stdlib.sdcard import read_sd, write_sd, init_sd
 from progs.stdlib.syscall import S
 from progs.stdlib.timing import _delay_impl
 from progs.stdlib.uart import putc, getc
 from progs.stdlib.font import decode_font, decode_font_16_12
-from soeunasm import emit_fn, const, Reg, M, global_var, jmp, If
-import mondayasm
-from soeunasm.free_expr import pop
+from soeunasm import emit_fn, const, M, jmp, If
 from soeunasm.scope_func import Return
 
 SYSCALL_MAP_PY = {
@@ -33,6 +32,9 @@ SYSCALL_MAP_PY = {
     S.puts: puts,
     S.decode_font: decode_font,
     S.decode_font_16_12: decode_font_16_12,
+    S.read_sd: read_sd,
+    S.write_sd: write_sd,
+    S.init_sd: init_sd,
 }
 
 

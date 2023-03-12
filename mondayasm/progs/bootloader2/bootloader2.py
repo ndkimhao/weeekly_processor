@@ -3,20 +3,16 @@ from enum import Enum
 import mondayasm
 from progs.bootloader2.syscall_entry import syscall_entry
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
-    SYSCALL_ENTRY, BTN_READ, SD_OUT, SD_IN, SD_ADDR_1, \
-    SD_ADDR_0, BIT_SD_OUT_RESET, BIT_SD_OUT_POWER_ON, BIT_SD_IN_BUSY, BIT_SD_OUT_READ, \
-    BIT_SD_OUT_HANDSHAKE, BIT_SD_IN_HANDSHAKE, SD_ERROR
+    SYSCALL_ENTRY, BTN_READ, SD_SECTOR_SIZE
 from progs.stdlib.format import atoi_16, itoa_16
-from progs.stdlib.memory import strchr, strcmp, strcasecmp
-from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, test_show_oled_chars, draw_str_oled, \
+from progs.stdlib.memory import strchr, strcasecmp
+from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, draw_str_oled, \
     draw_char_oled
 from progs.stdlib.printf import puts, printf, PRINTF
-from progs.stdlib.sdcard import read_sd, init_sd, init_sd_head, init_sd_tail
+from progs.stdlib.sdcard import read_sd, init_sd, init_sd_head, init_sd_tail, write_sd
 from progs.stdlib.uart import putc, getc
-from progs.stdlib.timing import DELAY_MILLIS
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
-    global_var, While, Else, cmt, Continue, ForRange, setb
-from soeunasm.free_cmds import clrb, getb
+    global_var, While, Else, cmt, Continue, ForRange
 from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
@@ -24,7 +20,7 @@ BOOTLOADER2_ROM_MODE = False
 
 if BOOTLOADER2_ROM_MODE:
     # ROM mode
-    CODE_OFFSET = 0xE000
+    CODE_OFFSET = 0xD000
     CODE_END = 0xFA00
 else:
     # TESTING mode
@@ -34,7 +30,7 @@ else:
 MMAP_SLOT_ROM = 3
 MMAP_SLOT_DEVICES = 2
 
-MAX_ARGS = 4
+MAX_ARGS = 6
 g_num_args = global_var('g_num_args')
 g_args = global_var('g_args', size=2 * (MAX_ARGS + 1), align=2)
 
@@ -53,6 +49,9 @@ class SerialCmd(Enum):
     INIT_OLED = 10
     READW = 11  # read hex in big endian
     DEINIT_OLED = 12
+    WRITE_SD = 13
+    MMAP = 14
+    UMAP = 15
 
 
 def parse_command_name(p_str, A, H):
@@ -251,16 +250,12 @@ def handle_write(cmd_num, A, B, C, D, G, H):
     ###
     call(getc)
     M[UART_SEND] @= H  # echo back
-    with Scope():
-        If(H == '\n').then_break()
-        If(H == '\r').then_break()
-        jmp(lb_fail)
+    If(H != '\n').then_jmp(lb_fail)
     call(printf, const('WRITE_OK %x %x\n'), g_args, B)
 
     Return()
     label(lb_fail)
     call(puts, const("$INVALID_DATA\n"))
-    G @= 0
 
 
 glb_jmp_to_stored_target = decl_label('glb_jmp_to_stored_target', anon=False)
@@ -296,22 +291,61 @@ def handle_init_sd(cmd_num, G):
 
 
 def handle_read_sd(cmd_num, A, B, G, H):
-    buf = local_var(size=514)
+    itoa_buf = local_var(size=6)
+    buf = local_var(size=SD_SECTOR_SIZE + 2)
     call(check_num_args, 2)
     If(G == 0).then_return()
 
-    call(read_sd, buf.addr(), g_args, g_args.addr_add(2))
+    call(read_sd, buf.addr(), SD_SECTOR_SIZE, g_args, g_args.addr_add(2))
     with If(G == 0):
         call(puts, const('TIMEOUT\n'))
         Return()
 
-    A @= H
-    PRINTF('read %d bytes\n', A)
-    A += buf.addr()
-    with ForRange(B, buf.addr(), A):
-        call(printf, const('%h '), [B])
+    call(printf, const('READ_SD_OK %x %x\n'), g_args, g_args.addr_add(2))
+
+    with ForRange(B, buf.addr(), buf.addr() + SD_SECTOR_SIZE):
+        call(itoa_16, [B], itoa_buf.addr())
+        call(puts, itoa_buf.addr() + 2)
 
     call(putc, '\n')
+
+
+def handle_write_sd(cmd_num, A, B, C, D, G, H):
+    lb_invalid_data = decl_label()
+
+    atoi_buf = local_var(size=6)
+    buf = local_var(size=SD_SECTOR_SIZE + 2)
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+
+    A @= buf.addr()
+    with While(A < buf.addr() + SD_SECTOR_SIZE):
+        with ForRange(D, 0, 2):
+            call(getc)
+            M[UART_SEND] @= H  # echo back
+            C @= atoi_buf.addr()
+            M[C + D] @= H
+        ###
+        call(atoi_16, atoi_buf.addr())
+        If(G == 0).then_jmp(lb_invalid_data)
+        M[A] @= H
+        A += 1
+    ###
+
+    # read end line
+    call(getc)
+    M[UART_SEND] @= H  # echo back
+    If(H != '\n').then_jmp(lb_invalid_data)
+
+    call(write_sd, buf.addr(), SD_SECTOR_SIZE, g_args, g_args.addr_add(2))
+    with If(G == 0):
+        call(puts, const('TIMEOUT\n'))
+        Return()
+    call(printf, const('WRITE_SD_OK %x %x\n'), g_args, g_args.addr_add(2))
+
+    Return()
+    label(lb_invalid_data)
+    call(puts, const("$INVALID_DATA\n"))
 
 
 def handle_init_oled(cmd_num):
@@ -322,6 +356,29 @@ def handle_init_oled(cmd_num):
 def handle_deinit_oled(cmd_num):
     call(deinit_oled)
     call(puts, const('DONE\n'))
+
+
+def handle_mmap(cmd_num, A, B, C, D, E, G):
+    call(check_num_args, 5)
+    If(G == 0).then_return()
+
+    A @= g_args
+    B @= g_args.addr_add(2)
+    C @= g_args.addr_add(4)
+    D @= g_args.addr_add(6)
+    E @= g_args.addr_add(8) & 0x03
+
+    mmap(C, D, E)
+    call(printf, const('MMAP_OK %x %x %x %x %x\n'), A, B, C, D, E)
+
+
+def handle_umap(cmd_num, A, G):
+    call(check_num_args, 1)
+    If(G == 0).then_return()
+
+    A @= g_args & 0x03
+    umap(A)
+    call(printf, const('UMAP_OK %x\n'), A)
 
 
 def _process_handler_map():
@@ -350,6 +407,9 @@ HANDLER_MAP_PY = {
     SerialCmd.INIT_OLED: handle_init_oled,
     SerialCmd.READW: handle_read,
     SerialCmd.DEINIT_OLED: handle_deinit_oled,
+    SerialCmd.WRITE_SD: handle_write_sd,
+    SerialCmd.MMAP: handle_mmap,
+    SerialCmd.UMAP: handle_umap,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
@@ -367,7 +427,7 @@ def main(A, B, G, H):
     call(quick_deinit_oled)
 
     # send hello
-    call(puts, const('Weeekly3006 - Hardware v1.4 - Bootloader v2.3\n'))
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.0\n'))
 
     # check for persisted target
     A @= M[JMP_TARGET]
@@ -388,10 +448,10 @@ def main(A, B, G, H):
     call(init_sd_head)
     call(init_oled)
     call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006'))
+    call(draw_str_oled, 1, 0, const('3006 0'))
     # check sd status
     call(init_sd_tail)
-    H @= 's'
+    H @= 'S'
     with If(G == 0):
         H @= '-'
     call(draw_char_oled, 1, 6, H)

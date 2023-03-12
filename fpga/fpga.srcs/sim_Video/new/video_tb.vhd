@@ -52,7 +52,7 @@ begin
 		
 		vbuf_en <= '1';
 		vbuf_wr <= '1';
-		vbuf_addr_bank <= "101";
+		vbuf_addr_bank <= "0101";
 		vbuf_addr <= (others => '0');
 		vbuf_din <= x"aaff";
 		wait for 1us;

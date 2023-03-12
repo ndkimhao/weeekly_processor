@@ -1,7 +1,7 @@
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.syscall import syscall, S
 from progs.stdlib.timing import DELAY_MILLIS
-from progs.stdlib.video import switch_screen_row, fill_cell, fill_cell_content
+from progs.stdlib.video import switch_screen_row, fill_cell, fill_cell_content, reset_color_palette, set_color_palette
 from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var
 
 CODE_OFFSET = 0xA000
@@ -41,6 +41,10 @@ def main(A, B, C, D, E, H):
     # call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
     # with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
     #     call(printf, const('%b\n'), [A])
+
+    call(switch_screen_row, 0, 0)  # palette bank
+    call(reset_color_palette)
+    call(set_color_palette, 1, 0xFF, 0x8C, 0x00)
 
     call(switch_screen_row, 0, 0b110)
     call(fill_cell, 0, 0x0f0f)

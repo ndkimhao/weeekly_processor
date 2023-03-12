@@ -62,6 +62,9 @@ signal next_idx: TIndex := (others => '0');
 signal buf_row, buf_col: unsigned(9 downto 0);
 signal buf_idx: TIndex;
 
+signal imm_row, imm_col: unsigned(9 downto 0);
+signal imm_idx: TIndex;
+
 signal maddr : std_logic_vector(14 downto 0);
 signal mdata_r, mdata_g, mdata_b : TData;
 
@@ -86,6 +89,10 @@ signal masked_dout_g : TData;
 signal masked_dout_b : TData;
 
 signal last_buf_addr_bank : std_logic_vector(4-1 downto 0);
+
+signal palette_idx : unsigned(3-1 downto 0);
+type TPaletteArr is array(8-1 downto 0) of TByte;
+signal color_palette_r, color_palette_g, color_palette_b : TPaletteArr;
 
 begin
 
@@ -115,9 +122,17 @@ begin
 				buf_col <= next_col;
 				buf_idx <= next_idx;
 
-				row <= buf_row;
-				col <= buf_col;
-				idx <= buf_idx;
+				imm_row <= buf_row;
+				imm_col <= buf_col;
+				imm_idx <= buf_idx;
+
+				row <= imm_row;
+				col <= imm_col;
+				idx <= imm_idx;
+
+				r <= color_palette_r(to_integer(palette_idx));
+				g <= color_palette_g(to_integer(palette_idx));
+				b <= color_palette_b(to_integer(palette_idx));
 			end if;
 		end if; -- rising_edge(clk)
 	end process;
@@ -129,9 +144,7 @@ begin
 	v_blank <= '1' when row >= 480 else '0';
 	blank <= h_blank or v_blank;
 
-	r <= x"FF" when pixel_data_r = '1' else x"00";
-	g <= x"FF" when pixel_data_g = '1' else x"00";
-	b <= x"FF" when pixel_data_b = '1' else x"00";
+	palette_idx <= pixel_data_r & pixel_data_g & pixel_data_b;
 
 	-- memory
 	
@@ -139,6 +152,20 @@ begin
 	begin
 		if rising_edge(buf_clk) then
 			last_buf_addr_bank <= buf_addr_bank;
+			
+			if buf_en = '1' and buf_wr = '1' and buf_addr_bank = "0000" then -- update color palette
+				case buf_addr(5 downto 4) is
+					when "10" =>
+						color_palette_r(to_integer(unsigned(buf_addr(3 downto 1)))) <= buf_din(7 downto 0);
+					when "01" =>
+						color_palette_g(to_integer(unsigned(buf_addr(3 downto 1)))) <= buf_din(7 downto 0);
+					when "00" =>
+						color_palette_b(to_integer(unsigned(buf_addr(3 downto 1)))) <= buf_din(7 downto 0);
+					when others =>
+						null;
+				end case;
+			end if;
+			
 		end if; -- rising_edge(buf_clk)
 	end process;
 	
@@ -162,9 +189,9 @@ begin
 	buf_din_g <= buf_din when buf_addr_bank(1) = '1' else (others => '0');
 	buf_din_b <= buf_din when buf_addr_bank(0) = '1' else (others => '0');
 
-	buf_wr_r <= buf_addr_bank(2) or buf_addr_bank(3);
-	buf_wr_g <= buf_addr_bank(1) or buf_addr_bank(3);
-	buf_wr_b <= buf_addr_bank(0) or buf_addr_bank(3);
+	buf_wr_r <= buf_wr and (buf_addr_bank(2) or buf_addr_bank(3));
+	buf_wr_g <= buf_wr and (buf_addr_bank(1) or buf_addr_bank(3));
+	buf_wr_b <= buf_wr and (buf_addr_bank(0) or buf_addr_bank(3));
 
 	video_buffer_r : blk_mem_gen_video_buffer port map (
 		clka => clk,
