@@ -261,11 +261,15 @@ def handle_write(cmd_num, A, B, C, D, G, H):
 glb_jmp_to_stored_target = decl_label('glb_jmp_to_stored_target', anon=False)
 
 
+def show_status(ch):
+    call(draw_char_oled, 1, 7, ch)
+
+
 def handle_jmp(cmd_num, G):
     call(check_num_args, 1)
     If(G == 0).then_return()
 
-    call(draw_char_oled, 1, 7, 'R')
+    call(show_status, 'R')
 
     with If(cmd_num == SerialCmd.JMP):
         call(printf, const('JMP_TO %x\n'), g_args)
@@ -426,9 +430,11 @@ def check_persisted_target(A, B):
         B &= 0x100
         with If(B != 0):
             call(printf, const('FORCED_BOOTLOADER\n'))
+            call(show_status, 'F')
             Break()
 
         call(printf, const('JMP_TO %x\n'), A)
+        call(show_status, 'P')
         jmp(glb_jmp_to_stored_target)
 
 
@@ -437,7 +443,7 @@ def init_sd_and_oled(H, G):
     call(init_sd_head)
     call(init_oled)
     call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006 1'))
+    call(draw_str_oled, 1, 0, const('3006 2'))
     # check sd status
     call(init_sd_tail)
     H @= 'S'
@@ -456,7 +462,7 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # init
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.1\n'))
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.2\n'))
     call(init_sd_and_oled)
 
     # jump to persisted target if exists
