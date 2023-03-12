@@ -52,6 +52,7 @@ class SerialCmd(Enum):
     WRITE_SD = 13
     MMAP = 14
     UMAP = 15
+    WRITEB_SD = 16
 
 
 def parse_command_name(p_str, A, H):
@@ -270,6 +271,7 @@ def handle_jmp(cmd_num, G):
     If(G == 0).then_return()
 
     call(show_status, 'R')
+    M[LED] @= 0
 
     with If(cmd_num == SerialCmd.JMP):
         call(printf, const('JMP_TO %x\n'), g_args)
@@ -280,7 +282,6 @@ def handle_jmp(cmd_num, G):
 
     # No return from this point
     label(glb_jmp_to_stored_target)
-    M[LED] @= 0
     for reg in [Reg.A, Reg.B, Reg.C, Reg.D, Reg.SP,
                 Reg.E, Reg.F, Reg.G, Reg.H]:
         reg @= 0
@@ -326,16 +327,23 @@ def handle_write_sd(cmd_num, A, B, C, D, G, H):
 
     A @= buf.addr()
     with While(A < buf.addr() + SD_SECTOR_SIZE):
-        with ForRange(D, 0, 2):
+        with If(cmd_num == SerialCmd.WRITE_SD):
+            with ForRange(D, 0, 2):
+                call(getc)
+                M[UART_SEND] @= H  # echo back
+                C @= atoi_buf.addr()
+                M[C + D] @= H
+            ###
+            call(atoi_16, atoi_buf.addr())
+            If(G == 0).then_jmp(lb_invalid_data)
+            M[A] @= H
+            A += 1
+
+            Else()  # cmd_num == SerialCmd.WRITEB_SD
             call(getc)
             M[UART_SEND] @= H  # echo back
-            C @= atoi_buf.addr()
-            M[C + D] @= H
-        ###
-        call(atoi_16, atoi_buf.addr())
-        If(G == 0).then_jmp(lb_invalid_data)
-        M[A] @= H
-        A += 1
+            M[A] @= H
+            A += 1
     ###
 
     # read end line
@@ -416,6 +424,7 @@ HANDLER_MAP_PY = {
     SerialCmd.WRITE_SD: handle_write_sd,
     SerialCmd.MMAP: handle_mmap,
     SerialCmd.UMAP: handle_umap,
+    SerialCmd.WRITEB_SD: handle_write_sd,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
