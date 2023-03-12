@@ -33,6 +33,12 @@ class S(Enum):
     read_sd = 20
     write_sd = 21
     init_sd = 22
+    init_oled = 23
+    deinit_oled = 24
+    quick_deinit_oled = 25
+    clear_oled = 26
+    draw_char_oled = 27
+    draw_str_oled = 28
 
 
 def syscall(syscall_number: S, *args):

@@ -1,6 +1,7 @@
 from progs.stdlib import printf
 from progs.stdlib.format import itoa_10, itoa_16, itoa_2, to_hex_digit, from_hex_digit, atoi_16
 from progs.stdlib.memory import memset, memcpy, strcmp, strcasecmp, strchr
+from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, clear_oled, draw_char_oled, draw_str_oled
 from progs.stdlib.printf import puts
 from progs.stdlib.random import srand, rand
 from progs.stdlib.sdcard import read_sd, write_sd, init_sd
@@ -35,6 +36,12 @@ SYSCALL_MAP_PY = {
     S.read_sd: read_sd,
     S.write_sd: write_sd,
     S.init_sd: init_sd,
+    S.init_oled: init_oled,
+    S.deinit_oled: deinit_oled,
+    S.quick_deinit_oled: quick_deinit_oled,
+    S.clear_oled: clear_oled,
+    S.draw_char_oled: draw_char_oled,
+    S.draw_str_oled: draw_str_oled,
 }
 
 

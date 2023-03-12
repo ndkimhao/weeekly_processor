@@ -1,5 +1,6 @@
 import progs
 from progs.stdlib import printf
+from progs.stdlib.devices import CLK_COUNT_0
 from progs.stdlib.memory import memset, memcpy
 from progs.stdlib.printf import PRINTF
 from progs.stdlib.random import srand, rand
@@ -31,7 +32,7 @@ def tg_init():
     Board.ticks_till_gravity @= 0
     Board.lines_remaining @= 0
 
-    call(srand, 0)
+    call(srand, 3006)
     call(tg_new_falling)
     call(tg_new_falling)
 
@@ -46,7 +47,9 @@ def tg_new_falling(G, H):
     call(memcpy, Board.falling.addr(), Board.next.addr(), TeBlock.SIZE)
     cmt('fill new Board.next')
     call(rand)
-    G @= H // 7
+    G @= M[CLK_COUNT_0] ^ H
+    G @= G * 49999
+    G @= H // 7  # H = H % 7
     Board.next.typ @= H + 1
     Board.next.ori @= 0
     Board.next.loc.row @= 0

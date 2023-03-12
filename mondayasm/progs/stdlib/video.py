@@ -35,15 +35,6 @@ def fill_cell(col, value, A, G):
         M[A] @= G
 
 
-def fill_cell_except_first_and_last_row(col, value, A, G):
-    G @= value
-    A @= col << 1
-    with For(A @ (A + (g_row_buffer.addr() + JUMP_ONE_ROW)),
-             A < g_row_buffer_end.addr() - JUMP_ONE_ROW,
-             A @ (A + JUMP_ONE_ROW)):
-        M[A] @= G
-
-
 def get_cell_addr(col, H):
     H @= col << 1
     H @= H + g_row_buffer.addr()

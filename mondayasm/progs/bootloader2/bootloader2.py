@@ -265,6 +265,8 @@ def handle_jmp(cmd_num, G):
     call(check_num_args, 1)
     If(G == 0).then_return()
 
+    call(draw_char_oled, 1, 7, 'R')
+
     with If(cmd_num == SerialCmd.JMP):
         call(printf, const('JMP_TO %x\n'), g_args)
         jmp(g_args)
@@ -414,22 +416,7 @@ HANDLER_MAP_PY = {
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
 
-def main(A, B, G, H):
-    # map device range
-    A @= 0xFD
-    B @= 0
-    mmap(DEV_BASE_ADDR, DEV_BASE_ADDR + 0xFF, MMAP_SLOT_DEVICES)
-
-    # write syscall address
-    M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
-
-    # cleanup devices
-    call(quick_deinit_oled)
-
-    # send hello
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.1\n'))
-
-    # check for persisted target
+def check_persisted_target(A, B):
     A @= M[JMP_TARGET]
     with Scope():
         If(A == 0).then_break()
@@ -444,6 +431,8 @@ def main(A, B, G, H):
         call(printf, const('JMP_TO %x\n'), A)
         jmp(glb_jmp_to_stored_target)
 
+
+def init_sd_and_oled(H, G):
     # show welcome screen
     call(init_sd_head)
     call(init_oled)
@@ -456,9 +445,25 @@ def main(A, B, G, H):
         H @= '-'
     call(draw_char_oled, 1, 6, H)
 
+
+def main(A, B, G, H):
+    # map device range
+    A @= 0xFD
+    B @= 0
+    mmap(DEV_BASE_ADDR, DEV_BASE_ADDR + 0xFF, MMAP_SLOT_DEVICES)
+
+    # write syscall address
+    M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
+
+    # init
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.1\n'))
+    call(init_sd_and_oled)
+
+    # jump to persisted target if exists
+    call(check_persisted_target)
+
     # wait for commands
     call(puts, const('READY\n'))
-    call(draw_char_oled, 1, 7, 'R')
     M[LED] @= 1
     with Loop():
         call(recv_command)
