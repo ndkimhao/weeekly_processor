@@ -1,6 +1,6 @@
 from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN
 from progs.stdlib.syscall import S, syscall
-from progs.stdlib.video import switch_screen_page, g_page_buffer, HEIGHT, WIDTH
+from progs.stdlib.video import switch_screen_page, g_page_buffer, HEIGHT, WIDTH, fill_page, NUM_PAGES
 from soeunasm import call, halt, init_code_gen, Reg, Loop, If, global_var, cmt, expr, const, Else, local_var, ForRange, \
     mmap, umap, M, getb, Cleanup
 from soeunasm.scope_func import Return
@@ -51,6 +51,9 @@ def show_image(img_slot, A, B, C, D, G, H):
     syscall(S.draw_str_oled, 0, 0, g_sd_buf.addr() + 2)
     syscall(S.draw_str_oled, 1, 0, g_sd_buf.addr() + 12)
 
+    with ForRange(A, 0, NUM_PAGES):
+        call(switch_screen_page, A, 0b1000)
+        call(fill_page, 0)
     call(switch_screen_page, 0, 0)
     syscall(S.memcpy, g_page_buffer.addr(), g_sd_buf.addr() + 22, COLOR_PALETTE_SIZE)
 
