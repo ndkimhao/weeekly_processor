@@ -10,7 +10,7 @@ d8                             # 5009 |   halt
                                #      | 
                                #      | fn_main:
                                #      | _begin_fn_main:
-62 e0 00 8e 68                 # 500a |   mov [${var__last_btn_in}], 0
+62 e0 00 1e 69                 # 500a |   mov [${var__last_btn_in}], 0
                                #      | _A_call_6:
 5c f8 2c 00                    # 500f |   call ${fn_init_tetris_color_palette}:rel + PC
                                #      | _Z_call_6:
@@ -25,11 +25,11 @@ d8                             # 5009 |   halt
                                #      | _Z_call_27:
 e8 ff 00 f8 1f 00              # 501b |   jeq H, 0, ${_C_loop_1}:rel + PC
                                #      | _A_call_48:
-e0 e0 a3 55                    # 5021 |   push ${fn_handle_keyboard}
+e0 e0 27 56                    # 5021 |   push ${fn_handle_keyboard}
 e0 e0 e0 93                    # 5025 |   push 0x93e0
 e0 1c 04                       # 5029 |   push 0x4
 e0 00                          # 502c |   push 0
-5c f8 66 07                    # 502e |   call ${fn__delay_impl}:rel + PC
+5c f8 ea 07                    # 502e |   call ${fn__delay_impl}:rel + PC
 60 a0 bc 08                    # 5032 |   mov SP, SP + 0x8
                                #      | _Z_call_48:
                                #      | _BZ_loop_1:
@@ -78,7 +78,7 @@ e0 20                          # 5077 |   push A
 61 20 bc 08                    # 5079 |   mov A, [SP + 0x8]
 60 20 e4 a0 00                 # 507d |   mov A, 0xa0 + A
 89 40 bc e0 06 00 05           # 5082 |   mul B, [SP + 0x6], 0x500
-54 e0 e0 1c 90 58 8f 5d 04     # 5089 |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x4
+54 e0 e0 1c 20 59 1f 5e 04     # 5089 |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x4
                                #      | _cleanup_fn_switch_screen_page:
 e4 20                          # 5092 |   pop A
 e4 40                          # 5094 |   pop B
@@ -142,9 +142,9 @@ dc                             # 50f6 |   ret
 e0 20                          # 50f7 |   push A
 ad 20 bc 1c 04 07              # 50f9 |   and A, [SP + 0x4], 0x7
 28 20 1c 01                    # 50ff |   shl A, 0x1
-63 e4 bc 90 58 0a              # 5103 |   mov [${var__VIDEO_ROW_BUFFER} + A], [SP + 0xa]
-63 e4 bc a0 58 08              # 5109 |   mov [${var__VIDEO_ROW_BUFFER} + 0010 + A], [SP + 0x8]
-63 e4 bc b0 58 06              # 510f |   mov [${var__VIDEO_ROW_BUFFER} + 0020 + A], [SP + 0x6]
+63 e4 bc 20 59 0a              # 5103 |   mov [${var__VIDEO_ROW_BUFFER} + A], [SP + 0xa]
+63 e4 bc 30 59 08              # 5109 |   mov [${var__VIDEO_ROW_BUFFER} + 0010 + A], [SP + 0x8]
+63 e4 bc 40 59 06              # 510f |   mov [${var__VIDEO_ROW_BUFFER} + 0020 + A], [SP + 0x6]
                                #      | _cleanup_fn_set_color_palette:
 e4 20                          # 5115 |   pop A
 dc                             # 5117 |   ret
@@ -155,14 +155,14 @@ dc                             # 5117 |   ret
                                #      | _A_call_7:
 e0 e0 dc 00                    # 5118 |   push 0xdc
 e0 00                          # 511c |   push 0
-e0 e0 92 67                    # 511e |   push ${var__board__board_state}
+e0 e0 22 68                    # 511e |   push ${var__board__board_state}
 5c f8 46 00                    # 5122 |   call ${fn_memset}:rel + PC
 60 a0 bc 06                    # 5126 |   mov SP, SP + 0x6
                                #      | _Z_call_7:
-62 e0 00 6e 68                 # 512a |   mov [${var__board__points}], 0
-62 e0 00 70 68                 # 512f |   mov [${var__board__level}], 0
-62 e0 00 8a 68                 # 5134 |   mov [${var__board__ticks_till_gravity}], 0
-62 e0 00 8c 68                 # 5139 |   mov [${var__board__lines_remaining}], 0
+62 e0 00 fe 68                 # 512a |   mov [${var__board__points}], 0
+62 e0 00 00 69                 # 512f |   mov [${var__board__level}], 0
+62 e0 00 1a 69                 # 5134 |   mov [${var__board__ticks_till_gravity}], 0
+62 e0 00 1c 69                 # 5139 |   mov [${var__board__lines_remaining}], 0
                                #      | _A_call_8:
 e0 e0 be 0b                    # 513e |   push 0xbbe
 5c f8 5f 00                    # 5142 |   call ${fn_srand}:rel + PC
@@ -174,10 +174,10 @@ e0 e0 be 0b                    # 513e |   push 0xbbe
                                #      | _A_call_12:
 5c f8 5a 00                    # 514e |   call ${fn_tg_new_falling}:rel + PC
                                #      | _Z_call_12:
-ca e0 00 82 68                 # 5152 |   dec [${var__board__stored}], 0
-62 e0 00 84 68                 # 5157 |   mov [${var__board__stored} + 0002], 0
-62 e0 00 86 68                 # 515c |   mov [${var__board__stored} + 0004], 0
-62 e0 1c 80 68 03              # 5161 |   mov [${var__board__next} + 0006], 0x3
+ca e0 00 12 69                 # 5152 |   dec [${var__board__stored}], 0
+62 e0 00 14 69                 # 5157 |   mov [${var__board__stored} + 0002], 0
+62 e0 00 16 69                 # 515c |   mov [${var__board__stored} + 0004], 0
+62 e0 1c 10 69 03              # 5161 |   mov [${var__board__next} + 0006], 0x3
                                #      | _cleanup_fn_tg_init:
 dc                             # 5167 |   ret
                                #      | _end_fn_tg_init:
@@ -214,7 +214,7 @@ dc                             # 51a0 |   ret
                                #      | 
                                #      | fn_srand:
                                #      | _begin_fn_srand:
-63 e0 bc 90 67 02              # 51a1 |   mov [${var__rand__state}], [SP + 0x2]
+63 e0 bc 20 68 02              # 51a1 |   mov [${var__rand__state}], [SP + 0x2]
                                #      | _cleanup_fn_srand:
 dc                             # 51a7 |   ret
                                #      | _end_fn_srand:
@@ -224,8 +224,8 @@ dc                             # 51a7 |   ret
                                #      |   # Board.falling = Board.next
                                #      | _A_call_9:
 e0 1c 08                       # 51a8 |   push 0x8
-e0 e0 7a 68                    # 51ab |   push ${var__board__next}
-e0 e0 72 68                    # 51af |   push ${var__board__falling}
+e0 e0 0a 69                    # 51ab |   push ${var__board__next}
+e0 e0 02 69                    # 51af |   push ${var__board__falling}
 5c f8 32 00                    # 51b3 |   call ${fn_memcpy}:rel + PC
 60 a0 bc 06                    # 51b7 |   mov SP, SP + 0x6
                                #      | _Z_call_9:
@@ -236,10 +236,10 @@ e0 e0 72 68                    # 51af |   push ${var__board__falling}
 b5 fe e0 ff 10 ff              # 51bf |   xor G, [0xff10], H
 08 fe e0 4f c3                 # 51c5 |   mul G, 0xc34f
 90 fe ff 1c 07                 # 51ca |   div G, H, 0x7
-c6 e0 ff 7a 68                 # 51cf |   inc [${var__board__next}], H
-62 e0 00 7c 68                 # 51d4 |   mov [${var__board__next} + 0002], 0
-62 e0 00 7e 68                 # 51d9 |   mov [${var__board__next} + 0004], 0
-62 e0 1c 80 68 03              # 51de |   mov [${var__board__next} + 0006], 0x3
+c6 e0 ff 0a 69                 # 51cf |   inc [${var__board__next}], H
+62 e0 00 0c 69                 # 51d4 |   mov [${var__board__next} + 0002], 0
+62 e0 00 0e 69                 # 51d9 |   mov [${var__board__next} + 0004], 0
+62 e0 1c 10 69 03              # 51de |   mov [${var__board__next} + 0006], 0x3
                                #      | _cleanup_fn_tg_new_falling:
 dc                             # 51e4 |   ret
                                #      | _end_fn_tg_new_falling:
@@ -277,14 +277,14 @@ dc                             # 521d |   ret
                                #      | 
                                #      | fn_rand:
                                #      | _begin_fn_rand:
-61 ff e0 90 67                 # 521e |   mov H, [${var__rand__state}]
+61 ff e0 20 68                 # 521e |   mov H, [${var__rand__state}]
 a8 fe ff 1c 07                 # 5223 |   shl G, H, 0x7
 34 ff fe                       # 5228 |   xor H, G
 a0 fe ff 1c 09                 # 522b |   shr G, H, 0x9
 34 ff fe                       # 5230 |   xor H, G
 a8 fe ff 1c 08                 # 5233 |   shl G, H, 0x8
 34 ff fe                       # 5238 |   xor H, G
-62 e0 ff 90 67                 # 523b |   mov [${var__rand__state}], H
+62 e0 ff 20 68                 # 523b |   mov [${var__rand__state}], H
                                #      | _cleanup_fn_rand:
 dc                             # 5240 |   ret
                                #      | _end_fn_rand:
@@ -303,15 +303,15 @@ e8 ff 00 f8 0a 00              # 5245 |   jeq H, 0, ${_E_if_14}:rel + PC
                                #      | _C_if_14:
                                #      | _Z_if_14:
                                #      | _A_call_22:
-5c f8 e9 02                    # 524f |   call ${fn_tg_check_lines}:rel + PC
+5c f8 6d 03                    # 524f |   call ${fn_tg_check_lines}:rel + PC
                                #      | _Z_call_22:
                                #      | _A_call_23:
 e0 ff                          # 5253 |   push H
-5c f8 e7 02                    # 5255 |   call ${fn_tg_adjust_score}:rel + PC
+5c f8 6b 03                    # 5255 |   call ${fn_tg_adjust_score}:rel + PC
 60 a0 bc 02                    # 5259 |   mov SP, SP + 0x2
                                #      | _Z_call_23:
                                #      | _A_call_26:
-5c f8 e0 02                    # 525d |   call ${fn_tg_game_over}:rel + PC
+5c f8 64 03                    # 525d |   call ${fn_tg_game_over}:rel + PC
                                #      | _Z_call_26:
 84 ff 1c ff 01                 # 5261 |   sub H, 0x1, H
                                #      | _cleanup_fn_tg_tick:
@@ -321,26 +321,26 @@ dc                             # 5266 |   ret
                                #      | fn_tg_do_gravity_tick:
                                #      | _begin_fn_tg_do_gravity_tick:
 e0 20                          # 5267 |   push A
-4a e0 8a 68                    # 5269 |   dec [${var__board__ticks_till_gravity}]
+4a e0 1a 69                    # 5269 |   dec [${var__board__ticks_till_gravity}]
                                #      | _A_if_6:
-d2 e0 00 8a 68                 # 526d |   icmp [${var__board__ticks_till_gravity}], 0
+d2 e0 00 1a 69                 # 526d |   icmp [${var__board__ticks_till_gravity}], 0
 78 f8 54 00                    # 5272 |   jgt ${_E_if_6}:rel + PC
                                #      | _A_call_14:
 e0 00                          # 5276 |   push 0
 5c f8 54 00                    # 5278 |   call ${fn_tg_put}:rel + PC
 60 a0 bc 02                    # 527c |   mov SP, SP + 0x2
                                #      | _Z_call_14:
-46 e0 76 68                    # 5280 |   inc [${var__board__falling} + 0004]
+46 e0 06 69                    # 5280 |   inc [${var__board__falling} + 0004]
                                #      | _A_call_15:
 5c f8 bb 00                    # 5284 |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_15:
                                #      | _A_if_13:
 ec ff 1c f8 01 19 00           # 5288 |   jne H, 0x1, ${_E_if_13}:rel + PC
-a9 20 e0 1c 70 68 01           # 528f |   shl A, [${var__board__level}], 0x1
-63 e0 e4 8a 68 67 58           # 5296 |   mov [${var__board__ticks_till_gravity}], [${const__GRAVITY_LEVELS} + A]
+a9 20 e0 1c 00 69 01           # 528f |   shl A, [${var__board__level}], 0x1
+63 e0 e4 1a 69 eb 58           # 5296 |   mov [${var__board__ticks_till_gravity}], [${const__GRAVITY_LEVELS} + A]
 58 f8 17 00                    # 529d |   jmp ${_C_if_13}:rel + PC
                                #      | _E_if_13:
-4a e0 76 68                    # 52a1 |   dec [${var__board__falling} + 0004]
+4a e0 06 69                    # 52a1 |   dec [${var__board__falling} + 0004]
                                #      | _A_call_16:
 e0 1c 01                       # 52a5 |   push 0x1
 5c f8 24 00                    # 52a8 |   call ${fn_tg_put}:rel + PC
@@ -374,10 +374,10 @@ e0 60                          # 52ce |   push C
 e0 40                          # 52d0 |   push B
 e0 20                          # 52d2 |   push A
 61 20 bc 0a                    # 52d4 |   mov A, [SP + 0xa]
-c9 40 e0 72 68                 # 52d8 |   dec B, [${var__board__falling}]
-a9 80 e0 1c 74 68 01           # 52dd |   shl D, [${var__board__falling} + 0002], 0x1
+c9 40 e0 02 69                 # 52d8 |   dec B, [${var__board__falling}]
+a9 80 e0 1c 04 69 01           # 52dd |   shl D, [${var__board__falling} + 0002], 0x1
 60 80 53                       # 52e4 |   mov D, B*8 + D
-61 80 f0 2f 58                 # 52e7 |   mov D, [${const__TETROMINOS} + D]
+61 80 f0 b3 58                 # 52e7 |   mov D, [${const__TETROMINOS} + D]
                                #      | _A_for_2:
 60 60 00                       # 52ec |   mov C, 0
                                #      | _BA_for_2:
@@ -386,16 +386,16 @@ a0 40 80 7e 02                 # 52f6 |   shr B, D, C*4 + 0x2
 a0 fc 80 62                    # 52fb |   shr E, D, C*4
 2c 40 1c 03                    # 52ff |   and B, 0x3
 2c fc 1c 03                    # 5303 |   and E, 0x3
-81 fe e0 40 76 68              # 5307 |   add G, [${var__board__falling} + 0004], B
-81 40 e0 fc 78 68              # 530d |   add B, [${var__board__falling} + 0006], E
+81 fe e0 40 06 69              # 5307 |   add G, [${var__board__falling} + 0004], B
+81 40 e0 fc 08 69              # 530d |   add B, [${var__board__falling} + 0006], E
 88 fd fe 1c 0a                 # 5313 |   mul F, G, 0xa
-00 fd e8 92 67                 # 5318 |   add F, ${var__board__board_state} + B
+00 fd e8 22 68                 # 5318 |   add F, ${var__board__board_state} + B
                                #      | _A_if_7:
 ee bc 00 f8 0a 0e 00           # 531d |   jne [SP + 0xa], 0, ${_E_if_7}:rel + PC
 66 fd 00                       # 5324 |   bmov [F], 0
 58 f8 09 00                    # 5327 |   jmp ${_C_if_7}:rel + PC
                                #      | _E_if_7:
-67 fd e0 72 68                 # 532b |   bmov [F], [${var__board__falling}]
+67 fd e0 02 69                 # 532b |   bmov [F], [${var__board__falling}]
                                #      | _C_if_7:
                                #      | _Z_if_7:
                                #      | _BZ_for_2:
@@ -417,10 +417,10 @@ e0 80                          # 533f |   push D
 e0 60                          # 5341 |   push C
 e0 40                          # 5343 |   push B
 e0 20                          # 5345 |   push A
-c9 40 e0 72 68                 # 5347 |   dec B, [${var__board__falling}]
-a9 80 e0 1c 74 68 01           # 534c |   shl D, [${var__board__falling} + 0002], 0x1
+c9 40 e0 02 69                 # 5347 |   dec B, [${var__board__falling}]
+a9 80 e0 1c 04 69 01           # 534c |   shl D, [${var__board__falling} + 0002], 0x1
 60 80 53                       # 5353 |   mov D, B*8 + D
-61 80 f0 2f 58                 # 5356 |   mov D, [${const__TETROMINOS} + D]
+61 80 f0 b3 58                 # 5356 |   mov D, [${const__TETROMINOS} + D]
                                #      | _A_for_3:
 60 60 00                       # 535b |   mov C, 0
                                #      | _BA_for_3:
@@ -429,8 +429,8 @@ a0 20 80 7e 02                 # 5365 |   shr A, D, C*4 + 0x2
 a0 fc 80 62                    # 536a |   shr E, D, C*4
 2c 20 1c 03                    # 536e |   and A, 0x3
 2c fc 1c 03                    # 5372 |   and E, 0x3
-81 fe e0 20 76 68              # 5376 |   add G, [${var__board__falling} + 0004], A
-81 40 e0 fc 78 68              # 537c |   add B, [${var__board__falling} + 0006], E
+81 fe e0 20 06 69              # 5376 |   add G, [${var__board__falling} + 0004], A
+81 40 e0 fc 08 69              # 537c |   add B, [${var__board__falling} + 0006], E
                                #      |   # check if out of board area
 60 ff 00                       # 5382 |   mov H, 0
 d0 fe 00                       # 5385 |   icmp G, 0
@@ -441,7 +441,7 @@ fc fe 1c f8 16 2d 00           # 5393 |   jge G, 0x16, ${_cleanup_fn_tg_fits}:re
 fc 40 1c f8 0a 26 00           # 539a |   jge B, 0xa, ${_cleanup_fn_tg_fits}:rel + PC
                                #      |   # check if cell is occupied
 88 fd fe 1c 0a                 # 53a1 |   mul F, G, 0xa
-00 fd e8 92 67                 # 53a6 |   add F, ${var__board__board_state} + B
+00 fd e8 22 68                 # 53a6 |   add F, ${var__board__board_state} + B
 65 fd fd                       # 53ab |   bmov F, [F]
 60 ff 00                       # 53ae |   mov H, 0
 ec fd 00 f8 0f 00              # 53b1 |   jne F, 0, ${_cleanup_fn_tg_fits}:rel + PC
@@ -470,94 +470,93 @@ e0 20                          # 53cf |   push A
                                #      | _A_for_4:
 60 20 00                       # 53d5 |   mov A, 0
                                #      | _BA_for_4:
-fc 20 1c f8 16 19 01           # 53d8 |   jge A, 0x16, ${_C_for_4}:rel + PC
+fc 20 1c f8 16 9d 01           # 53d8 |   jge A, 0x16, ${_C_for_4}:rel + PC
 62 a0 20                       # 53df |   mov [SP], A
                                #      | _A_call_20:
 e0 3c 02                       # 53e2 |   push A + 0x2
-5c f8 19 01                    # 53e5 |   call ${fn_switch_screen_page_rgb}:rel + PC
+5c f8 9d 01                    # 53e5 |   call ${fn_switch_screen_page_rgb}:rel + PC
 60 a0 bc 02                    # 53e9 |   mov SP, SP + 0x2
                                #      | _Z_call_20:
                                #      | _A_for_5:
 e0 20                          # 53ed |   push A
 60 40 00                       # 53ef |   mov B, 0
                                #      | _BA_for_5:
-fc 40 1c f8 0a f7 00           # 53f2 |   jge B, 0xa, ${_C_for_5}:rel + PC
+fc 40 1c f8 0a 7b 01           # 53f2 |   jge B, 0xa, ${_C_for_5}:rel + PC
 89 80 bc 1c 02 0a              # 53f9 |   mul D, [SP + 0x2], 0xa
-80 80 88 e0 92 67              # 53ff |   add D, D + B, ${var__board__board_state}
+80 80 88 e0 22 68              # 53ff |   add D, D + B, ${var__board__board_state}
 65 20 80                       # 5405 |   bmov A, [D]
 a8 60 5c 1c 0a 01              # 5408 |   shl C, B + 0xa, 0x1
-60 60 ec 90 58                 # 540e |   mov C, ${var__VIDEO_ROW_BUFFER} + C
+60 60 ec 20 59                 # 540e |   mov C, ${var__VIDEO_ROW_BUFFER} + C
+60 fe 00                       # 5413 |   mov G, 0
                                #      | _A_if_15:
-ec 20 00 f8 52 00              # 5413 |   jne A, 0, ${_E_if_15}:rel + PC
+ec 40 1c f8 09 0c 00           # 5416 |   jne B, 0x9, ${_E_if_15}:rel + PC
+60 fe e0 00 80                 # 541d |   mov G, 0x8000
+                               #      | _E_if_15:
+                               #      | _C_if_15:
+                               #      | _Z_if_15:
+                               #      | _A_if_16:
+ec 20 00 f8 54 00              # 5422 |   jne A, 0, ${_E_if_16}:rel + PC
                                #      | _A_for_6:
-60 80 00                       # 5419 |   mov D, 0
+60 80 00                       # 5428 |   mov D, 0
                                #      | _BA_for_6:
-fc 80 e0 f8 00 0f 14 00        # 541c |   jge D, 0xf00, ${_C_for_6}:rel + PC
-c6 70 00                       # 5424 |   inc [C + D], 0
+fc 80 e0 f8 00 0f 16 00        # 542b |   jge D, 0xf00, ${_C_for_6}:rel + PC
+b2 70 1c fe 01                 # 5433 |   or [C + D], 0x1, G
                                #      | _BZ_for_6:
-60 80 f0 a0 00                 # 5427 |   mov D, 0xa0 + D
-58 f8 f0 ff                    # 542c |   jmp ${_BA_for_6}:rel + PC
+60 80 f0 a0 00                 # 5438 |   mov D, 0xa0 + D
+58 f8 ee ff                    # 543d |   jmp ${_BA_for_6}:rel + PC
                                #      | _C_for_6:
                                #      | _Z_for_6:
                                #      | _A_for_7:
-60 80 1c 50                    # 5430 |   mov D, 0x50
+60 80 1c 50                    # 5441 |   mov D, 0x50
                                #      | _BA_for_7:
-fc 80 e0 f8 00 0f 14 00        # 5434 |   jge D, 0xf00, ${_C_for_7}:rel + PC
-62 70 00                       # 543c |   mov [C + D], 0
+fc 80 e0 f8 00 0f 14 00        # 5445 |   jge D, 0xf00, ${_C_for_7}:rel + PC
+62 70 00                       # 544d |   mov [C + D], 0
                                #      | _BZ_for_7:
-60 80 f0 a0 00                 # 543f |   mov D, 0xa0 + D
-58 f8 f0 ff                    # 5444 |   jmp ${_BA_for_7}:rel + PC
+60 80 f0 a0 00                 # 5450 |   mov D, 0xa0 + D
+58 f8 f0 ff                    # 5455 |   jmp ${_BA_for_7}:rel + PC
                                #      | _C_for_7:
                                #      | _Z_for_7:
                                #      | _A_for_8:
-60 80 00                       # 5448 |   mov D, 0
+60 80 00                       # 5459 |   mov D, 0
                                #      | _BA_for_8:
-fc 80 e0 f8 00 0f 16 00        # 544b |   jge D, 0xf00, ${_C_for_8}:rel + PC
-62 70 e0 55 55                 # 5453 |   mov [C + D], 0x5555
+fc 80 e0 f8 00 0f 16 00        # 545c |   jge D, 0xf00, ${_C_for_8}:rel + PC
+62 70 e0 55 55                 # 5464 |   mov [C + D], 0x5555
                                #      | _BZ_for_8:
-60 80 f0 00 05                 # 5458 |   mov D, 0x500 + D
-58 f8 ee ff                    # 545d |   jmp ${_BA_for_8}:rel + PC
+60 80 f0 00 05                 # 5469 |   mov D, 0x500 + D
+58 f8 ee ff                    # 546e |   jmp ${_BA_for_8}:rel + PC
                                #      | _C_for_8:
                                #      | _Z_for_8:
-58 f8 82 00                    # 5461 |   jmp ${_C_if_15}:rel + PC
-                               #      | _E_if_15:
-98 ff 20 00                    # 5465 |   getb H, A, 0
-                               #      | _A_if_16:
-e8 ff 00 f8 0b 00              # 5469 |   jeq H, 0, ${_E_if_16}:rel + PC
-60 ff e0 ff 7f                 # 546f |   mov H, 0x7fff
+58 f8 d2 00                    # 5472 |   jmp ${_C_if_16}:rel + PC
                                #      | _E_if_16:
-                               #      | _C_if_16:
-                               #      | _Z_if_16:
-                               #      | _A_for_9:
-60 80 00                       # 5474 |   mov D, 0
-                               #      | _BA_for_9:
-fc 80 e0 f8 b0 04 13 00        # 5477 |   jge D, 0x4b0, ${_C_for_9}:rel + PC
-62 70 ff                       # 547f |   mov [C + D], H
-                               #      | _BZ_for_9:
-60 80 9c 50                    # 5482 |   mov D, D + 0x50
-58 f8 f1 ff                    # 5486 |   jmp ${_BA_for_9}:rel + PC
-                               #      | _C_for_9:
-                               #      | _Z_for_9:
-62 70 00                       # 548a |   mov [C + D], 0
-98 ff 20 1c 01                 # 548d |   getb H, A, 0x1
+98 ff 20 00                    # 5476 |   getb H, A, 0
                                #      | _A_if_17:
-e8 ff 00 f8 0b 00              # 5492 |   jeq H, 0, ${_E_if_17}:rel + PC
-60 ff e0 ff 7f                 # 5498 |   mov H, 0x7fff
+e8 ff 00 f8 0b 00              # 547a |   jeq H, 0, ${_E_if_17}:rel + PC
+60 ff e0 ff 7f                 # 5480 |   mov H, 0x7fff
                                #      | _E_if_17:
                                #      | _C_if_17:
                                #      | _Z_if_17:
+                               #      | _A_for_9:
+60 80 00                       # 5485 |   mov D, 0
+                               #      | _BA_for_9:
+fc 80 e0 f8 b0 04 15 00        # 5488 |   jge D, 0x4b0, ${_C_for_9}:rel + PC
+b2 70 ff fe                    # 5490 |   or [C + D], H, G
+                               #      | _BZ_for_9:
+60 80 f0 a0 00                 # 5494 |   mov D, 0xa0 + D
+58 f8 ef ff                    # 5499 |   jmp ${_BA_for_9}:rel + PC
+                               #      | _C_for_9:
+                               #      | _Z_for_9:
                                #      | _A_for_10:
-60 80 e0 00 05                 # 549d |   mov D, 0x500
+60 80 1c 50                    # 549d |   mov D, 0x50
                                #      | _BA_for_10:
-fc 80 e0 f8 b0 09 13 00        # 54a2 |   jge D, 0x9b0, ${_C_for_10}:rel + PC
-62 70 ff                       # 54aa |   mov [C + D], H
+fc 80 e0 f8 b0 04 14 00        # 54a1 |   jge D, 0x4b0, ${_C_for_10}:rel + PC
+62 70 ff                       # 54a9 |   mov [C + D], H
                                #      | _BZ_for_10:
-60 80 9c 50                    # 54ad |   mov D, D + 0x50
-58 f8 f1 ff                    # 54b1 |   jmp ${_BA_for_10}:rel + PC
+60 80 f0 a0 00                 # 54ac |   mov D, 0xa0 + D
+58 f8 f0 ff                    # 54b1 |   jmp ${_BA_for_10}:rel + PC
                                #      | _C_for_10:
                                #      | _Z_for_10:
 62 70 00                       # 54b5 |   mov [C + D], 0
-98 ff 20 1c 02                 # 54b8 |   getb H, A, 0x2
+98 ff 20 1c 01                 # 54b8 |   getb H, A, 0x1
                                #      | _A_if_18:
 e8 ff 00 f8 0b 00              # 54bd |   jeq H, 0, ${_E_if_18}:rel + PC
 60 ff e0 ff 7f                 # 54c3 |   mov H, 0x7fff
@@ -565,468 +564,521 @@ e8 ff 00 f8 0b 00              # 54bd |   jeq H, 0, ${_E_if_18}:rel + PC
                                #      | _C_if_18:
                                #      | _Z_if_18:
                                #      | _A_for_11:
-60 80 e0 00 0a                 # 54c8 |   mov D, 0xa00
+60 80 e0 00 05                 # 54c8 |   mov D, 0x500
                                #      | _BA_for_11:
-fc 80 e0 f8 b0 0e 13 00        # 54cd |   jge D, 0xeb0, ${_C_for_11}:rel + PC
-62 70 ff                       # 54d5 |   mov [C + D], H
+fc 80 e0 f8 b0 09 15 00        # 54cd |   jge D, 0x9b0, ${_C_for_11}:rel + PC
+b2 70 ff fe                    # 54d5 |   or [C + D], H, G
                                #      | _BZ_for_11:
-60 80 9c 50                    # 54d8 |   mov D, D + 0x50
-58 f8 f1 ff                    # 54dc |   jmp ${_BA_for_11}:rel + PC
+60 80 f0 a0 00                 # 54d9 |   mov D, 0xa0 + D
+58 f8 ef ff                    # 54de |   jmp ${_BA_for_11}:rel + PC
                                #      | _C_for_11:
                                #      | _Z_for_11:
-62 70 00                       # 54e0 |   mov [C + D], 0
-                               #      | _C_if_15:
-                               #      | _Z_if_15:
+                               #      | _A_for_12:
+60 80 e0 50 05                 # 54e2 |   mov D, 0x550
+                               #      | _BA_for_12:
+fc 80 e0 f8 b0 09 14 00        # 54e7 |   jge D, 0x9b0, ${_C_for_12}:rel + PC
+62 70 ff                       # 54ef |   mov [C + D], H
+                               #      | _BZ_for_12:
+60 80 f0 a0 00                 # 54f2 |   mov D, 0xa0 + D
+58 f8 f0 ff                    # 54f7 |   jmp ${_BA_for_12}:rel + PC
+                               #      | _C_for_12:
+                               #      | _Z_for_12:
+62 70 00                       # 54fb |   mov [C + D], 0
+98 ff 20 1c 02                 # 54fe |   getb H, A, 0x2
+                               #      | _A_if_19:
+e8 ff 00 f8 0b 00              # 5503 |   jeq H, 0, ${_E_if_19}:rel + PC
+60 ff e0 ff 7f                 # 5509 |   mov H, 0x7fff
+                               #      | _E_if_19:
+                               #      | _C_if_19:
+                               #      | _Z_if_19:
+                               #      | _A_for_13:
+60 80 e0 00 0a                 # 550e |   mov D, 0xa00
+                               #      | _BA_for_13:
+fc 80 e0 f8 b0 0e 15 00        # 5513 |   jge D, 0xeb0, ${_C_for_13}:rel + PC
+b2 70 ff fe                    # 551b |   or [C + D], H, G
+                               #      | _BZ_for_13:
+60 80 f0 a0 00                 # 551f |   mov D, 0xa0 + D
+58 f8 ef ff                    # 5524 |   jmp ${_BA_for_13}:rel + PC
+                               #      | _C_for_13:
+                               #      | _Z_for_13:
+                               #      | _A_for_14:
+60 80 e0 50 0a                 # 5528 |   mov D, 0xa50
+                               #      | _BA_for_14:
+fc 80 e0 f8 b0 0e 14 00        # 552d |   jge D, 0xeb0, ${_C_for_14}:rel + PC
+62 70 ff                       # 5535 |   mov [C + D], H
+                               #      | _BZ_for_14:
+60 80 f0 a0 00                 # 5538 |   mov D, 0xa0 + D
+58 f8 f0 ff                    # 553d |   jmp ${_BA_for_14}:rel + PC
+                               #      | _C_for_14:
+                               #      | _Z_for_14:
+62 70 00                       # 5541 |   mov [C + D], 0
+                               #      | _C_if_16:
+                               #      | _Z_if_16:
+                               #      | _A_if_20:
+ee bc 1c f8 02 15 23 00        # 5544 |   jne [SP + 0x2], 0x15, ${_E_if_20}:rel + PC
+                               #      | _A_for_15:
+60 80 e0 b0 04                 # 554c |   mov D, 0x4b0
+                               #      | _BA_for_15:
+fc 80 e0 f8 00 0f 16 00        # 5551 |   jge D, 0xf00, ${_C_for_15}:rel + PC
+62 70 e0 55 55                 # 5559 |   mov [C + D], 0x5555
+                               #      | _BZ_for_15:
+60 80 f0 00 05                 # 555e |   mov D, 0x500 + D
+58 f8 ee ff                    # 5563 |   jmp ${_BA_for_15}:rel + PC
+                               #      | _C_for_15:
+                               #      | _Z_for_15:
+                               #      | _E_if_20:
+                               #      | _C_if_20:
+                               #      | _Z_if_20:
                                #      | _BZ_for_5:
-44 40                          # 54e3 |   inc B
-58 f8 0d ff                    # 54e5 |   jmp ${_BA_for_5}:rel + PC
+44 40                          # 5567 |   inc B
+58 f8 89 fe                    # 5569 |   jmp ${_BA_for_5}:rel + PC
                                #      | _C_for_5:
-e4 20                          # 54e9 |   pop A
+e4 20                          # 556d |   pop A
                                #      | _Z_for_5:
                                #      | _BZ_for_4:
-44 20                          # 54eb |   inc A
-58 f8 eb fe                    # 54ed |   jmp ${_BA_for_4}:rel + PC
+44 20                          # 556f |   inc A
+58 f8 67 fe                    # 5571 |   jmp ${_BA_for_4}:rel + PC
                                #      | _C_for_4:
                                #      | _Z_for_4:
                                #      | _cleanup_fn_display_board:
-60 a0 bc 02                    # 54f1 |   mov SP, SP + 0x2
-e4 20                          # 54f5 |   pop A
-e4 40                          # 54f7 |   pop B
-e4 60                          # 54f9 |   pop C
-e4 80                          # 54fb |   pop D
-dc                             # 54fd |   ret
+60 a0 bc 02                    # 5575 |   mov SP, SP + 0x2
+e4 20                          # 5579 |   pop A
+e4 40                          # 557b |   pop B
+e4 60                          # 557d |   pop C
+e4 80                          # 557f |   pop D
+dc                             # 5581 |   ret
                                #      | _end_fn_display_board:
                                #      | 
                                #      | fn_switch_screen_page_rgb:
                                #      | _begin_fn_switch_screen_page_rgb:
-e0 40                          # 54fe |   push B
-e0 20                          # 5500 |   push A
-60 20 e0 a1 00                 # 5502 |   mov A, 0xa1
-89 40 bc e0 06 00 05           # 5507 |   mul B, [SP + 0x6], 0x500
-54 e0 e0 1c 90 58 8f 5d 04     # 550e |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x4
-60 20 e0 a2 00                 # 5517 |   mov A, 0xa2
-54 e0 e0 1c 90 5d 8f 62 05     # 551c |   mmap ${var__VIDEO_ROW_BUFFER} + 0500, ${var__VIDEO_ROW_BUFFER} + 09ff, 0x5
-60 20 e0 a4 00                 # 5525 |   mov A, 0xa4
-54 e0 e0 1c 90 62 8f 67 06     # 552a |   mmap ${var__VIDEO_ROW_BUFFER} + 0a00, ${var__VIDEO_ROW_BUFFER} + 0eff, 0x6
+e0 40                          # 5582 |   push B
+e0 20                          # 5584 |   push A
+60 20 e0 a1 00                 # 5586 |   mov A, 0xa1
+89 40 bc e0 06 00 05           # 558b |   mul B, [SP + 0x6], 0x500
+54 e0 e0 1c 20 59 1f 5e 04     # 5592 |   mmap ${var__VIDEO_ROW_BUFFER}, ${var__VIDEO_ROW_BUFFER} + 04ff, 0x4
+60 20 e0 a2 00                 # 559b |   mov A, 0xa2
+54 e0 e0 1c 20 5e 1f 63 05     # 55a0 |   mmap ${var__VIDEO_ROW_BUFFER} + 0500, ${var__VIDEO_ROW_BUFFER} + 09ff, 0x5
+60 20 e0 a4 00                 # 55a9 |   mov A, 0xa4
+54 e0 e0 1c 20 63 1f 68 06     # 55ae |   mmap ${var__VIDEO_ROW_BUFFER} + 0a00, ${var__VIDEO_ROW_BUFFER} + 0eff, 0x6
                                #      | _cleanup_fn_switch_screen_page_rgb:
-e4 20                          # 5533 |   pop A
-e4 40                          # 5535 |   pop B
-dc                             # 5537 |   ret
+e4 20                          # 55b7 |   pop A
+e4 40                          # 55b9 |   pop B
+dc                             # 55bb |   ret
                                #      | _end_fn_switch_screen_page_rgb:
                                #      | 
                                #      | fn_tg_check_lines:
                                #      | _begin_fn_tg_check_lines:
-60 ff 00                       # 5538 |   mov H, 0
+60 ff 00                       # 55bc |   mov H, 0
                                #      | _cleanup_fn_tg_check_lines:
-dc                             # 553b |   ret
+dc                             # 55bf |   ret
                                #      | _end_fn_tg_check_lines:
                                #      | 
                                #      | fn_tg_adjust_score:
                                #      | _begin_fn_tg_adjust_score:
                                #      | _cleanup_fn_tg_adjust_score:
-dc                             # 553c |   ret
+dc                             # 55c0 |   ret
                                #      | _end_fn_tg_adjust_score:
                                #      | 
                                #      | fn_tg_game_over:
                                #      | _begin_fn_tg_game_over:
-e0 80                          # 553d |   push D
-e0 60                          # 553f |   push C
-e0 40                          # 5541 |   push B
-e0 20                          # 5543 |   push A
-60 60 00                       # 5545 |   mov C, 0
+e0 80                          # 55c1 |   push D
+e0 60                          # 55c3 |   push C
+e0 40                          # 55c5 |   push B
+e0 20                          # 55c7 |   push A
+60 60 00                       # 55c9 |   mov C, 0
                                #      | _A_call_24:
-e0 00                          # 5548 |   push 0
-5c f8 82 fd                    # 554a |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 554e |   mov SP, SP + 0x2
+e0 00                          # 55cc |   push 0
+5c f8 fe fc                    # 55ce |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 55d2 |   mov SP, SP + 0x2
                                #      | _Z_call_24:
-                               #      | _A_for_12:
-60 20 00                       # 5552 |   mov A, 0
-                               #      | _BA_for_12:
-fc 20 1c f8 02 37 00           # 5555 |   jge A, 0x2, ${_C_for_12}:rel + PC
-                               #      | _A_for_13:
-60 40 00                       # 555c |   mov B, 0
-                               #      | _BA_for_13:
-fc 40 1c f8 0a 27 00           # 555f |   jge B, 0xa, ${_C_for_13}:rel + PC
-88 80 20 1c 0a                 # 5566 |   mul D, A, 0xa
-00 80 e8 92 67                 # 556b |   add D, ${var__board__board_state} + B
-65 ff 80                       # 5570 |   bmov H, [D]
-                               #      | _A_if_19:
-e8 ff 00 f8 0d 00              # 5573 |   jeq H, 0, ${_E_if_19}:rel + PC
-c4 60 00                       # 5579 |   inc C, 0
-58 f8 10 00                    # 557c |   jmp ${_C_for_12}:rel + PC
-                               #      | _E_if_19:
-                               #      | _C_if_19:
-                               #      | _Z_if_19:
-                               #      | _BZ_for_13:
-44 40                          # 5580 |   inc B
-58 f8 dd ff                    # 5582 |   jmp ${_BA_for_13}:rel + PC
-                               #      | _C_for_13:
-                               #      | _Z_for_13:
-                               #      | _BZ_for_12:
-44 20                          # 5586 |   inc A
-58 f8 cd ff                    # 5588 |   jmp ${_BA_for_12}:rel + PC
-                               #      | _C_for_12:
-                               #      | _Z_for_12:
+                               #      | _A_for_16:
+60 20 00                       # 55d6 |   mov A, 0
+                               #      | _BA_for_16:
+fc 20 1c f8 02 37 00           # 55d9 |   jge A, 0x2, ${_C_for_16}:rel + PC
+                               #      | _A_for_17:
+60 40 00                       # 55e0 |   mov B, 0
+                               #      | _BA_for_17:
+fc 40 1c f8 0a 27 00           # 55e3 |   jge B, 0xa, ${_C_for_17}:rel + PC
+88 80 20 1c 0a                 # 55ea |   mul D, A, 0xa
+00 80 e8 22 68                 # 55ef |   add D, ${var__board__board_state} + B
+65 ff 80                       # 55f4 |   bmov H, [D]
+                               #      | _A_if_21:
+e8 ff 00 f8 0d 00              # 55f7 |   jeq H, 0, ${_E_if_21}:rel + PC
+c4 60 00                       # 55fd |   inc C, 0
+58 f8 10 00                    # 5600 |   jmp ${_C_for_16}:rel + PC
+                               #      | _E_if_21:
+                               #      | _C_if_21:
+                               #      | _Z_if_21:
+                               #      | _BZ_for_17:
+44 40                          # 5604 |   inc B
+58 f8 dd ff                    # 5606 |   jmp ${_BA_for_17}:rel + PC
+                               #      | _C_for_17:
+                               #      | _Z_for_17:
+                               #      | _BZ_for_16:
+44 20                          # 560a |   inc A
+58 f8 cd ff                    # 560c |   jmp ${_BA_for_16}:rel + PC
+                               #      | _C_for_16:
+                               #      | _Z_for_16:
                                #      | _A_call_25:
-e0 1c 01                       # 558c |   push 0x1
-5c f8 3d fd                    # 558f |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 5593 |   mov SP, SP + 0x2
+e0 1c 01                       # 5610 |   push 0x1
+5c f8 b9 fc                    # 5613 |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 5617 |   mov SP, SP + 0x2
                                #      | _Z_call_25:
-60 ff 60                       # 5597 |   mov H, C
+60 ff 60                       # 561b |   mov H, C
                                #      | _cleanup_fn_tg_game_over:
-e4 20                          # 559a |   pop A
-e4 40                          # 559c |   pop B
-e4 60                          # 559e |   pop C
-e4 80                          # 55a0 |   pop D
-dc                             # 55a2 |   ret
+e4 20                          # 561e |   pop A
+e4 40                          # 5620 |   pop B
+e4 60                          # 5622 |   pop C
+e4 80                          # 5624 |   pop D
+dc                             # 5626 |   ret
                                #      | _end_fn_tg_game_over:
                                #      | 
                                #      | fn_handle_keyboard:
                                #      | _begin_fn_handle_keyboard:
-e0 20                          # 55a3 |   push A
+e0 20                          # 5627 |   push A
                                #      | _A_loop_2:
                                #      | _BA_loop_2:
-61 fe e0 06 ff                 # 55a5 |   mov G, [0xff06]
-ac ff fe e0 00 80              # 55aa |   and H, G, 0x8000
-e8 ff 00 f8 7e 00              # 55b0 |   jeq H, 0, ${_C_loop_2}:rel + PC
-a9 ff e0 1c 90 68 08           # 55b6 |   shl H, [${var__handle_keyboard__scan_code}], 0x8
-2c fe e0 ff 00                 # 55bd |   and G, 0xff
-30 ff fe                       # 55c2 |   or H, G
-62 e0 ff 90 68                 # 55c5 |   mov [${var__handle_keyboard__scan_code}], H
-a0 fe ff 1c 08                 # 55ca |   shr G, H, 0x8
-2c ff e0 ff 00                 # 55cf |   and H, 0xff
-e8 fe e0 f8 f0 00 d1 ff        # 55d4 |   jeq G, 0xf0, ${_BA_loop_2}:rel + PC
-60 fe 00                       # 55dc |   mov G, 0
-                               #      | _A_if_23:
-ec ff 1c f8 75 0f 00           # 55df |   jne H, 0x75, ${_E_if_23}:rel + PC
-60 fe 1c 03                    # 55e6 |   mov G, 0x3
-58 f8 2c 00                    # 55ea |   jmp ${_C_if_23}:rel + PC
-                               #      | _E_if_23:
-ec ff 1c f8 74 0f 00           # 55ee |   jne H, 0x74, ${_E2_if_23}:rel + PC
-60 fe 1c 02                    # 55f5 |   mov G, 0x2
-58 f8 1d 00                    # 55f9 |   jmp ${_C_if_23}:rel + PC
-                               #      | _E2_if_23:
-ec ff 1c f8 6b 0e 00           # 55fd |   jne H, 0x6b, ${_E3_if_23}:rel + PC
-c4 fe 00                       # 5604 |   inc G, 0
-58 f8 0f 00                    # 5607 |   jmp ${_C_if_23}:rel + PC
-                               #      | _E3_if_23:
-ec ff 1c f8 72 0b 00           # 560b |   jne H, 0x72, ${_E4_if_23}:rel + PC
-60 fe 1c 04                    # 5612 |   mov G, 0x4
-                               #      | _E4_if_23:
-                               #      | _C_if_23:
-                               #      | _Z_if_23:
-                               #      | _A_if_24:
-e8 fe 00 f8 14 00              # 5616 |   jeq G, 0, ${_E_if_24}:rel + PC
+61 fe e0 06 ff                 # 5629 |   mov G, [0xff06]
+ac ff fe e0 00 80              # 562e |   and H, G, 0x8000
+e8 ff 00 f8 7e 00              # 5634 |   jeq H, 0, ${_C_loop_2}:rel + PC
+a9 ff e0 1c 20 69 08           # 563a |   shl H, [${var__handle_keyboard__scan_code}], 0x8
+2c fe e0 ff 00                 # 5641 |   and G, 0xff
+30 ff fe                       # 5646 |   or H, G
+62 e0 ff 20 69                 # 5649 |   mov [${var__handle_keyboard__scan_code}], H
+a0 fe ff 1c 08                 # 564e |   shr G, H, 0x8
+2c ff e0 ff 00                 # 5653 |   and H, 0xff
+e8 fe e0 f8 f0 00 d1 ff        # 5658 |   jeq G, 0xf0, ${_BA_loop_2}:rel + PC
+60 fe 00                       # 5660 |   mov G, 0
+                               #      | _A_if_25:
+ec ff 1c f8 75 0f 00           # 5663 |   jne H, 0x75, ${_E_if_25}:rel + PC
+60 fe 1c 03                    # 566a |   mov G, 0x3
+58 f8 2c 00                    # 566e |   jmp ${_C_if_25}:rel + PC
+                               #      | _E_if_25:
+ec ff 1c f8 74 0f 00           # 5672 |   jne H, 0x74, ${_E2_if_25}:rel + PC
+60 fe 1c 02                    # 5679 |   mov G, 0x2
+58 f8 1d 00                    # 567d |   jmp ${_C_if_25}:rel + PC
+                               #      | _E2_if_25:
+ec ff 1c f8 6b 0e 00           # 5681 |   jne H, 0x6b, ${_E3_if_25}:rel + PC
+c4 fe 00                       # 5688 |   inc G, 0
+58 f8 0f 00                    # 568b |   jmp ${_C_if_25}:rel + PC
+                               #      | _E3_if_25:
+ec ff 1c f8 72 0b 00           # 568f |   jne H, 0x72, ${_E4_if_25}:rel + PC
+60 fe 1c 04                    # 5696 |   mov G, 0x4
+                               #      | _E4_if_25:
+                               #      | _C_if_25:
+                               #      | _Z_if_25:
+                               #      | _A_if_26:
+e8 fe 00 f8 14 00              # 569a |   jeq G, 0, ${_E_if_26}:rel + PC
                                #      | _A_call_44:
-e0 fe                          # 561c |   push G
-5c f8 77 00                    # 561e |   call ${fn_tg_handle_move}:rel + PC
-60 a0 bc 02                    # 5622 |   mov SP, SP + 0x2
+e0 fe                          # 56a0 |   push G
+5c f8 77 00                    # 56a2 |   call ${fn_tg_handle_move}:rel + PC
+60 a0 bc 02                    # 56a6 |   mov SP, SP + 0x2
                                #      | _Z_call_44:
                                #      | _A_call_45:
-5c f8 a3 fd                    # 5626 |   call ${fn_display_board}:rel + PC
+5c f8 1f fd                    # 56aa |   call ${fn_display_board}:rel + PC
                                #      | _Z_call_45:
-                               #      | _E_if_24:
-                               #      | _C_if_24:
-                               #      | _Z_if_24:
+                               #      | _E_if_26:
+                               #      | _C_if_26:
+                               #      | _Z_if_26:
                                #      | _BZ_loop_2:
-58 f8 7b ff                    # 562a |   jmp ${_BA_loop_2}:rel + PC
+58 f8 7b ff                    # 56ae |   jmp ${_BA_loop_2}:rel + PC
                                #      | _C_loop_2:
                                #      | _Z_loop_2:
-61 ff e0 0e ff                 # 562e |   mov H, [0xff0e]
-                               #      | _A_if_31:
-e9 ff e0 f8 8e 68 5f 00        # 5633 |   jeq H, [${var__last_btn_in}], ${_E_if_31}:rel + PC
-62 e0 ff 8e 68                 # 563b |   mov [${var__last_btn_in}], H
-60 fe 00                       # 5640 |   mov G, 0
-98 20 ff 1c 0c                 # 5643 |   getb A, H, 0xc
-                               #      | _A_if_32:
-e8 20 00 f8 0a 00              # 5648 |   jeq A, 0, ${_E_if_32}:rel + PC
-60 fe 1c 03                    # 564e |   mov G, 0x3
-                               #      | _E_if_32:
-                               #      | _C_if_32:
-                               #      | _Z_if_32:
-98 20 ff 1c 0b                 # 5652 |   getb A, H, 0xb
+61 ff e0 0e ff                 # 56b2 |   mov H, [0xff0e]
                                #      | _A_if_33:
-e8 20 00 f8 0a 00              # 5657 |   jeq A, 0, ${_E_if_33}:rel + PC
-60 fe 1c 02                    # 565d |   mov G, 0x2
-                               #      | _E_if_33:
-                               #      | _C_if_33:
-                               #      | _Z_if_33:
-98 20 ff 1c 0a                 # 5661 |   getb A, H, 0xa
+e9 ff e0 f8 1e 69 5f 00        # 56b7 |   jeq H, [${var__last_btn_in}], ${_E_if_33}:rel + PC
+62 e0 ff 1e 69                 # 56bf |   mov [${var__last_btn_in}], H
+60 fe 00                       # 56c4 |   mov G, 0
+98 20 ff 1c 0c                 # 56c7 |   getb A, H, 0xc
                                #      | _A_if_34:
-e8 20 00 f8 09 00              # 5666 |   jeq A, 0, ${_E_if_34}:rel + PC
-c4 fe 00                       # 566c |   inc G, 0
+e8 20 00 f8 0a 00              # 56cc |   jeq A, 0, ${_E_if_34}:rel + PC
+60 fe 1c 03                    # 56d2 |   mov G, 0x3
                                #      | _E_if_34:
                                #      | _C_if_34:
                                #      | _Z_if_34:
-98 20 ff 1c 09                 # 566f |   getb A, H, 0x9
+98 20 ff 1c 0b                 # 56d6 |   getb A, H, 0xb
                                #      | _A_if_35:
-e8 20 00 f8 0a 00              # 5674 |   jeq A, 0, ${_E_if_35}:rel + PC
-60 fe 1c 04                    # 567a |   mov G, 0x4
+e8 20 00 f8 0a 00              # 56db |   jeq A, 0, ${_E_if_35}:rel + PC
+60 fe 1c 02                    # 56e1 |   mov G, 0x2
                                #      | _E_if_35:
                                #      | _C_if_35:
                                #      | _Z_if_35:
+98 20 ff 1c 0a                 # 56e5 |   getb A, H, 0xa
                                #      | _A_if_36:
-e8 fe 00 f8 14 00              # 567e |   jeq G, 0, ${_E_if_36}:rel + PC
-                               #      | _A_call_46:
-e0 fe                          # 5684 |   push G
-5c f8 0f 00                    # 5686 |   call ${fn_tg_handle_move}:rel + PC
-60 a0 bc 02                    # 568a |   mov SP, SP + 0x2
-                               #      | _Z_call_46:
-                               #      | _A_call_47:
-5c f8 3b fd                    # 568e |   call ${fn_display_board}:rel + PC
-                               #      | _Z_call_47:
+e8 20 00 f8 09 00              # 56ea |   jeq A, 0, ${_E_if_36}:rel + PC
+c4 fe 00                       # 56f0 |   inc G, 0
                                #      | _E_if_36:
                                #      | _C_if_36:
                                #      | _Z_if_36:
-                               #      | _E_if_31:
-                               #      | _C_if_31:
-                               #      | _Z_if_31:
+98 20 ff 1c 09                 # 56f3 |   getb A, H, 0x9
+                               #      | _A_if_37:
+e8 20 00 f8 0a 00              # 56f8 |   jeq A, 0, ${_E_if_37}:rel + PC
+60 fe 1c 04                    # 56fe |   mov G, 0x4
+                               #      | _E_if_37:
+                               #      | _C_if_37:
+                               #      | _Z_if_37:
+                               #      | _A_if_38:
+e8 fe 00 f8 14 00              # 5702 |   jeq G, 0, ${_E_if_38}:rel + PC
+                               #      | _A_call_46:
+e0 fe                          # 5708 |   push G
+5c f8 0f 00                    # 570a |   call ${fn_tg_handle_move}:rel + PC
+60 a0 bc 02                    # 570e |   mov SP, SP + 0x2
+                               #      | _Z_call_46:
+                               #      | _A_call_47:
+5c f8 b7 fc                    # 5712 |   call ${fn_display_board}:rel + PC
+                               #      | _Z_call_47:
+                               #      | _E_if_38:
+                               #      | _C_if_38:
+                               #      | _Z_if_38:
+                               #      | _E_if_33:
+                               #      | _C_if_33:
+                               #      | _Z_if_33:
                                #      | _cleanup_fn_handle_keyboard:
-e4 20                          # 5692 |   pop A
-dc                             # 5694 |   ret
+e4 20                          # 5716 |   pop A
+dc                             # 5718 |   ret
                                #      | _end_fn_handle_keyboard:
                                #      | 
                                #      | fn_tg_handle_move:
                                #      | _begin_fn_tg_handle_move:
-e0 20                          # 5695 |   push A
-61 20 bc 04                    # 5697 |   mov A, [SP + 0x4]
-                               #      | _A_if_25:
-ec 20 1c f8 01 16 00           # 569b |   jne A, 0x1, ${_E_if_25}:rel + PC
+e0 20                          # 5719 |   push A
+61 20 bc 04                    # 571b |   mov A, [SP + 0x4]
+                               #      | _A_if_27:
+ec 20 1c f8 01 16 00           # 571f |   jne A, 0x1, ${_E_if_27}:rel + PC
                                #      | _A_call_31:
-e0 1c ff                       # 56a2 |   push -1
-5c f8 3f 00                    # 56a5 |   call ${fn_tg_move}:rel + PC
-60 a0 bc 02                    # 56a9 |   mov SP, SP + 0x2
+e0 1c ff                       # 5726 |   push -1
+5c f8 3f 00                    # 5729 |   call ${fn_tg_move}:rel + PC
+60 a0 bc 02                    # 572d |   mov SP, SP + 0x2
                                #      | _Z_call_31:
-58 f8 34 00                    # 56ad |   jmp ${_C_if_25}:rel + PC
-                               #      | _E_if_25:
-ec 20 1c f8 02 16 00           # 56b1 |   jne A, 0x2, ${_E2_if_25}:rel + PC
+58 f8 34 00                    # 5731 |   jmp ${_C_if_27}:rel + PC
+                               #      | _E_if_27:
+ec 20 1c f8 02 16 00           # 5735 |   jne A, 0x2, ${_E2_if_27}:rel + PC
                                #      | _A_call_32:
-e0 1c 01                       # 56b8 |   push 0x1
-5c f8 29 00                    # 56bb |   call ${fn_tg_move}:rel + PC
-60 a0 bc 02                    # 56bf |   mov SP, SP + 0x2
+e0 1c 01                       # 573c |   push 0x1
+5c f8 29 00                    # 573f |   call ${fn_tg_move}:rel + PC
+60 a0 bc 02                    # 5743 |   mov SP, SP + 0x2
                                #      | _Z_call_32:
-58 f8 1e 00                    # 56c3 |   jmp ${_C_if_25}:rel + PC
-                               #      | _E2_if_25:
-ec 20 1c f8 04 0f 00           # 56c7 |   jne A, 0x4, ${_E3_if_25}:rel + PC
+58 f8 1e 00                    # 5747 |   jmp ${_C_if_27}:rel + PC
+                               #      | _E2_if_27:
+ec 20 1c f8 04 0f 00           # 574b |   jne A, 0x4, ${_E3_if_27}:rel + PC
                                #      | _A_call_37:
-5c f8 42 00                    # 56ce |   call ${fn_tg_down}:rel + PC
+5c f8 42 00                    # 5752 |   call ${fn_tg_down}:rel + PC
                                #      | _Z_call_37:
-58 f8 0f 00                    # 56d2 |   jmp ${_C_if_25}:rel + PC
-                               #      | _E3_if_25:
-ec 20 1c f8 03 0b 00           # 56d6 |   jne A, 0x3, ${_E4_if_25}:rel + PC
+58 f8 0f 00                    # 5756 |   jmp ${_C_if_27}:rel + PC
+                               #      | _E3_if_27:
+ec 20 1c f8 03 0b 00           # 575a |   jne A, 0x3, ${_E4_if_27}:rel + PC
                                #      | _A_call_43:
-5c f8 63 00                    # 56dd |   call ${fn_tg_rotate}:rel + PC
+5c f8 63 00                    # 5761 |   call ${fn_tg_rotate}:rel + PC
                                #      | _Z_call_43:
-                               #      | _E4_if_25:
-                               #      | _C_if_25:
-                               #      | _Z_if_25:
+                               #      | _E4_if_27:
+                               #      | _C_if_27:
+                               #      | _Z_if_27:
                                #      | _cleanup_fn_tg_handle_move:
-e4 20                          # 56e1 |   pop A
-dc                             # 56e3 |   ret
+e4 20                          # 5765 |   pop A
+dc                             # 5767 |   ret
                                #      | _end_fn_tg_handle_move:
                                #      | 
                                #      | fn_tg_move:
                                #      | _begin_fn_tg_move:
                                #      | _A_call_28:
-e0 00                          # 56e4 |   push 0
-5c f8 e6 fb                    # 56e6 |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 56ea |   mov SP, SP + 0x2
+e0 00                          # 5768 |   push 0
+5c f8 62 fb                    # 576a |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 576e |   mov SP, SP + 0x2
                                #      | _Z_call_28:
-03 e0 bc 78 68 02              # 56ee |   add [${var__board__falling} + 0006], [SP + 0x2]
+03 e0 bc 08 69 02              # 5772 |   add [${var__board__falling} + 0006], [SP + 0x2]
                                #      | _A_call_29:
-5c f8 4b fc                    # 56f4 |   call ${fn_tg_fits}:rel + PC
+5c f8 c7 fb                    # 5778 |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_29:
-                               #      | _A_if_26:
-ec ff 00 f8 0c 00              # 56f8 |   jne H, 0, ${_E_if_26}:rel + PC
-07 e0 bc 78 68 02              # 56fe |   sub [${var__board__falling} + 0006], [SP + 0x2]
-                               #      | _E_if_26:
-                               #      | _C_if_26:
-                               #      | _Z_if_26:
+                               #      | _A_if_28:
+ec ff 00 f8 0c 00              # 577c |   jne H, 0, ${_E_if_28}:rel + PC
+07 e0 bc 08 69 02              # 5782 |   sub [${var__board__falling} + 0006], [SP + 0x2]
+                               #      | _E_if_28:
+                               #      | _C_if_28:
+                               #      | _Z_if_28:
                                #      | _A_call_30:
-e0 1c 01                       # 5704 |   push 0x1
-5c f8 c5 fb                    # 5707 |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 570b |   mov SP, SP + 0x2
+e0 1c 01                       # 5788 |   push 0x1
+5c f8 41 fb                    # 578b |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 578f |   mov SP, SP + 0x2
                                #      | _Z_call_30:
                                #      | _cleanup_fn_tg_move:
-dc                             # 570f |   ret
+dc                             # 5793 |   ret
                                #      | _end_fn_tg_move:
                                #      | 
                                #      | fn_tg_down:
                                #      | _begin_fn_tg_down:
                                #      | _A_call_33:
-e0 00                          # 5710 |   push 0
-5c f8 ba fb                    # 5712 |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 5716 |   mov SP, SP + 0x2
+e0 00                          # 5794 |   push 0
+5c f8 36 fb                    # 5796 |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 579a |   mov SP, SP + 0x2
                                #      | _Z_call_33:
                                #      | _A_loop_3:
                                #      | _BA_loop_3:
-46 e0 76 68                    # 571a |   inc [${var__board__falling} + 0004]
+46 e0 06 69                    # 579e |   inc [${var__board__falling} + 0004]
                                #      | _A_call_34:
-5c f8 21 fc                    # 571e |   call ${fn_tg_fits}:rel + PC
+5c f8 9d fb                    # 57a2 |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_34:
-e8 ff 00 f8 0a 00              # 5722 |   jeq H, 0, ${_C_loop_3}:rel + PC
+e8 ff 00 f8 0a 00              # 57a6 |   jeq H, 0, ${_C_loop_3}:rel + PC
                                #      | _BZ_loop_3:
-58 f8 f2 ff                    # 5728 |   jmp ${_BA_loop_3}:rel + PC
+58 f8 f2 ff                    # 57ac |   jmp ${_BA_loop_3}:rel + PC
                                #      | _C_loop_3:
                                #      | _Z_loop_3:
-4a e0 76 68                    # 572c |   dec [${var__board__falling} + 0004]
+4a e0 06 69                    # 57b0 |   dec [${var__board__falling} + 0004]
                                #      | _A_call_35:
-e0 1c 01                       # 5730 |   push 0x1
-5c f8 99 fb                    # 5733 |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 5737 |   mov SP, SP + 0x2
+e0 1c 01                       # 57b4 |   push 0x1
+5c f8 15 fb                    # 57b7 |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 57bb |   mov SP, SP + 0x2
                                #      | _Z_call_35:
                                #      | _A_call_36:
-5c f8 6d fa                    # 573b |   call ${fn_tg_new_falling}:rel + PC
+5c f8 e9 f9                    # 57bf |   call ${fn_tg_new_falling}:rel + PC
                                #      | _Z_call_36:
                                #      | _cleanup_fn_tg_down:
-dc                             # 573f |   ret
+dc                             # 57c3 |   ret
                                #      | _end_fn_tg_down:
                                #      | 
                                #      | fn_tg_rotate:
                                #      | _begin_fn_tg_rotate:
                                #      | _A_call_38:
-e0 00                          # 5740 |   push 0
-5c f8 8a fb                    # 5742 |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 5746 |   mov SP, SP + 0x2
+e0 00                          # 57c4 |   push 0
+5c f8 06 fb                    # 57c6 |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 57ca |   mov SP, SP + 0x2
                                #      | _Z_call_38:
                                #      | _A_loop_4:
                                #      | _BA_loop_4:
-c5 ff e0 74 68                 # 574a |   inc H, [${var__board__falling} + 0002]
-2c ff 1c 03                    # 574f |   and H, 0x3
-62 e0 ff 74 68                 # 5753 |   mov [${var__board__falling} + 0002], H
+c5 ff e0 04 69                 # 57ce |   inc H, [${var__board__falling} + 0002]
+2c ff 1c 03                    # 57d3 |   and H, 0x3
+62 e0 ff 04 69                 # 57d7 |   mov [${var__board__falling} + 0002], H
                                #      | _A_call_39:
-5c f8 e7 fb                    # 5758 |   call ${fn_tg_fits}:rel + PC
+5c f8 63 fb                    # 57dc |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_39:
-ec ff 00 f8 2c 00              # 575c |   jne H, 0, ${_C_loop_4}:rel + PC
-4a e0 78 68                    # 5762 |   dec [${var__board__falling} + 0006]
+ec ff 00 f8 2c 00              # 57e0 |   jne H, 0, ${_C_loop_4}:rel + PC
+4a e0 08 69                    # 57e6 |   dec [${var__board__falling} + 0006]
                                #      | _A_call_40:
-5c f8 d9 fb                    # 5766 |   call ${fn_tg_fits}:rel + PC
+5c f8 55 fb                    # 57ea |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_40:
-ec ff 00 f8 1e 00              # 576a |   jne H, 0, ${_C_loop_4}:rel + PC
-02 e0 1c 78 68 02              # 5770 |   add [${var__board__falling} + 0006], 0x2
+ec ff 00 f8 1e 00              # 57ee |   jne H, 0, ${_C_loop_4}:rel + PC
+02 e0 1c 08 69 02              # 57f4 |   add [${var__board__falling} + 0006], 0x2
                                #      | _A_call_41:
-5c f8 c9 fb                    # 5776 |   call ${fn_tg_fits}:rel + PC
+5c f8 45 fb                    # 57fa |   call ${fn_tg_fits}:rel + PC
                                #      | _Z_call_41:
-ec ff 00 f8 0e 00              # 577a |   jne H, 0, ${_C_loop_4}:rel + PC
-4a e0 78 68                    # 5780 |   dec [${var__board__falling} + 0006]
+ec ff 00 f8 0e 00              # 57fe |   jne H, 0, ${_C_loop_4}:rel + PC
+4a e0 08 69                    # 5804 |   dec [${var__board__falling} + 0006]
                                #      | _BZ_loop_4:
-58 f8 c6 ff                    # 5784 |   jmp ${_BA_loop_4}:rel + PC
+58 f8 c6 ff                    # 5808 |   jmp ${_BA_loop_4}:rel + PC
                                #      | _C_loop_4:
                                #      | _Z_loop_4:
                                #      | _A_call_42:
-e0 1c 01                       # 5788 |   push 0x1
-5c f8 41 fb                    # 578b |   call ${fn_tg_put}:rel + PC
-60 a0 bc 02                    # 578f |   mov SP, SP + 0x2
+e0 1c 01                       # 580c |   push 0x1
+5c f8 bd fa                    # 580f |   call ${fn_tg_put}:rel + PC
+60 a0 bc 02                    # 5813 |   mov SP, SP + 0x2
                                #      | _Z_call_42:
                                #      | _cleanup_fn_tg_rotate:
-dc                             # 5793 |   ret
+dc                             # 5817 |   ret
                                #      | _end_fn_tg_rotate:
                                #      | 
                                #      | fn__delay_impl:
                                #      | _begin_fn__delay_impl:
-e0 80                          # 5794 |   push D
-e0 60                          # 5796 |   push C
-e0 40                          # 5798 |   push B
-e0 20                          # 579a |   push A
-61 40 e0 10 ff                 # 579c |   mov B, [0xff10]
-61 60 e0 12 ff                 # 57a1 |   mov C, [0xff12]
-61 80 e0 14 ff                 # 57a6 |   mov D, [0xff14]
-61 20 bc 0e                    # 57ab |   mov A, [SP + 0xe]
-60 ff 00                       # 57af |   mov H, 0
-                               #      | _A_if_37:
-fc 28 20 f8 09 00              # 57b2 |   jge A + B, A, ${_E_if_37}:rel + PC
-c4 ff 00                       # 57b8 |   inc H, 0
-                               #      | _E_if_37:
-                               #      | _C_if_37:
-                               #      | _Z_if_37:
-60 40 44                       # 57bb |   mov B, B + A
-81 20 bc ff 0c                 # 57be |   add A, [SP + 0xc], H
-60 ff 00                       # 57c3 |   mov H, 0
+e0 80                          # 5818 |   push D
+e0 60                          # 581a |   push C
+e0 40                          # 581c |   push B
+e0 20                          # 581e |   push A
+61 40 e0 10 ff                 # 5820 |   mov B, [0xff10]
+61 60 e0 12 ff                 # 5825 |   mov C, [0xff12]
+61 80 e0 14 ff                 # 582a |   mov D, [0xff14]
+61 20 bc 0e                    # 582f |   mov A, [SP + 0xe]
+60 ff 00                       # 5833 |   mov H, 0
+                               #      | _A_if_39:
+fc 28 20 f8 09 00              # 5836 |   jge A + B, A, ${_E_if_39}:rel + PC
+c4 ff 00                       # 583c |   inc H, 0
+                               #      | _E_if_39:
+                               #      | _C_if_39:
+                               #      | _Z_if_39:
+60 40 44                       # 583f |   mov B, B + A
+81 20 bc ff 0c                 # 5842 |   add A, [SP + 0xc], H
+60 ff 00                       # 5847 |   mov H, 0
                                #      | _A_scope_1:
                                #      | _B_scope_1:
-f0 2c 20 f8 10 00              # 57c6 |   jlt A + C, A, ${_C_scope_1}:rel + PC
-f0 20 ff f8 0a 00              # 57cc |   jlt A, H, ${_C_scope_1}:rel + PC
-58 f8 07 00                    # 57d2 |   jmp ${_Z_scope_1}:rel + PC
+f0 2c 20 f8 10 00              # 584a |   jlt A + C, A, ${_C_scope_1}:rel + PC
+f0 20 ff f8 0a 00              # 5850 |   jlt A, H, ${_C_scope_1}:rel + PC
+58 f8 07 00                    # 5856 |   jmp ${_Z_scope_1}:rel + PC
                                #      | _C_scope_1:
-c4 ff 00                       # 57d6 |   inc H, 0
+c4 ff 00                       # 585a |   inc H, 0
                                #      | _Z_scope_1:
-60 60 64                       # 57d9 |   mov C, C + A
-81 20 bc ff 0a                 # 57dc |   add A, [SP + 0xa], H
-60 80 84                       # 57e1 |   mov D, D + A
+60 60 64                       # 585d |   mov C, C + A
+81 20 bc ff 0a                 # 5860 |   add A, [SP + 0xa], H
+60 80 84                       # 5865 |   mov D, D + A
                                #      |   # delay loop
-61 20 bc 10                    # 57e4 |   mov A, [SP + 0x10]
+61 20 bc 10                    # 5868 |   mov A, [SP + 0x10]
                                #      | _A_loop_5:
                                #      | _BA_loop_5:
-61 ff e0 14 ff                 # 57e8 |   mov H, [0xff14]
-                               #      | _A_if_40:
-f4 ff 80 f8 0a 00              # 57ed |   jle H, D, ${_E_if_40}:rel + PC
-58 f8 33 00                    # 57f3 |   jmp ${_C_loop_5}:rel + PC
-                               #      | _E_if_40:
-ec ff 80 f8 2b 00              # 57f7 |   jne H, D, ${_E2_if_40}:rel + PC
-61 ff e0 12 ff                 # 57fd |   mov H, [0xff12]
-                               #      | _A_if_41:
-f4 ff 60 f8 0a 00              # 5802 |   jle H, C, ${_E_if_41}:rel + PC
-58 f8 1e 00                    # 5808 |   jmp ${_C_loop_5}:rel + PC
-                               #      | _E_if_41:
-ec ff 60 f8 16 00              # 580c |   jne H, C, ${_E2_if_41}:rel + PC
-fa e0 40 f8 10 ff 14 00        # 5812 |   jgt [0xff10], B, ${_C_loop_5}:rel + PC
+61 ff e0 14 ff                 # 586c |   mov H, [0xff14]
+                               #      | _A_if_42:
+f4 ff 80 f8 0a 00              # 5871 |   jle H, D, ${_E_if_42}:rel + PC
+58 f8 33 00                    # 5877 |   jmp ${_C_loop_5}:rel + PC
+                               #      | _E_if_42:
+ec ff 80 f8 2b 00              # 587b |   jne H, D, ${_E2_if_42}:rel + PC
+61 ff e0 12 ff                 # 5881 |   mov H, [0xff12]
                                #      | _A_if_43:
-e8 20 00 f8 08 00              # 581a |   jeq A, 0, ${_E_if_43}:rel + PC
-5c 20                          # 5820 |   call A
+f4 ff 60 f8 0a 00              # 5886 |   jle H, C, ${_E_if_43}:rel + PC
+58 f8 1e 00                    # 588c |   jmp ${_C_loop_5}:rel + PC
                                #      | _E_if_43:
+ec ff 60 f8 16 00              # 5890 |   jne H, C, ${_E2_if_43}:rel + PC
+fa e0 40 f8 10 ff 14 00        # 5896 |   jgt [0xff10], B, ${_C_loop_5}:rel + PC
+                               #      | _A_if_45:
+e8 20 00 f8 08 00              # 589e |   jeq A, 0, ${_E_if_45}:rel + PC
+5c 20                          # 58a4 |   call A
+                               #      | _E_if_45:
+                               #      | _C_if_45:
+                               #      | _Z_if_45:
+                               #      | _E2_if_43:
                                #      | _C_if_43:
                                #      | _Z_if_43:
-                               #      | _E2_if_41:
-                               #      | _C_if_41:
-                               #      | _Z_if_41:
-                               #      | _E2_if_40:
-                               #      | _C_if_40:
-                               #      | _Z_if_40:
+                               #      | _E2_if_42:
+                               #      | _C_if_42:
+                               #      | _Z_if_42:
                                #      | _BZ_loop_5:
-58 f8 c6 ff                    # 5822 |   jmp ${_BA_loop_5}:rel + PC
+58 f8 c6 ff                    # 58a6 |   jmp ${_BA_loop_5}:rel + PC
                                #      | _C_loop_5:
                                #      | _Z_loop_5:
                                #      | _cleanup_fn__delay_impl:
-e4 20                          # 5826 |   pop A
-e4 40                          # 5828 |   pop B
-e4 60                          # 582a |   pop C
-e4 80                          # 582c |   pop D
-dc                             # 582e |   ret
+e4 20                          # 58aa |   pop A
+e4 40                          # 58ac |   pop B
+e4 60                          # 58ae |   pop C
+e4 80                          # 58b0 |   pop D
+dc                             # 58b2 |   ret
                                #      | _end_fn__delay_impl:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const__TETROMINOS:
-56 04 59 12 6a 45 89 15 45 12 6a 15 89 56 59 04 67 45 ae 26 ef cd 9d 15 56 01 69 25 9a 45 58 14 56 14 69 15 69 45 59 14 56 12 56 12 56 12 56 12 56 24 9a 15 68 45 59 01 # 582f |   .data list:[0x0456, 0x1259, 0x456a, 0x1589, 0x1245, 0x156a, 0x5689, 0x0459, 0x4567, 0x26ae, 0xcdef, 0x159d, 0x0156, 0x2569, 0x459a, 0x1458, 0x1456, 0x1569, 0x4569, 0x1459, 0x1256, 0x1256, 0x1256, 0x1256, 0x2456, 0x159a, 0x4568, 0x0159]
+56 04 59 12 6a 45 89 15 45 12 6a 15 89 56 59 04 67 45 ae 26 ef cd 9d 15 56 01 69 25 9a 45 58 14 56 14 69 15 69 45 59 14 56 12 56 12 56 12 56 12 56 24 9a 15 68 45 59 01 # 58b3 |   .data list:[0x0456, 0x1259, 0x456a, 0x1589, 0x1245, 0x156a, 0x5689, 0x0459, 0x4567, 0x26ae, 0xcdef, 0x159d, 0x0156, 0x2569, 0x459a, 0x1458, 0x1456, 0x1569, 0x4569, 0x1459, 0x1256, 0x1256, 0x1256, 0x1256, 0x2456, 0x159a, 0x4568, 0x0159]
                                #      | const__GRAVITY_LEVELS:
-32 00 30 00 2e 00 2c 00 2a 00 28 00 26 00 24 00 22 00 20 00 1e 00 1c 00 1a 00 18 00 16 00 14 00 10 00 0c 00 08 00 04 00 # 5867 |   .data list:[0x0032, 0x0030, 0x002e, 0x002c, 0x002a, 0x0028, 0x0026, 0x0024, 0x0022, 0x0020, 0x001e, 0x001c, 0x001a, 0x0018, 0x0016, 0x0014, 0x0010, 0x000c, 0x0008, 0x0004]
+32 00 30 00 2e 00 2c 00 2a 00 28 00 26 00 24 00 22 00 20 00 1e 00 1c 00 1a 00 18 00 16 00 14 00 10 00 0c 00 08 00 04 00 # 58eb |   .data list:[0x0032, 0x0030, 0x002e, 0x002c, 0x002a, 0x0028, 0x0026, 0x0024, 0x0022, 0x0020, 0x001e, 0x001c, 0x001a, 0x0018, 0x0016, 0x0014, 0x0010, 0x000c, 0x0008, 0x0004]
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0x588f
+                               #      | .offset 0x5913
                                #      | SECTION_BEGIN_static_data:
-                               # 588f |   .align dummy_size:1 align:16
+                               # 5913 |   .align dummy_size:13 align:16
                                #      | var__VIDEO_ROW_BUFFER:
-                               # 5890 |   .bss size:3840 align:16
+                               # 5920 |   .bss size:3840 align:16
                                #      | var__rand__state:
-                               # 6790 |   .bss size:2 align:1
+                               # 6820 |   .bss size:2 align:1
                                #      | var__board__board_state:
-                               # 6792 |   .bss size:220 align:1
+                               # 6822 |   .bss size:220 align:1
                                #      | var__board__points:
-                               # 686e |   .bss size:2 align:1
+                               # 68fe |   .bss size:2 align:1
                                #      | var__board__level:
-                               # 6870 |   .bss size:2 align:1
+                               # 6900 |   .bss size:2 align:1
                                #      | var__board__falling:
-                               # 6872 |   .bss size:8 align:1
+                               # 6902 |   .bss size:8 align:1
                                #      | var__board__next:
-                               # 687a |   .bss size:8 align:1
+                               # 690a |   .bss size:8 align:1
                                #      | var__board__stored:
-                               # 6882 |   .bss size:8 align:1
+                               # 6912 |   .bss size:8 align:1
                                #      | var__board__ticks_till_gravity:
-                               # 688a |   .bss size:2 align:1
+                               # 691a |   .bss size:2 align:1
                                #      | var__board__lines_remaining:
-                               # 688c |   .bss size:2 align:1
+                               # 691c |   .bss size:2 align:1
                                #      | var__last_btn_in:
-                               # 688e |   .bss size:2 align:1
+                               # 691e |   .bss size:2 align:1
                                #      | var__handle_keyboard__scan_code:
-                               # 6890 |   .bss size:2 align:1
+                               # 6920 |   .bss size:2 align:1
                                #      | SECTION_END_static_data:
                                #      | 

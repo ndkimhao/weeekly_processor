@@ -31,9 +31,12 @@ def display_board(A, B, C, D, H, G):
 
             C @= (B + BOARD_LEFT_PADDING) << 1
             C += g_row_buffer.addr()
+            G @= 0
+            with If(B == N_COLS - 1):
+                G @= 0x8000
             with If(A == TeCell.EMPTY):
                 with ForRange(D, ROW_BUFFER_SZ * 0, PAGE_BUFFER_SZ * 3, ROW_BUFFER_SZ * 2):
-                    M[C + D] @= 1
+                    M[C + D] @= 1 | G
                 with ForRange(D, ROW_BUFFER_SZ * 1, PAGE_BUFFER_SZ * 3, ROW_BUFFER_SZ * 2):
                     M[C + D] @= 0
                 with ForRange(D, 0, PAGE_BUFFER_SZ * 3, PAGE_BUFFER_SZ):
@@ -46,6 +49,18 @@ def display_board(A, B, C, D, H, G):
                     H @= getb(A, i)
                     with If(H != 0):
                         H @= 0x7FFF
-                    with ForRange(D, PAGE_BUFFER_SZ * i, PAGE_BUFFER_SZ * (i + 1) - ROW_BUFFER_SZ, ROW_BUFFER_SZ):
+                    with ForRange(D, PAGE_BUFFER_SZ * i + ROW_BUFFER_SZ * 0,
+                                  PAGE_BUFFER_SZ * (i + 1) - ROW_BUFFER_SZ,
+                                  ROW_BUFFER_SZ * 2):
+                        M[C + D] @= H | G
+                    with ForRange(D, PAGE_BUFFER_SZ * i + ROW_BUFFER_SZ * 1,
+                                  PAGE_BUFFER_SZ * (i + 1) - ROW_BUFFER_SZ,
+                                  ROW_BUFFER_SZ * 2):
                         M[C + D] @= H
                     M[C + D] @= 0
+            # END if (A == TeCell.EMPTY)
+            with If(cur_row == N_ROWS - 1):
+                with ForRange(D, ROW_BUFFER_SZ * (CHUNK_SZ - 1), PAGE_BUFFER_SZ * 3, PAGE_BUFFER_SZ):
+                    M[C + D] @= 0x5555
+        # END for B
+    # END for A
