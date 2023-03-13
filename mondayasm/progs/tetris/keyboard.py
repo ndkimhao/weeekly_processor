@@ -1,5 +1,5 @@
 from progs.stdlib.devices import M_PS2_RECV, FLAG_PS2_RECV_VALID, BTN_DEBOUNCED, BIT_BTN_DOWN, BIT_BTN_UP, \
-    BIT_BTN_RIGHT, BIT_BTN_LEFT
+    BIT_BTN_RIGHT, BIT_BTN_LEFT, BIT_BTN_CENTER
 from progs.tetris.board import tg_handle_move
 from progs.tetris.display import tg_display
 from progs.tetris.te_types import TeMove
@@ -37,6 +37,9 @@ def handle_keyboard(A, G, H):
             ElseIf(H == 0x72)  # down
             G @= TeMove.DROP
 
+            ElseIf(H == 0x29)  # space bar
+            G @= TeMove.HOLD
+
         with If(G != TeMove.NONE):
             call(tg_handle_move, G)
             call(tg_display)
@@ -62,6 +65,10 @@ def handle_keyboard(A, G, H):
         A @= getb(H, BIT_BTN_DOWN)
         with If(A != 0):
             G @= TeMove.DROP
+
+        A @= getb(H, BIT_BTN_CENTER)
+        with If(A != 0):
+            G @= TeMove.HOLD
 
         with If(G != TeMove.NONE):
             call(tg_handle_move, G)

@@ -39,6 +39,11 @@ def display_board(A, B, C, D, G, H):
     call(tg_put_generic, g_tmp_state.addr(), Board.next.addr(), SMALL_COLS, 0, 0, 1)
     call(draw_small_board, 10)
 
+    call(memset, g_tmp_state.addr(), 0, SMALL_ROWS * SMALL_COLS)
+    with If(Board.stored.typ != -1):
+        call(tg_put_generic, g_tmp_state.addr(), Board.stored.addr(), SMALL_COLS, 0, 0, 1)
+    call(draw_small_board, 14)
+
 
 def draw_small_board(top_padding,
                      A, B, C, D, G, H):

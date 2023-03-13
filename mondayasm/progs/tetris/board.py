@@ -158,6 +158,9 @@ def tg_handle_move(move, A):
         ElseIf(A == TeMove.ROTATE.value)
         call(tg_rotate)
 
+        ElseIf(A == TeMove.HOLD.value)
+        call(tg_hold)
+
 
 def tg_move(direction, H):
     call(tg_put, 0)
@@ -235,6 +238,7 @@ def tg_check_lines(H):
     H @= 0
 
 
+# returns  H: 1=fits, 0=no fit
 def tg_fits(A, B, C, D, E, F, G, H):
     teblk = Board.falling
 
@@ -268,3 +272,24 @@ def tg_fits(A, B, C, D, E, F, G, H):
 
     cmt('done checking, all good')
     H @= 1
+
+
+def tg_hold(A, B, H):
+    call(tg_put, 0)
+    with If(Board.stored.typ == -1):
+        call(memcpy, Board.stored.addr(), Board.falling.addr(), TeBlock.SIZE)
+        call(tg_new_falling)
+
+        Else()
+        A @= Board.falling.typ
+        B @= Board.falling.ori
+        Board.falling.typ @= Board.stored.typ
+        Board.falling.ori @= Board.stored.ori
+        Board.stored.typ @= A
+        Board.stored.ori @= B
+        with Loop():
+            call(tg_fits)
+            If(H == 1).then_break()
+            Board.falling.loc.row -= 1
+    # END if
+    call(tg_put, 1)
