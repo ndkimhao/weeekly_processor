@@ -75,25 +75,28 @@ def tg_tick(H):
 def tg_do_gravity_tick(A, H):
     Board.ticks_till_gravity -= 1
     with If(Board.ticks_till_gravity <= 0, signed=True):
-        call(tg_put, 0)
-        Board.falling.loc.row += 1
-        call(tg_fits)
-        with If(H == 1):
-            A @= Board.level << 1
-            Board.ticks_till_gravity @= M[GRAVITY_LEVELS + A]
-
-            Else()
-
-            # PRINTF('not fit!\n')
-            Board.falling.loc.row -= 1
-            call(tg_put, 1)
-            call(tg_new_falling)
-        ###
-        call(tg_put, 1)
+        call(tg_soft_drop)
         H @= 1
-
         Else()
         H @= 0
+
+
+def tg_soft_drop(A, H):
+    call(tg_put, 0)
+    Board.falling.loc.row += 1
+    call(tg_fits)
+    with If(H == 1):
+        A @= Board.level << 1
+        Board.ticks_till_gravity @= M[GRAVITY_LEVELS + A]
+
+        Else()
+
+        # PRINTF('not fit!\n')
+        Board.falling.loc.row -= 1
+        call(tg_put, 1)
+        call(tg_new_falling)
+    ###
+    call(tg_put, 1)
 
 
 def tg_put(put_or_clear, A, B, C, D, E, F, G):
@@ -148,20 +151,26 @@ def _template_tg_put(ptr_table, ptr_block, n_cols,
 
 def tg_handle_move(move, A):
     A @= move
-    with If(A == TeMove.LEFT.value):
+    with If(A == TeMove.LEFT):
         call(tg_move, -1)
 
-        ElseIf(A == TeMove.RIGHT.value)
+        ElseIf(A == TeMove.RIGHT)
         call(tg_move, 1)
 
-        ElseIf(A == TeMove.DROP.value)
+        ElseIf(A == TeMove.DROP)
         call(tg_down)
 
-        ElseIf(A == TeMove.ROTATE.value)
-        call(tg_rotate)
+        ElseIf(A == TeMove.ROTATE)
+        call(tg_rotate, 1)
 
-        ElseIf(A == TeMove.HOLD.value)
+        ElseIf(A == TeMove.ROTATE_R)
+        call(tg_rotate, -1)
+
+        ElseIf(A == TeMove.HOLD)
         call(tg_hold)
+
+        ElseIf(A == TeMove.SOFT_DROP)
+        call(tg_soft_drop)
 
 
 def tg_move(direction, H):
@@ -186,10 +195,11 @@ def tg_down(H):
     call(tg_new_falling)
 
 
-def tg_rotate(H):
+def tg_rotate(dir, H):
     call(tg_put, 0)
     with Loop():
-        H @= Board.falling.ori + 1
+        H @= Board.falling.ori + NUM_ORIENTATIONS
+        H += dir
         H &= (NUM_ORIENTATIONS - 1)
         Board.falling.ori @= H
 

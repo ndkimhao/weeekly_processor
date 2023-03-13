@@ -35,10 +35,19 @@ def handle_keyboard(A, G, H):
             G @= TeMove.LEFT
 
             ElseIf(H == 0x72)  # down
-            G @= TeMove.DROP
+            G @= TeMove.SOFT_DROP
 
-            ElseIf(H == 0x29)  # space bar
+            ElseIf(H == 0x21)  # C
             G @= TeMove.HOLD
+
+            ElseIf(H == 0x1A)  # Z
+            G @= TeMove.ROTATE_R
+
+            ElseIf(H == 0x22)  # X
+            G @= TeMove.ROTATE
+
+            ElseIf(H == 0x11)  # ALT
+            G @= TeMove.DROP
 
         with If(G != TeMove.NONE):
             call(tg_handle_move, G)

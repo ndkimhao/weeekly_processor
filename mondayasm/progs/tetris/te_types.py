@@ -46,8 +46,10 @@ class TeMove(Enum):
     LEFT = 1
     RIGHT = 2
     ROTATE = 3
-    DROP = 4
-    HOLD = 5
+    ROTATE_R = 4
+    DROP = 5
+    SOFT_DROP = 6
+    HOLD = 7
 
 
 class TeCell:

@@ -1,4 +1,4 @@
-from progs.stdlib.timing import DELAY_MICROS
+from progs.stdlib.timing import DELAY_MICROS, DELAY_MILLIS
 from progs.stdlib.video import reset_color_palette, switch_screen_page, set_color_palette
 from progs.tetris.board import tg_init, tg_tick
 from progs.tetris.display import init_tetris_color_palette
@@ -16,7 +16,7 @@ def main(H):
     with Loop():
         call(tg_tick)
         If(H == 0).then_break()
-        DELAY_MICROS(4000, handle_keyboard)
+        DELAY_MILLIS(10, handle_keyboard)
 
 
 if __name__ == '__main__':
