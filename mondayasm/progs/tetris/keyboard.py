@@ -1,7 +1,7 @@
 from progs.stdlib.devices import M_PS2_RECV, FLAG_PS2_RECV_VALID, BTN_DEBOUNCED, BIT_BTN_DOWN, BIT_BTN_UP, \
     BIT_BTN_RIGHT, BIT_BTN_LEFT
 from progs.tetris.board import tg_handle_move
-from progs.tetris.display import display_board
+from progs.tetris.display import tg_display
 from progs.tetris.te_types import TeMove
 from soeunasm import global_var, Loop, If, ElseIf, call, M, getb
 
@@ -39,7 +39,7 @@ def handle_keyboard(A, G, H):
 
         with If(G != TeMove.NONE):
             call(tg_handle_move, G)
-            call(display_board)
+            call(tg_display)
 
     # On-board buttons
     H @= M[BTN_DEBOUNCED]
@@ -65,4 +65,4 @@ def handle_keyboard(A, G, H):
 
         with If(G != TeMove.NONE):
             call(tg_handle_move, G)
-            call(display_board)
+            call(tg_display)

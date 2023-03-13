@@ -12,7 +12,7 @@ from soeunasm.scope_func import Return
 
 
 class Board:
-    state = global_var('board__board_state', size=N_ROWS * N_COLS)
+    state = global_var('board__board_state', size=N_ROWS * N_COLS + 2)
     points = global_var('board__points')
     level = global_var('board__level')
 
@@ -60,7 +60,7 @@ def tg_tick(H):
     # Handle gravity.
     call(tg_do_gravity_tick)
     with If(H != 0):
-        call(progs.tetris.display.display_board)
+        call(progs.tetris.display.tg_display)
     # Check for cleared lines
     call(tg_check_lines)  # H == lines_cleared
     call(tg_adjust_score, H)
@@ -94,33 +94,53 @@ def tg_do_gravity_tick(A, H):
         H @= 0
 
 
-# put_or_clear: 0 = clear, 1 = put
-def tg_put(put_or_clear,
-           A, B, C, D, E, F, G, H):
-    A @= put_or_clear
-    teblk = Board.falling
+def tg_put(put_or_clear, A, B, C, D, E, F, G):
+    _template_tg_put(Board.state.addr(), Board.falling.addr(), N_COLS,
+                     Board.falling.loc.row, Board.falling.loc.col,
+                     put_or_clear,
+                     A, B, C, D, E, F, G)
 
-    B @= teblk.typ - 1
-    D @= teblk.ori << 1
+
+def tg_put_generic(ptr_table, ptr_block, n_cols,
+                   loc_row, loc_col,
+                   put_or_clear,
+                   A, B, C, D, E, F, G):
+    _template_tg_put(ptr_table, ptr_block, n_cols,
+                     loc_row, loc_col,
+                     put_or_clear,
+                     A, B, C, D, E, F, G)
+
+
+# put_or_clear: 0 = clear, 1 = put
+def _template_tg_put(ptr_table, ptr_block, n_cols,
+                     loc_row, loc_col,
+                     put_or_clear,
+                     A, B, C, D, E, F, G):
+    A @= ptr_block
+    B @= TeBlock(M[A]).typ - 1
+    If(B == TeCell.EMPTY - 1).then_return()
+    D @= TeBlock(M[A]).ori << 1
     D += (B * NUM_ORIENTATIONS * 2)
     D @= [TETROMINOS + D]
+    A @= B + 1
     # call(printf, const('t=%d o=%d blk=%x\n'), B, teblk.ori, D)
     with ForRange(C, 0, CELLS_PER_TETROMINOS):
         B @= D >> (C * 4 + 2)  # reuse B
         E @= D >> (C * 4)
         B &= 0x03
         E &= 0x03
-        G @= teblk.loc.row + B
-        B @= teblk.loc.col + E  # reuse B
+        G @= loc_row + B
+        B @= loc_col + E  # reuse B
         # call(printf, const('%d %d ; %d %d -> %d %d\n'), B, E, teblk.loc.row, teblk.loc.col, G, B)
 
-        F @= G * N_COLS
-        F += B + Board.state.addr()
+        F @= n_cols * G
+        F += ptr_table
+        F += B
         # call(printf, const('%x: '), F)
         with If(put_or_clear == 0):
             M[F].byte() @ TeCell.EMPTY
             Else()
-            M[F].byte() @ teblk.typ
+            M[F].byte() @ A
             # call(printf, const('%x\n'), [F])
 
 
