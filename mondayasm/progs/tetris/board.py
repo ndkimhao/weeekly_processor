@@ -243,6 +243,7 @@ def tg_fits(A, B, C, D, E, F, G, H):
         F @= G * N_COLS
         F += B + Board.state.addr()
         F @= M[F].byte()
+        H @= 0
         If(F != TeCell.EMPTY).then_return()
 
     cmt('done checking, all good')

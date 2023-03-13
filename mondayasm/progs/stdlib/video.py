@@ -6,22 +6,37 @@ CHUNK_SZ = 16
 WIDTH = 640
 HEIGHT = 480
 
-MMAP_SLOT = 1
-ROW_BUFFER_SZ = WIDTH // 8 * CHUNK_SZ
+MMAP_SLOT = 4
+PAGE_BUFFER_SZ = WIDTH // 8 * CHUNK_SZ
 
-g_row_buffer = global_var('VIDEO_ROW_BUFFER', size=ROW_BUFFER_SZ, align=16)
-g_row_buffer_end = g_row_buffer.addr_add(ROW_BUFFER_SZ)
+g_row_buffer = global_var('VIDEO_ROW_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
+g_row_buffer_end = g_row_buffer.addr_add(PAGE_BUFFER_SZ)
 
-JUMP_ONE_ROW = WIDTH // 8
+ROW_BUFFER_SZ = WIDTH // 8
 
 
-def switch_screen_row(chunk_row, color, A, B, H):
+# each page consists of 16 rows
+def switch_screen_page(page, color, A, B, H):
+    START_ADDR = g_row_buffer.addr()
+    END_ADDR = g_row_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
+
     A @= color
     A @= 0xA0 + A
-    B @= chunk_row * (JUMP_ONE_ROW * CHUNK_SZ)
-    start_addr = g_row_buffer.addr()
-    end_addr = g_row_buffer.addr_add(ROW_BUFFER_SZ - 1).addr()
-    mmap(start_addr, end_addr, MMAP_SLOT)
+    B @= page * (ROW_BUFFER_SZ * CHUNK_SZ)
+    mmap(START_ADDR, END_ADDR, MMAP_SLOT)
+
+
+def switch_screen_page_rgb(page, A, B):
+    START_ADDR = g_row_buffer.addr()
+    END_ADDR = g_row_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
+
+    A @= 0xA1
+    B @= page * (ROW_BUFFER_SZ * CHUNK_SZ)
+    mmap(START_ADDR + PAGE_BUFFER_SZ * 0, END_ADDR + PAGE_BUFFER_SZ * 0, MMAP_SLOT + 0)
+    A @= 0xA2
+    mmap(START_ADDR + PAGE_BUFFER_SZ * 1, END_ADDR + PAGE_BUFFER_SZ * 1, MMAP_SLOT + 1)
+    A @= 0xA4
+    mmap(START_ADDR + PAGE_BUFFER_SZ * 2, END_ADDR + PAGE_BUFFER_SZ * 2, MMAP_SLOT + 2)
 
 
 def unmap_screen_row():
@@ -31,7 +46,7 @@ def unmap_screen_row():
 def fill_cell(col, value, A, G):
     G @= value
     A @= col << 1
-    with For(A @ (A + g_row_buffer.addr()), A < g_row_buffer_end.addr(), A @ (A + JUMP_ONE_ROW)):
+    with For(A @ (A + g_row_buffer.addr()), A < g_row_buffer_end.addr(), A @ (A + ROW_BUFFER_SZ)):
         M[A] @= G
 
 
@@ -45,7 +60,7 @@ def fill_cell_content(col, ptr_buf, A, B):
     B @= ptr_buf
     with For(A @ (A + g_row_buffer.addr()),
              A < g_row_buffer_end.addr(),
-             (A @ (A + JUMP_ONE_ROW), B @ (B + 2))
+             (A @ (A + ROW_BUFFER_SZ), B @ (B + 2))
              ):
         M[A] @= M[B]
 

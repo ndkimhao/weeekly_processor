@@ -1,5 +1,5 @@
 from progs.stdlib.timing import DELAY_MICROS
-from progs.stdlib.video import reset_color_palette, switch_screen_row, set_color_palette
+from progs.stdlib.video import reset_color_palette, switch_screen_page, set_color_palette
 from progs.tetris.board import tg_init, tg_tick
 from progs.tetris.display import init_tetris_color_palette
 from progs.tetris.keyboard import handle_keyboard, last_btn_in

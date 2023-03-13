@@ -62,6 +62,10 @@ begin
 
 
 	r_start <= 
+		a_vstart(7) when s_inrange(7) = '1' else
+		a_vstart(6) when s_inrange(6) = '1' else
+		a_vstart(5) when s_inrange(5) = '1' else
+		a_vstart(4) when s_inrange(4) = '1' else
 		a_vstart(3) when s_inrange(3) = '1' else		
 		a_vstart(2) when s_inrange(2) = '1' else		
 		a_vstart(1) when s_inrange(1) = '1' else		
@@ -69,6 +73,10 @@ begin
 		(others => '0'); -- default maps to the builtin RAM
 
 	r_phy <= 
+		a_phy(7) when s_inrange(7) = '1' else	
+		a_phy(6) when s_inrange(6) = '1' else	
+		a_phy(5) when s_inrange(5) = '1' else	
+		a_phy(4) when s_inrange(4) = '1' else	
 		a_phy(3) when s_inrange(3) = '1' else		
 		a_phy(2) when s_inrange(2) = '1' else		
 		a_phy(1) when s_inrange(1) = '1' else		

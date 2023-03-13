@@ -12,8 +12,8 @@ package Constants is
 	constant AddrWidth : integer := 16;
 	constant DataWidth : integer := 16;
 
-	constant MMUIdxWidth : integer := 2;
-	constant MMUSlots    : integer := 4;
+	constant MMUIdxWidth : integer := 3;
+	constant MMUSlots    : integer := 8;
 
 	constant RAMSize : integer := 65536; -- 64KB
 
