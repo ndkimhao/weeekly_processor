@@ -1,8 +1,10 @@
 from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN
+from progs.stdlib.oled import draw_char_oled
 from progs.stdlib.syscall import S, syscall
 from progs.stdlib.video import switch_screen_page, g_page_buffer, HEIGHT, WIDTH, fill_page, NUM_PAGES
 from soeunasm import call, halt, init_code_gen, Reg, Loop, If, global_var, cmt, expr, const, Else, local_var, ForRange, \
-    mmap, umap, M, getb, Cleanup
+    mmap, umap, M, getb, Cleanup, Scope
+from soeunasm.data import local_vars
 from soeunasm.scope_func import Return
 
 CODE_OFFSET = 0x5000
@@ -22,8 +24,13 @@ COLOR_PALETTE_SIZE = 48
 
 
 def sd_error():
+    syscall(S.clear_oled)
     syscall(S.draw_str_oled, 1, 0, const('SD Error'))
     halt()
+
+
+def show_status(ch):
+    call(draw_char_oled, 1, 7, ch)
 
 
 # 2 - magic 0x3aa6
@@ -50,6 +57,7 @@ def show_image(img_slot, A, B, C, D, G, H):
     syscall(S.clear_oled)
     syscall(S.draw_str_oled, 0, 0, g_sd_buf.addr() + 2)
     syscall(S.draw_str_oled, 1, 0, g_sd_buf.addr() + 12)
+    call(show_status, '-')
 
     with ForRange(A, 0, NUM_PAGES):
         call(switch_screen_page, A, 0b1000)
@@ -83,6 +91,8 @@ def show_image(img_slot, A, B, C, D, G, H):
     G @= 1
     Cleanup()
     umap(SD_BUF_MMAP_SLOT)
+    with Scope(preserve=[G]):
+        call(show_status, 'D')
 
 
 def move_slot(dir, A, G):
