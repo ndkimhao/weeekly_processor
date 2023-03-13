@@ -8,7 +8,7 @@ from progs.stdlib.sdcard import read_sd, write_sd, init_sd
 from progs.stdlib.syscall import S
 from progs.stdlib.timing import _delay_impl
 from progs.stdlib.uart import putc, getc
-from progs.stdlib.font import decode_font, decode_font_16_12
+from progs.stdlib.font import decode_font, decode_font_16_12, draw_str, draw_char
 from soeunasm import emit_fn, const, M, jmp, If
 from soeunasm.scope_func import Return
 
@@ -42,6 +42,8 @@ SYSCALL_MAP_PY = {
     S.clear_oled: clear_oled,
     S.draw_char_oled: draw_char_oled,
     S.draw_str_oled: draw_str_oled,
+    S.draw_char: draw_char,
+    S.draw_str: draw_str,
 }
 
 

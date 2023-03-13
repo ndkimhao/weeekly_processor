@@ -41,6 +41,8 @@ def tg_init():
     Board.stored.loc.row @= 0
     Board.next.loc.col @= N_COLS // 2 - 2
 
+    call(progs.tetris.display.draw_main_interface)
+
 
 def tg_new_falling(G, H):
     cmt('Board.falling = Board.next')

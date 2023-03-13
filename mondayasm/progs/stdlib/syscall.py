@@ -39,6 +39,8 @@ class S(Enum):
     clear_oled = 26
     draw_char_oled = 27
     draw_str_oled = 28
+    draw_char = 29
+    draw_str = 30
 
 
 def syscall(syscall_number: S, *args):

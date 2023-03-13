@@ -1,3 +1,4 @@
+from progs.stdlib.font import draw_char, draw_str
 from progs.stdlib.memory import memset
 from progs.stdlib.printf import PRINTF
 from progs.stdlib.video import switch_screen_page, fill_cell, get_cell_addr, ROW_BUFFER_SZ, CHUNK_SZ, \
@@ -7,7 +8,7 @@ from progs.tetris.board import Board, tg_put_generic
 from progs.tetris.defs import N_ROWS, N_COLS, N_COLORS
 from progs.tetris.te_types import TeCell
 from soeunasm import For, ForRange, call, M, If, Else, cmt, Scope, local_var, While, ElseIf, getb, expr
-from soeunasm.data import local_vars, global_var
+from soeunasm.data import local_vars, global_var, const
 
 BOARD_TOP_PADDING = 2
 BOARD_LEFT_PADDING = 10
@@ -15,6 +16,8 @@ BOARD_LEFT_PADDING = 10
 SMALL_BOARD_LEFT_PADDING = BOARD_LEFT_PADDING + N_COLS + 2
 SMALL_ROWS = 2
 SMALL_COLS = 4
+NEXT_BLOCK_TOP_PADDING = 10
+STORED_BLOCK_TOP_PADDING = 14
 
 
 def init_tetris_color_palette():
@@ -37,12 +40,12 @@ def display_board(A, B, C, D, G, H):
 
     call(memset, g_tmp_state.addr(), 0, SMALL_ROWS * SMALL_COLS)
     call(tg_put_generic, g_tmp_state.addr(), Board.next.addr(), SMALL_COLS, 0, 0, 1)
-    call(draw_small_board, 10)
+    call(draw_small_board, NEXT_BLOCK_TOP_PADDING)
 
     call(memset, g_tmp_state.addr(), 0, SMALL_ROWS * SMALL_COLS)
     with If(Board.stored.typ != -1):
         call(tg_put_generic, g_tmp_state.addr(), Board.stored.addr(), SMALL_COLS, 0, 0, 1)
-    call(draw_small_board, 14)
+    call(draw_small_board, STORED_BLOCK_TOP_PADDING)
 
 
 def draw_small_board(top_padding,
@@ -107,3 +110,16 @@ def _template_draw_table(state_table, n_rows, n_cols, top_padding, left_padding,
                     M[C + i] @= 0xFFFF
         # END for B
     # END for A
+
+
+def draw_main_interface():
+    call(switch_screen_page, 2, 7)
+    call(draw_str, SMALL_BOARD_LEFT_PADDING - 1, const('Weeekly 3006'))
+    call(switch_screen_page, 3, 7)
+    call(draw_str, SMALL_BOARD_LEFT_PADDING - 1, const('Tetris Demo'))
+
+    call(switch_screen_page, NEXT_BLOCK_TOP_PADDING - 1, 7)
+    call(draw_str, SMALL_BOARD_LEFT_PADDING, const('Next'))
+
+    call(switch_screen_page, STORED_BLOCK_TOP_PADDING - 1, 7)
+    call(draw_str, SMALL_BOARD_LEFT_PADDING, const('Held'))

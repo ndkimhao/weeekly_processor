@@ -1,5 +1,6 @@
 from progs.stdlib.printf import PRINTF
-from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope, Else
+from progs.stdlib.video import g_row_buffer, g_row_buffer_end, ROW_BUFFER_SZ, fill_cell_content, CHUNK_SZ, WIDTH
+from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope, Else, While
 from soeunasm.data import global_var, const, local_var, local_vars
 import base64
 
@@ -30,6 +31,8 @@ FONT_16_12_INDEX_PY = [
 
 FONT_16_12_COMPRESSED = const('FONT_16_12_COMPRESSED', base64.b64decode(FONT_16_12_COMPRESSED_BASE64))
 FONT_16_12_INDEX = const('FONT_16_12_INDEX', FONT_16_12_INDEX_PY)
+
+FONT_BUFFER_SZ = 16 * 2
 
 
 def decode_font_16_12(ptr_out, ch, A, B):
@@ -112,3 +115,21 @@ def decode_font(ptr_out, ptr_encoded, height, width,
                 cmt('bitmap')
                 bits_cnt @= width
                 # call(puts, const('bitmap\n'))
+
+
+def draw_char(col, ch, A, B):
+    font_buf = local_var(size=2 * 16)
+    call(decode_font_16_12, font_buf.addr(), ch)
+    call(fill_cell_content, col, addr(font_buf))
+
+
+def draw_str(col, s, A, B, H):
+    A @= col
+    B @= s
+    with Loop():
+        If(A >= WIDTH // CHUNK_SZ).then_break()
+        H @= M[B].byte()
+        If(H == 0).then_break()
+        call(draw_char, A, H)
+        A += 1
+        B += 1
