@@ -16,7 +16,7 @@ def main(H):
     with Loop():
         call(tg_tick)
         If(H == 0).then_break()
-        DELAY_MICROS(5000, handle_keyboard)
+        DELAY_MICROS(4000, handle_keyboard)
 
 
 if __name__ == '__main__':
