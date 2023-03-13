@@ -1,5 +1,3 @@
-from progs.stdlib.printf import PRINTF
-from progs.stdlib.video import g_row_buffer, g_row_buffer_end, ROW_BUFFER_SZ, fill_cell_content, CHUNK_SZ, WIDTH
 from soeunasm import addr, mmap, For, M, cmt, Loop, If, getb, Break, call, ElseIf, expr, Scope, Else, While
 from soeunasm.data import global_var, const, local_var, local_vars
 import base64
@@ -117,19 +115,39 @@ def decode_font(ptr_out, ptr_encoded, height, width,
                 # call(puts, const('bitmap\n'))
 
 
-def draw_char(col, ch, A, B):
+class _VideoConsts:
+    CHUNK_SZ = 16
+    WIDTH = 640
+    HEIGHT = 480
+    PAGE_BUFFER_SZ = WIDTH // 8 * CHUNK_SZ
+    ROW_BUFFER_SZ = WIDTH // 8
+
+
+def fill_cell_content(video_buf, col, ptr_buf, A, B, C):
+    A @= col << 1
+    A += video_buf
+    C @= A + _VideoConsts.PAGE_BUFFER_SZ
+    B @= ptr_buf
+    with For((),
+             A < C,
+             (A @ (A + _VideoConsts.ROW_BUFFER_SZ), B @ (B + 2))
+             ):
+        M[A] @= M[B]
+
+
+def draw_char(video_buf, col, ch, A, B):
     font_buf = local_var(size=2 * 16)
     call(decode_font_16_12, font_buf.addr(), ch)
-    call(fill_cell_content, col, addr(font_buf))
+    call(fill_cell_content, video_buf, col, addr(font_buf))
 
 
-def draw_str(col, s, A, B, H):
+def draw_str(video_buf, col, s, A, B, H):
     A @= col
     B @= s
     with Loop():
-        If(A >= WIDTH // CHUNK_SZ).then_break()
+        If(A >= _VideoConsts.WIDTH // _VideoConsts.CHUNK_SZ).then_break()
         H @= M[B].byte()
         If(H == 0).then_break()
-        call(draw_char, A, H)
+        call(draw_char, video_buf, A, H)
         A += 1
         B += 1

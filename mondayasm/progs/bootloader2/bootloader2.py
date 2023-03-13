@@ -5,14 +5,14 @@ from progs.bootloader2.syscall_entry import syscall_entry
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
     SYSCALL_ENTRY, BTN_READ, SD_SECTOR_SIZE
 from progs.stdlib.format import atoi_16, itoa_16
-from progs.stdlib.memory import strchr, strcasecmp
+from progs.stdlib.memory import strchr, strcasecmp, memcpy
 from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, draw_str_oled, \
     draw_char_oled
 from progs.stdlib.printf import puts, printf, PRINTF
 from progs.stdlib.sdcard import read_sd, init_sd, init_sd_head, init_sd_tail, write_sd
 from progs.stdlib.uart import putc, getc
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
-    global_var, While, Else, cmt, Continue, ForRange
+    global_var, While, Else, cmt, Continue, ForRange, Cleanup
 from soeunasm.free_expr import decl_label, label, push, pop, addr
 from soeunasm.scope_func import Return, emit_fn
 
@@ -34,6 +34,8 @@ MAX_ARGS = 6
 g_num_args = global_var('g_num_args')
 g_args = global_var('g_args', size=2 * (MAX_ARGS + 1), align=2)
 
+g_has_sd_card = global_var()
+
 
 class SerialCmd(Enum):
     NONE = 0
@@ -53,6 +55,7 @@ class SerialCmd(Enum):
     MMAP = 14
     UMAP = 15
     WRITEB_SD = 16
+    SHOW_IMG = 17
 
 
 def parse_command_name(p_str, A, H):
@@ -103,7 +106,9 @@ def recv_command(A, B, C, D, G, H):
 
     # parse command name
     call(parse_command_name, buf.addr())
-    If(H == SerialCmd.NONE).then_return()
+    with If(H == SerialCmd.NONE):
+        call(puts, const('UNKNOWN_COMMAND\n'))
+        jmp(lb_fail)
     cmd_num @= H
 
     # parse arguments
@@ -408,6 +413,63 @@ def _process_handler_map():
     return ret
 
 
+# noinspection PyPep8Naming
+def display_image(img_bank, img_slot, A, B, C, D, H, G):
+    SD_BUF_MMAP_SLOT = 4
+    COLOR_PALETTE_SIZE = 48
+    VID_BUF_START = 0x0100
+    VID_BUF_END = VID_BUF_START + SD_SECTOR_SIZE
+
+    sd_buf = local_var(size=SD_SECTOR_SIZE + 16)
+    C @= img_slot << 8
+    call(read_sd, sd_buf.addr(), SD_SECTOR_SIZE, img_bank, C)
+    If(G == 0).then_return()
+    with If(sd_buf != 0x3aa6):
+        G @= 0
+        Return()
+
+    A @= 0xA0
+    B @= 0
+    mmap(VID_BUF_START, VID_BUF_END, SD_BUF_MMAP_SLOT)
+    call(memcpy, VID_BUF_START, sd_buf.addr() + 22, COLOR_PALETTE_SIZE)
+
+    N_PAGES = 640 * 480 * 3 // 8 // SD_SECTOR_SIZE
+    A @= 0xA1
+    B @= 0
+    with ForRange(D, 1, N_PAGES + 1):
+        call(read_sd, sd_buf.addr(), SD_SECTOR_SIZE, img_bank, C + D)
+        If(G == 0).then_return()
+        # PRINTF('read %x %x\n', SD_IMAGE_BANK, (SD_IMAGE_SLOT << 8) + D)
+
+        mmap(VID_BUF_START, VID_BUF_END, SD_BUF_MMAP_SLOT)
+        call(memcpy, VID_BUF_START, sd_buf.addr(), SD_SECTOR_SIZE)
+
+        H @= A & 0x0F
+        H <<= 1
+        with If(H > 7):
+            H @= 1
+            B += SD_SECTOR_SIZE
+        A @= 0xA0 | H
+
+    Cleanup()
+    umap(SD_BUF_MMAP_SLOT)
+
+
+def handle_show_img(G):
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+
+    with If(g_has_sd_card == 0):
+        call(puts, const('NO_SD\n'))
+        Return()
+
+    call(display_image, g_args, g_args.addr_add(2))
+    with If(G == 1):
+        call(puts, const('SHOW_IMG_OK\n'))
+        Else()
+        call(puts, const('SHOW_IMG_ERROR\n'))
+
+
 HANDLER_MAP_PY = {
     SerialCmd.PING: handle_ping,
     SerialCmd.READ: handle_read,
@@ -425,6 +487,7 @@ HANDLER_MAP_PY = {
     SerialCmd.MMAP: handle_mmap,
     SerialCmd.UMAP: handle_umap,
     SerialCmd.WRITEB_SD: handle_write_sd,
+    SerialCmd.SHOW_IMG: handle_show_img,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
@@ -452,12 +515,14 @@ def init_sd_and_oled(H, G):
     call(init_sd_head)
     call(init_oled)
     call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006 3'))
+    call(draw_str_oled, 1, 0, const('3006 6'))
     # check sd status
     call(init_sd_tail)
     H @= 'S'
+    g_has_sd_card @ 1
     with If(G == 0):
         H @= '-'
+        g_has_sd_card @ 0
     call(draw_char_oled, 1, 6, H)
 
 
@@ -471,11 +536,15 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # init
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.3\n'))
+    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.6\n'))
     call(init_sd_and_oled)
 
     # jump to persisted target if exists
     call(check_persisted_target)
+
+    with If(g_has_sd_card == 1):
+        call(display_image, 2, 0)
+        call(show_status, '-')
 
     # wait for commands
     call(puts, const('READY\n'))
@@ -485,9 +554,6 @@ def main(A, B, G, H):
         M[LED] += 1
         A @= H
         with If(G == 0):
-            Continue()
-        with If(A == SerialCmd.NONE):
-            call(puts, const('UNKNOWN_COMMAND\n'))
             Continue()
         B @= A * 2
         B += HANDLER_MAP - 2

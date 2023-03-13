@@ -8,17 +8,16 @@ HEIGHT = 480
 
 MMAP_SLOT = 4
 PAGE_BUFFER_SZ = WIDTH // 8 * CHUNK_SZ
-
-g_row_buffer = global_var('VIDEO_ROW_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
-g_row_buffer_end = g_row_buffer.addr_add(PAGE_BUFFER_SZ)
-
 ROW_BUFFER_SZ = WIDTH // 8
+
+g_page_buffer = global_var('VIDEO_ROW_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
+g_row_buffer_end = g_page_buffer.addr_add(PAGE_BUFFER_SZ)
 
 
 # each page consists of 16 rows
 def switch_screen_page(page, color, A, B, H):
-    START_ADDR = g_row_buffer.addr()
-    END_ADDR = g_row_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
+    START_ADDR = g_page_buffer.addr()
+    END_ADDR = g_page_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
 
     A @= color
     A @= 0xA0 + A
@@ -27,8 +26,8 @@ def switch_screen_page(page, color, A, B, H):
 
 
 def switch_screen_page_rgb(page, A, B):
-    START_ADDR = g_row_buffer.addr()
-    END_ADDR = g_row_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
+    START_ADDR = g_page_buffer.addr()
+    END_ADDR = g_page_buffer.addr_add(PAGE_BUFFER_SZ - 1).addr()
 
     A @= 0xA1
     B @= page * (ROW_BUFFER_SZ * CHUNK_SZ)
@@ -46,23 +45,13 @@ def unmap_screen_row():
 def fill_cell(col, value, A, G):
     G @= value
     A @= col << 1
-    with For(A @ (A + g_row_buffer.addr()), A < g_row_buffer_end.addr(), A @ (A + ROW_BUFFER_SZ)):
+    with For(A @ (A + g_page_buffer.addr()), A < g_row_buffer_end.addr(), A @ (A + ROW_BUFFER_SZ)):
         M[A] @= G
 
 
 def get_cell_addr(col, H):
     H @= col << 1
-    H @= H + g_row_buffer.addr()
-
-
-def fill_cell_content(col, ptr_buf, A, B):
-    A @= col << 1
-    B @= ptr_buf
-    with For(A @ (A + g_row_buffer.addr()),
-             A < g_row_buffer_end.addr(),
-             (A @ (A + ROW_BUFFER_SZ), B @ (B + 2))
-             ):
-        M[A] @= M[B]
+    H @= H + g_page_buffer.addr()
 
 
 # must call(switch_screen_row, 0, 0) before calling this
@@ -80,6 +69,6 @@ def set_color_palette(color_idx, red, green, blue,
                       A):
     A @= color_idx & 0x07
     A <<= 1
-    M[A.raw + g_row_buffer.addr()] @= blue
-    M[A.raw + (g_row_buffer.addr() + 0x10)] @= green
-    M[A.raw + (g_row_buffer.addr() + 0x20)] @= red
+    M[A.raw + g_page_buffer.addr()] @= blue
+    M[A.raw + (g_page_buffer.addr() + 0x10)] @= green
+    M[A.raw + (g_page_buffer.addr() + 0x20)] @= red

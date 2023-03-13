@@ -2,7 +2,6 @@ from progs.stdlib.devices import SD_ADDR_1, SD_ADDR_0, SD_OUT, BIT_SD_OUT_READ, 
     BIT_SD_IN_HANDSHAKE, BIT_SD_OUT_HANDSHAKE, BIT_SD_OUT_RESET, BIT_SD_OUT_POWER_ON, BIT_SD_OUT_WRITE, SD_SECTOR_SIZE, \
     FLAG_SD_OUT_HANDSHAKE
 from progs.stdlib.timing import delay_1ms
-from progs.stdlib.printf import PRINTF
 from soeunasm import setb, ForRange, getb, If, Loop, While, Else
 from soeunasm.free_cmds import clrb
 from soeunasm.free_expr import decl_label, label, M

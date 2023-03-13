@@ -1,6 +1,6 @@
 from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN
 from progs.stdlib.syscall import S, syscall
-from progs.stdlib.video import switch_screen_page, g_row_buffer, HEIGHT, WIDTH
+from progs.stdlib.video import switch_screen_page, g_page_buffer, HEIGHT, WIDTH
 from soeunasm import call, halt, init_code_gen, Reg, Loop, If, global_var, cmt, expr, const, Else, local_var, ForRange, \
     mmap, umap, M, getb, Cleanup
 from soeunasm.scope_func import Return
@@ -11,14 +11,14 @@ SD_IMAGE_BANK = 1
 
 g_current_image_idx = global_var()
 
-g_sd_buf = global_var('g_sd_buf', size=SD_SECTOR_SIZE + 2, align=16)
+g_sd_buf = global_var('g_sd_buf', size=SD_SECTOR_SIZE + 16, align=16)
 
-g_vid_chunk = global_var('g_vid_chunk', size=SD_SECTOR_SIZE + 2, align=16)
+g_vid_chunk = global_var('g_vid_chunk', size=SD_SECTOR_SIZE + 16, align=16)
 g_vid_chunk_end = g_vid_chunk.addr_add(SD_SECTOR_SIZE)
 
 SD_BUF_MMAP_SLOT = 0
 
-COLOR_LALETTE_SIZE = 48
+COLOR_PALETTE_SIZE = 48
 
 
 def sd_error():
@@ -52,7 +52,7 @@ def show_image(img_slot, A, B, C, D, G, H):
     syscall(S.draw_str_oled, 1, 0, g_sd_buf.addr() + 12)
 
     call(switch_screen_page, 0, 0)
-    syscall(S.memcpy, g_row_buffer.addr(), g_sd_buf.addr() + 22, COLOR_LALETTE_SIZE)
+    syscall(S.memcpy, g_page_buffer.addr(), g_sd_buf.addr() + 22, COLOR_PALETTE_SIZE)
 
     N_PAGES = WIDTH * HEIGHT * 3 // 8 // SD_SECTOR_SIZE
     A @= 0xA1

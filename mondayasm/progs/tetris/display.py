@@ -3,7 +3,7 @@ from progs.stdlib.memory import memset
 from progs.stdlib.printf import PRINTF
 from progs.stdlib.video import switch_screen_page, fill_cell, get_cell_addr, ROW_BUFFER_SZ, CHUNK_SZ, \
     reset_color_palette, \
-    set_color_palette, g_row_buffer, g_row_buffer_end, switch_screen_page_rgb, PAGE_BUFFER_SZ
+    set_color_palette, g_page_buffer, g_row_buffer_end, switch_screen_page_rgb, PAGE_BUFFER_SZ
 from progs.tetris.board import Board, tg_put_generic
 from progs.tetris.defs import N_ROWS, N_COLS, N_COLORS
 from progs.tetris.te_types import TeCell
@@ -75,7 +75,7 @@ def _template_draw_table(state_table, n_rows, n_cols, top_padding, left_padding,
             A @= M[D].byte()
 
             C @= B + left_padding
-            C @= expr(g_row_buffer.addr()) + C * 2
+            C @= expr(g_page_buffer.addr()) + C * 2
             with If(A == TeCell.EMPTY):
                 with ForRange(D, ROW_BUFFER_SZ * 0, PAGE_BUFFER_SZ * 3, ROW_BUFFER_SZ * 2):
                     M[C + D] @= 1 | G
@@ -114,12 +114,12 @@ def _template_draw_table(state_table, n_rows, n_cols, top_padding, left_padding,
 
 def draw_main_interface():
     call(switch_screen_page, 2, 7)
-    call(draw_str, SMALL_BOARD_LEFT_PADDING - 1, const('Weeekly 3006'))
+    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING - 1, const('Weeekly 3006'))
     call(switch_screen_page, 3, 7)
-    call(draw_str, SMALL_BOARD_LEFT_PADDING - 1, const('Tetris Demo'))
+    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING - 1, const('Tetris Demo'))
 
     call(switch_screen_page, NEXT_BLOCK_TOP_PADDING - 1, 7)
-    call(draw_str, SMALL_BOARD_LEFT_PADDING, const('Next'))
+    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING, const('Next'))
 
     call(switch_screen_page, STORED_BLOCK_TOP_PADDING - 1, 7)
-    call(draw_str, SMALL_BOARD_LEFT_PADDING, const('Held'))
+    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING, const('Held'))

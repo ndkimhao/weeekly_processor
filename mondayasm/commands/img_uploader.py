@@ -20,6 +20,7 @@ WIDTH = 640
 # end
 
 def upload_img(comm: Communicator, args: argparse.ArgumentParser, image_path: str):
+    bank_hex = f'{int(args.bank, 16):04x}'
     conf_page = bytearray()
     conf_page.append(0xa6)
     conf_page.append(0x3a)
@@ -28,6 +29,8 @@ def upload_img(comm: Communicator, args: argparse.ArgumentParser, image_path: st
     name: str = os.path.basename(image_path) if args.name is None else args.name
     name = name.removesuffix('.png')
     name_lines = name.split(' - ')
+    if len(name_lines) == 1:
+        name_lines = ['0', name_lines[0]]
     if len(name_lines) < 3:
         name_lines.append(name_lines[0].strip() + '.png')
     name_lines = [(n + ' ' * 12)[:8] for n in name_lines]
@@ -54,7 +57,7 @@ def upload_img(comm: Communicator, args: argparse.ArgumentParser, image_path: st
     palette_conf = bytearray()
     for i in reversed(range(3)):
         for j in range(i, 8 * 3 + i, 3):
-            palette_conf.append(im_palette[j])
+            palette_conf.append(im_palette[j] if j < len(im_palette) else 0)
             palette_conf.append(0)
     print(len(palette_conf), palette_conf.hex())
 
@@ -64,9 +67,9 @@ def upload_img(comm: Communicator, args: argparse.ArgumentParser, image_path: st
         conf_page.append(0)
 
     chunk_idx = int(slot) << 8
-    comm.send_cmd(f'WRITE_SD 0001 {chunk_idx:04x}')
+    comm.send_cmd(f'WRITE_SD {bank_hex} {chunk_idx:04x}')
     comm.send_cmd(conf_page.hex(),
-                  f'WRITE_SD_OK 0001 {chunk_idx:04x}')
+                  f'WRITE_SD_OK {bank_hex} {chunk_idx:04x}')
 
     if args.header_only:
         return
@@ -89,9 +92,9 @@ def upload_img(comm: Communicator, args: argparse.ArgumentParser, image_path: st
             if len(chunk[0]) == 512:
                 for q in range(3):
                     write_cmd = 'WRITE_SD' if args.hex else 'WRITEB_SD'
-                    comm.send_cmd(f'{write_cmd} 0001 {chunk_idx:04x}')
+                    comm.send_cmd(f'{write_cmd} {bank_hex} {chunk_idx:04x}')
                     comm.send_cmd(chunk[q].hex() if args.hex else bytes(chunk[q]),
-                                  f'WRITE_SD_OK 0001 {chunk_idx:04x}')
+                                  f'WRITE_SD_OK {bank_hex} {chunk_idx:04x}')
                     chunk_idx += 1
                 chunk = [bytearray(), bytearray(), bytearray()]
     assert len(chunk[0]) == 0
@@ -103,6 +106,7 @@ def main():
     parser.add_argument('-s', '--slot', help='Image slot on SD card')
     parser.add_argument('-i', '--image', help='Image file', required=True)
     parser.add_argument('-n', '--name', help='Stored name')
+    parser.add_argument('-b', '--bank', help='Image bank', default=1)
     parser.add_argument('-t', '--verify', help='Verify uploaded data',
                         default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument('--hex', help='Use hex transfer mode',

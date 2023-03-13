@@ -35,7 +35,21 @@ reset:
     con Z, $CodeRomEndAddr
     alu X, K, ADD
     mmu # idx=3 - ROM
+
     mov A, 0
+    con Y, 0xFFFF
+    mov Z, 0
+    alu X, K, ADD
+    mmu # idx=4
+
+    alu X, K, ADD
+    mmu # idx=5
+
+    alu X, K, ADD
+    mmu # idx=6
+
+    alu X, K, ADD
+    mmu # idx=7
 
     # --------------------
     # reset Fetcher
