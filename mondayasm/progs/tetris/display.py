@@ -1,30 +1,36 @@
-from progs.stdlib.font import draw_char, draw_str
 from progs.stdlib.memory import memset
 from progs.stdlib.printf import PRINTF
+from progs.stdlib.syscall import syscall, S
 from progs.stdlib.video import switch_screen_page, fill_cell, get_cell_addr, ROW_BUFFER_SZ, CHUNK_SZ, \
     reset_color_palette, \
-    set_color_palette, g_page_buffer, g_row_buffer_end, switch_screen_page_rgb, PAGE_BUFFER_SZ
+    set_color_palette, g_page_buffer, g_row_buffer_end, switch_screen_page_rgb, PAGE_BUFFER_SZ, NUM_PAGES, fill_page
 from progs.tetris.board import Board, tg_put_generic
 from progs.tetris.defs import N_ROWS, N_COLS, N_COLORS
 from progs.tetris.te_types import TeCell
-from soeunasm import For, ForRange, call, M, If, Else, cmt, Scope, local_var, While, ElseIf, getb, expr
+from soeunasm import For, ForRange, call, M, If, Else, cmt, Scope, local_var, While, ElseIf, getb, expr, Loop
 from soeunasm.data import local_vars, global_var, const
 
 BOARD_TOP_PADDING = 2
-BOARD_LEFT_PADDING = 10
+BOARD_LEFT_PADDING = 6
 
 SMALL_BOARD_LEFT_PADDING = BOARD_LEFT_PADDING + N_COLS + 2
 SMALL_ROWS = 2
 SMALL_COLS = 4
-NEXT_BLOCK_TOP_PADDING = 10
-STORED_BLOCK_TOP_PADDING = 14
+NEXT_BLOCK_TOP_PADDING = 8
+STORED_BLOCK_TOP_PADDING = NEXT_BLOCK_TOP_PADDING + 4
+
+HELP_PANEL_TOP_PADDING = 16
 
 
-def init_tetris_color_palette():
+def tg_init_video(A):
     call(switch_screen_page, 0, 0)
     call(reset_color_palette)
     call(set_color_palette, 4, 0xa0, 0x00, 0xf0)
     call(set_color_palette, 7, 0x70, 0x70, 0x70)
+
+    with ForRange(A, 0, NUM_PAGES):
+        call(switch_screen_page, A, 0b1000)
+        call(fill_page, 0)
 
 
 def tg_display():
@@ -112,14 +118,47 @@ def _template_draw_table(state_table, n_rows, n_cols, top_padding, left_padding,
     # END for A
 
 
+def draw_string(row, col, color, s,
+                A, B, C, D, H):
+    A @= row
+    B @= s
+    with Loop():
+        H @= M[B].byte()
+        If(H == 0).then_break()
+
+        syscall(S.strchr, B, '\n')
+        with If(H == 0):
+            D @= 0
+            Else()
+            C @= H
+            D @= M[C].byte()
+            M[C].byte() @ 0
+
+        call(switch_screen_page, row, color)
+        syscall(S.draw_str, g_page_buffer.addr(), col, B)
+
+        If(D == 0).then_break()
+        M[C].byte() @ D
+        B @= C + 1
+        row += 1
+
+
 def draw_main_interface():
-    call(switch_screen_page, 2, 7)
-    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING - 1, const('Weeekly 3006'))
-    call(switch_screen_page, 3, 7)
-    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING - 1, const('Tetris Demo'))
+    L = SMALL_BOARD_LEFT_PADDING
 
-    call(switch_screen_page, NEXT_BLOCK_TOP_PADDING - 1, 7)
-    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING, const('Next'))
+    call(draw_string, 2, L - 1, 7, const('Weeekly 3006'))
+    call(draw_string, 3, L - 1, 7, const('Tetris Demo'))
 
-    call(switch_screen_page, STORED_BLOCK_TOP_PADDING - 1, 7)
-    call(draw_str, g_page_buffer.addr(), SMALL_BOARD_LEFT_PADDING, const('Held'))
+    call(draw_string, NEXT_BLOCK_TOP_PADDING - 1, L, 7, const('Next'))
+    call(draw_string, STORED_BLOCK_TOP_PADDING - 1, L, 7, const('Hold'))
+
+    H = HELP_PANEL_TOP_PADDING
+    call(draw_string, H, L, 7, const(
+        '>:Left\n'
+        '<:Right\n'
+        'v:Down\n'
+        'z:Rotate Left\n'
+        'x:Rotate Right\n'
+        'c:Hold Block\n'
+        'SB:Drop'
+    ))

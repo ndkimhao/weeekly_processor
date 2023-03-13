@@ -13,6 +13,9 @@ ROW_BUFFER_SZ = WIDTH // 8
 g_page_buffer = global_var('VIDEO_ROW_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
 g_row_buffer_end = g_page_buffer.addr_add(PAGE_BUFFER_SZ)
 
+NUM_PAGES = HEIGHT // CHUNK_SZ
+NUM_CELLS_PER_PAGE = WIDTH // CHUNK_SZ
+
 
 # each page consists of 16 rows
 def switch_screen_page(page, color, A, B, H):
@@ -46,6 +49,12 @@ def fill_cell(col, value, A, G):
     G @= value
     A @= col << 1
     with For(A @ (A + g_page_buffer.addr()), A < g_row_buffer_end.addr(), A @ (A + ROW_BUFFER_SZ)):
+        M[A] @= G
+
+
+def fill_page(value, A, G):
+    G @= value
+    with For(A @ g_page_buffer.addr(), A < g_row_buffer_end.addr(), A @ (A + 2)):
         M[A] @= G
 
 

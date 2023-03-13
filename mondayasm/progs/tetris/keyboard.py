@@ -46,7 +46,7 @@ def handle_keyboard(A, G, H):
             ElseIf(H == 0x22)  # X
             G @= TeMove.ROTATE
 
-            ElseIf(H == 0x11)  # ALT
+            ElseIf(H == 0x29)  # Space Bar
             G @= TeMove.DROP
 
         with If(G != TeMove.NONE):
