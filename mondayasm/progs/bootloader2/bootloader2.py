@@ -648,7 +648,8 @@ VERSION_CHAR = '7'
 
 
 def display_default_oled_screen(H):
-    call(draw_str_oled, 0, 0, const('Weeekly'))
+    IS_TEST_CHAR = ' ' if BOOTLOADER2_ROM_MODE else 'T'
+    call(draw_str_oled, 0, 0, const(f'Weeekly{IS_TEST_CHAR}'))
     call(draw_str_oled, 1, 0, const(f'3006 {VERSION_CHAR}'))
     H @= 'S'
     with If(g_has_sd_card == 0):
