@@ -1,3 +1,4 @@
+import os
 import sys
 import argparse
 from types import NoneType
@@ -101,12 +102,15 @@ def main():
                         default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument('-m', '--monitor', help='Monitor serial port after uploading',
                         default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument('-sd', '--sd-slot', help='Upload to SD slot')
+    parser.add_argument('--sd-name', help='Overwrite SD name')
     parser.add_argument('--hex', help='Use hex transfer mode',
                         default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument('--persist', help='Persist jmp address',
                         default=True, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
+    data = code_offset = None
     if args.file:
         with open(args.file, 'r') as f:
             lines = f.readlines()
@@ -136,38 +140,17 @@ def main():
         print(f'code offset = 0x{code_offset:04x}')
         print(f'\nLoaded hex code at {args.file}\n\n{SEP}\n')
 
-    CHUNK_SIZE = 256  # bytes
-
     with serial.Serial(args.port, 115200, timeout=0.5) as ser:
         comm = Communicator(ser)
         if args.file:
             comm.send_cmd('PING', 'PONG')
             print(f'\nPinged device at {args.port}\n\n{SEP}\n')
+            if args.sd_slot is not None:
+                upload_sd(args, code_offset, comm, data)
+            else:
+                upload_ram(args, code_offset, comm, data)
 
-            for i in range(0, len(data), CHUNK_SIZE):
-                chunk = data[i: i + CHUNK_SIZE]
-                chunk_start = code_offset + i
-                chunk_end = chunk_start + len(chunk)
-                write_cmd = 'WRITE' if args.hex else 'WRITEB'
-                comm.send_cmd(f'{write_cmd} {chunk_start:04x} {chunk_end:04x}')
-                comm.send_cmd(chunk.hex() if args.hex else chunk,
-                              f'WRITE_OK {chunk_start:04x} {chunk_end:04x}')
-
-            print(f'\nUploaded\n\n{SEP}\n')
-
-            if args.verify:
-                for i in range(0, len(data), CHUNK_SIZE):
-                    chunk = data[i: i + CHUNK_SIZE]
-                    chunk_start = code_offset + i
-                    chunk_end = chunk_start + len(chunk)
-                    read_cmd = 'READ' if args.hex else 'READB'
-                    comm.send_cmd(f'{read_cmd} {chunk_start:04x} {chunk_end:04x}',
-                                  f'READ_OK {chunk_start:04x} {chunk_end:04x}')
-                    comm.send_cmd(None, chunk.hex() if args.hex else chunk)
-
-                print(f'\nVerified\n\n{SEP}\n')
-
-        if args.file and args.jmp:
+        if args.file and args.jmp and args.sd_slot is None:
             if args.persist:
                 comm.send_cmd(f'JMP_PERSIST {code_offset:04x}', f'JMP_PERSISTED {code_offset:04x}')
             else:
@@ -176,6 +159,94 @@ def main():
         if args.monitor:
             print(f'\n{SEP}')
             comm.run_miniterm()
+
+
+def upload_ram(args, code_offset, comm, data):
+    CHUNK_SIZE = 256  # bytes
+
+    for i in range(0, len(data), CHUNK_SIZE):
+        chunk = data[i: i + CHUNK_SIZE]
+        chunk_start = code_offset + i
+        chunk_end = chunk_start + len(chunk)
+        write_cmd = 'WRITE' if args.hex else 'WRITEB'
+        comm.send_cmd(f'{write_cmd} {chunk_start:04x} {chunk_end:04x}')
+        comm.send_cmd(chunk.hex() if args.hex else chunk,
+                      f'WRITE_OK {chunk_start:04x} {chunk_end:04x}')
+    print(f'\nUploaded\n\n{SEP}\n')
+
+    if not args.verify:
+        return
+
+    for i in range(0, len(data), CHUNK_SIZE):
+        chunk = data[i: i + CHUNK_SIZE]
+        chunk_start = code_offset + i
+        chunk_end = chunk_start + len(chunk)
+        read_cmd = 'READ' if args.hex else 'READB'
+        comm.send_cmd(f'{read_cmd} {chunk_start:04x} {chunk_end:04x}',
+                      f'READ_OK {chunk_start:04x} {chunk_end:04x}')
+        comm.send_cmd(None, chunk.hex() if args.hex else chunk)
+
+    print(f'\nVerified\n\n{SEP}\n')
+
+
+# noinspection PyPep8Naming
+def upload_sd(args, code_offset, comm, data):
+    if args.sd_name is None:
+        file_name = os.path.basename(args.file).removesuffix('.asm')
+    else:
+        file_name = args.sd_name
+    sd_slot = int(args.sd_slot)
+
+    SD_SECTOR_SIZE = 512
+    CHUNK_SIZE = SD_SECTOR_SIZE - 4
+    CODE_BANK = 3
+    sectors: list[bytes] = []
+
+    # build header sector
+    conf_chunk = bytearray()
+    conf_chunk.extend([0xb6, 0x3b])
+    conf_chunk.extend([code_offset & 0xFF, code_offset >> 8])
+    conf_chunk.extend(file_name.encode())
+    conf_chunk.append(0)
+    assert len(conf_chunk) <= SD_SECTOR_SIZE
+    while len(conf_chunk) < SD_SECTOR_SIZE:
+        conf_chunk.append(0)
+
+    sectors.append(bytes(conf_chunk))
+
+    for i in range(0, len(data), CHUNK_SIZE):
+        chunk = data[i: i + CHUNK_SIZE]
+        chunk_start = code_offset + i
+        chunk_end = chunk_start + len(chunk)
+        s = bytearray()
+        s.extend([chunk_start & 0xFF, chunk_start >> 8])
+        s.extend([chunk_end & 0xFF, chunk_end >> 8])
+        s.extend(chunk)
+        assert len(s) <= SD_SECTOR_SIZE
+        while len(s) < SD_SECTOR_SIZE:
+            s.append(0)
+        sectors.append(bytes(s))
+
+    sectors.append(bytes([0] * SD_SECTOR_SIZE))
+
+    for i, s in enumerate(sectors):
+        sector_idx = (sd_slot << 8) + i
+        comm.send_cmd(f'WRITE_SD {CODE_BANK:04x} {sector_idx:04x}')
+        comm.send_cmd(s.hex(),
+                      f'WRITE_SD_OK {CODE_BANK:04x} {sector_idx:04x}')
+
+    print(f'\nUploaded\n\n{SEP}\n')
+
+    if not args.verify:
+        return
+
+    for i, s in enumerate(sectors):
+        sector_idx = (sd_slot << 8) + i
+        comm.send_cmd(f'READ_SD {CODE_BANK:04x} {sector_idx:04x}',
+                      f'READ_SD_OK {CODE_BANK:04x} {sector_idx:04x}')
+        comm.send_cmd(None, s.hex())
+
+    print(f'\nVerified\n\n{SEP}\n')
 
 
 if __name__ == '__main__':

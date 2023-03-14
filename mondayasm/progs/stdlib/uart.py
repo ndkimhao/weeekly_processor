@@ -22,3 +22,16 @@ def getc(G, H):
         # got one
         H &= 0xFF
         Break()
+
+
+# returns G: 0=fail, 1=ok
+#         H: char
+def getc_nonblocking(G, H):
+    # recv uart
+    H @= M[UART_RECV]
+    G @= H & FLAG_UART_RECV_VALID
+    If(G == 0).then_return()
+
+    # got one
+    H &= 0xFF
+    G @= 1

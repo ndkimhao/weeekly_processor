@@ -3,17 +3,17 @@ from enum import Enum
 import mondayasm
 from progs.bootloader2.syscall_entry import syscall_entry
 from progs.stdlib.devices import DEV_BASE_ADDR, LED, UART_SEND, JMP_TARGET, \
-    SYSCALL_ENTRY, BTN_READ, SD_SECTOR_SIZE
-from progs.stdlib.format import atoi_16, itoa_16
+    SYSCALL_ENTRY, BTN_READ, SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN, BIT_BTN_CENTER, BIT_BTN_LEFT
+from progs.stdlib.format import atoi_16, itoa_16, itoa_10
 from progs.stdlib.memory import strchr, strcasecmp, memcpy
 from progs.stdlib.oled import init_oled, deinit_oled, quick_deinit_oled, draw_str_oled, \
-    draw_char_oled
+    draw_char_oled, clear_oled
 from progs.stdlib.printf import puts, printf, PRINTF
 from progs.stdlib.sdcard import read_sd, init_sd, init_sd_head, init_sd_tail, write_sd
-from progs.stdlib.uart import putc, getc
+from progs.stdlib.uart import putc, getc, getc_nonblocking
 from soeunasm import Reg, call, halt, init_code_gen, If, jmp, mmap, umap, const, M, Loop, local_var, Break, expr, Scope, \
-    global_var, While, Else, cmt, Continue, ForRange, Cleanup
-from soeunasm.free_expr import decl_label, label, push, pop, addr
+    global_var, While, Else, cmt, Continue, ForRange, Cleanup, getb
+from soeunasm.free_expr import decl_label, label, push, pop, addr, inc
 from soeunasm.scope_func import Return, emit_fn
 
 BOOTLOADER2_ROM_MODE = False
@@ -34,7 +34,12 @@ MAX_ARGS = 6
 g_num_args = global_var('g_num_args')
 g_args = global_var('g_args', size=2 * (MAX_ARGS + 1), align=2)
 
-g_has_sd_card = global_var()
+g_has_sd_card = global_var('g_has_sd_card')
+g_sd_slot = global_var('g_sd_slot')
+g_sd_jmp_target = global_var('g_sd_jmp_target')
+g_last_button_state = global_var('g_last_button_state')
+
+SD_CODE_BANK = 3
 
 
 class SerialCmd(Enum):
@@ -56,6 +61,7 @@ class SerialCmd(Enum):
     UMAP = 15
     WRITEB_SD = 16
     SHOW_IMG = 17
+    ERASE_SD = 18
 
 
 def parse_command_name(p_str, A, H):
@@ -65,6 +71,113 @@ def parse_command_name(p_str, A, H):
             call(strcasecmp, A, const(cmd.name))
             If(H == 0).then_return(cmd.value)
     H @= SerialCmd.NONE
+
+
+def check_button_pressed(A, G):
+    A @= M[BTN_DEBOUNCED]
+    If(A == g_last_button_state).then_return()
+    g_last_button_state @ A
+
+    G @= getb(A, BIT_BTN_UP)
+    with If(G != 0):
+        G @ g_sd_slot
+        with If(G >= 0):
+            G -= 1
+            g_sd_slot @ G
+            call(update_code_index_screen)
+
+    G @= getb(A, BIT_BTN_DOWN)
+    with If(G != 0):
+        g_sd_slot @ inc(g_sd_slot)
+        call(update_code_index_screen)
+
+    G @= getb(A, BIT_BTN_CENTER)
+    with If(G != 0):
+        call(load_code_from_sd)
+
+
+def load_code_from_sd(A, B, C, D, G):
+    CHUNK_HDR_SZ = 4
+    lb_fail = decl_label()
+    sd_buf = local_var(size=SD_SECTOR_SIZE + 16)
+
+    C @= g_sd_slot
+    If(C == -1).then_return()
+
+    call(show_status, '-')
+    C <<= 8
+    with ForRange(B, 1, 256) as for_b:
+        call(read_sd, sd_buf.addr(), SD_SECTOR_SIZE, SD_CODE_BANK, B + C)
+        If(G == 0).then_jmp(lb_fail)
+
+        A @= sd_buf
+        D @= sd_buf.addr_add(2)
+        with Scope():
+            If(A != 0).then_break()
+            If(D != 0).then_break()
+            for_b.Break()
+
+        G @= D - A
+        If(G > SD_SECTOR_SIZE - CHUNK_HDR_SZ).then_jmp(lb_fail)
+
+        call(memcpy, A, sd_buf.addr() + CHUNK_HDR_SZ, G)
+        call(printf, const('SD_LOAD %x %x\n'), A, D)
+    # END for B
+    If(B == 256).then_jmp(lb_fail)
+
+    G @= getb(M[BTN_READ], BIT_BTN_LEFT)
+    with If(G == 0):
+        call(show_status, 'R')
+        call(printf, const('SD_JMP %x\n'), g_sd_jmp_target)
+        call(jmp_to_target_persisted, g_sd_jmp_target)
+
+    ###
+    Return()
+    label(lb_fail)
+    call(show_status, 'E')
+    Return()
+
+
+def update_code_index_screen(C, G, H):
+    lb_fail = decl_label()
+    lb_not_found = decl_label()
+    sd_buf = local_var(size=SD_SECTOR_SIZE + 16)
+    iota_buf = local_var(size=10)
+
+    C @= g_sd_slot
+    If(C == -1).then_jmp(lb_not_found)
+
+    C <<= 8
+    call(read_sd, sd_buf.addr(), SD_SECTOR_SIZE, SD_CODE_BANK, C)
+    If(G == 0).then_jmp(lb_fail)
+    If(sd_buf != 0x3bb6).then_jmp(lb_not_found)
+
+    g_sd_jmp_target @ sd_buf.addr_add(2)
+
+    sd_buf.addr_add(4 + 8) @ 0  # null terminate
+    call(clear_oled)
+    call(draw_str_oled, 0, 0, sd_buf.addr() + 4)
+
+    G @= g_sd_slot + 1
+    call(itoa_10, G, iota_buf.addr())
+    G @= iota_buf.addr()
+    with Loop():
+        H @= M[G].byte()
+        If(H == 0).then_break()
+        G += 1
+    M[G] @= '.'  # append "." at the end
+    call(draw_str_oled, 1, 0, iota_buf.addr())
+
+    Return()
+
+    label(lb_fail)
+    call(show_status, 'E')
+    Return()
+
+    label(lb_not_found)
+    g_sd_slot @ -1
+    call(display_default_oled_screen)
+    call(show_status, '-')
 
 
 # Returns H = SerialCmd, G = is okay
@@ -81,7 +194,10 @@ def recv_command(A, B, C, D, G, H):
     A @= buf.addr()
     with Loop():
         # recv uart
-        call(getc)
+        call(getc_nonblocking)
+        with If(G == 0):
+            call(check_button_pressed)
+            Continue()
         C @= H
         # echo back
         M[UART_SEND] @= C  # we are receiving, so uart sender won't be busy
@@ -271,19 +387,25 @@ def show_status(ch):
     call(draw_char_oled, 1, 7, ch)
 
 
-def handle_jmp(cmd_num, G):
+def handle_jmp(cmd_num, A, G):
     call(check_num_args, 1)
     If(G == 0).then_return()
 
     call(show_status, 'R')
     M[LED] @= 0
 
-    with If(cmd_num == SerialCmd.JMP):
-        call(printf, const('JMP_TO %x\n'), g_args)
-        jmp(g_args)
+    A @= g_args
 
-    M[JMP_TARGET] @= g_args
-    call(printf, const('JMP_PERSISTED %x\n'), M[JMP_TARGET])
+    with If(cmd_num == SerialCmd.JMP):
+        call(printf, const('JMP_TO %x\n'), A)
+        jmp(A)
+
+    call(printf, const('JMP_PERSISTED %x\n'), A)
+    call(jmp_to_target_persisted, A)
+
+
+def jmp_to_target_persisted(target):
+    M[JMP_TARGET] @= target
 
     # No return from this point
     label(glb_jmp_to_stored_target)
@@ -304,7 +426,7 @@ def handle_init_sd(cmd_num, G):
 
 def handle_read_sd(cmd_num, A, B, G, H):
     itoa_buf = local_var(size=6)
-    buf = local_var(size=SD_SECTOR_SIZE + 2)
+    buf = local_var(size=SD_SECTOR_SIZE + 16)
     call(check_num_args, 2)
     If(G == 0).then_return()
 
@@ -326,7 +448,7 @@ def handle_write_sd(cmd_num, A, B, C, D, G, H):
     lb_invalid_data = decl_label()
 
     atoi_buf = local_var(size=6)
-    buf = local_var(size=SD_SECTOR_SIZE + 2)
+    buf = local_var(size=SD_SECTOR_SIZE + 16)
     call(check_num_args, 2)
     If(G == 0).then_return()
 
@@ -470,6 +592,17 @@ def handle_show_img(G):
         call(puts, const('SHOW_IMG_ERROR\n'))
 
 
+def handle_erase_sd(G):
+    call(check_num_args, 2)
+    If(G == 0).then_return()
+
+    call(write_sd, 0, 0, g_args, g_args.addr_add(2))
+    with If(G == 1):
+        call(puts, const('ERASE_SD_OK\n'))
+        Else()
+        call(puts, const('ERASE_SD_ERROR\n'))
+
+
 HANDLER_MAP_PY = {
     SerialCmd.PING: handle_ping,
     SerialCmd.READ: handle_read,
@@ -488,6 +621,7 @@ HANDLER_MAP_PY = {
     SerialCmd.UMAP: handle_umap,
     SerialCmd.WRITEB_SD: handle_write_sd,
     SerialCmd.SHOW_IMG: handle_show_img,
+    SerialCmd.ERASE_SD: handle_erase_sd,
 }
 HANDLER_MAP = const('HANDLER_MAP', _process_handler_map())
 
@@ -510,20 +644,29 @@ def check_persisted_target(A, B):
         jmp(glb_jmp_to_stored_target)
 
 
+VERSION_CHAR = '7'
+
+
+def display_default_oled_screen(H):
+    call(draw_str_oled, 0, 0, const('Weeekly'))
+    call(draw_str_oled, 1, 0, const(f'3006 {VERSION_CHAR}'))
+    H @= 'S'
+    with If(g_has_sd_card == 0):
+        H @= '-'
+    call(draw_char_oled, 1, 6, H)
+
+
 def init_sd_and_oled(H, G):
     # show welcome screen
     call(init_sd_head)
     call(init_oled)
-    call(draw_str_oled, 0, 0, const('Weeekly'))
-    call(draw_str_oled, 1, 0, const('3006 6'))
     # check sd status
     call(init_sd_tail)
-    H @= 'S'
-    g_has_sd_card @ 1
-    with If(G == 0):
-        H @= '-'
-        g_has_sd_card @ 0
-    call(draw_char_oled, 1, 6, H)
+    g_has_sd_card @ G
+
+
+def display_splash_screen():
+    call(display_image, 2, 0)
 
 
 def main(A, B, G, H):
@@ -536,14 +679,19 @@ def main(A, B, G, H):
     M[SYSCALL_ENTRY] @= emit_fn(syscall_entry)
 
     # init
-    call(puts, const('Weeekly3006 - Hardware v2.0 - Bootloader v3.6\n'))
+    call(puts, const(f'Weeekly3006 - Hardware v2.1 - Bootloader v3.{VERSION_CHAR}\n'))
     call(init_sd_and_oled)
+    call(display_default_oled_screen)
+
+    # init global vars
+    g_sd_slot @ -1
+    g_last_button_state @ 0
 
     # jump to persisted target if exists
     call(check_persisted_target)
 
     with If(g_has_sd_card == 1):
-        call(display_image, 2, 0)
+        call(display_splash_screen)
         call(show_status, '-')
 
     # wait for commands

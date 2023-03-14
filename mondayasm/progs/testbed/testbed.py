@@ -1,8 +1,11 @@
+from progs.stdlib.font import fill_cell_content
 from progs.stdlib.printf import puts, printf
 from progs.stdlib.syscall import syscall, S
 from progs.stdlib.timing import DELAY_MILLIS
-from progs.stdlib.video import switch_screen_page, fill_cell, fill_cell_content, reset_color_palette, set_color_palette
-from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var
+from progs.stdlib.video import switch_screen_page, fill_cell, reset_color_palette, set_color_palette, g_page_buffer, \
+    NUM_PAGES, fill_page
+from soeunasm import call, halt, init_code_gen, Reg, Loop, For, If, Else, M, addr, const, global_var, local_var, \
+    ForRange
 
 CODE_OFFSET = 0xA000
 
@@ -19,7 +22,6 @@ def test_loop_target():
 
 def gen_font(A, B, C, D, E, H):
     color = global_var()
-    font_buf = local_var(size=2 * 16)
     C @= 32
     with For(A @ 0, A < 6, A @ (A + 1)):
         with If(color >= 7):
@@ -27,11 +29,9 @@ def gen_font(A, B, C, D, E, H):
         color += 1
         E @= color + 8
         call(switch_screen_page, A + 1, E)
+        call(fill_cell, 10, 0xFFFF)
         with For(B @ 0, B < 16, B @ (B + 1)):
-            # call(printf, const('a=%x b=%x c=%x d=%x [c]=%x\n'), A, B, C, D, M[C])
-            # call(decode_font, addr(font_buf), D, 16, 12)
-            syscall(S.decode_font_16_12, addr(font_buf), C)
-            call(fill_cell_content, 10 + B, addr(font_buf))
+            syscall(S.draw_char, g_page_buffer.addr(), 10 + B, C)
             C += 1
 
 
@@ -41,6 +41,10 @@ def main(A, B, C, D, E, H):
     # call(decode_font, addr(font_buf), FONT_16_12_COMPRESSED + FONT_16_12_INDEX_PY[ord('B') - 32], 16, 12)
     # with For(A @ addr(font_buf), A != addr(font_buf) + 32, A @ (A + 2)):
     #     call(printf, const('%b\n'), [A])
+
+    with ForRange(A, 0, NUM_PAGES):
+        call(switch_screen_page, A, 0b1000)
+        call(fill_page, 0)
 
     call(switch_screen_page, 0, 0)  # palette bank
     call(reset_color_palette)
@@ -56,8 +60,7 @@ def main(A, B, C, D, E, H):
     call(fill_cell, 2, 0xaaaa)
 
     call(switch_screen_page, 7, 0b111)
-    call(fill_cell, 1, 0xFF00)
-
+    call(fill_cell, 1, 0xFFA0)
 
     with For(A @ 0, True, A @ (~A)):
         call(gen_font)

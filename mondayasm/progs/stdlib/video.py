@@ -10,7 +10,7 @@ MMAP_SLOT = 4
 PAGE_BUFFER_SZ = WIDTH // 8 * CHUNK_SZ
 ROW_BUFFER_SZ = WIDTH // 8
 
-g_page_buffer = global_var('VIDEO_ROW_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
+g_page_buffer = global_var('VIDEO_PAGE_BUFFER', size=PAGE_BUFFER_SZ * 3, align=16)
 g_row_buffer_end = g_page_buffer.addr_add(PAGE_BUFFER_SZ)
 
 NUM_PAGES = HEIGHT // CHUNK_SZ
