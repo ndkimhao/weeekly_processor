@@ -1,4 +1,4 @@
-from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN
+from progs.stdlib.devices import SD_SECTOR_SIZE, BTN_DEBOUNCED, BIT_BTN_UP, BIT_BTN_DOWN, LED
 from progs.stdlib.oled import draw_char_oled
 from progs.stdlib.syscall import S, syscall
 from progs.stdlib.video import switch_screen_page, g_page_buffer, HEIGHT, WIDTH, fill_page, NUM_PAGES
@@ -58,6 +58,7 @@ def show_image(img_slot, A, B, C, D, G, H):
     syscall(S.draw_str_oled, 0, 0, g_sd_buf.addr() + 2)
     syscall(S.draw_str_oled, 1, 0, g_sd_buf.addr() + 12)
     call(show_status, '-')
+    M[LED] @= 1
 
     with ForRange(A, 0, NUM_PAGES):
         call(switch_screen_page, A, 0b1000)
@@ -93,6 +94,7 @@ def show_image(img_slot, A, B, C, D, G, H):
     umap(SD_BUF_MMAP_SLOT)
     with Scope(preserve=[G]):
         call(show_status, 'D')
+        M[LED] @= 0
 
 
 def move_slot(dir, A, G):
