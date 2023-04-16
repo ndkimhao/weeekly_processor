@@ -55,9 +55,9 @@ def setb(a, b, c=None, *, inplace: bool = False):
 
 def clrb(a, b, c=None, *, inplace: bool = False):
     if c is None:
-        b += 16
+        b = b + 16
     else:
-        c += 16
+        c = c + 16
     return setb(a, b, c, inplace=inplace)
 
 
