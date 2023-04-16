@@ -73,7 +73,7 @@ def parse_command_name(p_str, A, H):
     H @= SerialCmd.NONE
 
 
-def check_button_pressed(A, G):
+def check_button_pressed(A, B, G):
     A @= M[BTN_DEBOUNCED]
     If(A == g_last_button_state).then_return()
     g_last_button_state @ A
@@ -88,8 +88,12 @@ def check_button_pressed(A, G):
 
     G @= getb(A, BIT_BTN_DOWN)
     with If(G != 0):
-        g_sd_slot @ inc(g_sd_slot)
+        B @= g_sd_slot
+        g_sd_slot @ (B + 1)
         call(update_code_index_screen)
+        with If(g_sd_slot == -1):
+            g_sd_slot @ B
+            call(update_code_index_screen)
 
     G @= getb(A, BIT_BTN_CENTER)
     with If(G != 0):
@@ -176,8 +180,6 @@ def update_code_index_screen(C, G, H):
 
     label(lb_not_found)
     g_sd_slot @ -1
-    call(display_default_oled_screen)
-    call(show_status, '-')
 
 
 # Returns H = SerialCmd, G = is okay
@@ -644,7 +646,7 @@ def check_persisted_target(A, B):
         jmp(glb_jmp_to_stored_target)
 
 
-VERSION_CHAR = '7'
+VERSION_CHAR = '8'
 
 
 def display_default_oled_screen(H):
@@ -735,6 +737,8 @@ if __name__ == '__main__':
     cg.code_offset = CODE_OFFSET
     if BOOTLOADER2_ROM_MODE:
         cg.var_offset = (CODE_END + 0xF) & 0xFFF0
-    cg.compile().write('bootloader2.asm')
+        cg.compile().write('bootloader2.coe.asm')
+    else:
+        cg.compile().write('bootloader2.asm')
     if BOOTLOADER2_ROM_MODE:
         cg.write_coe('bootloader2.coe')

@@ -2,9 +2,9 @@
                                #      | 
                                #      | SECTION_BEGIN_boot:
 60 a0 e0 fe 8f                 # 9000 |   mov SP, 0x8ffe
-                               #      | _A_call_183:
+                               #      | _A_call_182:
 5c f8 4c 12                    # 9005 |   call ${fn_main}:rel + PC
-                               #      | _Z_call_183:
+                               #      | _Z_call_182:
 d8                             # 9009 |   halt
                                #      | SECTION_END_boot:
                                #      | 
@@ -550,21 +550,21 @@ dc                             # 9438 |   ret
                                #      | 
                                #      | fn_srand:
                                #      | _begin_fn_srand:
-63 e0 bc c1 b0 02              # 9439 |   mov [${var__rand__state}], [SP + 0x2]
+63 e0 bc ce b0 02              # 9439 |   mov [${var__rand__state}], [SP + 0x2]
                                #      | _cleanup_fn_srand:
 dc                             # 943f |   ret
                                #      | _end_fn_srand:
                                #      | 
                                #      | fn_rand:
                                #      | _begin_fn_rand:
-61 ff e0 c1 b0                 # 9440 |   mov H, [${var__rand__state}]
+61 ff e0 ce b0                 # 9440 |   mov H, [${var__rand__state}]
 a8 fe ff 1c 07                 # 9445 |   shl G, H, 0x7
 34 ff fe                       # 944a |   xor H, G
 a0 fe ff 1c 09                 # 944d |   shr G, H, 0x9
 34 ff fe                       # 9452 |   xor H, G
 a8 fe ff 1c 08                 # 9455 |   shl G, H, 0x8
 34 ff fe                       # 945a |   xor H, G
-62 e0 ff c1 b0                 # 945d |   mov [${var__rand__state}], H
+62 e0 ff ce b0                 # 945d |   mov [${var__rand__state}], H
                                #      | _cleanup_fn_rand:
 dc                             # 9462 |   ret
                                #      | _end_fn_rand:
@@ -746,11 +746,11 @@ fc 20 e0 f8 80 00 0c 00        # 95e6 |   jge A, 0x80, ${_C_scope_7}:rel + PC
                                #      | _C_scope_7:
                                #      | _Z_scope_7:
 28 40 1c 01                    # 95f2 |   shl B, 0x1
-61 40 e8 25 ad                 # 95f6 |   mov B, [${const__FONT_16_12_INDEX} + B]
+61 40 e8 32 ad                 # 95f6 |   mov B, [${const__FONT_16_12_INDEX} + B]
                                #      | _A_call_20:
 e0 1c 0c                       # 95fb |   push 0xc
 e0 1c 10                       # 95fe |   push 0x10
-e0 e8 30 a9                    # 9601 |   push ${const__FONT_16_12_COMPRESSED} + B
+e0 e8 3d a9                    # 9601 |   push ${const__FONT_16_12_COMPRESSED} + B
 e2 bc 0c                       # 9605 |   push [SP + 0xc]
 5c f8 f9 fe                    # 9608 |   call ${fn_decode_font}:rel + PC
 60 a0 bc 08                    # 960c |   mov SP, SP + 0x8
@@ -1435,7 +1435,7 @@ e0 00                          # 9b94 |   push 0
 60 a0 bc 02                    # 9b9a |   mov SP, SP + 0x2
                                #      | _Z_call_51:
                                #      | _A_call_52:
-e0 e0 47 ae                    # 9b9e |   push ${const__str__PONG__endl}
+e0 e0 54 ae                    # 9b9e |   push ${const__str__PONG__endl}
 5c f8 36 f6                    # 9ba2 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9ba6 |   mov SP, SP + 0x2
                                #      | _Z_call_52:
@@ -1447,11 +1447,11 @@ dc                             # 9baa |   ret
                                #      | _begin_fn_check_num_args:
 c4 fe 00                       # 9bab |   inc G, 0
                                #      | _A_if_68:
-eb e0 bc f8 c3 b0 02 1f 00     # 9bae |   jeq [${var__g_num_args}], [SP + 0x2], ${_E_if_68}:rel + PC
+eb e0 bc f8 d0 b0 02 1f 00     # 9bae |   jeq [${var__g_num_args}], [SP + 0x2], ${_E_if_68}:rel + PC
                                #      | _A_call_50:
-e2 e0 c3 b0                    # 9bb7 |   push [${var__g_num_args}]
+e2 e0 d0 b0                    # 9bb7 |   push [${var__g_num_args}]
 e2 bc 04                       # 9bbb |   push [SP + 0x4]
-e0 e0 23 ae                    # 9bbe |   push ${const__data_1}
+e0 e0 30 ae                    # 9bbe |   push ${const__data_1}
 5c f8 48 f4                    # 9bc2 |   call ${fn_printf}:rel + PC
 60 a0 bc 06                    # 9bc6 |   mov SP, SP + 0x6
                                #      | _Z_call_50:
@@ -1480,12 +1480,12 @@ e8 fe 00 f8 9f 00              # 9be5 |   jeq G, 0, ${_cleanup_fn_handle_read}:r
 5c f8 a6 00                    # 9beb |   call ${fn_check_addr_range}:rel + PC
                                #      | _Z_call_55:
 e8 fe 00 f8 95 00              # 9bef |   jeq G, 0, ${_cleanup_fn_handle_read}:rel + PC
-61 20 e0 c6 b0                 # 9bf5 |   mov A, [${var__g_args}]
-61 40 e0 c8 b0                 # 9bfa |   mov B, [${var__g_args} + 0002]
+61 20 e0 d2 b0                 # 9bf5 |   mov A, [${var__g_args}]
+61 40 e0 d4 b0                 # 9bfa |   mov B, [${var__g_args} + 0002]
                                #      | _A_call_56:
 e0 40                          # 9bff |   push B
 e0 20                          # 9c01 |   push A
-e0 e0 69 ae                    # 9c03 |   push ${const__data_2}
+e0 e0 76 ae                    # 9c03 |   push ${const__data_2}
 5c f8 03 f4                    # 9c07 |   call ${fn_printf}:rel + PC
 60 a0 bc 06                    # 9c0b |   mov SP, SP + 0x6
                                #      | _Z_call_56:
@@ -1560,11 +1560,11 @@ dc                             # 9c90 |   ret
 e0 60                          # 9c91 |   push C
 e0 40                          # 9c93 |   push B
 e0 20                          # 9c95 |   push A
-61 20 e0 c6 b0                 # 9c97 |   mov A, [${var__g_args}]
-61 40 e0 c8 b0                 # 9c9c |   mov B, [${var__g_args} + 0002]
-60 60 e0 4d ae                 # 9ca1 |   mov C, ${const__str__INVALID_RANGE__endl}
+61 20 e0 d2 b0                 # 9c97 |   mov A, [${var__g_args}]
+61 40 e0 d4 b0                 # 9c9c |   mov B, [${var__g_args} + 0002]
+60 60 e0 5a ae                 # 9ca1 |   mov C, ${const__str__INVALID_RANGE__endl}
 fc 20 40 f8 28 00              # 9ca6 |   jge A, B, ${_L_fn_check_addr_range_1}:rel + PC
-60 60 e0 5c ae                 # 9cac |   mov C, ${const__str__NOT_ALIGNED__endl}
+60 60 e0 69 ae                 # 9cac |   mov C, ${const__str__NOT_ALIGNED__endl}
 ac fe 20 1c 01                 # 9cb1 |   and G, A, 0x1
 ec fe 00 f8 18 00              # 9cb6 |   jne G, 0, ${_L_fn_check_addr_range_1}:rel + PC
 ac fe 40 1c 01                 # 9cbc |   and G, B, 0x1
@@ -1602,8 +1602,8 @@ e8 fe 00 f8 ce 00              # 9cf9 |   jeq G, 0, ${_cleanup_fn_handle_write}:
 5c f8 92 ff                    # 9cff |   call ${fn_check_addr_range}:rel + PC
                                #      | _Z_call_63:
 e8 fe 00 f8 c4 00              # 9d03 |   jeq G, 0, ${_cleanup_fn_handle_write}:rel + PC
-61 20 e0 c6 b0                 # 9d09 |   mov A, [${var__g_args}]
-61 40 e0 c8 b0                 # 9d0e |   mov B, [${var__g_args} + 0002]
+61 20 e0 d2 b0                 # 9d09 |   mov A, [${var__g_args}]
+61 40 e0 d4 b0                 # 9d0e |   mov B, [${var__g_args} + 0002]
                                #      | _A_if_78:
 ee bc 1c f8 10 03 55 00        # 9d13 |   jne [SP + 0x10], 0x3, ${_E_if_78}:rel + PC
                                #      | _A_while_9:
@@ -1669,15 +1669,15 @@ fc 20 40 f8 2d 00              # 9d68 |   jge A, B, ${_C_while_10}:rel + PC
 ec ff 1c f8 0a 1d 00           # 9d9e |   jne H, 0xa, ${_L_fn_handle_write_1}:rel + PC
                                #      | _A_call_69:
 e0 40                          # 9da5 |   push B
-e2 e0 c6 b0                    # 9da7 |   push [${var__g_args}]
-e0 e0 78 ae                    # 9dab |   push ${const__data_3}
+e2 e0 d2 b0                    # 9da7 |   push [${var__g_args}]
+e0 e0 85 ae                    # 9dab |   push ${const__data_3}
 5c f8 5b f2                    # 9daf |   call ${fn_printf}:rel + PC
 60 a0 bc 06                    # 9db3 |   mov SP, SP + 0x6
                                #      | _Z_call_69:
 58 f8 10 00                    # 9db7 |   jmp ${_cleanup_fn_handle_write}:rel + PC
                                #      | _L_fn_handle_write_1:
                                #      | _A_call_70:
-e0 e0 88 ae                    # 9dbb |   push ${const__data_4}
+e0 e0 95 ae                    # 9dbb |   push ${const__data_4}
 5c f8 19 f4                    # 9dbf |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9dc3 |   mov SP, SP + 0x2
                                #      | _Z_call_70:
@@ -1705,12 +1705,12 @@ e0 1c 52                       # 9de7 |   push 0x52
 60 a0 bc 02                    # 9dee |   mov SP, SP + 0x2
                                #      | _Z_call_73:
 62 e0 00 0a ff                 # 9df2 |   mov [0xff0a], 0
-61 20 e0 c6 b0                 # 9df7 |   mov A, [${var__g_args}]
+61 20 e0 d2 b0                 # 9df7 |   mov A, [${var__g_args}]
                                #      | _A_if_82:
 ee bc 1c f8 04 06 18 00        # 9dfc |   jne [SP + 0x4], 0x6, ${_E_if_82}:rel + PC
                                #      | _A_call_74:
 e0 20                          # 9e04 |   push A
-e0 e0 97 ae                    # 9e06 |   push ${const__data_5}
+e0 e0 a4 ae                    # 9e06 |   push ${const__data_5}
 5c f8 00 f2                    # 9e0a |   call ${fn_printf}:rel + PC
 60 a0 bc 04                    # 9e0e |   mov SP, SP + 0x4
                                #      | _Z_call_74:
@@ -1720,7 +1720,7 @@ e0 e0 97 ae                    # 9e06 |   push ${const__data_5}
                                #      | _Z_if_82:
                                #      | _A_call_75:
 e0 20                          # 9e14 |   push A
-e0 e0 a2 ae                    # 9e16 |   push ${const__data_6}
+e0 e0 af ae                    # 9e16 |   push ${const__data_6}
 5c f8 f0 f1                    # 9e1a |   call ${fn_printf}:rel + PC
 60 a0 bc 04                    # 9e1e |   mov SP, SP + 0x4
                                #      | _Z_call_75:
@@ -1773,14 +1773,14 @@ dc                             # 9e66 |   ret
                                #      | _A_if_83:
 ec fe 00 f8 16 00              # 9e6b |   jne G, 0, ${_E_if_83}:rel + PC
                                #      | _A_call_78:
-e0 e0 b4 ae                    # 9e71 |   push ${const__str__TIMEOUT__endl}
+e0 e0 c1 ae                    # 9e71 |   push ${const__str__TIMEOUT__endl}
 5c f8 63 f3                    # 9e75 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9e79 |   mov SP, SP + 0x2
                                #      | _Z_call_78:
 58 f8 10 00                    # 9e7d |   jmp ${_C_if_83}:rel + PC
                                #      | _E_if_83:
                                #      | _A_call_79:
-e0 e0 bd ae                    # 9e81 |   push ${const__str__INIT_OK__endl}
+e0 e0 ca ae                    # 9e81 |   push ${const__str__INIT_OK__endl}
 5c f8 53 f3                    # 9e85 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9e89 |   mov SP, SP + 0x2
                                #      | _Z_call_79:
@@ -1803,8 +1803,8 @@ e0 1c 02                       # 9e9b |   push 0x2
                                #      | _Z_call_80:
 e8 fe 00 f8 7d 00              # 9ea6 |   jeq G, 0, ${_cleanup_fn_handle_read_sd}:rel + PC
                                #      | _A_call_81:
-e2 e0 c8 b0                    # 9eac |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # 9eb0 |   push [${var__g_args}]
+e2 e0 d4 b0                    # 9eac |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # 9eb0 |   push [${var__g_args}]
 e0 e0 00 02                    # 9eb4 |   push 0x200
 e0 bc 06                       # 9eb8 |   push SP + 0x6
 5c f8 5a f7                    # 9ebb |   call ${fn_read_sd}:rel + PC
@@ -1813,7 +1813,7 @@ e0 bc 06                       # 9eb8 |   push SP + 0x6
                                #      | _A_if_85:
 ec fe 00 f8 16 00              # 9ec3 |   jne G, 0, ${_E_if_85}:rel + PC
                                #      | _A_call_82:
-e0 e0 b4 ae                    # 9ec9 |   push ${const__str__TIMEOUT__endl}
+e0 e0 c1 ae                    # 9ec9 |   push ${const__str__TIMEOUT__endl}
 5c f8 0b f3                    # 9ecd |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9ed1 |   mov SP, SP + 0x2
                                #      | _Z_call_82:
@@ -1822,9 +1822,9 @@ e0 e0 b4 ae                    # 9ec9 |   push ${const__str__TIMEOUT__endl}
                                #      | _C_if_85:
                                #      | _Z_if_85:
                                #      | _A_call_83:
-e2 e0 c8 b0                    # 9ed9 |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # 9edd |   push [${var__g_args}]
-e0 e0 c6 ae                    # 9ee1 |   push ${const__data_7}
+e2 e0 d4 b0                    # 9ed9 |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # 9edd |   push [${var__g_args}]
+e0 e0 d3 ae                    # 9ee1 |   push ${const__data_7}
 5c f8 25 f1                    # 9ee5 |   call ${fn_printf}:rel + PC
 60 a0 bc 06                    # 9ee9 |   mov SP, SP + 0x6
                                #      | _Z_call_83:
@@ -1866,7 +1866,7 @@ dc                             # 9f2c |   ret
 5c f8 43 f9                    # 9f2d |   call ${fn_init_oled}:rel + PC
                                #      | _Z_call_87:
                                #      | _A_call_88:
-e0 e0 d8 ae                    # 9f31 |   push ${const__str__DONE__endl}
+e0 e0 e5 ae                    # 9f31 |   push ${const__str__DONE__endl}
 5c f8 a3 f2                    # 9f35 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9f39 |   mov SP, SP + 0x2
                                #      | _Z_call_88:
@@ -1880,7 +1880,7 @@ dc                             # 9f3d |   ret
 5c f8 98 fa                    # 9f3e |   call ${fn_deinit_oled}:rel + PC
                                #      | _Z_call_89:
                                #      | _A_call_90:
-e0 e0 d8 ae                    # 9f42 |   push ${const__str__DONE__endl}
+e0 e0 e5 ae                    # 9f42 |   push ${const__str__DONE__endl}
 5c f8 92 f2                    # 9f46 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # 9f4a |   mov SP, SP + 0x2
                                #      | _Z_call_90:
@@ -1951,8 +1951,8 @@ e8 fe 00 f8 76 00              # 9fb2 |   jeq G, 0, ${_L_fn_handle_write_sd_1}:r
 62 e0 ff 00 ff                 # 9fd7 |   mov [0xff00], H
 ec ff 1c f8 0a 4c 00           # 9fdc |   jne H, 0xa, ${_L_fn_handle_write_sd_1}:rel + PC
                                #      | _A_call_96:
-e2 e0 c8 b0                    # 9fe3 |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # 9fe7 |   push [${var__g_args}]
+e2 e0 d4 b0                    # 9fe3 |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # 9fe7 |   push [${var__g_args}]
 e0 e0 00 02                    # 9feb |   push 0x200
 e0 bc 06                       # 9fef |   push SP + 0x6
 5c f8 42 f7                    # 9ff2 |   call ${fn_write_sd}:rel + PC
@@ -1961,7 +1961,7 @@ e0 bc 06                       # 9fef |   push SP + 0x6
                                #      | _A_if_90:
 ec fe 00 f8 16 00              # 9ffa |   jne G, 0, ${_E_if_90}:rel + PC
                                #      | _A_call_97:
-e0 e0 b4 ae                    # a000 |   push ${const__str__TIMEOUT__endl}
+e0 e0 c1 ae                    # a000 |   push ${const__str__TIMEOUT__endl}
 5c f8 d4 f1                    # a004 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a008 |   mov SP, SP + 0x2
                                #      | _Z_call_97:
@@ -1970,16 +1970,16 @@ e0 e0 b4 ae                    # a000 |   push ${const__str__TIMEOUT__endl}
                                #      | _C_if_90:
                                #      | _Z_if_90:
                                #      | _A_call_98:
-e2 e0 c8 b0                    # a010 |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # a014 |   push [${var__g_args}]
-e0 e0 de ae                    # a018 |   push ${const__data_8}
+e2 e0 d4 b0                    # a010 |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # a014 |   push [${var__g_args}]
+e0 e0 eb ae                    # a018 |   push ${const__data_8}
 5c f8 ee ef                    # a01c |   call ${fn_printf}:rel + PC
 60 a0 bc 06                    # a020 |   mov SP, SP + 0x6
                                #      | _Z_call_98:
 58 f8 10 00                    # a024 |   jmp ${_cleanup_fn_handle_write_sd}:rel + PC
                                #      | _L_fn_handle_write_sd_1:
                                #      | _A_call_99:
-e0 e0 88 ae                    # a028 |   push ${const__data_4}
+e0 e0 95 ae                    # a028 |   push ${const__data_4}
 5c f8 ac f1                    # a02c |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a030 |   mov SP, SP + 0x2
                                #      | _Z_call_99:
@@ -2006,11 +2006,11 @@ e0 1c 05                       # a04c |   push 0x5
 e4 fc                          # a057 |   pop E
                                #      | _Z_call_100:
 e8 fe 00 f8 3f 00              # a059 |   jeq G, 0, ${_cleanup_fn_handle_mmap}:rel + PC
-61 20 e0 c6 b0                 # a05f |   mov A, [${var__g_args}]
-61 40 e0 c8 b0                 # a064 |   mov B, [${var__g_args} + 0002]
-61 60 e0 ca b0                 # a069 |   mov C, [${var__g_args} + 0004]
-61 80 e0 cc b0                 # a06e |   mov D, [${var__g_args} + 0006]
-ad fc e0 1c ce b0 03           # a073 |   and E, [${var__g_args} + 0008], 0x3
+61 20 e0 d2 b0                 # a05f |   mov A, [${var__g_args}]
+61 40 e0 d4 b0                 # a064 |   mov B, [${var__g_args} + 0002]
+61 60 e0 d6 b0                 # a069 |   mov C, [${var__g_args} + 0004]
+61 80 e0 d8 b0                 # a06e |   mov D, [${var__g_args} + 0006]
+ad fc e0 1c da b0 03           # a073 |   and E, [${var__g_args} + 0008], 0x3
 54 60 80 fc                    # a07a |   mmap C, D, E
                                #      | _A_call_101:
 e0 fc                          # a07e |   push E
@@ -2019,7 +2019,7 @@ e0 80                          # a082 |   push D
 e0 60                          # a084 |   push C
 e0 40                          # a086 |   push B
 e0 20                          # a088 |   push A
-e0 e0 f1 ae                    # a08a |   push ${const__data_9}
+e0 e0 fe ae                    # a08a |   push ${const__data_9}
 5c f8 7c ef                    # a08e |   call ${fn_printf}:rel + PC
 60 a0 bc 0c                    # a092 |   mov SP, SP + 0xc
 e4 fc                          # a096 |   pop E
@@ -2041,11 +2041,11 @@ e0 1c 01                       # a0a3 |   push 0x1
 60 a0 bc 02                    # a0aa |   mov SP, SP + 0x2
                                #      | _Z_call_102:
 e8 fe 00 f8 1d 00              # a0ae |   jeq G, 0, ${_cleanup_fn_handle_umap}:rel + PC
-ad 20 e0 1c c6 b0 03           # a0b4 |   and A, [${var__g_args}], 0x3
+ad 20 e0 1c d2 b0 03           # a0b4 |   and A, [${var__g_args}], 0x3
 d4 20                          # a0bb |   umap A
                                #      | _A_call_103:
 e0 20                          # a0bd |   push A
-e0 e0 09 af                    # a0bf |   push ${const__data_10}
+e0 e0 16 af                    # a0bf |   push ${const__data_10}
 5c f8 47 ef                    # a0c3 |   call ${fn_printf}:rel + PC
 60 a0 bc 04                    # a0c7 |   mov SP, SP + 0x4
                                #      | _Z_call_103:
@@ -2063,9 +2063,9 @@ e0 1c 02                       # a0ce |   push 0x2
                                #      | _Z_call_104:
 e8 fe 00 f8 4e 00              # a0d9 |   jeq G, 0, ${_cleanup_fn_handle_show_img}:rel + PC
                                #      | _A_if_94:
-ee e0 00 f8 d4 b0 15 00        # a0df |   jne [${var__g_has_sd_card}], 0, ${_E_if_94}:rel + PC
+ee e0 00 f8 e0 b0 15 00        # a0df |   jne [${var__g_has_sd_card}], 0, ${_E_if_94}:rel + PC
                                #      | _A_call_105:
-e0 e0 15 af                    # a0e7 |   push ${const__str__NO_SD__endl}
+e0 e0 22 af                    # a0e7 |   push ${const__str__NO_SD__endl}
 5c f8 ed f0                    # a0eb |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a0ef |   mov SP, SP + 0x2
                                #      | _Z_call_105:
@@ -2074,22 +2074,22 @@ dc                             # a0f3 |   ret
                                #      | _C_if_94:
                                #      | _Z_if_94:
                                #      | _A_call_110:
-e2 e0 c8 b0                    # a0f4 |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # a0f8 |   push [${var__g_args}]
+e2 e0 d4 b0                    # a0f4 |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # a0f8 |   push [${var__g_args}]
 5c f8 2c 00                    # a0fc |   call ${fn_display_image}:rel + PC
 60 a0 bc 04                    # a100 |   mov SP, SP + 0x4
                                #      | _Z_call_110:
                                #      | _A_if_99:
 ec fe 1c f8 01 17 00           # a104 |   jne G, 0x1, ${_E_if_99}:rel + PC
                                #      | _A_call_111:
-e0 e0 1c af                    # a10b |   push ${const__str__SHOW_IMG_OK__endl}
+e0 e0 29 af                    # a10b |   push ${const__str__SHOW_IMG_OK__endl}
 5c f8 c9 f0                    # a10f |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a113 |   mov SP, SP + 0x2
                                #      | _Z_call_111:
 58 f8 10 00                    # a117 |   jmp ${_C_if_99}:rel + PC
                                #      | _E_if_99:
                                #      | _A_call_112:
-e0 e0 29 af                    # a11b |   push ${const__str__SHOW_IMG_ERROR__endl}
+e0 e0 36 af                    # a11b |   push ${const__str__SHOW_IMG_ERROR__endl}
 5c f8 b9 f0                    # a11f |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a123 |   mov SP, SP + 0x2
                                #      | _Z_call_112:
@@ -2190,8 +2190,8 @@ e0 1c 02                       # a208 |   push 0x2
                                #      | _Z_call_113:
 e8 fe 00 f8 3d 00              # a213 |   jeq G, 0, ${_cleanup_fn_handle_erase_sd}:rel + PC
                                #      | _A_call_114:
-e2 e0 c8 b0                    # a219 |   push [${var__g_args} + 0002]
-e2 e0 c6 b0                    # a21d |   push [${var__g_args}]
+e2 e0 d4 b0                    # a219 |   push [${var__g_args} + 0002]
+e2 e0 d2 b0                    # a21d |   push [${var__g_args}]
 e0 00                          # a221 |   push 0
 e0 00                          # a223 |   push 0
 5c f8 0f f5                    # a225 |   call ${fn_write_sd}:rel + PC
@@ -2200,14 +2200,14 @@ e0 00                          # a223 |   push 0
                                #      | _A_if_101:
 ec fe 1c f8 01 17 00           # a22d |   jne G, 0x1, ${_E_if_101}:rel + PC
                                #      | _A_call_115:
-e0 e0 39 af                    # a234 |   push ${const__str__ERASE_SD_OK__endl}
+e0 e0 46 af                    # a234 |   push ${const__str__ERASE_SD_OK__endl}
 5c f8 a0 ef                    # a238 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a23c |   mov SP, SP + 0x2
                                #      | _Z_call_115:
 58 f8 10 00                    # a240 |   jmp ${_C_if_101}:rel + PC
                                #      | _E_if_101:
                                #      | _A_call_116:
-e0 e0 46 af                    # a244 |   push ${const__str__ERASE_SD_ERROR__endl}
+e0 e0 53 af                    # a244 |   push ${const__str__ERASE_SD_ERROR__endl}
 5c f8 90 ef                    # a248 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a24c |   mov SP, SP + 0x2
                                #      | _Z_call_116:
@@ -2226,7 +2226,7 @@ e0 20                          # a253 |   push A
 54 e0 1c 1c 00 ff ff 02        # a25d |   mmap 0xff00, -1, 0x2
 62 e0 e0 1e ff e3 a2           # a265 |   mov [0xff1e], ${fn_syscall_entry}
                                #      | _A_call_117:
-e0 e0 7a af                    # a26c |   push ${const__data_11}
+e0 e0 87 af                    # a26c |   push ${const__data_11}
 5c f8 68 ef                    # a270 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a274 |   mov SP, SP + 0x2
                                #      | _Z_call_117:
@@ -2236,13 +2236,13 @@ e0 e0 7a af                    # a26c |   push ${const__data_11}
                                #      | _A_call_125:
 5c f8 8d 00                    # a27c |   call ${fn_display_default_oled_screen}:rel + PC
                                #      | _Z_call_125:
-ca e0 00 d6 b0                 # a280 |   dec [${var__g_sd_slot}], 0
-62 e0 00 da b0                 # a285 |   mov [${var__g_last_button_state}], 0
+ca e0 00 e2 b0                 # a280 |   dec [${var__g_sd_slot}], 0
+62 e0 00 e6 b0                 # a285 |   mov [${var__g_last_button_state}], 0
                                #      | _A_call_130:
 5c f8 c1 00                    # a28a |   call ${fn_check_persisted_target}:rel + PC
                                #      | _Z_call_130:
                                #      | _A_if_107:
-ee e0 1c f8 d4 b0 01 18 00     # a28e |   jne [${var__g_has_sd_card}], 0x1, ${_E_if_107}:rel + PC
+ee e0 1c f8 e0 b0 01 18 00     # a28e |   jne [${var__g_has_sd_card}], 0x1, ${_E_if_107}:rel + PC
                                #      | _A_call_132:
 5c f8 18 01                    # a297 |   call ${fn_display_splash_screen}:rel + PC
                                #      | _Z_call_132:
@@ -2255,26 +2255,26 @@ e0 1c 2d                       # a29b |   push 0x2d
                                #      | _C_if_107:
                                #      | _Z_if_107:
                                #      | _A_call_134:
-e0 e0 cc af                    # a2a6 |   push ${const__str__READY__endl}
+e0 e0 d9 af                    # a2a6 |   push ${const__str__READY__endl}
 5c f8 2e ef                    # a2aa |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a2ae |   mov SP, SP + 0x2
                                #      | _Z_call_134:
 c6 e0 00 0a ff                 # a2b2 |   inc [0xff0a], 0
                                #      | _A_loop_12:
                                #      | _BA_loop_12:
-                               #      | _A_call_182:
+                               #      | _A_call_181:
 5c f8 06 01                    # a2b7 |   call ${fn_recv_command}:rel + PC
-                               #      | _Z_call_182:
+                               #      | _Z_call_181:
 46 e0 0a ff                    # a2bb |   inc [0xff0a]
 60 20 ff                       # a2bf |   mov A, H
-                               #      | _A_if_171:
-ec fe 00 f8 0a 00              # a2c2 |   jne G, 0, ${_E_if_171}:rel + PC
+                               #      | _A_if_172:
+ec fe 00 f8 0a 00              # a2c2 |   jne G, 0, ${_E_if_172}:rel + PC
 58 f8 ef ff                    # a2c8 |   jmp ${_BA_loop_12}:rel + PC
-                               #      | _E_if_171:
-                               #      | _C_if_171:
-                               #      | _Z_if_171:
+                               #      | _E_if_172:
+                               #      | _C_if_172:
+                               #      | _Z_if_172:
 60 40 21                       # a2cc |   mov B, A*2
-60 40 e8 54 af                 # a2cf |   mov B, ${const__HANDLER_MAP} + -002 + B
+60 40 e8 61 af                 # a2cf |   mov B, ${const__HANDLER_MAP} + -002 + B
 e0 20                          # a2d4 |   push A
 5e 40                          # a2d6 |   call [B]
 e4 20                          # a2d8 |   pop A
@@ -2297,7 +2297,7 @@ dc                             # a2ea |   ret
                                #      | _C_if_102:
                                #      | _Z_if_102:
 28 ff 1c 01                    # a2eb |   shl H, 0x1
-00 ff e0 e5 ad                 # a2ef |   add H, ${const__SYSCALL_MAP}
+00 ff e0 f2 ad                 # a2ef |   add H, ${const__SYSCALL_MAP}
 5a ff                          # a2f4 |   jmp [H]
                                #      | _cleanup_fn_syscall_entry:
 dc                             # a2f6 |   ret
@@ -2314,7 +2314,7 @@ dc                             # a2f6 |   ret
                                #      | _A_call_120:
 5c f8 25 f5                    # a2ff |   call ${fn_init_sd_tail}:rel + PC
                                #      | _Z_call_120:
-62 e0 fe d4 b0                 # a303 |   mov [${var__g_has_sd_card}], G
+62 e0 fe e0 b0                 # a303 |   mov [${var__g_has_sd_card}], G
                                #      | _cleanup_fn_init_sd_and_oled:
 dc                             # a308 |   ret
                                #      | _end_fn_init_sd_and_oled:
@@ -2322,14 +2322,14 @@ dc                             # a308 |   ret
                                #      | fn_display_default_oled_screen:
                                #      | _begin_fn_display_default_oled_screen:
                                #      | _A_call_122:
-e0 e0 a9 af                    # a309 |   push ${const__str__WeeeklyT}
+e0 e0 b6 af                    # a309 |   push ${const__str__WeeeklyT}
 e0 00                          # a30d |   push 0
 e0 00                          # a30f |   push 0
 5c f8 ab f7                    # a311 |   call ${fn_draw_str_oled}:rel + PC
 60 a0 bc 06                    # a315 |   mov SP, SP + 0x6
                                #      | _Z_call_122:
                                #      | _A_call_123:
-e0 e0 b2 af                    # a319 |   push ${const__data_12}
+e0 e0 bf af                    # a319 |   push ${const__data_12}
 e0 00                          # a31d |   push 0
 e0 1c 01                       # a31f |   push 0x1
 5c f8 9a f7                    # a322 |   call ${fn_draw_str_oled}:rel + PC
@@ -2337,7 +2337,7 @@ e0 1c 01                       # a31f |   push 0x1
                                #      | _Z_call_123:
 60 ff 1c 53                    # a32a |   mov H, 0x53
                                #      | _A_if_103:
-ee e0 00 f8 d4 b0 0c 00        # a32e |   jne [${var__g_has_sd_card}], 0, ${_E_if_103}:rel + PC
+ee e0 00 f8 e0 b0 0c 00        # a32e |   jne [${var__g_has_sd_card}], 0, ${_E_if_103}:rel + PC
 60 ff 1c 2d                    # a336 |   mov H, 0x2d
                                #      | _E_if_103:
                                #      | _C_if_103:
@@ -2367,7 +2367,7 @@ e8 20 e0 f8 00 90 50 00        # a35a |   jeq A, 0x9000, ${_C_scope_8}:rel + PC
                                #      | _A_if_106:
 e8 40 00 f8 21 00              # a36c |   jeq B, 0, ${_E_if_106}:rel + PC
                                #      | _A_call_126:
-e0 e0 b9 af                    # a372 |   push ${const__str__FORCED_BOOTLOADER__endl}
+e0 e0 c6 af                    # a372 |   push ${const__str__FORCED_BOOTLOADER__endl}
 5c f8 94 ec                    # a376 |   call ${fn_printf}:rel + PC
 60 a0 bc 02                    # a37a |   mov SP, SP + 0x2
                                #      | _Z_call_126:
@@ -2382,7 +2382,7 @@ e0 1c 46                       # a37e |   push 0x46
                                #      | _Z_if_106:
                                #      | _A_call_128:
 e0 20                          # a38d |   push A
-e0 e0 97 ae                    # a38f |   push ${const__data_5}
+e0 e0 a4 ae                    # a38f |   push ${const__data_5}
 5c f8 77 ec                    # a393 |   call ${fn_printf}:rel + PC
 60 a0 bc 04                    # a397 |   mov SP, SP + 0x4
                                #      | _Z_call_128:
@@ -2430,9 +2430,9 @@ e0 20                          # a3c3 |   push A
                                #      | _Z_call_135:
                                #      | _A_if_109:
 ec fe 00 f8 0e 00              # a3da |   jne G, 0, ${_E_if_109}:rel + PC
-                               #      | _A_call_155:
+                               #      | _A_call_154:
 5c f8 41 01                    # a3e0 |   call ${fn_check_button_pressed}:rel + PC
-                               #      | _Z_call_155:
+                               #      | _Z_call_154:
 58 f8 f2 ff                    # a3e4 |   jmp ${_BA_loop_13}:rel + PC
                                #      | _E_if_109:
                                #      | _C_if_109:
@@ -2441,108 +2441,108 @@ ec fe 00 f8 0e 00              # a3da |   jne G, 0, ${_E_if_109}:rel + PC
 62 e0 60 00 ff                 # a3eb |   mov [0xff00], C
 e8 60 1c f8 0a 30 00           # a3f0 |   jeq C, 0xa, ${_C_loop_13}:rel + PC
 e8 60 1c f8 0d 29 00           # a3f7 |   jeq C, 0xd, ${_C_loop_13}:rel + PC
-                               #      | _A_if_128:
-f0 20 bc f8 1f 19 00           # a3fe |   jlt A, SP + 0x1f, ${_E_if_128}:rel + PC
-                               #      | _A_call_156:
-e0 e0 ed af                    # a405 |   push ${const__data_15}
+                               #      | _A_if_129:
+f0 20 bc f8 1f 19 00           # a3fe |   jlt A, SP + 0x1f, ${_E_if_129}:rel + PC
+                               #      | _A_call_155:
+e0 e0 fa af                    # a405 |   push ${const__data_15}
 5c f8 cf ed                    # a409 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a40d |   mov SP, SP + 0x2
-                               #      | _Z_call_156:
+                               #      | _Z_call_155:
 e8 ff 00 f8 e3 00              # a411 |   jeq H, 0, ${_L_fn_recv_command_1}:rel + PC
-                               #      | _E_if_128:
-                               #      | _C_if_128:
-                               #      | _Z_if_128:
+                               #      | _E_if_129:
+                               #      | _C_if_129:
+                               #      | _Z_if_129:
 62 20 60                       # a417 |   mov [A], C
 44 20                          # a41a |   inc A
                                #      | _BZ_loop_13:
 58 f8 ba ff                    # a41c |   jmp ${_BA_loop_13}:rel + PC
                                #      | _C_loop_13:
                                #      | _Z_loop_13:
-                               #      | _A_call_157:
+                               #      | _A_call_156:
 e0 1c 20                       # a420 |   push 0x20
 e0 bc 02                       # a423 |   push SP + 0x2
 5c f8 f4 ef                    # a426 |   call ${fn_strchr}:rel + PC
 60 a0 bc 04                    # a42a |   mov SP, SP + 0x4
-                               #      | _Z_call_157:
+                               #      | _Z_call_156:
 60 60 ff                       # a42e |   mov C, H
-                               #      | _A_if_130:
-e8 60 00 f8 0f 00              # a431 |   jeq C, 0, ${_E_if_130}:rel + PC
+                               #      | _A_if_131:
+e8 60 00 f8 0f 00              # a431 |   jeq C, 0, ${_E_if_131}:rel + PC
 66 60 00                       # a437 |   bmov [C], 0
 44 60                          # a43a |   inc C
-58 f8 08 00                    # a43c |   jmp ${_C_if_130}:rel + PC
-                               #      | _E_if_130:
+58 f8 08 00                    # a43c |   jmp ${_C_if_131}:rel + PC
+                               #      | _E_if_131:
 60 60 1c ff                    # a440 |   mov C, -1
-                               #      | _C_if_130:
-                               #      | _Z_if_130:
-                               #      | _A_call_176:
+                               #      | _C_if_131:
+                               #      | _Z_if_131:
+                               #      | _A_call_175:
 e0 a0                          # a444 |   push SP
-5c f8 e7 02                    # a446 |   call ${fn_parse_command_name}:rel + PC
+5c f8 f4 02                    # a446 |   call ${fn_parse_command_name}:rel + PC
 60 a0 bc 02                    # a44a |   mov SP, SP + 0x2
-                               #      | _Z_call_176:
-                               #      | _A_if_167:
-ec ff 00 f8 16 00              # a44e |   jne H, 0, ${_E_if_167}:rel + PC
-                               #      | _A_call_177:
-e0 e0 87 b0                    # a454 |   push ${const__str__UNKNOWN_COMMAND__endl}
+                               #      | _Z_call_175:
+                               #      | _A_if_168:
+ec ff 00 f8 16 00              # a44e |   jne H, 0, ${_E_if_168}:rel + PC
+                               #      | _A_call_176:
+e0 e0 94 b0                    # a454 |   push ${const__str__UNKNOWN_COMMAND__endl}
 5c f8 80 ed                    # a458 |   call ${fn_puts}:rel + PC
 60 a0 bc 02                    # a45c |   mov SP, SP + 0x2
-                               #      | _Z_call_177:
+                               #      | _Z_call_176:
 58 f8 94 00                    # a460 |   jmp ${_L_fn_recv_command_1}:rel + PC
-                               #      | _E_if_167:
-                               #      | _C_if_167:
-                               #      | _Z_if_167:
+                               #      | _E_if_168:
+                               #      | _C_if_168:
+                               #      | _Z_if_168:
 62 bc ff 22                    # a464 |   mov [SP + 0x22], H
                                #      |   # parse arguments
-62 e0 00 c3 b0                 # a468 |   mov [${var__g_num_args}], 0
+62 e0 00 d0 b0                 # a468 |   mov [${var__g_num_args}], 0
                                #      | _A_while_12:
                                #      | _BA_while_12:
 fc 60 bc f8 20 7c 00           # a46d |   jge C, SP + 0x20, ${_C_while_12}:rel + PC
-                               #      | _A_call_178:
+                               #      | _A_call_177:
 e0 1c 20                       # a474 |   push 0x20
 e0 60                          # a477 |   push C
 5c f8 a1 ef                    # a479 |   call ${fn_strchr}:rel + PC
 60 a0 bc 04                    # a47d |   mov SP, SP + 0x4
-                               #      | _Z_call_178:
+                               #      | _Z_call_177:
 60 80 ff                       # a481 |   mov D, H
-                               #      | _A_if_168:
-e8 80 00 f8 0d 00              # a484 |   jeq D, 0, ${_E_if_168}:rel + PC
-66 80 00                       # a48a |   bmov [D], 0
-58 f8 08 00                    # a48d |   jmp ${_C_if_168}:rel + PC
-                               #      | _E_if_168:
-60 80 1c fe                    # a491 |   mov D, -2
-                               #      | _C_if_168:
-                               #      | _Z_if_168:
-61 20 e0 c3 b0                 # a495 |   mov A, [${var__g_num_args}]
                                #      | _A_if_169:
-f0 20 1c f8 06 17 00           # a49a |   jlt A, 0x6, ${_E_if_169}:rel + PC
-                               #      | _A_call_179:
-e0 e0 98 b0                    # a4a1 |   push ${const__data_16}
-5c f8 33 ed                    # a4a5 |   call ${fn_puts}:rel + PC
-60 a0 bc 02                    # a4a9 |   mov SP, SP + 0x2
-                               #      | _Z_call_179:
-58 f8 47 00                    # a4ad |   jmp ${_L_fn_recv_command_1}:rel + PC
+e8 80 00 f8 0d 00              # a484 |   jeq D, 0, ${_E_if_169}:rel + PC
+66 80 00                       # a48a |   bmov [D], 0
+58 f8 08 00                    # a48d |   jmp ${_C_if_169}:rel + PC
                                #      | _E_if_169:
+60 80 1c fe                    # a491 |   mov D, -2
                                #      | _C_if_169:
                                #      | _Z_if_169:
-                               #      | _A_call_180:
-e0 60                          # a4b1 |   push C
-5c f8 2c ee                    # a4b3 |   call ${fn_atoi_16}:rel + PC
-60 a0 bc 02                    # a4b7 |   mov SP, SP + 0x2
-                               #      | _Z_call_180:
+61 20 e0 d0 b0                 # a495 |   mov A, [${var__g_num_args}]
                                #      | _A_if_170:
-ec fe 00 f8 18 00              # a4bb |   jne G, 0, ${_E_if_170}:rel + PC
-                               #      | _A_call_181:
-e0 20                          # a4c1 |   push A
-e0 e0 ad b0                    # a4c3 |   push ${const__data_17}
-5c f8 43 eb                    # a4c7 |   call ${fn_printf}:rel + PC
-60 a0 bc 04                    # a4cb |   mov SP, SP + 0x4
-                               #      | _Z_call_181:
-58 f8 25 00                    # a4cf |   jmp ${_L_fn_recv_command_1}:rel + PC
+f0 20 1c f8 06 17 00           # a49a |   jlt A, 0x6, ${_E_if_170}:rel + PC
+                               #      | _A_call_178:
+e0 e0 a5 b0                    # a4a1 |   push ${const__data_16}
+5c f8 33 ed                    # a4a5 |   call ${fn_puts}:rel + PC
+60 a0 bc 02                    # a4a9 |   mov SP, SP + 0x2
+                               #      | _Z_call_178:
+58 f8 47 00                    # a4ad |   jmp ${_L_fn_recv_command_1}:rel + PC
                                #      | _E_if_170:
                                #      | _C_if_170:
                                #      | _Z_if_170:
+                               #      | _A_call_179:
+e0 60                          # a4b1 |   push C
+5c f8 2c ee                    # a4b3 |   call ${fn_atoi_16}:rel + PC
+60 a0 bc 02                    # a4b7 |   mov SP, SP + 0x2
+                               #      | _Z_call_179:
+                               #      | _A_if_171:
+ec fe 00 f8 18 00              # a4bb |   jne G, 0, ${_E_if_171}:rel + PC
+                               #      | _A_call_180:
+e0 20                          # a4c1 |   push A
+e0 e0 ba b0                    # a4c3 |   push ${const__data_17}
+5c f8 43 eb                    # a4c7 |   call ${fn_printf}:rel + PC
+60 a0 bc 04                    # a4cb |   mov SP, SP + 0x4
+                               #      | _Z_call_180:
+58 f8 25 00                    # a4cf |   jmp ${_L_fn_recv_command_1}:rel + PC
+                               #      | _E_if_171:
+                               #      | _C_if_171:
+                               #      | _Z_if_171:
 a8 40 20 1c 01                 # a4d3 |   shl B, A, 0x1
-62 e8 ff c6 b0                 # a4d8 |   mov [${var__g_args} + B], H
-c6 e0 20 c3 b0                 # a4dd |   inc [${var__g_num_args}], A
+62 e8 ff d2 b0                 # a4d8 |   mov [${var__g_args} + B], H
+c6 e0 20 d0 b0                 # a4dd |   inc [${var__g_num_args}], A
 c4 60 80                       # a4e2 |   inc C, D
                                #      | _BZ_while_12:
 58 f8 88 ff                    # a4e5 |   jmp ${_BA_while_12}:rel + PC
@@ -2576,599 +2576,602 @@ dc                             # a520 |   ret
                                #      | 
                                #      | fn_check_button_pressed:
                                #      | _begin_fn_check_button_pressed:
-e0 20                          # a521 |   push A
-61 20 e0 0e ff                 # a523 |   mov A, [0xff0e]
-e9 20 e0 f8 da b0 50 00        # a528 |   jeq A, [${var__g_last_button_state}], ${_cleanup_fn_check_button_pressed}:rel + PC
-62 e0 20 da b0                 # a530 |   mov [${var__g_last_button_state}], A
-98 fe 20 1c 0c                 # a535 |   getb G, A, 0xc
+e0 40                          # a521 |   push B
+e0 20                          # a523 |   push A
+61 20 e0 0e ff                 # a525 |   mov A, [0xff0e]
+e9 20 e0 f8 e6 b0 68 00        # a52a |   jeq A, [${var__g_last_button_state}], ${_cleanup_fn_check_button_pressed}:rel + PC
+62 e0 20 e6 b0                 # a532 |   mov [${var__g_last_button_state}], A
+98 fe 20 1c 0c                 # a537 |   getb G, A, 0xc
                                #      | _A_if_111:
-e8 fe 00 f8 1c 00              # a53a |   jeq G, 0, ${_E_if_111}:rel + PC
-61 fe e0 d6 b0                 # a540 |   mov G, [${var__g_sd_slot}]
+e8 fe 00 f8 1c 00              # a53c |   jeq G, 0, ${_E_if_111}:rel + PC
+61 fe e0 e2 b0                 # a542 |   mov G, [${var__g_sd_slot}]
                                #      | _A_if_112:
-f0 fe 00 f8 11 00              # a545 |   jlt G, 0, ${_E_if_112}:rel + PC
-48 fe                          # a54b |   dec G
-62 e0 fe d6 b0                 # a54d |   mov [${var__g_sd_slot}], G
-                               #      | _A_call_144:
-5c f8 29 00                    # a552 |   call ${fn_update_code_index_screen}:rel + PC
-                               #      | _Z_call_144:
+f0 fe 00 f8 11 00              # a547 |   jlt G, 0, ${_E_if_112}:rel + PC
+48 fe                          # a54d |   dec G
+62 e0 fe e2 b0                 # a54f |   mov [${var__g_sd_slot}], G
+                               #      | _A_call_142:
+5c f8 43 00                    # a554 |   call ${fn_update_code_index_screen}:rel + PC
+                               #      | _Z_call_142:
                                #      | _E_if_112:
                                #      | _C_if_112:
                                #      | _Z_if_112:
                                #      | _E_if_111:
                                #      | _C_if_111:
                                #      | _Z_if_111:
-98 fe 20 1c 09                 # a556 |   getb G, A, 0x9
+98 fe 20 1c 09                 # a558 |   getb G, A, 0x9
                                #      | _A_if_117:
-e8 fe 00 f8 0e 00              # a55b |   jeq G, 0, ${_E_if_117}:rel + PC
-46 e0 d6 b0                    # a561 |   inc [${var__g_sd_slot}]
-                               #      | _A_call_145:
-5c f8 16 00                    # a565 |   call ${fn_update_code_index_screen}:rel + PC
-                               #      | _Z_call_145:
-                               #      | _E_if_117:
-                               #      | _C_if_117:
-                               #      | _Z_if_117:
-98 fe 20 1c 08                 # a569 |   getb G, A, 0x8
+e8 fe 00 f8 26 00              # a55d |   jeq G, 0, ${_E_if_117}:rel + PC
+61 40 e0 e2 b0                 # a563 |   mov B, [${var__g_sd_slot}]
+c6 e0 40 e2 b0                 # a568 |   inc [${var__g_sd_slot}], B
+                               #      | _A_call_143:
+5c f8 2a 00                    # a56d |   call ${fn_update_code_index_screen}:rel + PC
+                               #      | _Z_call_143:
                                #      | _A_if_118:
-e8 fe 00 f8 0a 00              # a56e |   jeq G, 0, ${_E_if_118}:rel + PC
-                               #      | _A_call_154:
-5c f8 c7 00                    # a574 |   call ${fn_load_code_from_sd}:rel + PC
-                               #      | _Z_call_154:
+ee e0 1c f8 e2 b0 ff 12 00     # a571 |   jne [${var__g_sd_slot}], -1, ${_E_if_118}:rel + PC
+62 e0 40 e2 b0                 # a57a |   mov [${var__g_sd_slot}], B
+                               #      | _A_call_144:
+5c f8 18 00                    # a57f |   call ${fn_update_code_index_screen}:rel + PC
+                               #      | _Z_call_144:
                                #      | _E_if_118:
                                #      | _C_if_118:
                                #      | _Z_if_118:
+                               #      | _E_if_117:
+                               #      | _C_if_117:
+                               #      | _Z_if_117:
+98 fe 20 1c 08                 # a583 |   getb G, A, 0x8
+                               #      | _A_if_119:
+e8 fe 00 f8 0a 00              # a588 |   jeq G, 0, ${_E_if_119}:rel + PC
+                               #      | _A_call_153:
+5c f8 ba 00                    # a58e |   call ${fn_load_code_from_sd}:rel + PC
+                               #      | _Z_call_153:
+                               #      | _E_if_119:
+                               #      | _C_if_119:
+                               #      | _Z_if_119:
                                #      | _cleanup_fn_check_button_pressed:
-e4 20                          # a578 |   pop A
-dc                             # a57a |   ret
+e4 20                          # a592 |   pop A
+e4 40                          # a594 |   pop B
+dc                             # a596 |   ret
                                #      | _end_fn_check_button_pressed:
                                #      | 
                                #      | fn_update_code_index_screen:
                                #      | _begin_fn_update_code_index_screen:
-e0 60                          # a57b |   push C
-60 a0 f4 f0 fd                 # a57d |   mov SP, 0xfdf0 + SP
-60 a0 bc f6                    # a582 |   mov SP, SP + -10
-61 60 e0 d6 b0                 # a586 |   mov C, [${var__g_sd_slot}]
-e8 60 1c f8 ff 94 00           # a58b |   jeq C, -1, ${_L_fn_update_code_index_screen_2}:rel + PC
-28 60 1c 08                    # a592 |   shl C, 0x8
+e0 60                          # a597 |   push C
+60 a0 f4 f0 fd                 # a599 |   mov SP, 0xfdf0 + SP
+60 a0 bc f6                    # a59e |   mov SP, SP + -10
+61 60 e0 e2 b0                 # a5a2 |   mov C, [${var__g_sd_slot}]
+e8 60 1c f8 ff 94 00           # a5a7 |   jeq C, -1, ${_L_fn_update_code_index_screen_2}:rel + PC
+28 60 1c 08                    # a5ae |   shl C, 0x8
                                #      | _A_call_136:
-e0 60                          # a596 |   push C
-e0 1c 03                       # a598 |   push 0x3
-e0 e0 00 02                    # a59b |   push 0x200
-e0 bc 10                       # a59f |   push SP + 0x10
-5c f8 73 f0                    # a5a2 |   call ${fn_read_sd}:rel + PC
-60 a0 bc 08                    # a5a6 |   mov SP, SP + 0x8
+e0 60                          # a5b2 |   push C
+e0 1c 03                       # a5b4 |   push 0x3
+e0 e0 00 02                    # a5b7 |   push 0x200
+e0 bc 10                       # a5bb |   push SP + 0x10
+5c f8 57 f0                    # a5be |   call ${fn_read_sd}:rel + PC
+60 a0 bc 08                    # a5c2 |   mov SP, SP + 0x8
                                #      | _Z_call_136:
-e8 fe 00 f8 66 00              # a5aa |   jeq G, 0, ${_L_fn_update_code_index_screen_1}:rel + PC
-ee bc e0 f8 0a b6 3b 6f 00     # a5b0 |   jne [SP + 0xa], 0x3bb6, ${_L_fn_update_code_index_screen_2}:rel + PC
-63 e0 bc d8 b0 0c              # a5b9 |   mov [${var__g_sd_jmp_target}], [SP + 0xc]
-62 bc 00 16                    # a5bf |   mov [SP + 0x16], 0
+e8 fe 00 f8 66 00              # a5c6 |   jeq G, 0, ${_L_fn_update_code_index_screen_1}:rel + PC
+ee bc e0 f8 0a b6 3b 6f 00     # a5cc |   jne [SP + 0xa], 0x3bb6, ${_L_fn_update_code_index_screen_2}:rel + PC
+63 e0 bc e4 b0 0c              # a5d5 |   mov [${var__g_sd_jmp_target}], [SP + 0xc]
+62 bc 00 16                    # a5db |   mov [SP + 0x16], 0
                                #      | _A_call_137:
-5c f8 c9 f3                    # a5c3 |   call ${fn_clear_oled}:rel + PC
+5c f8 ad f3                    # a5df |   call ${fn_clear_oled}:rel + PC
                                #      | _Z_call_137:
                                #      | _A_call_138:
-e0 bc 0e                       # a5c7 |   push SP + 0xe
-e0 00                          # a5ca |   push 0
-e0 00                          # a5cc |   push 0
-5c f8 ee f4                    # a5ce |   call ${fn_draw_str_oled}:rel + PC
-60 a0 bc 06                    # a5d2 |   mov SP, SP + 0x6
+e0 bc 0e                       # a5e3 |   push SP + 0xe
+e0 00                          # a5e6 |   push 0
+e0 00                          # a5e8 |   push 0
+5c f8 d2 f4                    # a5ea |   call ${fn_draw_str_oled}:rel + PC
+60 a0 bc 06                    # a5ee |   mov SP, SP + 0x6
                                #      | _Z_call_138:
-c5 fe e0 d6 b0                 # a5d6 |   inc G, [${var__g_sd_slot}]
+c5 fe e0 e2 b0                 # a5f2 |   inc G, [${var__g_sd_slot}]
                                #      | _A_call_139:
-e0 a0                          # a5db |   push SP
-e0 fe                          # a5dd |   push G
-5c f8 ac eb                    # a5df |   call ${fn_itoa_10}:rel + PC
-60 a0 bc 04                    # a5e3 |   mov SP, SP + 0x4
+e0 a0                          # a5f7 |   push SP
+e0 fe                          # a5f9 |   push G
+5c f8 90 eb                    # a5fb |   call ${fn_itoa_10}:rel + PC
+60 a0 bc 04                    # a5ff |   mov SP, SP + 0x4
                                #      | _Z_call_139:
-60 fe a0                       # a5e7 |   mov G, SP
+60 fe a0                       # a603 |   mov G, SP
                                #      | _A_loop_14:
                                #      | _BA_loop_14:
-65 ff fe                       # a5ea |   bmov H, [G]
-e8 ff 00 f8 0c 00              # a5ed |   jeq H, 0, ${_C_loop_14}:rel + PC
-44 fe                          # a5f3 |   inc G
+65 ff fe                       # a606 |   bmov H, [G]
+e8 ff 00 f8 0c 00              # a609 |   jeq H, 0, ${_C_loop_14}:rel + PC
+44 fe                          # a60f |   inc G
                                #      | _BZ_loop_14:
-58 f8 f5 ff                    # a5f5 |   jmp ${_BA_loop_14}:rel + PC
+58 f8 f5 ff                    # a611 |   jmp ${_BA_loop_14}:rel + PC
                                #      | _C_loop_14:
                                #      | _Z_loop_14:
-62 fe 1c 2e                    # a5f9 |   mov [G], 0x2e
+62 fe 1c 2e                    # a615 |   mov [G], 0x2e
                                #      | _A_call_140:
-e0 a0                          # a5fd |   push SP
-e0 00                          # a5ff |   push 0
-e0 1c 01                       # a601 |   push 0x1
-5c f8 b8 f4                    # a604 |   call ${fn_draw_str_oled}:rel + PC
-60 a0 bc 06                    # a608 |   mov SP, SP + 0x6
+e0 a0                          # a619 |   push SP
+e0 00                          # a61b |   push 0
+e0 1c 01                       # a61d |   push 0x1
+5c f8 9c f4                    # a620 |   call ${fn_draw_str_oled}:rel + PC
+60 a0 bc 06                    # a624 |   mov SP, SP + 0x6
                                #      | _Z_call_140:
-58 f8 27 00                    # a60c |   jmp ${_cleanup_fn_update_code_index_screen}:rel + PC
+58 f8 18 00                    # a628 |   jmp ${_cleanup_fn_update_code_index_screen}:rel + PC
                                #      | _L_fn_update_code_index_screen_1:
                                #      | _A_call_141:
-e0 1c 45                       # a610 |   push 0x45
-5c f8 1c f8                    # a613 |   call ${fn_show_status}:rel + PC
-60 a0 bc 02                    # a617 |   mov SP, SP + 0x2
+e0 1c 45                       # a62c |   push 0x45
+5c f8 00 f8                    # a62f |   call ${fn_show_status}:rel + PC
+60 a0 bc 02                    # a633 |   mov SP, SP + 0x2
                                #      | _Z_call_141:
-58 f8 18 00                    # a61b |   jmp ${_cleanup_fn_update_code_index_screen}:rel + PC
+58 f8 09 00                    # a637 |   jmp ${_cleanup_fn_update_code_index_screen}:rel + PC
                                #      | _L_fn_update_code_index_screen_2:
-ca e0 00 d6 b0                 # a61f |   dec [${var__g_sd_slot}], 0
-                               #      | _A_call_142:
-5c f8 e5 fc                    # a624 |   call ${fn_display_default_oled_screen}:rel + PC
-                               #      | _Z_call_142:
-                               #      | _A_call_143:
-e0 1c 2d                       # a628 |   push 0x2d
-5c f8 04 f8                    # a62b |   call ${fn_show_status}:rel + PC
-60 a0 bc 02                    # a62f |   mov SP, SP + 0x2
-                               #      | _Z_call_143:
+ca e0 00 e2 b0                 # a63b |   dec [${var__g_sd_slot}], 0
                                #      | _cleanup_fn_update_code_index_screen:
-60 a0 f4 1a 02                 # a633 |   mov SP, 0x21a + SP
-e4 60                          # a638 |   pop C
-dc                             # a63a |   ret
+60 a0 f4 1a 02                 # a640 |   mov SP, 0x21a + SP
+e4 60                          # a645 |   pop C
+dc                             # a647 |   ret
                                #      | _end_fn_update_code_index_screen:
                                #      | 
                                #      | fn_load_code_from_sd:
                                #      | _begin_fn_load_code_from_sd:
-e0 80                          # a63b |   push D
-e0 60                          # a63d |   push C
-e0 40                          # a63f |   push B
-e0 20                          # a641 |   push A
-60 a0 f4 f0 fd                 # a643 |   mov SP, 0xfdf0 + SP
-61 60 e0 d6 b0                 # a648 |   mov C, [${var__g_sd_slot}]
-e8 60 1c f8 ff d2 00           # a64d |   jeq C, -1, ${_cleanup_fn_load_code_from_sd}:rel + PC
-                               #      | _A_call_146:
-e0 1c 2d                       # a654 |   push 0x2d
-5c f8 d8 f7                    # a657 |   call ${fn_show_status}:rel + PC
-60 a0 bc 02                    # a65b |   mov SP, SP + 0x2
-                               #      | _Z_call_146:
-28 60 1c 08                    # a65f |   shl C, 0x8
+e0 80                          # a648 |   push D
+e0 60                          # a64a |   push C
+e0 40                          # a64c |   push B
+e0 20                          # a64e |   push A
+60 a0 f4 f0 fd                 # a650 |   mov SP, 0xfdf0 + SP
+61 60 e0 e2 b0                 # a655 |   mov C, [${var__g_sd_slot}]
+e8 60 1c f8 ff d2 00           # a65a |   jeq C, -1, ${_cleanup_fn_load_code_from_sd}:rel + PC
+                               #      | _A_call_145:
+e0 1c 2d                       # a661 |   push 0x2d
+5c f8 cb f7                    # a664 |   call ${fn_show_status}:rel + PC
+60 a0 bc 02                    # a668 |   mov SP, SP + 0x2
+                               #      | _Z_call_145:
+28 60 1c 08                    # a66c |   shl C, 0x8
                                #      | _A_for_21:
-c4 40 00                       # a663 |   inc B, 0
+c4 40 00                       # a670 |   inc B, 0
                                #      | _BA_for_21:
-fc 40 e0 f8 00 01 6a 00        # a666 |   jge B, 0x100, ${_C_for_21}:rel + PC
-                               #      | _A_call_147:
-e0 4c                          # a66e |   push B + C
-e0 1c 03                       # a670 |   push 0x3
-e0 e0 00 02                    # a673 |   push 0x200
-e0 bc 06                       # a677 |   push SP + 0x6
-5c f8 9b ef                    # a67a |   call ${fn_read_sd}:rel + PC
-60 a0 bc 08                    # a67e |   mov SP, SP + 0x8
-                               #      | _Z_call_147:
-e8 fe 00 f8 8e 00              # a682 |   jeq G, 0, ${_L_fn_load_code_from_sd_1}:rel + PC
-61 20 a0                       # a688 |   mov A, [SP]
-61 80 bc 02                    # a68b |   mov D, [SP + 0x2]
+fc 40 e0 f8 00 01 6a 00        # a673 |   jge B, 0x100, ${_C_for_21}:rel + PC
+                               #      | _A_call_146:
+e0 4c                          # a67b |   push B + C
+e0 1c 03                       # a67d |   push 0x3
+e0 e0 00 02                    # a680 |   push 0x200
+e0 bc 06                       # a684 |   push SP + 0x6
+5c f8 8e ef                    # a687 |   call ${fn_read_sd}:rel + PC
+60 a0 bc 08                    # a68b |   mov SP, SP + 0x8
+                               #      | _Z_call_146:
+e8 fe 00 f8 8e 00              # a68f |   jeq G, 0, ${_L_fn_load_code_from_sd_1}:rel + PC
+61 20 a0                       # a695 |   mov A, [SP]
+61 80 bc 02                    # a698 |   mov D, [SP + 0x2]
                                #      | _A_scope_9:
                                #      | _B_scope_9:
-ec 20 00 f8 10 00              # a68f |   jne A, 0, ${_C_scope_9}:rel + PC
-ec 80 00 f8 0a 00              # a695 |   jne D, 0, ${_C_scope_9}:rel + PC
-58 f8 35 00                    # a69b |   jmp ${_C_for_21}:rel + PC
+ec 20 00 f8 10 00              # a69c |   jne A, 0, ${_C_scope_9}:rel + PC
+ec 80 00 f8 0a 00              # a6a2 |   jne D, 0, ${_C_scope_9}:rel + PC
+58 f8 35 00                    # a6a8 |   jmp ${_C_for_21}:rel + PC
                                #      | _C_scope_9:
                                #      | _Z_scope_9:
-84 fe 80 20                    # a69f |   sub G, D, A
-f8 fe e0 f8 fc 01 6d 00        # a6a3 |   jgt G, 0x1fc, ${_L_fn_load_code_from_sd_1}:rel + PC
+84 fe 80 20                    # a6ac |   sub G, D, A
+f8 fe e0 f8 fc 01 6d 00        # a6b0 |   jgt G, 0x1fc, ${_L_fn_load_code_from_sd_1}:rel + PC
+                               #      | _A_call_147:
+e0 fe                          # a6b8 |   push G
+e0 bc 06                       # a6ba |   push SP + 0x6
+e0 20                          # a6bd |   push A
+5c f8 a9 ec                    # a6bf |   call ${fn_memcpy}:rel + PC
+60 a0 bc 06                    # a6c3 |   mov SP, SP + 0x6
+                               #      | _Z_call_147:
                                #      | _A_call_148:
-e0 fe                          # a6ab |   push G
-e0 bc 06                       # a6ad |   push SP + 0x6
-e0 20                          # a6b0 |   push A
-5c f8 b6 ec                    # a6b2 |   call ${fn_memcpy}:rel + PC
-60 a0 bc 06                    # a6b6 |   mov SP, SP + 0x6
+e0 80                          # a6c7 |   push D
+e0 20                          # a6c9 |   push A
+e0 e0 e0 af                    # a6cb |   push ${const__data_13}
+5c f8 3b e9                    # a6cf |   call ${fn_printf}:rel + PC
+60 a0 bc 06                    # a6d3 |   mov SP, SP + 0x6
                                #      | _Z_call_148:
-                               #      | _A_call_149:
-e0 80                          # a6ba |   push D
-e0 20                          # a6bc |   push A
-e0 e0 d3 af                    # a6be |   push ${const__data_13}
-5c f8 48 e9                    # a6c2 |   call ${fn_printf}:rel + PC
-60 a0 bc 06                    # a6c6 |   mov SP, SP + 0x6
-                               #      | _Z_call_149:
                                #      | _BZ_for_21:
-44 40                          # a6ca |   inc B
-58 f8 9a ff                    # a6cc |   jmp ${_BA_for_21}:rel + PC
+44 40                          # a6d7 |   inc B
+58 f8 9a ff                    # a6d9 |   jmp ${_BA_for_21}:rel + PC
                                #      | _C_for_21:
                                #      | _Z_for_21:
-e8 40 e0 f8 00 01 40 00        # a6d0 |   jeq B, 0x100, ${_L_fn_load_code_from_sd_1}:rel + PC
-99 fe e0 1c 0c ff 0a           # a6d8 |   getb G, [0xff0c], 0xa
-                               #      | _A_if_125:
-ec fe 00 f8 2d 00              # a6df |   jne G, 0, ${_E_if_125}:rel + PC
+e8 40 e0 f8 00 01 40 00        # a6dd |   jeq B, 0x100, ${_L_fn_load_code_from_sd_1}:rel + PC
+99 fe e0 1c 0c ff 0a           # a6e5 |   getb G, [0xff0c], 0xa
+                               #      | _A_if_126:
+ec fe 00 f8 2d 00              # a6ec |   jne G, 0, ${_E_if_126}:rel + PC
+                               #      | _A_call_149:
+e0 1c 52                       # a6f2 |   push 0x52
+5c f8 3a f7                    # a6f5 |   call ${fn_show_status}:rel + PC
+60 a0 bc 02                    # a6f9 |   mov SP, SP + 0x2
+                               #      | _Z_call_149:
                                #      | _A_call_150:
-e0 1c 52                       # a6e5 |   push 0x52
-5c f8 47 f7                    # a6e8 |   call ${fn_show_status}:rel + PC
-60 a0 bc 02                    # a6ec |   mov SP, SP + 0x2
+e2 e0 e4 b0                    # a6fd |   push [${var__g_sd_jmp_target}]
+e0 e0 ef af                    # a701 |   push ${const__data_14}
+5c f8 05 e9                    # a705 |   call ${fn_printf}:rel + PC
+60 a0 bc 04                    # a709 |   mov SP, SP + 0x4
                                #      | _Z_call_150:
                                #      | _A_call_151:
-e2 e0 d8 b0                    # a6f0 |   push [${var__g_sd_jmp_target}]
-e0 e0 e2 af                    # a6f4 |   push ${const__data_14}
-5c f8 12 e9                    # a6f8 |   call ${fn_printf}:rel + PC
-60 a0 bc 04                    # a6fc |   mov SP, SP + 0x4
+e2 e0 e4 b0                    # a70d |   push [${var__g_sd_jmp_target}]
+5c f8 30 f7                    # a711 |   call ${fn_jmp_to_target_persisted}:rel + PC
+60 a0 bc 02                    # a715 |   mov SP, SP + 0x2
                                #      | _Z_call_151:
-                               #      | _A_call_152:
-e2 e0 d8 b0                    # a700 |   push [${var__g_sd_jmp_target}]
-5c f8 3d f7                    # a704 |   call ${fn_jmp_to_target_persisted}:rel + PC
-60 a0 bc 02                    # a708 |   mov SP, SP + 0x2
-                               #      | _Z_call_152:
-                               #      | _E_if_125:
-                               #      | _C_if_125:
-                               #      | _Z_if_125:
-58 f8 13 00                    # a70c |   jmp ${_cleanup_fn_load_code_from_sd}:rel + PC
+                               #      | _E_if_126:
+                               #      | _C_if_126:
+                               #      | _Z_if_126:
+58 f8 13 00                    # a719 |   jmp ${_cleanup_fn_load_code_from_sd}:rel + PC
                                #      | _L_fn_load_code_from_sd_1:
-                               #      | _A_call_153:
-e0 1c 45                       # a710 |   push 0x45
-5c f8 1c f7                    # a713 |   call ${fn_show_status}:rel + PC
-60 a0 bc 02                    # a717 |   mov SP, SP + 0x2
-                               #      | _Z_call_153:
-58 f8 04 00                    # a71b |   jmp ${_cleanup_fn_load_code_from_sd}:rel + PC
+                               #      | _A_call_152:
+e0 1c 45                       # a71d |   push 0x45
+5c f8 0f f7                    # a720 |   call ${fn_show_status}:rel + PC
+60 a0 bc 02                    # a724 |   mov SP, SP + 0x2
+                               #      | _Z_call_152:
+58 f8 04 00                    # a728 |   jmp ${_cleanup_fn_load_code_from_sd}:rel + PC
                                #      | _cleanup_fn_load_code_from_sd:
-60 a0 f4 10 02                 # a71f |   mov SP, 0x210 + SP
-e4 20                          # a724 |   pop A
-e4 40                          # a726 |   pop B
-e4 60                          # a728 |   pop C
-e4 80                          # a72a |   pop D
-dc                             # a72c |   ret
+60 a0 f4 10 02                 # a72c |   mov SP, 0x210 + SP
+e4 20                          # a731 |   pop A
+e4 40                          # a733 |   pop B
+e4 60                          # a735 |   pop C
+e4 80                          # a737 |   pop D
+dc                             # a739 |   ret
                                #      | _end_fn_load_code_from_sd:
                                #      | 
                                #      | fn_parse_command_name:
                                #      | _begin_fn_parse_command_name:
-e0 20                          # a72d |   push A
-61 20 bc 04                    # a72f |   mov A, [SP + 0x4]
+e0 20                          # a73a |   push A
+61 20 bc 04                    # a73c |   mov A, [SP + 0x4]
+                               #      | _A_call_157:
+e0 e0 0c b0                    # a740 |   push ${const__str__PING}
+e0 20                          # a744 |   push A
+5c f8 82 ec                    # a746 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a74a |   mov SP, SP + 0x4
+                               #      | _Z_call_157:
+                               #      | _A_if_133:
+ec ff 00 f8 0d 00              # a74e |   jne H, 0, ${_E_if_133}:rel + PC
+c4 ff 00                       # a754 |   inc H, 0
+58 f8 e3 01                    # a757 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_133:
+                               #      | _C_if_133:
+                               #      | _Z_if_133:
                                #      | _A_call_158:
-e0 e0 ff af                    # a733 |   push ${const__str__PING}
-e0 20                          # a737 |   push A
-5c f8 8f ec                    # a739 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a73d |   mov SP, SP + 0x4
+e0 e0 11 b0                    # a75b |   push ${const__str__READ}
+e0 20                          # a75f |   push A
+5c f8 67 ec                    # a761 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a765 |   mov SP, SP + 0x4
                                #      | _Z_call_158:
-                               #      | _A_if_132:
-ec ff 00 f8 0d 00              # a741 |   jne H, 0, ${_E_if_132}:rel + PC
-c4 ff 00                       # a747 |   inc H, 0
-58 f8 e3 01                    # a74a |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_132:
-                               #      | _C_if_132:
-                               #      | _Z_if_132:
+                               #      | _A_if_135:
+ec ff 00 f8 0e 00              # a769 |   jne H, 0, ${_E_if_135}:rel + PC
+60 ff 1c 02                    # a76f |   mov H, 0x2
+58 f8 c7 01                    # a773 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_135:
+                               #      | _C_if_135:
+                               #      | _Z_if_135:
                                #      | _A_call_159:
-e0 e0 04 b0                    # a74e |   push ${const__str__READ}
-e0 20                          # a752 |   push A
-5c f8 74 ec                    # a754 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a758 |   mov SP, SP + 0x4
+e0 e0 16 b0                    # a777 |   push ${const__str__WRITE}
+e0 20                          # a77b |   push A
+5c f8 4b ec                    # a77d |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a781 |   mov SP, SP + 0x4
                                #      | _Z_call_159:
-                               #      | _A_if_134:
-ec ff 00 f8 0e 00              # a75c |   jne H, 0, ${_E_if_134}:rel + PC
-60 ff 1c 02                    # a762 |   mov H, 0x2
-58 f8 c7 01                    # a766 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_134:
-                               #      | _C_if_134:
-                               #      | _Z_if_134:
+                               #      | _A_if_137:
+ec ff 00 f8 0e 00              # a785 |   jne H, 0, ${_E_if_137}:rel + PC
+60 ff 1c 03                    # a78b |   mov H, 0x3
+58 f8 ab 01                    # a78f |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_137:
+                               #      | _C_if_137:
+                               #      | _Z_if_137:
                                #      | _A_call_160:
-e0 e0 09 b0                    # a76a |   push ${const__str__WRITE}
-e0 20                          # a76e |   push A
-5c f8 58 ec                    # a770 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a774 |   mov SP, SP + 0x4
+e0 e0 1c b0                    # a793 |   push ${const__str__READB}
+e0 20                          # a797 |   push A
+5c f8 2f ec                    # a799 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a79d |   mov SP, SP + 0x4
                                #      | _Z_call_160:
-                               #      | _A_if_136:
-ec ff 00 f8 0e 00              # a778 |   jne H, 0, ${_E_if_136}:rel + PC
-60 ff 1c 03                    # a77e |   mov H, 0x3
-58 f8 ab 01                    # a782 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_136:
-                               #      | _C_if_136:
-                               #      | _Z_if_136:
+                               #      | _A_if_139:
+ec ff 00 f8 0e 00              # a7a1 |   jne H, 0, ${_E_if_139}:rel + PC
+60 ff 1c 04                    # a7a7 |   mov H, 0x4
+58 f8 8f 01                    # a7ab |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_139:
+                               #      | _C_if_139:
+                               #      | _Z_if_139:
                                #      | _A_call_161:
-e0 e0 0f b0                    # a786 |   push ${const__str__READB}
-e0 20                          # a78a |   push A
-5c f8 3c ec                    # a78c |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a790 |   mov SP, SP + 0x4
+e0 e0 22 b0                    # a7af |   push ${const__str__WRITEB}
+e0 20                          # a7b3 |   push A
+5c f8 13 ec                    # a7b5 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a7b9 |   mov SP, SP + 0x4
                                #      | _Z_call_161:
-                               #      | _A_if_138:
-ec ff 00 f8 0e 00              # a794 |   jne H, 0, ${_E_if_138}:rel + PC
-60 ff 1c 04                    # a79a |   mov H, 0x4
-58 f8 8f 01                    # a79e |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_138:
-                               #      | _C_if_138:
-                               #      | _Z_if_138:
+                               #      | _A_if_141:
+ec ff 00 f8 0e 00              # a7bd |   jne H, 0, ${_E_if_141}:rel + PC
+60 ff 1c 05                    # a7c3 |   mov H, 0x5
+58 f8 73 01                    # a7c7 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_141:
+                               #      | _C_if_141:
+                               #      | _Z_if_141:
                                #      | _A_call_162:
-e0 e0 15 b0                    # a7a2 |   push ${const__str__WRITEB}
-e0 20                          # a7a6 |   push A
-5c f8 20 ec                    # a7a8 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a7ac |   mov SP, SP + 0x4
+e0 e0 29 b0                    # a7cb |   push ${const__str__JMP}
+e0 20                          # a7cf |   push A
+5c f8 f7 eb                    # a7d1 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a7d5 |   mov SP, SP + 0x4
                                #      | _Z_call_162:
-                               #      | _A_if_140:
-ec ff 00 f8 0e 00              # a7b0 |   jne H, 0, ${_E_if_140}:rel + PC
-60 ff 1c 05                    # a7b6 |   mov H, 0x5
-58 f8 73 01                    # a7ba |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_140:
-                               #      | _C_if_140:
-                               #      | _Z_if_140:
+                               #      | _A_if_143:
+ec ff 00 f8 0e 00              # a7d9 |   jne H, 0, ${_E_if_143}:rel + PC
+60 ff 1c 06                    # a7df |   mov H, 0x6
+58 f8 57 01                    # a7e3 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_143:
+                               #      | _C_if_143:
+                               #      | _Z_if_143:
                                #      | _A_call_163:
-e0 e0 1c b0                    # a7be |   push ${const__str__JMP}
-e0 20                          # a7c2 |   push A
-5c f8 04 ec                    # a7c4 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a7c8 |   mov SP, SP + 0x4
+e0 e0 2d b0                    # a7e7 |   push ${const__str__JMP_PERSIST}
+e0 20                          # a7eb |   push A
+5c f8 db eb                    # a7ed |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a7f1 |   mov SP, SP + 0x4
                                #      | _Z_call_163:
-                               #      | _A_if_142:
-ec ff 00 f8 0e 00              # a7cc |   jne H, 0, ${_E_if_142}:rel + PC
-60 ff 1c 06                    # a7d2 |   mov H, 0x6
-58 f8 57 01                    # a7d6 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_142:
-                               #      | _C_if_142:
-                               #      | _Z_if_142:
+                               #      | _A_if_145:
+ec ff 00 f8 0e 00              # a7f5 |   jne H, 0, ${_E_if_145}:rel + PC
+60 ff 1c 07                    # a7fb |   mov H, 0x7
+58 f8 3b 01                    # a7ff |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_145:
+                               #      | _C_if_145:
+                               #      | _Z_if_145:
                                #      | _A_call_164:
-e0 e0 20 b0                    # a7da |   push ${const__str__JMP_PERSIST}
-e0 20                          # a7de |   push A
-5c f8 e8 eb                    # a7e0 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a7e4 |   mov SP, SP + 0x4
+e0 e0 39 b0                    # a803 |   push ${const__str__INIT_SD}
+e0 20                          # a807 |   push A
+5c f8 bf eb                    # a809 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a80d |   mov SP, SP + 0x4
                                #      | _Z_call_164:
-                               #      | _A_if_144:
-ec ff 00 f8 0e 00              # a7e8 |   jne H, 0, ${_E_if_144}:rel + PC
-60 ff 1c 07                    # a7ee |   mov H, 0x7
-58 f8 3b 01                    # a7f2 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_144:
-                               #      | _C_if_144:
-                               #      | _Z_if_144:
+                               #      | _A_if_147:
+ec ff 00 f8 0e 00              # a811 |   jne H, 0, ${_E_if_147}:rel + PC
+60 ff 1c 08                    # a817 |   mov H, 0x8
+58 f8 1f 01                    # a81b |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_147:
+                               #      | _C_if_147:
+                               #      | _Z_if_147:
                                #      | _A_call_165:
-e0 e0 2c b0                    # a7f6 |   push ${const__str__INIT_SD}
-e0 20                          # a7fa |   push A
-5c f8 cc eb                    # a7fc |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a800 |   mov SP, SP + 0x4
+e0 e0 41 b0                    # a81f |   push ${const__str__READ_SD}
+e0 20                          # a823 |   push A
+5c f8 a3 eb                    # a825 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a829 |   mov SP, SP + 0x4
                                #      | _Z_call_165:
-                               #      | _A_if_146:
-ec ff 00 f8 0e 00              # a804 |   jne H, 0, ${_E_if_146}:rel + PC
-60 ff 1c 08                    # a80a |   mov H, 0x8
-58 f8 1f 01                    # a80e |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_146:
-                               #      | _C_if_146:
-                               #      | _Z_if_146:
+                               #      | _A_if_149:
+ec ff 00 f8 0e 00              # a82d |   jne H, 0, ${_E_if_149}:rel + PC
+60 ff 1c 09                    # a833 |   mov H, 0x9
+58 f8 03 01                    # a837 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_149:
+                               #      | _C_if_149:
+                               #      | _Z_if_149:
                                #      | _A_call_166:
-e0 e0 34 b0                    # a812 |   push ${const__str__READ_SD}
-e0 20                          # a816 |   push A
-5c f8 b0 eb                    # a818 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a81c |   mov SP, SP + 0x4
+e0 e0 49 b0                    # a83b |   push ${const__str__INIT_OLED}
+e0 20                          # a83f |   push A
+5c f8 87 eb                    # a841 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a845 |   mov SP, SP + 0x4
                                #      | _Z_call_166:
-                               #      | _A_if_148:
-ec ff 00 f8 0e 00              # a820 |   jne H, 0, ${_E_if_148}:rel + PC
-60 ff 1c 09                    # a826 |   mov H, 0x9
-58 f8 03 01                    # a82a |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_148:
-                               #      | _C_if_148:
-                               #      | _Z_if_148:
+                               #      | _A_if_151:
+ec ff 00 f8 0e 00              # a849 |   jne H, 0, ${_E_if_151}:rel + PC
+60 ff 1c 0a                    # a84f |   mov H, 0xa
+58 f8 e7 00                    # a853 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_151:
+                               #      | _C_if_151:
+                               #      | _Z_if_151:
                                #      | _A_call_167:
-e0 e0 3c b0                    # a82e |   push ${const__str__INIT_OLED}
-e0 20                          # a832 |   push A
-5c f8 94 eb                    # a834 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a838 |   mov SP, SP + 0x4
+e0 e0 53 b0                    # a857 |   push ${const__str__READW}
+e0 20                          # a85b |   push A
+5c f8 6b eb                    # a85d |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a861 |   mov SP, SP + 0x4
                                #      | _Z_call_167:
-                               #      | _A_if_150:
-ec ff 00 f8 0e 00              # a83c |   jne H, 0, ${_E_if_150}:rel + PC
-60 ff 1c 0a                    # a842 |   mov H, 0xa
-58 f8 e7 00                    # a846 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_150:
-                               #      | _C_if_150:
-                               #      | _Z_if_150:
+                               #      | _A_if_153:
+ec ff 00 f8 0e 00              # a865 |   jne H, 0, ${_E_if_153}:rel + PC
+60 ff 1c 0b                    # a86b |   mov H, 0xb
+58 f8 cb 00                    # a86f |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_153:
+                               #      | _C_if_153:
+                               #      | _Z_if_153:
                                #      | _A_call_168:
-e0 e0 46 b0                    # a84a |   push ${const__str__READW}
-e0 20                          # a84e |   push A
-5c f8 78 eb                    # a850 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a854 |   mov SP, SP + 0x4
+e0 e0 59 b0                    # a873 |   push ${const__str__DEINIT_OLED}
+e0 20                          # a877 |   push A
+5c f8 4f eb                    # a879 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a87d |   mov SP, SP + 0x4
                                #      | _Z_call_168:
-                               #      | _A_if_152:
-ec ff 00 f8 0e 00              # a858 |   jne H, 0, ${_E_if_152}:rel + PC
-60 ff 1c 0b                    # a85e |   mov H, 0xb
-58 f8 cb 00                    # a862 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_152:
-                               #      | _C_if_152:
-                               #      | _Z_if_152:
+                               #      | _A_if_155:
+ec ff 00 f8 0e 00              # a881 |   jne H, 0, ${_E_if_155}:rel + PC
+60 ff 1c 0c                    # a887 |   mov H, 0xc
+58 f8 af 00                    # a88b |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_155:
+                               #      | _C_if_155:
+                               #      | _Z_if_155:
                                #      | _A_call_169:
-e0 e0 4c b0                    # a866 |   push ${const__str__DEINIT_OLED}
-e0 20                          # a86a |   push A
-5c f8 5c eb                    # a86c |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a870 |   mov SP, SP + 0x4
+e0 e0 65 b0                    # a88f |   push ${const__str__WRITE_SD}
+e0 20                          # a893 |   push A
+5c f8 33 eb                    # a895 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a899 |   mov SP, SP + 0x4
                                #      | _Z_call_169:
-                               #      | _A_if_154:
-ec ff 00 f8 0e 00              # a874 |   jne H, 0, ${_E_if_154}:rel + PC
-60 ff 1c 0c                    # a87a |   mov H, 0xc
-58 f8 af 00                    # a87e |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_154:
-                               #      | _C_if_154:
-                               #      | _Z_if_154:
+                               #      | _A_if_157:
+ec ff 00 f8 0e 00              # a89d |   jne H, 0, ${_E_if_157}:rel + PC
+60 ff 1c 0d                    # a8a3 |   mov H, 0xd
+58 f8 93 00                    # a8a7 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_157:
+                               #      | _C_if_157:
+                               #      | _Z_if_157:
                                #      | _A_call_170:
-e0 e0 58 b0                    # a882 |   push ${const__str__WRITE_SD}
-e0 20                          # a886 |   push A
-5c f8 40 eb                    # a888 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a88c |   mov SP, SP + 0x4
+e0 e0 6e b0                    # a8ab |   push ${const__str__MMAP}
+e0 20                          # a8af |   push A
+5c f8 17 eb                    # a8b1 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a8b5 |   mov SP, SP + 0x4
                                #      | _Z_call_170:
-                               #      | _A_if_156:
-ec ff 00 f8 0e 00              # a890 |   jne H, 0, ${_E_if_156}:rel + PC
-60 ff 1c 0d                    # a896 |   mov H, 0xd
-58 f8 93 00                    # a89a |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_156:
-                               #      | _C_if_156:
-                               #      | _Z_if_156:
+                               #      | _A_if_159:
+ec ff 00 f8 0e 00              # a8b9 |   jne H, 0, ${_E_if_159}:rel + PC
+60 ff 1c 0e                    # a8bf |   mov H, 0xe
+58 f8 77 00                    # a8c3 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_159:
+                               #      | _C_if_159:
+                               #      | _Z_if_159:
                                #      | _A_call_171:
-e0 e0 61 b0                    # a89e |   push ${const__str__MMAP}
-e0 20                          # a8a2 |   push A
-5c f8 24 eb                    # a8a4 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a8a8 |   mov SP, SP + 0x4
+e0 e0 73 b0                    # a8c7 |   push ${const__str__UMAP}
+e0 20                          # a8cb |   push A
+5c f8 fb ea                    # a8cd |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a8d1 |   mov SP, SP + 0x4
                                #      | _Z_call_171:
-                               #      | _A_if_158:
-ec ff 00 f8 0e 00              # a8ac |   jne H, 0, ${_E_if_158}:rel + PC
-60 ff 1c 0e                    # a8b2 |   mov H, 0xe
-58 f8 77 00                    # a8b6 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_158:
-                               #      | _C_if_158:
-                               #      | _Z_if_158:
+                               #      | _A_if_161:
+ec ff 00 f8 0e 00              # a8d5 |   jne H, 0, ${_E_if_161}:rel + PC
+60 ff 1c 0f                    # a8db |   mov H, 0xf
+58 f8 5b 00                    # a8df |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_161:
+                               #      | _C_if_161:
+                               #      | _Z_if_161:
                                #      | _A_call_172:
-e0 e0 66 b0                    # a8ba |   push ${const__str__UMAP}
-e0 20                          # a8be |   push A
-5c f8 08 eb                    # a8c0 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a8c4 |   mov SP, SP + 0x4
+e0 e0 78 b0                    # a8e3 |   push ${const__str__WRITEB_SD}
+e0 20                          # a8e7 |   push A
+5c f8 df ea                    # a8e9 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a8ed |   mov SP, SP + 0x4
                                #      | _Z_call_172:
-                               #      | _A_if_160:
-ec ff 00 f8 0e 00              # a8c8 |   jne H, 0, ${_E_if_160}:rel + PC
-60 ff 1c 0f                    # a8ce |   mov H, 0xf
-58 f8 5b 00                    # a8d2 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_160:
-                               #      | _C_if_160:
-                               #      | _Z_if_160:
+                               #      | _A_if_163:
+ec ff 00 f8 0e 00              # a8f1 |   jne H, 0, ${_E_if_163}:rel + PC
+60 ff 1c 10                    # a8f7 |   mov H, 0x10
+58 f8 3f 00                    # a8fb |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_163:
+                               #      | _C_if_163:
+                               #      | _Z_if_163:
                                #      | _A_call_173:
-e0 e0 6b b0                    # a8d6 |   push ${const__str__WRITEB_SD}
-e0 20                          # a8da |   push A
-5c f8 ec ea                    # a8dc |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a8e0 |   mov SP, SP + 0x4
+e0 e0 82 b0                    # a8ff |   push ${const__str__SHOW_IMG}
+e0 20                          # a903 |   push A
+5c f8 c3 ea                    # a905 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a909 |   mov SP, SP + 0x4
                                #      | _Z_call_173:
-                               #      | _A_if_162:
-ec ff 00 f8 0e 00              # a8e4 |   jne H, 0, ${_E_if_162}:rel + PC
-60 ff 1c 10                    # a8ea |   mov H, 0x10
-58 f8 3f 00                    # a8ee |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_162:
-                               #      | _C_if_162:
-                               #      | _Z_if_162:
+                               #      | _A_if_165:
+ec ff 00 f8 0e 00              # a90d |   jne H, 0, ${_E_if_165}:rel + PC
+60 ff 1c 11                    # a913 |   mov H, 0x11
+58 f8 23 00                    # a917 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_165:
+                               #      | _C_if_165:
+                               #      | _Z_if_165:
                                #      | _A_call_174:
-e0 e0 75 b0                    # a8f2 |   push ${const__str__SHOW_IMG}
-e0 20                          # a8f6 |   push A
-5c f8 d0 ea                    # a8f8 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a8fc |   mov SP, SP + 0x4
+e0 e0 8b b0                    # a91b |   push ${const__str__ERASE_SD}
+e0 20                          # a91f |   push A
+5c f8 a7 ea                    # a921 |   call ${fn_strcasecmp}:rel + PC
+60 a0 bc 04                    # a925 |   mov SP, SP + 0x4
                                #      | _Z_call_174:
-                               #      | _A_if_164:
-ec ff 00 f8 0e 00              # a900 |   jne H, 0, ${_E_if_164}:rel + PC
-60 ff 1c 11                    # a906 |   mov H, 0x11
-58 f8 23 00                    # a90a |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_164:
-                               #      | _C_if_164:
-                               #      | _Z_if_164:
-                               #      | _A_call_175:
-e0 e0 7e b0                    # a90e |   push ${const__str__ERASE_SD}
-e0 20                          # a912 |   push A
-5c f8 b4 ea                    # a914 |   call ${fn_strcasecmp}:rel + PC
-60 a0 bc 04                    # a918 |   mov SP, SP + 0x4
-                               #      | _Z_call_175:
-                               #      | _A_if_166:
-ec ff 00 f8 0e 00              # a91c |   jne H, 0, ${_E_if_166}:rel + PC
-60 ff 1c 12                    # a922 |   mov H, 0x12
-58 f8 07 00                    # a926 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
-                               #      | _E_if_166:
-                               #      | _C_if_166:
-                               #      | _Z_if_166:
-60 ff 00                       # a92a |   mov H, 0
+                               #      | _A_if_167:
+ec ff 00 f8 0e 00              # a929 |   jne H, 0, ${_E_if_167}:rel + PC
+60 ff 1c 12                    # a92f |   mov H, 0x12
+58 f8 07 00                    # a933 |   jmp ${_cleanup_fn_parse_command_name}:rel + PC
+                               #      | _E_if_167:
+                               #      | _C_if_167:
+                               #      | _Z_if_167:
+60 ff 00                       # a937 |   mov H, 0
                                #      | _cleanup_fn_parse_command_name:
-e4 20                          # a92d |   pop A
-dc                             # a92f |   ret
+e4 20                          # a93a |   pop A
+dc                             # a93c |   ret
                                #      | _end_fn_parse_command_name:
                                #      | 
                                #      | SECTION_BEGIN_const_data:
                                #      | const__FONT_16_12_COMPRESSED:
-00 00 38 20 01 8e 08 10 e0 88 60 00 38 22 1c 7f e3 8f fc 60 38 08 70 fe e2 23 c0 45 c3 fb 88 81 c4 47 87 f7 01 0c 1c 81 f8 83 f0 80 e0 81 c0 83 80 87 00 8e 00 9c 70 b8 e0 e0 38 1c 70 44 70 38 e0 21 d0 e3 9e 27 10 43 bf c6 00 e0 80 e0 61 80 00 38 c0 70 60 e0 20 07 06 0e 30 18 38 06 70 30 e0 80 07 03 0e 01 98 0e c1 9c 6c 38 20 77 fc b8 d8 76 0c c0 07 04 07 7f c9 80 00 1c 04 1c 03 30 01 c7 f2 00 00 0e 02 10 38 80 38 40 70 40 70 20 70 10 70 08 e0 08 c0 38 7c 71 04 71 84 e2 89 c4 93 88 a7 10 ce 20 8e 1f 18 38 20 70 70 e0 99 c1 00 0e 3f 98 38 7c 71 04 71 00 38 70 70 18 e0 08 e3 f9 80 38 7c 71 04 e2 00 70 f0 8e 20 9c 3e 30 38 c0 71 40 e2 41 c4 43 88 47 10 43 8f e7 10 06 00 38 fe 70 04 38 7e 71 00 1c 41 38 7c 60 38 3c 70 04 38 7e 71 04 0e 1f 18 38 fe 71 04 e2 01 c2 01 c1 01 c0 81 c0 41 80 38 7c 71 04 1c 3e 21 c3 e3 00 38 7c 71 04 0e 3f 1c 40 1c 30 38 1e 60 07 01 08 38 08 40 07 01 08 38 08 38 06 60 1c c0 38 60 70 30 e0 19 c0 0e e0 61 c3 03 98 06 00 07 1f c8 e3 f9 00 1c 00 f8 06 70 30 e1 81 cc 02 e0 61 c0 33 80 1e 00 38 7c 71 04 71 00 70 e0 e0 20 ce 02 10 38 7c 71 04 e3 c9 c4 50 38 f2 70 04 e3 f1 80 38 7c 71 04 1c 7f 20 c0 38 7e 71 04 38 7e 41 c3 f3 00 38 7c 71 04 e0 08 07 10 4e 1f 18 38 1e 70 c4 e2 08 07 0c 4e 07 98 38 fe 70 04 1c 1f 21 c7 f3 00 38 fe 70 04 1c 1f 20 c0 38 7c 71 04 e0 08 71 c4 e2 08 38 7c 60 38 82 07 1f c8 30 38 f8 70 40 00 e3 e1 80 38 e0 71 00 03 88 23 87 c6 00 38 82 70 84 e0 89 c0 93 80 a7 00 cb 81 27 04 4e 10 9c 41 30 38 02 00 38 fe 60 38 80 f1 83 e2 8b c4 a7 88 8f 10 10 60 38 82 38 86 71 14 e2 49 c5 13 8c 27 10 41 80 38 7c 71 04 00 e1 f1 80 38 7e 71 04 1c 3f 38 02 06 00 38 7c 71 04 00 e1 f1 c1 83 8c 06 38 7e 71 04 1c 3f 38 0a 70 24 e0 89 c2 13 88 26 00 38 7c 71 04 e0 08 70 f8 e2 00 71 04 e1 f1 80 3b fe 70 40 00 60 38 82 00 38 7c 60 38 80 9c 20 9c 11 1c 0a 1c 04 18 38 80 83 88 8f 12 9e 28 bc 60 f8 80 e0 38 80 f0 82 e0 89 c0 a3 80 81 c0 a3 82 27 08 2e 20 38 38 80 f0 82 e0 89 c0 a3 80 80 18 38 fe 71 00 70 80 e0 81 c0 83 80 87 00 8e 00 8e 3f 98 38 38 70 10 00 e0 e1 80 1c 01 38 04 70 10 e0 41 c1 03 84 07 10 0e 40 1d 00 3c 00 60 38 0e 70 10 00 e0 39 80 70 30 e1 99 cc 0f 00 00 00 03 8f e4 e0 20 e0 c1 80 00 07 0f 0e 20 0e 3f 1c 41 0e 3f 18 38 02 1c 3f 38 82 03 87 e6 00 07 0f 8e 20 9c 01 07 10 4e 1f 18 38 80 1c 7e 38 82 03 8f c6 00 07 0f 8e 20 87 1f ce 00 9c 41 38 7c 60 38 f0 70 10 70 7c 80 c0 07 1f 8e 20 80 e3 f1 c4 01 c3 f0 38 02 1c 3f 38 82 01 80 38 20 4e 0e 1c 10 01 c7 c3 00 38 20 4e 08 00 1c 11 38 1c 00 38 02 1c 61 38 32 70 1c e0 19 c0 d3 86 27 10 4e 40 98 38 38 70 40 00 e3 e1 80 07 0f fe 22 20 60 07 0f ce 20 80 60 07 0f 8e 20 80 e1 f1 80 07 0f ce 20 80 e1 f9 c0 10 07 1f 8e 20 80 e3 f1 c4 00 07 1e 4e 03 9c 01 01 80 07 0f 8e 20 9c 01 38 7c 71 00 71 04 e1 f1 80 38 08 1c 7f 20 71 e0 c0 07 10 40 38 fc 60 07 10 17 08 27 04 47 02 8e 02 18 07 10 13 88 88 e1 dd 80 07 10 1e 10 5c 11 38 1c 70 28 e0 89 c2 0b 88 0e 00 07 10 40 38 fc 71 00 70 f0 07 1f ce 20 1c 20 38 20 70 20 e0 21 c0 23 8f e6 00 38 f0 70 10 1c 03 21 c7 83 00 38 20 00 18 38 1e 70 40 1c 60 21 c0 f3 00 71 38 e1 c9 80 00 00 00 # a930 |   .data raw:
+00 00 38 20 01 8e 08 10 e0 88 60 00 38 22 1c 7f e3 8f fc 60 38 08 70 fe e2 23 c0 45 c3 fb 88 81 c4 47 87 f7 01 0c 1c 81 f8 83 f0 80 e0 81 c0 83 80 87 00 8e 00 9c 70 b8 e0 e0 38 1c 70 44 70 38 e0 21 d0 e3 9e 27 10 43 bf c6 00 e0 80 e0 61 80 00 38 c0 70 60 e0 20 07 06 0e 30 18 38 06 70 30 e0 80 07 03 0e 01 98 0e c1 9c 6c 38 20 77 fc b8 d8 76 0c c0 07 04 07 7f c9 80 00 1c 04 1c 03 30 01 c7 f2 00 00 0e 02 10 38 80 38 40 70 40 70 20 70 10 70 08 e0 08 c0 38 7c 71 04 71 84 e2 89 c4 93 88 a7 10 ce 20 8e 1f 18 38 20 70 70 e0 99 c1 00 0e 3f 98 38 7c 71 04 71 00 38 70 70 18 e0 08 e3 f9 80 38 7c 71 04 e2 00 70 f0 8e 20 9c 3e 30 38 c0 71 40 e2 41 c4 43 88 47 10 43 8f e7 10 06 00 38 fe 70 04 38 7e 71 00 1c 41 38 7c 60 38 3c 70 04 38 7e 71 04 0e 1f 18 38 fe 71 04 e2 01 c2 01 c1 01 c0 81 c0 41 80 38 7c 71 04 1c 3e 21 c3 e3 00 38 7c 71 04 0e 3f 1c 40 1c 30 38 1e 60 07 01 08 38 08 40 07 01 08 38 08 38 06 60 1c c0 38 60 70 30 e0 19 c0 0e e0 61 c3 03 98 06 00 07 1f c8 e3 f9 00 1c 00 f8 06 70 30 e1 81 cc 02 e0 61 c0 33 80 1e 00 38 7c 71 04 71 00 70 e0 e0 20 ce 02 10 38 7c 71 04 e3 c9 c4 50 38 f2 70 04 e3 f1 80 38 7c 71 04 1c 7f 20 c0 38 7e 71 04 38 7e 41 c3 f3 00 38 7c 71 04 e0 08 07 10 4e 1f 18 38 1e 70 c4 e2 08 07 0c 4e 07 98 38 fe 70 04 1c 1f 21 c7 f3 00 38 fe 70 04 1c 1f 20 c0 38 7c 71 04 e0 08 71 c4 e2 08 38 7c 60 38 82 07 1f c8 30 38 f8 70 40 00 e3 e1 80 38 e0 71 00 03 88 23 87 c6 00 38 82 70 84 e0 89 c0 93 80 a7 00 cb 81 27 04 4e 10 9c 41 30 38 02 00 38 fe 60 38 80 f1 83 e2 8b c4 a7 88 8f 10 10 60 38 82 38 86 71 14 e2 49 c5 13 8c 27 10 41 80 38 7c 71 04 00 e1 f1 80 38 7e 71 04 1c 3f 38 02 06 00 38 7c 71 04 00 e1 f1 c1 83 8c 06 38 7e 71 04 1c 3f 38 0a 70 24 e0 89 c2 13 88 26 00 38 7c 71 04 e0 08 70 f8 e2 00 71 04 e1 f1 80 3b fe 70 40 00 60 38 82 00 38 7c 60 38 80 9c 20 9c 11 1c 0a 1c 04 18 38 80 83 88 8f 12 9e 28 bc 60 f8 80 e0 38 80 f0 82 e0 89 c0 a3 80 81 c0 a3 82 27 08 2e 20 38 38 80 f0 82 e0 89 c0 a3 80 80 18 38 fe 71 00 70 80 e0 81 c0 83 80 87 00 8e 00 8e 3f 98 38 38 70 10 00 e0 e1 80 1c 01 38 04 70 10 e0 41 c1 03 84 07 10 0e 40 1d 00 3c 00 60 38 0e 70 10 00 e0 39 80 70 30 e1 99 cc 0f 00 00 00 03 8f e4 e0 20 e0 c1 80 00 07 0f 0e 20 0e 3f 1c 41 0e 3f 18 38 02 1c 3f 38 82 03 87 e6 00 07 0f 8e 20 9c 01 07 10 4e 1f 18 38 80 1c 7e 38 82 03 8f c6 00 07 0f 8e 20 87 1f ce 00 9c 41 38 7c 60 38 f0 70 10 70 7c 80 c0 07 1f 8e 20 80 e3 f1 c4 01 c3 f0 38 02 1c 3f 38 82 01 80 38 20 4e 0e 1c 10 01 c7 c3 00 38 20 4e 08 00 1c 11 38 1c 00 38 02 1c 61 38 32 70 1c e0 19 c0 d3 86 27 10 4e 40 98 38 38 70 40 00 e3 e1 80 07 0f fe 22 20 60 07 0f ce 20 80 60 07 0f 8e 20 80 e1 f1 80 07 0f ce 20 80 e1 f9 c0 10 07 1f 8e 20 80 e3 f1 c4 00 07 1e 4e 03 9c 01 01 80 07 0f 8e 20 9c 01 38 7c 71 00 71 04 e1 f1 80 38 08 1c 7f 20 71 e0 c0 07 10 40 38 fc 60 07 10 17 08 27 04 47 02 8e 02 18 07 10 13 88 88 e1 dd 80 07 10 1e 10 5c 11 38 1c 70 28 e0 89 c2 0b 88 0e 00 07 10 40 38 fc 71 00 70 f0 07 1f ce 20 1c 20 38 20 70 20 e0 21 c0 23 8f e6 00 38 f0 70 10 1c 03 21 c7 83 00 38 20 00 18 38 1e 70 40 1c 60 21 c0 f3 00 71 38 e1 c9 80 00 00 00 # a93d |   .data raw:
                                #      | const__FONT_16_12_INDEX:
-00 00 02 00 08 00 0c 00 14 00 26 00 3a 00 4b 00 51 00 5c 00 67 00 74 00 7a 00 80 00 84 00 88 00 97 00 a9 00 b4 00 c3 00 d0 00 e1 00 ee 00 f9 00 08 01 12 01 1f 01 25 01 2d 01 3e 01 44 01 55 01 62 01 71 01 79 01 83 01 8e 01 99 01 a3 01 ab 01 b8 01 be 01 c6 01 d0 01 e4 01 ea 01 f7 01 06 02 0e 02 18 02 23 02 34 02 43 02 49 02 4f 02 5a 02 67 02 79 02 84 02 96 02 9e 02 b2 02 ba 02 c2 02 c6 02 cc 02 d7 02 e1 02 ec 02 f6 02 03 03 0b 03 16 03 1e 03 28 03 32 03 44 03 4c 03 52 03 58 03 60 03 69 03 72 03 7a 03 89 03 91 03 97 03 a2 03 aa 03 bb 03 c4 03 d5 03 df 03 e3 03 ed 03 f3 03 # ad25 |   .data list:[0x0000, 0x0002, 0x0008, 0x000c, 0x0014, 0x0026, 0x003a, 0x004b, 0x0051, 0x005c, 0x0067, 0x0074, 0x007a, 0x0080, 0x0084, 0x0088, 0x0097, 0x00a9, 0x00b4, 0x00c3, 0x00d0, 0x00e1, 0x00ee, 0x00f9, 0x0108, 0x0112, 0x011f, 0x0125, 0x012d, 0x013e, 0x0144, 0x0155, 0x0162, 0x0171, 0x0179, 0x0183, 0x018e, 0x0199, 0x01a3, 0x01ab, 0x01b8, 0x01be, 0x01c6, 0x01d0, 0x01e4, 0x01ea, 0x01f7, 0x0206, 0x020e, 0x0218, 0x0223, 0x0234, 0x0243, 0x0249, 0x024f, 0x025a, 0x0267, 0x0279, 0x0284, 0x0296, 0x029e, 0x02b2, 0x02ba, 0x02c2, 0x02c6, 0x02cc, 0x02d7, 0x02e1, 0x02ec, 0x02f6, 0x0303, 0x030b, 0x0316, 0x031e, 0x0328, 0x0332, 0x0344, 0x034c, 0x0352, 0x0358, 0x0360, 0x0369, 0x0372, 0x037a, 0x0389, 0x0391, 0x0397, 0x03a2, 0x03aa, 0x03bb, 0x03c4, 0x03d5, 0x03df, 0x03e3, 0x03ed, 0x03f3]
+00 00 02 00 08 00 0c 00 14 00 26 00 3a 00 4b 00 51 00 5c 00 67 00 74 00 7a 00 80 00 84 00 88 00 97 00 a9 00 b4 00 c3 00 d0 00 e1 00 ee 00 f9 00 08 01 12 01 1f 01 25 01 2d 01 3e 01 44 01 55 01 62 01 71 01 79 01 83 01 8e 01 99 01 a3 01 ab 01 b8 01 be 01 c6 01 d0 01 e4 01 ea 01 f7 01 06 02 0e 02 18 02 23 02 34 02 43 02 49 02 4f 02 5a 02 67 02 79 02 84 02 96 02 9e 02 b2 02 ba 02 c2 02 c6 02 cc 02 d7 02 e1 02 ec 02 f6 02 03 03 0b 03 16 03 1e 03 28 03 32 03 44 03 4c 03 52 03 58 03 60 03 69 03 72 03 7a 03 89 03 91 03 97 03 a2 03 aa 03 bb 03 c4 03 d5 03 df 03 e3 03 ed 03 f3 03 # ad32 |   .data list:[0x0000, 0x0002, 0x0008, 0x000c, 0x0014, 0x0026, 0x003a, 0x004b, 0x0051, 0x005c, 0x0067, 0x0074, 0x007a, 0x0080, 0x0084, 0x0088, 0x0097, 0x00a9, 0x00b4, 0x00c3, 0x00d0, 0x00e1, 0x00ee, 0x00f9, 0x0108, 0x0112, 0x011f, 0x0125, 0x012d, 0x013e, 0x0144, 0x0155, 0x0162, 0x0171, 0x0179, 0x0183, 0x018e, 0x0199, 0x01a3, 0x01ab, 0x01b8, 0x01be, 0x01c6, 0x01d0, 0x01e4, 0x01ea, 0x01f7, 0x0206, 0x020e, 0x0218, 0x0223, 0x0234, 0x0243, 0x0249, 0x024f, 0x025a, 0x0267, 0x0279, 0x0284, 0x0296, 0x029e, 0x02b2, 0x02ba, 0x02c2, 0x02c6, 0x02cc, 0x02d7, 0x02e1, 0x02ec, 0x02f6, 0x0303, 0x030b, 0x0316, 0x031e, 0x0328, 0x0332, 0x0344, 0x034c, 0x0352, 0x0358, 0x0360, 0x0369, 0x0372, 0x037a, 0x0389, 0x0391, 0x0397, 0x03a2, 0x03aa, 0x03bb, 0x03c4, 0x03d5, 0x03df, 0x03e3, 0x03ed, 0x03f3]
                                #      | const__SYSCALL_MAP:
-0a 90 73 91 85 92 8b 91 fa 91 50 92 37 92 a4 92 df 92 2f 93 68 93 a1 93 c8 93 1a 94 39 94 40 94 63 94 d8 91 01 95 d3 95 15 96 34 97 f0 97 70 98 d6 99 fd 99 8c 99 15 9a bc 9a f8 9a 5c 9b # ade5 |   .data label_list:[$fn_printf, $fn_putc, $fn_getc, $fn_itoa_10, $fn_itoa_16, $fn_itoa_2, $fn_to_hex_digit, $fn_from_hex_digit, $fn_atoi_16, $fn_memset, $fn_memcpy, $fn_strcmp, $fn_strcasecmp, $fn_strchr, $fn_srand, $fn_rand, $fn__delay_impl, $fn_puts, $fn_decode_font, $fn_decode_font_16_12, $fn_read_sd, $fn_write_sd, $fn_init_sd, $fn_init_oled, $fn_deinit_oled, $fn_quick_deinit_oled, $fn_clear_oled, $fn_draw_char_oled, $fn_draw_str_oled, $fn_draw_char, $fn_draw_str]
+0a 90 73 91 85 92 8b 91 fa 91 50 92 37 92 a4 92 df 92 2f 93 68 93 a1 93 c8 93 1a 94 39 94 40 94 63 94 d8 91 01 95 d3 95 15 96 34 97 f0 97 70 98 d6 99 fd 99 8c 99 15 9a bc 9a f8 9a 5c 9b # adf2 |   .data label_list:[$fn_printf, $fn_putc, $fn_getc, $fn_itoa_10, $fn_itoa_16, $fn_itoa_2, $fn_to_hex_digit, $fn_from_hex_digit, $fn_atoi_16, $fn_memset, $fn_memcpy, $fn_strcmp, $fn_strcasecmp, $fn_strchr, $fn_srand, $fn_rand, $fn__delay_impl, $fn_puts, $fn_decode_font, $fn_decode_font_16_12, $fn_read_sd, $fn_write_sd, $fn_init_sd, $fn_init_oled, $fn_deinit_oled, $fn_quick_deinit_oled, $fn_clear_oled, $fn_draw_char_oled, $fn_draw_str_oled, $fn_draw_char, $fn_draw_str]
                                #      | const__data_1:
-57 52 4f 4e 47 5f 4e 55 4d 5f 41 52 47 53 20 6e 65 65 64 3d 25 64 20 70 72 6f 76 69 64 65 64 3d 25 64 0a 00 # ae23 |   .data str:"WRONG_NUM_ARGS need=%d provided=%d\n"
+57 52 4f 4e 47 5f 4e 55 4d 5f 41 52 47 53 20 6e 65 65 64 3d 25 64 20 70 72 6f 76 69 64 65 64 3d 25 64 0a 00 # ae30 |   .data str:"WRONG_NUM_ARGS need=%d provided=%d\n"
                                #      | const__str__PONG__endl:
-50 4f 4e 47 0a 00              # ae47 |   .data str:"PONG\n"
+50 4f 4e 47 0a 00              # ae54 |   .data str:"PONG\n"
                                #      | const__str__INVALID_RANGE__endl:
-49 4e 56 41 4c 49 44 5f 52 41 4e 47 45 0a 00 # ae4d |   .data str:"INVALID_RANGE\n"
+49 4e 56 41 4c 49 44 5f 52 41 4e 47 45 0a 00 # ae5a |   .data str:"INVALID_RANGE\n"
                                #      | const__str__NOT_ALIGNED__endl:
-4e 4f 54 5f 41 4c 49 47 4e 45 44 0a 00 # ae5c |   .data str:"NOT_ALIGNED\n"
+4e 4f 54 5f 41 4c 49 47 4e 45 44 0a 00 # ae69 |   .data str:"NOT_ALIGNED\n"
                                #      | const__data_2:
-52 45 41 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # ae69 |   .data str:"READ_OK %x %x\n"
+52 45 41 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # ae76 |   .data str:"READ_OK %x %x\n"
                                #      | const__data_3:
-57 52 49 54 45 5f 4f 4b 20 25 78 20 25 78 0a 00 # ae78 |   .data str:"WRITE_OK %x %x\n"
+57 52 49 54 45 5f 4f 4b 20 25 78 20 25 78 0a 00 # ae85 |   .data str:"WRITE_OK %x %x\n"
                                #      | const__data_4:
-24 49 4e 56 41 4c 49 44 5f 44 41 54 41 0a 00 # ae88 |   .data str:"$INVALID_DATA\n"
+24 49 4e 56 41 4c 49 44 5f 44 41 54 41 0a 00 # ae95 |   .data str:"$INVALID_DATA\n"
                                #      | const__data_5:
-4a 4d 50 5f 54 4f 20 25 78 0a 00 # ae97 |   .data str:"JMP_TO %x\n"
+4a 4d 50 5f 54 4f 20 25 78 0a 00 # aea4 |   .data str:"JMP_TO %x\n"
                                #      | const__data_6:
-4a 4d 50 5f 50 45 52 53 49 53 54 45 44 20 25 78 0a 00 # aea2 |   .data str:"JMP_PERSISTED %x\n"
+4a 4d 50 5f 50 45 52 53 49 53 54 45 44 20 25 78 0a 00 # aeaf |   .data str:"JMP_PERSISTED %x\n"
                                #      | const__str__TIMEOUT__endl:
-54 49 4d 45 4f 55 54 0a 00     # aeb4 |   .data str:"TIMEOUT\n"
+54 49 4d 45 4f 55 54 0a 00     # aec1 |   .data str:"TIMEOUT\n"
                                #      | const__str__INIT_OK__endl:
-49 4e 49 54 5f 4f 4b 0a 00     # aebd |   .data str:"INIT_OK\n"
+49 4e 49 54 5f 4f 4b 0a 00     # aeca |   .data str:"INIT_OK\n"
                                #      | const__data_7:
-52 45 41 44 5f 53 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # aec6 |   .data str:"READ_SD_OK %x %x\n"
+52 45 41 44 5f 53 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # aed3 |   .data str:"READ_SD_OK %x %x\n"
                                #      | const__str__DONE__endl:
-44 4f 4e 45 0a 00              # aed8 |   .data str:"DONE\n"
+44 4f 4e 45 0a 00              # aee5 |   .data str:"DONE\n"
                                #      | const__data_8:
-57 52 49 54 45 5f 53 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # aede |   .data str:"WRITE_SD_OK %x %x\n"
+57 52 49 54 45 5f 53 44 5f 4f 4b 20 25 78 20 25 78 0a 00 # aeeb |   .data str:"WRITE_SD_OK %x %x\n"
                                #      | const__data_9:
-4d 4d 41 50 5f 4f 4b 20 25 78 20 25 78 20 25 78 20 25 78 20 25 78 0a 00 # aef1 |   .data str:"MMAP_OK %x %x %x %x %x\n"
+4d 4d 41 50 5f 4f 4b 20 25 78 20 25 78 20 25 78 20 25 78 20 25 78 0a 00 # aefe |   .data str:"MMAP_OK %x %x %x %x %x\n"
                                #      | const__data_10:
-55 4d 41 50 5f 4f 4b 20 25 78 0a 00 # af09 |   .data str:"UMAP_OK %x\n"
+55 4d 41 50 5f 4f 4b 20 25 78 0a 00 # af16 |   .data str:"UMAP_OK %x\n"
                                #      | const__str__NO_SD__endl:
-4e 4f 5f 53 44 0a 00           # af15 |   .data str:"NO_SD\n"
+4e 4f 5f 53 44 0a 00           # af22 |   .data str:"NO_SD\n"
                                #      | const__str__SHOW_IMG_OK__endl:
-53 48 4f 57 5f 49 4d 47 5f 4f 4b 0a 00 # af1c |   .data str:"SHOW_IMG_OK\n"
+53 48 4f 57 5f 49 4d 47 5f 4f 4b 0a 00 # af29 |   .data str:"SHOW_IMG_OK\n"
                                #      | const__str__SHOW_IMG_ERROR__endl:
-53 48 4f 57 5f 49 4d 47 5f 45 52 52 4f 52 0a 00 # af29 |   .data str:"SHOW_IMG_ERROR\n"
+53 48 4f 57 5f 49 4d 47 5f 45 52 52 4f 52 0a 00 # af36 |   .data str:"SHOW_IMG_ERROR\n"
                                #      | const__str__ERASE_SD_OK__endl:
-45 52 41 53 45 5f 53 44 5f 4f 4b 0a 00 # af39 |   .data str:"ERASE_SD_OK\n"
+45 52 41 53 45 5f 53 44 5f 4f 4b 0a 00 # af46 |   .data str:"ERASE_SD_OK\n"
                                #      | const__str__ERASE_SD_ERROR__endl:
-45 52 41 53 45 5f 53 44 5f 45 52 52 4f 52 0a 00 # af46 |   .data str:"ERASE_SD_ERROR\n"
+45 52 41 53 45 5f 53 44 5f 45 52 52 4f 52 0a 00 # af53 |   .data str:"ERASE_SD_ERROR\n"
                                #      | const__HANDLER_MAP:
-94 9b ce 9b e2 9c ce 9b e2 9c d4 9d d4 9d 67 9e 8e 9e 2d 9f ce 9b 3e 9f 4f 9f 42 a0 a1 a0 4f 9f ce a0 08 a2 # af56 |   .data label_list:[$fn_handle_ping, $fn_handle_read, $fn_handle_write, $fn_handle_read, $fn_handle_write, $fn_handle_jmp, $fn_handle_jmp, $fn_handle_init_sd, $fn_handle_read_sd, $fn_handle_init_oled, $fn_handle_read, $fn_handle_deinit_oled, $fn_handle_write_sd, $fn_handle_mmap, $fn_handle_umap, $fn_handle_write_sd, $fn_handle_show_img, $fn_handle_erase_sd]
+94 9b ce 9b e2 9c ce 9b e2 9c d4 9d d4 9d 67 9e 8e 9e 2d 9f ce 9b 3e 9f 4f 9f 42 a0 a1 a0 4f 9f ce a0 08 a2 # af63 |   .data label_list:[$fn_handle_ping, $fn_handle_read, $fn_handle_write, $fn_handle_read, $fn_handle_write, $fn_handle_jmp, $fn_handle_jmp, $fn_handle_init_sd, $fn_handle_read_sd, $fn_handle_init_oled, $fn_handle_read, $fn_handle_deinit_oled, $fn_handle_write_sd, $fn_handle_mmap, $fn_handle_umap, $fn_handle_write_sd, $fn_handle_show_img, $fn_handle_erase_sd]
                                #      | const__data_11:
-57 65 65 65 6b 6c 79 33 30 30 36 20 2d 20 48 61 72 64 77 61 72 65 20 76 32 2e 31 20 2d 20 42 6f 6f 74 6c 6f 61 64 65 72 20 76 33 2e 37 0a 00 # af7a |   .data str:"Weeekly3006 - Hardware v2.1 - Bootloader v3.7\n"
+57 65 65 65 6b 6c 79 33 30 30 36 20 2d 20 48 61 72 64 77 61 72 65 20 76 32 2e 31 20 2d 20 42 6f 6f 74 6c 6f 61 64 65 72 20 76 33 2e 37 0a 00 # af87 |   .data str:"Weeekly3006 - Hardware v2.1 - Bootloader v3.7\n"
                                #      | const__str__WeeeklyT:
-57 65 65 65 6b 6c 79 54 00     # afa9 |   .data str:"WeeeklyT"
+57 65 65 65 6b 6c 79 54 00     # afb6 |   .data str:"WeeeklyT"
                                #      | const__data_12:
-33 30 30 36 20 37 00           # afb2 |   .data str:"3006 7"
+33 30 30 36 20 37 00           # afbf |   .data str:"3006 7"
                                #      | const__str__FORCED_BOOTLOADER__endl:
-46 4f 52 43 45 44 5f 42 4f 4f 54 4c 4f 41 44 45 52 0a 00 # afb9 |   .data str:"FORCED_BOOTLOADER\n"
+46 4f 52 43 45 44 5f 42 4f 4f 54 4c 4f 41 44 45 52 0a 00 # afc6 |   .data str:"FORCED_BOOTLOADER\n"
                                #      | const__str__READY__endl:
-52 45 41 44 59 0a 00           # afcc |   .data str:"READY\n"
+52 45 41 44 59 0a 00           # afd9 |   .data str:"READY\n"
                                #      | const__data_13:
-53 44 5f 4c 4f 41 44 20 25 78 20 25 78 0a 00 # afd3 |   .data str:"SD_LOAD %x %x\n"
+53 44 5f 4c 4f 41 44 20 25 78 20 25 78 0a 00 # afe0 |   .data str:"SD_LOAD %x %x\n"
                                #      | const__data_14:
-53 44 5f 4a 4d 50 20 25 78 0a 00 # afe2 |   .data str:"SD_JMP %x\n"
+53 44 5f 4a 4d 50 20 25 78 0a 00 # afef |   .data str:"SD_JMP %x\n"
                                #      | const__data_15:
-24 4f 56 45 52 46 4c 4f 57 20 6d 61 78 3d 33 31 0a 00 # afed |   .data str:"$OVERFLOW max=31\n"
+24 4f 56 45 52 46 4c 4f 57 20 6d 61 78 3d 33 31 0a 00 # affa |   .data str:"$OVERFLOW max=31\n"
                                #      | const__str__PING:
-50 49 4e 47 00                 # afff |   .data str:"PING"
+50 49 4e 47 00                 # b00c |   .data str:"PING"
                                #      | const__str__READ:
-52 45 41 44 00                 # b004 |   .data str:"READ"
+52 45 41 44 00                 # b011 |   .data str:"READ"
                                #      | const__str__WRITE:
-57 52 49 54 45 00              # b009 |   .data str:"WRITE"
+57 52 49 54 45 00              # b016 |   .data str:"WRITE"
                                #      | const__str__READB:
-52 45 41 44 42 00              # b00f |   .data str:"READB"
+52 45 41 44 42 00              # b01c |   .data str:"READB"
                                #      | const__str__WRITEB:
-57 52 49 54 45 42 00           # b015 |   .data str:"WRITEB"
+57 52 49 54 45 42 00           # b022 |   .data str:"WRITEB"
                                #      | const__str__JMP:
-4a 4d 50 00                    # b01c |   .data str:"JMP"
+4a 4d 50 00                    # b029 |   .data str:"JMP"
                                #      | const__str__JMP_PERSIST:
-4a 4d 50 5f 50 45 52 53 49 53 54 00 # b020 |   .data str:"JMP_PERSIST"
+4a 4d 50 5f 50 45 52 53 49 53 54 00 # b02d |   .data str:"JMP_PERSIST"
                                #      | const__str__INIT_SD:
-49 4e 49 54 5f 53 44 00        # b02c |   .data str:"INIT_SD"
+49 4e 49 54 5f 53 44 00        # b039 |   .data str:"INIT_SD"
                                #      | const__str__READ_SD:
-52 45 41 44 5f 53 44 00        # b034 |   .data str:"READ_SD"
+52 45 41 44 5f 53 44 00        # b041 |   .data str:"READ_SD"
                                #      | const__str__INIT_OLED:
-49 4e 49 54 5f 4f 4c 45 44 00  # b03c |   .data str:"INIT_OLED"
+49 4e 49 54 5f 4f 4c 45 44 00  # b049 |   .data str:"INIT_OLED"
                                #      | const__str__READW:
-52 45 41 44 57 00              # b046 |   .data str:"READW"
+52 45 41 44 57 00              # b053 |   .data str:"READW"
                                #      | const__str__DEINIT_OLED:
-44 45 49 4e 49 54 5f 4f 4c 45 44 00 # b04c |   .data str:"DEINIT_OLED"
+44 45 49 4e 49 54 5f 4f 4c 45 44 00 # b059 |   .data str:"DEINIT_OLED"
                                #      | const__str__WRITE_SD:
-57 52 49 54 45 5f 53 44 00     # b058 |   .data str:"WRITE_SD"
+57 52 49 54 45 5f 53 44 00     # b065 |   .data str:"WRITE_SD"
                                #      | const__str__MMAP:
-4d 4d 41 50 00                 # b061 |   .data str:"MMAP"
+4d 4d 41 50 00                 # b06e |   .data str:"MMAP"
                                #      | const__str__UMAP:
-55 4d 41 50 00                 # b066 |   .data str:"UMAP"
+55 4d 41 50 00                 # b073 |   .data str:"UMAP"
                                #      | const__str__WRITEB_SD:
-57 52 49 54 45 42 5f 53 44 00  # b06b |   .data str:"WRITEB_SD"
+57 52 49 54 45 42 5f 53 44 00  # b078 |   .data str:"WRITEB_SD"
                                #      | const__str__SHOW_IMG:
-53 48 4f 57 5f 49 4d 47 00     # b075 |   .data str:"SHOW_IMG"
+53 48 4f 57 5f 49 4d 47 00     # b082 |   .data str:"SHOW_IMG"
                                #      | const__str__ERASE_SD:
-45 52 41 53 45 5f 53 44 00     # b07e |   .data str:"ERASE_SD"
+45 52 41 53 45 5f 53 44 00     # b08b |   .data str:"ERASE_SD"
                                #      | const__str__UNKNOWN_COMMAND__endl:
-55 4e 4b 4e 4f 57 4e 5f 43 4f 4d 4d 41 4e 44 0a 00 # b087 |   .data str:"UNKNOWN_COMMAND\n"
+55 4e 4b 4e 4f 57 4e 5f 43 4f 4d 4d 41 4e 44 0a 00 # b094 |   .data str:"UNKNOWN_COMMAND\n"
                                #      | const__data_16:
-54 4f 4f 5f 4d 41 4e 59 5f 41 52 47 53 20 6d 61 78 3d 36 0a 00 # b098 |   .data str:"TOO_MANY_ARGS max=6\n"
+54 4f 4f 5f 4d 41 4e 59 5f 41 52 47 53 20 6d 61 78 3d 36 0a 00 # b0a5 |   .data str:"TOO_MANY_ARGS max=6\n"
                                #      | const__data_17:
-49 4e 56 41 4c 49 44 5f 41 52 47 20 69 64 78 3d 25 64 0a 00 # b0ad |   .data str:"INVALID_ARG idx=%d\n"
+49 4e 56 41 4c 49 44 5f 41 52 47 20 69 64 78 3d 25 64 0a 00 # b0ba |   .data str:"INVALID_ARG idx=%d\n"
                                #      | SECTION_END_const_data:
                                #      | 
-                               #      | .offset 0xb0c1
+                               #      | .offset 0xb0ce
                                #      | SECTION_BEGIN_static_data:
                                #      | var__rand__state:
-                               # b0c1 |   .bss size:2 align:1
+                               # b0ce |   .bss size:2 align:1
                                #      | var__g_num_args:
-                               # b0c3 |   .bss size:2 align:1
-                               # b0c5 |   .align dummy_size:1 align:2
+                               # b0d0 |   .bss size:2 align:1
                                #      | var__g_args:
-                               # b0c6 |   .bss size:14 align:2
+                               # b0d2 |   .bss size:14 align:2
                                #      | var__g_has_sd_card:
-                               # b0d4 |   .bss size:2 align:1
+                               # b0e0 |   .bss size:2 align:1
                                #      | var__g_sd_slot:
-                               # b0d6 |   .bss size:2 align:1
+                               # b0e2 |   .bss size:2 align:1
                                #      | var__g_sd_jmp_target:
-                               # b0d8 |   .bss size:2 align:1
+                               # b0e4 |   .bss size:2 align:1
                                #      | var__g_last_button_state:
-                               # b0da |   .bss size:2 align:1
+                               # b0e6 |   .bss size:2 align:1
                                #      | SECTION_END_static_data:
                                #      | 

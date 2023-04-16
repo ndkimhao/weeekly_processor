@@ -166,6 +166,8 @@ signal rom_addr : TPhyAddr;
 
 signal clk_counter : unsigned(48-1 downto 0) := (others => '0');
 signal inst_counter : unsigned(48-1 downto 0) := (others => '0');
+signal latched_clk_counter : unsigned(48-1 downto 0) := (others => '0');
+signal latched_inst_counter : unsigned(48-1 downto 0) := (others => '0');
 
 signal mem_jump_target : TData := (others => '0');
 signal mem_syscall_entry : TData := (others => '0');
@@ -258,13 +260,13 @@ begin
 		x"00" & s_led_out when last_mtype = M_LED_WRITE else
 
 		-- Counters
-		std_logic_vector(clk_counter(15 downto  0)) when last_mtype = M_CLK_READ_0 else
-		std_logic_vector(clk_counter(31 downto 16)) when last_mtype = M_CLK_READ_1 else
-		std_logic_vector(clk_counter(47 downto 32)) when last_mtype = M_CLK_READ_2 else
+		std_logic_vector(latched_clk_counter(15 downto  0)) when last_mtype = M_CLK_READ_0 else
+		std_logic_vector(latched_clk_counter(31 downto 16)) when last_mtype = M_CLK_READ_1 else
+		std_logic_vector(latched_clk_counter(47 downto 32)) when last_mtype = M_CLK_READ_2 else
 
-		std_logic_vector(inst_counter(15 downto  0)) when last_mtype = M_INSTCNT_READ_0 else
-		std_logic_vector(inst_counter(31 downto 16)) when last_mtype = M_INSTCNT_READ_1 else
-		std_logic_vector(inst_counter(47 downto 32)) when last_mtype = M_INSTCNT_READ_2 else
+		std_logic_vector(latched_inst_counter(15 downto  0)) when last_mtype = M_INSTCNT_READ_0 else
+		std_logic_vector(latched_inst_counter(31 downto 16)) when last_mtype = M_INSTCNT_READ_1 else
+		std_logic_vector(latched_inst_counter(47 downto 32)) when last_mtype = M_INSTCNT_READ_2 else
 
 		-- Miscs
 		mem_jump_target when last_mtype = M_JUMP_TARGET else
@@ -352,6 +354,19 @@ begin
 				if uop_hold = '0' and uop_done = '1' then
 					inst_counter <= inst_counter + 1;
 				end if;
+			end if;
+		end if;
+	end process;
+
+	-- latch counters on the read of the first word
+	process(clk)
+	begin
+		if rising_edge(clk) then
+			if mtype = M_CLK_READ_0 then
+				latched_clk_counter <= clk_counter;
+			end if;
+			if mtype = M_INSTCNT_READ_0 then
+				latched_inst_counter <= inst_counter;
 			end if;
 		end if;
 	end process;
