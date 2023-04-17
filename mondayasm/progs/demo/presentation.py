@@ -1,25 +1,16 @@
 from progs.stdlib.syscall import syscall, S
 from progs.stdlib.timing import DELAY_MILLIS
-from progs.stdlib.video import switch_screen_page, reset_color_palette, g_page_buffer, NUM_PAGES, fill_page
+from progs.stdlib.video import switch_screen_page, reset_color_palette, g_page_buffer, NUM_PAGES, fill_page, \
+    set_color_palette
 from soeunasm import Reg, call, halt, init_code_gen, const, global_var, ForRange, If, Else, M, Loop
 
 CODE_OFFSET = 0x5000
-
-N_MEMBERS = 7
-members = const([
-    'Lee Soojin',
-    'Monday',
-    'Park Soeun',
-    'Lee Jaehee',
-    'Jihan',
-    'Zoa',
-    'Shin Jiyoon',
-])
 
 
 def init_video(A):
     call(switch_screen_page, 0, 0)
     call(reset_color_palette)
+    call(set_color_palette, 1, 0xff, 0xa5, 0x00)
     with ForRange(A, 0, NUM_PAGES):
         call(switch_screen_page, A, 0b1000)
         call(fill_page, 0)
@@ -41,7 +32,9 @@ def draw_string(row, col, color, s,
             D @= M[C].byte()
             M[C].byte() @ 0
 
-        call(switch_screen_page, row, color)
+        H @= color & 7
+        H += 0b1000
+        call(switch_screen_page, row, H)
         syscall(S.draw_str, g_page_buffer.addr(), col, B)
 
         If(D == 0).then_break()
@@ -50,11 +43,23 @@ def draw_string(row, col, color, s,
         row += 1
 
 
+N_MEMBERS = 7
+members = const([
+    'Lee Soojin',
+    'Monday',
+    'Park Soeun',
+    'Lee Jaehee',
+    'Jihan',
+    'Zoa',
+    'Shin Jiyoon',
+])
+
+
 def demo_video(A, C):
     call(init_video)
     with ForRange(A, 0, N_MEMBERS):
         C @= members
-        call(draw_string, A + 10, 10, 3, [A * 2 + C])
+        call(draw_string, A + 10, 10, A + 1, [A * 2 + C])
     call(draw_string, 18, 10, 2, const('Everyday Weeekly!\nHello!@#$%'))
 
 
