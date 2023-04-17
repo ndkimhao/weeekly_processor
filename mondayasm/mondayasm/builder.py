@@ -273,6 +273,16 @@ def ConstData(name, obj=None, *, align=1) -> RawExpr:
         data = bytes([0, 0]) * len(obj)
         lbl_bins = [f'<{e.terms[0].factor:x}*${{{e.terms[0].value.name}}}>' for e in obj]
         bincode = ' '.join(lbl_bins)
+    elif isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], str):
+        assert all(isinstance(e, str) for e in obj)
+        strs = ', '.join('"' + s.replace('\n', '\\n') + '"' for s in obj)
+        value = f'str_list:[{strs}]'
+        data = bytes([0, 0]) * len(obj)
+        lbl_bins = []
+        for s in obj:
+            e = ConstData(s)
+            lbl_bins.append(f'<{e.terms[0].factor:x}*${{{e.terms[0].value.name}}}>')
+        bincode = ' '.join(lbl_bins)
     elif isinstance(obj, list):
         assert all(isinstance(e, int) for e in obj)
         list_str = ', '.join(f'0x{e:04x}' for e in obj)
