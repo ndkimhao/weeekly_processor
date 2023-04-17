@@ -253,6 +253,10 @@ def AnonLabel(name: str = '', emit_label: bool = True) -> RawExpr:
     return Label(name, anon=True, emit=emit_label)
 
 
+def _escape_str(s):
+    return s.replace('\\', '\\\\').replace('\n', '\\n').replace('\0', '\\0')
+
+
 def ConstData(name, obj=None, *, align=1) -> RawExpr:
     bincode = None
 
@@ -260,8 +264,7 @@ def ConstData(name, obj=None, *, align=1) -> RawExpr:
         obj = name
         name = Global.gen_label_name('data', '')
     if isinstance(obj, str):
-        escaped = obj.replace('\\', '\\\\').replace('\n', '\\n').replace('\0', '\\0')
-        value = f'str:"{escaped}"'
+        value = f'str:"{_escape_str(obj)}"'
         data = bytes(obj + '\0', 'utf-8')
     elif isinstance(obj, bytes):
         value = f'raw:'
@@ -275,7 +278,7 @@ def ConstData(name, obj=None, *, align=1) -> RawExpr:
         bincode = ' '.join(lbl_bins)
     elif isinstance(obj, list) and len(obj) > 0 and isinstance(obj[0], str):
         assert all(isinstance(e, str) for e in obj)
-        strs = ', '.join('"' + s.replace('\n', '\\n') + '"' for s in obj)
+        strs = ', '.join(f'"{_escape_str(s)}"' for s in obj)
         value = f'str_list:[{strs}]'
         data = bytes([0, 0]) * len(obj)
         lbl_bins = []
